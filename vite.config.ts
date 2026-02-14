@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { nitro } from 'nitro/vite';
+import { nitro } from 'nitro/vite'
+import swc from 'unplugin-swc'
+import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,7 +9,23 @@ export default defineConfig({
     vue(),
     nitro({
       serverDir: './server',
-      serverEntry: './server/entry.ts'
-    })
+      serverEntry: './server/entry.ts',
+      rolldownConfig: {
+        output: {},
+        plugins: [
+          swc.rolldown({
+            jsc: {
+              parser: {
+                syntax: 'typescript',
+                decorators: true,
+              },
+              transform: {
+                legacyDecorator: true,
+              },
+            },
+          }),
+        ],
+      },
+    }),
   ],
 })
