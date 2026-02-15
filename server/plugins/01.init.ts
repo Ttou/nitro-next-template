@@ -1,6 +1,10 @@
 import { definePlugin } from 'nitro'
-import { initCtx } from '../context/main'
+import { closeApp, initApp } from '../app/main'
 
 export default definePlugin(async (nitroApp) => {
-  await initCtx()
+  await initApp()
+
+  nitroApp.hooks.hook('close', async () => {
+    await closeApp()
+  })
 })

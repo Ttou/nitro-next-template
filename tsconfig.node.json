@@ -24,7 +24,8 @@
     "noUncheckedSideEffectImports": true,
 
     /* Decorators */
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["server/**/*.ts", "vite.config.ts"]
 }

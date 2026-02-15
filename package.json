@@ -8,12 +8,19 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@fastify/static": "^9.0.0",
     "@nestjs/common": "11.1.13",
     "@nestjs/core": "11.1.13",
+    "@nestjs/platform-fastify": "^11.1.13",
+    "@nestjs/swagger": "^11.2.6",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "fastify": "^5.7.4",
     "vue": "3.5.28"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.4.3",
+    "@oxc-project/runtime": "^0.113.0",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/tsconfig": "^0.8.1",
@@ -24,6 +31,6 @@
     "vite": "^8.0.0-beta.14"
   },
   "overrides": {
-    "vite": "^8.0.0-beta.13"
+    "vite": "^8.0.0-beta.14"
   }
 }

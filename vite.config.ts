@@ -20,6 +20,7 @@ export default defineConfig({
                 decorators: true,
               },
               transform: {
+                decoratorMetadata: true,
                 legacyDecorator: true,
               },
             },
