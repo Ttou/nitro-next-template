@@ -1,15 +1,15 @@
-import type { NestFastifyApplication } from '@nestjs/platform-fastify'
+import type { NestExpressApplication } from '@nestjs/platform-express'
 import { NestFactory } from '@nestjs/core'
-import { FastifyAdapter } from '@nestjs/platform-fastify'
+import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app'
 
-export let app: NestFastifyApplication
+export let app: NestExpressApplication
 
 export async function initApp() {
-  app = await NestFactory.create<NestFastifyApplication>(
+  app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new ExpressAdapter(),
     { abortOnError: false },
   )
 

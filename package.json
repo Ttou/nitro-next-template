@@ -1,5 +1,5 @@
 {
-  "name": "vite-project",
+  "name": "nitro-next-template",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,14 +8,14 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@fastify/static": "^9.0.0",
     "@nestjs/common": "11.1.13",
     "@nestjs/core": "11.1.13",
-    "@nestjs/platform-fastify": "^11.1.13",
-    "@nestjs/swagger": "^11.2.6",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.3",
-    "fastify": "^5.7.4",
+    "@nestjs/platform-express": "11.1.13",
+    "@nestjs/swagger": "11.2.6",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.3",
+    "express": "5.2.1",
+    "srvx": "0.11.4",
     "vue": "3.5.28"
   },
   "devDependencies": {

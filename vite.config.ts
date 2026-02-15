@@ -13,18 +13,18 @@ export default defineConfig({
       rolldownConfig: {
         output: {},
         plugins: [
-          swc.rolldown({
-            jsc: {
-              parser: {
-                syntax: 'typescript',
-                decorators: true,
-              },
-              transform: {
-                decoratorMetadata: true,
-                legacyDecorator: true,
-              },
-            },
-          }),
+          // swc.rolldown({
+          //   jsc: {
+          //     parser: {
+          //       syntax: 'typescript',
+          //       decorators: true,
+          //     },
+          //     transform: {
+          //       decoratorMetadata: true,
+          //       legacyDecorator: true,
+          //     },
+          //   },
+          // }),
         ],
       },
     }),

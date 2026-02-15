@@ -1,40 +1,24 @@
+import { FastURL, toFetchHandler } from 'srvx/node'
 import { app } from './app/main'
+
+const SERVER_URLS = [
+  '/api',
+  '/openapi',
+]
+
+let fetchHandler: ReturnType<typeof toFetchHandler> | null = null
 
 export default {
   async fetch(request: Request) {
-    try {
-      const fastifyApp: any = app.getHttpAdapter().getInstance()
+    const { pathname } = new FastURL(request.url)
 
-      const headers: Record<string, string> = {}
-      request.headers.forEach((value, key) => {
-        headers[key] = value
-      })
-
-      const response: any = await fastifyApp.inject({
-        method: request.method,
-        url: request.url,
-        headers,
-        payload: request.body ? await request.text() : undefined,
-      })
-
-      const responseHeaders = new Headers()
-      Object.entries(response.headers as Record<string, any>).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          value.forEach((v: string) => responseHeaders.append(key, v))
-        }
-        else if (value) {
-          responseHeaders.set(key, value)
-        }
-      })
-
-      return new Response(response.payload, {
-        status: response.statusCode,
-        headers: responseHeaders,
-      })
+    if (SERVER_URLS.some(url => pathname.startsWith(url))) {
+      if (!fetchHandler) {
+        const instance = app.getHttpAdapter().getInstance()
+        fetchHandler = toFetchHandler(instance)
+      }
+      return fetchHandler(request)
     }
-    catch (error) {
-      console.error('NestJS + Fastify error:', error)
-      return new Response('Internal Server Error', { status: 500 })
-    }
+    return undefined
   },
 }
