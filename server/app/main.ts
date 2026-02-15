@@ -2,6 +2,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express'
 import { NestFactory } from '@nestjs/core'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { apiReference } from '@scalar/nestjs-api-reference'
 import { AppModule } from './app'
 
 export let app: NestExpressApplication
@@ -22,7 +23,10 @@ export async function initApp() {
     .addTag('cats')
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('openapi', app, documentFactory)
+
+  app.use('/openapi', apiReference({
+    content: documentFactory(),
+  }))
 
   await app.init()
 }

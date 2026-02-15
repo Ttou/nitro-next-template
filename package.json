@@ -10,16 +10,24 @@
   "dependencies": {
     "@mikro-orm/core": "6.6.6",
     "@mikro-orm/mysql": "6.6.6",
+    "@mikro-orm/nestjs": "6.1.1",
     "@nestjs/common": "11.1.13",
     "@nestjs/config": "4.0.3",
     "@nestjs/core": "11.1.13",
     "@nestjs/platform-express": "11.1.13",
     "@nestjs/swagger": "11.2.6",
+    "@scalar/nestjs-api-reference": "1.0.23",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.3",
+    "dayjs": "^1.11.19",
+    "element-plus": "^2.13.2",
+    "enum-plus": "^3.1.8",
     "express": "5.2.1",
+    "pinia": "^3.0.4",
     "srvx": "0.11.4",
-    "vue": "3.5.28"
+    "vue": "3.5.28",
+    "vue-router": "^5.0.2",
+    "vue-ts-types": "^1.9.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.4.3",
