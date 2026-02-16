@@ -1,10 +1,12 @@
 import type { Request } from 'express'
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
 import { ClsModule } from 'nestjs-cls'
 import { ApisModule } from './apis'
-import { configuration } from './configs'
+import { ConfigSchema, configuration } from './configs'
+import { SharedModule } from './shared'
 
 @Module({
   imports: [
@@ -21,12 +23,22 @@ import { configuration } from './configs'
           mount: true,
           generateId: true,
           idGenerator: (req: Request) =>
-            req.headers['X-Request-Id'] ?? randomUUID(),
+            (req.headers['X-Request-Id'] as string) ?? randomUUID(),
         },
       }),
     }),
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['jwt']>('jwt')!
+      },
+      inject: [ConfigService],
+    }),
+    SharedModule,
     ApisModule,
   ],
-  providers: [],
+  providers: [
+
+  ],
 })
 export class AppModule {}

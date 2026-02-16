@@ -9,6 +9,11 @@ export default registerAs('', (): ConfigSchema => {
 
   return {
     appName,
+    redis: {
+      host: '127.0.0.1',
+      port: 6379,
+      db: 0,
+    },
     orm: {
       driver: MySqlDriver,
       host: '127.0.0.1',
@@ -30,6 +35,12 @@ export default registerAs('', (): ConfigSchema => {
       ],
       loggerFactory: options => new OrmLogger(options),
       debug: true,
+    },
+    jwt: {
+      secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
+      signOptions: {
+        expiresIn: '7d',
+      },
     },
     hash: {
       salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
