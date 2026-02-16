@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { ClsService } from 'nestjs-cls'
 import { CacheService } from '~server/app/services'
-import { LoginReqDTO } from './dto'
+import { LoginReqDto } from './dto'
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(data: LoginReqDTO) {
+  async login(data: LoginReqDto) {
     // return this.authService.login()
     return {
       accessToken: 'accessToken',

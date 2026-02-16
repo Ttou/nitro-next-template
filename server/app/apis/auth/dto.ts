@@ -4,7 +4,7 @@ import { IsNotEmpty, MinLength } from 'class-validator'
 /**
  * 登录请求传输对象
  */
-export class LoginReqDTO {
+export class LoginReqDto {
   /**
    * 账号
    */
@@ -35,7 +35,7 @@ export class LoginReqDTO {
   captchaValue: string
 }
 
-export class LoginResDTO {
+export class LoginResDto {
   /**
    * 访问令牌
    */

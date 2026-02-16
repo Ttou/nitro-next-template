@@ -2,10 +2,12 @@ import type { Request } from 'express'
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { APP_INTERCEPTOR } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { ClsModule } from 'nestjs-cls'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
+import { LoggingInterceptor } from './interceptors'
 import { SharedModule } from './shared'
 
 @Module({
@@ -38,7 +40,10 @@ import { SharedModule } from './shared'
     ApisModule,
   ],
   providers: [
-
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
   ],
 })
 export class AppModule {}

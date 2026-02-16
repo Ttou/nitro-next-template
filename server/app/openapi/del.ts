@@ -4,7 +4,7 @@ import { ArrayNotEmpty } from 'class-validator'
 /**
  * 删除请求传输对象
  */
-export class DelReqDTO {
+export class DelReqDto {
   @ApiProperty({
     description: '主键数组',
     type: 'array',

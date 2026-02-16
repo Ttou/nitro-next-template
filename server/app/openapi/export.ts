@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-import { ResultResDTO } from './result'
+import { ResultResDto } from './result'
 
 /**
  * 导出数据
@@ -16,4 +16,4 @@ class ExportData {
 /**
  * 导出结果响应传输对象
  */
-export class ExportResDTO extends ResultResDTO(ExportData) {}
+export class ExportResDto extends ResultResDto(ExportData) {}

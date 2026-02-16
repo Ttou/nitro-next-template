@@ -5,7 +5,7 @@ import { IsPositive, Min } from 'class-validator'
 /**
  * 分页请求传输对象
  */
-export class PageReqDTO {
+export class PageReqDto {
   @ApiProperty({ description: '页码', default: 1 })
   @IsPositive({ message: '页码必须是正整数' })
   @Min(1, { message: '页码最小值为 1' })
@@ -21,7 +21,7 @@ export class PageReqDTO {
  * 分页响应传输对象
  * @param {T} classRef 列表类
  */
-export function PageResDTO<T extends Type>(classRef: T) {
+export function PageResDto<T extends Type>(classRef: T) {
   class Page {
     @ApiProperty({ description: '页码' })
     pageNum: number
