@@ -4,7 +4,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common'
 export class AppController {
   @Get()
   getHello() {
-    return { message: 'Hello from NestJS + Fastify!' }
+    return { message: 'Hello from NestJS' }
   }
 
   @Get('hello')

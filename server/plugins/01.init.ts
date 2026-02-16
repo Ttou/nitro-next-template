@@ -1,5 +1,5 @@
 import { definePlugin } from 'nitro'
-import { closeApp, initApp } from '../app/main'
+import { closeApp, initApp } from '~server/app/main'
 
 export default definePlugin(async (nitroApp) => {
   await initApp()
