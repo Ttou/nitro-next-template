@@ -2,11 +2,12 @@ import type { Request } from 'express'
 import { randomUUID } from 'node:crypto'
 import { Module } from '@nestjs/common'
 import { ClsModule } from 'nestjs-cls'
-import { AppController } from './app.controller'
+import { ApisModule } from './apis'
 
 @Module({
   imports: [
     ClsModule.forRootAsync({
+      global: true,
       useFactory: () => ({
         middleware: {
           mount: true,
@@ -16,7 +17,7 @@ import { AppController } from './app.controller'
         },
       }),
     }),
+    ApisModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}

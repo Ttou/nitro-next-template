@@ -11,7 +11,7 @@ logger.appenders.set('console', {
   level: ['debug', 'info', 'trace', 'fatal', 'error', 'warn'],
   layout: {
     type: PatternLayout,
-    pattern: '%x{time} [%z] [%h] %[[%p]%] %x{message}',
+    pattern: '%x{time} [%z] %[[%p]%] %x{message}',
     tokens: {
       time: (logEvent: LogEvent) => {
         return `[${formatTime(logEvent.startTime, 'YYYY-MM-DD HH:mm:ss.SSS')}]`
