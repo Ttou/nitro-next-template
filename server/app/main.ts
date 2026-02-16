@@ -4,6 +4,7 @@ import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import { AppModule } from './app'
+import { NestLogger } from './loggers'
 
 export let app: NestExpressApplication
 
@@ -11,7 +12,10 @@ export async function initApp() {
   app = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(),
-    { abortOnError: false },
+    {
+      abortOnError: false,
+      logger: new NestLogger(),
+    },
   )
 
   app.setGlobalPrefix('api')
