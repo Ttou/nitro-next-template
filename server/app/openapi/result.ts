@@ -13,9 +13,6 @@ export function ResultResDto<T extends Type>(classRef: T) {
     @ApiProperty({ description: '状态码', example: 200 })
     status: number
 
-    @ApiProperty({ description: '响应消息', example: 'ok' })
-    message: string
-
     @ApiProperty({ description: '响应数据', type: classRef })
     data: T
   }

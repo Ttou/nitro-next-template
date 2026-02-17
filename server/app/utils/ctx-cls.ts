@@ -1,6 +1,6 @@
-import type { ClsStore } from 'nestjs-cls'
+import type { ClsStore, Terminal } from 'nestjs-cls'
 import type { SysUserEntity } from '../entities'
 
-export interface CtxClsStore extends ClsStore {
-  user: SysUserEntity
+export interface ICtxClsStore extends ClsStore {
+  user: Terminal<SysUserEntity>
 }

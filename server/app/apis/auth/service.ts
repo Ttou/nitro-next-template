@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { ClsService } from 'nestjs-cls'
 import { CacheService } from '~server/app/services'
 import { LoginReqDto } from './dto'
 
@@ -10,7 +9,6 @@ export class AuthService {
 
   constructor(
     private readonly cacheService: CacheService,
-    private readonly clsService: ClsService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -19,7 +17,6 @@ export class AuthService {
     return {
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
-      requestId: this.clsService.getId(),
     }
   }
 
