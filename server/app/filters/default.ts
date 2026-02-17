@@ -42,6 +42,6 @@ export class DefaultFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       return exception.message
     }
-    return 'Internal Server Error'
+    return '服务器错误'
   }
 }

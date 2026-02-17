@@ -27,6 +27,7 @@
     "@tsed/logger": "8.0.4",
     "@tsed/logger-pattern-layout": "8.0.4",
     "@tsed/logger-std": "8.0.4",
+    "axios": "^1.13.5",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.3",
     "dayjs": "1.11.19",
@@ -41,6 +42,7 @@
     "pinia": "^3.0.4",
     "rxjs": "7.8.2",
     "srvx": "0.11.4",
+    "ua-parser-js": "^2.0.9",
     "vue": "3.5.28",
     "vue-router": "5.0.2",
     "vue-ts-types": "1.9.0"

@@ -1,8 +1,8 @@
 import { createCanvas } from '@napi-rs/canvas'
 import { Injectable } from '@nestjs/common'
 import { toLower } from 'es-toolkit/compat'
-import { CacheService } from '~server/app/services'
 import { generateId } from '~shared/utils'
+import { CacheService } from './cache'
 
 @Injectable()
 export class CaptchaService {

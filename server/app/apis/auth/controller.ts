@@ -23,6 +23,6 @@ export class AuthController {
   @ApiOperation({ summary: '退出' })
   @Post('logout')
   async logout() {
-    // return this.authService.logout()
+    return await this.authService.logout()
   }
 }

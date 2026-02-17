@@ -29,38 +29,21 @@ export class AuthenticationGuard implements CanActivate {
       return true
     }
 
-    // 请求头没有登录凭证
-    if (!request.headers.authorization) {
-      throw new UnauthorizedException('Authorization header is required')
-    }
+    const token = this.sharedService.getToken()
 
-    const parts = request.headers.authorization.trim().split(' ')
+    try {
+      const res = await this.jwtService.verify(token, {
+        complete: true,
+      })
 
-    // 请求头没有登录凭证
-    if (parts.length !== 2) {
-      throw new UnauthorizedException('Authorization header is invalid')
-    }
+      if (typeof res !== 'string') {
+        await this.sharedService.setCurrentUser(res.payload)
 
-    const [scheme, token] = parts
-
-    if (/^Bearer$/i.test(scheme)) {
-      try {
-        const res = await this.jwtService.verify(token, {
-          complete: true,
-        })
-
-        if (typeof res !== 'string') {
-          await this.sharedService.setCurrentUser(res.payload)
-
-          return true
-        }
-      }
-      catch (error) {
-        throw new UnauthorizedException('Authorization token is invalid')
+        return true
       }
     }
-    else {
-      throw new UnauthorizedException('Authorization scheme must be \'Bearer\'')
+    catch (error) {
+      throw new UnauthorizedException('Authorization token is invalid')
     }
 
     return true

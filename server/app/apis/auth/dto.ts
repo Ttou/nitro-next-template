@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, MinLength } from 'class-validator'
+import { ResultResDto } from '~server/app/openapi'
 
 /**
  * 登录请求传输对象
@@ -35,16 +36,7 @@ export class LoginReqDto {
   captchaValue: string
 }
 
-export class LoginResDto {
-  /**
-   * 访问令牌
-   */
-  @ApiProperty({ description: '访问令牌', example: '' })
-  accessToken: string
-
-  /**
-   * 刷新令牌
-   */
-  @ApiProperty({ description: '刷新令牌', example: '' })
-  refreshToken: string
-}
+/**
+ * 登录响应传输对象
+ */
+export class LoginResDto extends ResultResDto(String) {}
