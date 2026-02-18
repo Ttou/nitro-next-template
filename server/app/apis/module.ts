@@ -3,12 +3,14 @@ import { RouterModule } from '@nestjs/core'
 import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
+import { MonitorOnlineModule } from './monitor'
 
 @Module({
   imports: [
     AuthModule,
     CaptchaModule,
     CurrentUserModule,
+    MonitorOnlineModule,
     RouterModule.register([
       {
         path: 'api',
@@ -24,6 +26,15 @@ import { CurrentUserModule } from './current-user'
           {
             path: 'current-user',
             module: CurrentUserModule,
+          },
+          {
+            path: 'monitor',
+            children: [
+              {
+                path: 'online',
+                module: MonitorOnlineModule,
+              },
+            ],
           },
         ],
       },
