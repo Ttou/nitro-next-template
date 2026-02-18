@@ -15,8 +15,8 @@ export class AuthController {
   @ApiOkResponse({ type: LoginResDto })
   @Public()
   @Post('login')
-  async login(@Body() data: LoginReqDto) {
-    return await this.authService.login(data)
+  async login(@Body() dto: LoginReqDto) {
+    return await this.authService.login(dto)
   }
 
   @ApiBearerAuth()

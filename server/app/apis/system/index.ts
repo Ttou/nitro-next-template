@@ -1,0 +1,5 @@
+export * from './config'
+export * from './dept'
+export * from './dict'
+export * from './lang'
+export * from './lang'

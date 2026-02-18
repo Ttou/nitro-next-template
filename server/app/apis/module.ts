@@ -4,6 +4,7 @@ import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
 import { MonitorOnlineModule } from './monitor'
+import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictTypeModule, SystemLangModule } from './system'
 
 @Module({
   imports: [
@@ -11,6 +12,11 @@ import { MonitorOnlineModule } from './monitor'
     CaptchaModule,
     CurrentUserModule,
     MonitorOnlineModule,
+    SystemConfigModule,
+    SystemDeptModule,
+    SystemDictTypeModule,
+    SystemDictDataModule,
+    SystemLangModule,
     RouterModule.register([
       {
         path: 'api',
@@ -33,6 +39,36 @@ import { MonitorOnlineModule } from './monitor'
               {
                 path: 'online',
                 module: MonitorOnlineModule,
+              },
+            ],
+          },
+          {
+            path: 'system',
+            children: [
+              {
+                path: 'config',
+                module: SystemConfigModule,
+              },
+              {
+                path: 'dept',
+                module: SystemDeptModule,
+              },
+              {
+                path: 'dict',
+                children: [
+                  {
+                    path: 'type',
+                    module: SystemDictTypeModule,
+                  },
+                  {
+                    path: 'data',
+                    module: SystemDictDataModule,
+                  },
+                ],
+              },
+              {
+                path: 'lang',
+                module: SystemLangModule,
               },
             ],
           },

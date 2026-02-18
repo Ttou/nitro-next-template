@@ -1,4 +1,3 @@
-import type { Type } from '@nestjs/common'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsPositive, Min } from 'class-validator'
 
@@ -21,7 +20,7 @@ export class PageReqDto {
  * 分页响应传输对象
  * @param {T} classRef 列表类
  */
-export function PageResDto<T extends Type>(classRef: T) {
+export function PageResDto<T>(classRef: T) {
   class Page {
     @ApiProperty({ description: '页码' })
     page: number

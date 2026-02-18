@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { SysOnlineEntity } from '~server/app/entities'
-import { DelReqDto } from '~server/app/openapi'
+import { RemoveReqDto } from '~server/app/openapi'
 import { AuthService } from '../../auth/service'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
@@ -12,7 +12,7 @@ export class MonitorOnlineService {
     private readonly authService: AuthService,
   ) {}
 
-  async getPage(dto: FindMonitorOnlinePageReqDto) {
+  async findPage(dto: FindMonitorOnlinePageReqDto) {
     const { page, pageSize, ...rest } = dto
 
     const [data, total] = await this.em.findAndCount(SysOnlineEntity, {
@@ -30,7 +30,7 @@ export class MonitorOnlineService {
     return { page, pageSize, data, total }
   }
 
-  async remove(dto: DelReqDto) {
+  async remove(dto: RemoveReqDto) {
     const { ids } = dto
 
     const oldRecords = await this.em.find(SysOnlineEntity, {

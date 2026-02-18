@@ -20,8 +20,8 @@ export class AuthService {
     private readonly em: EntityManager,
   ) {}
 
-  async login(data: LoginReqDto) {
-    const { captchaId, captchaValue, userName, password } = data
+  async login(dto: LoginReqDto) {
+    const { captchaId, captchaValue, userName, password } = dto
 
     const isCaseSensitive = await this.sharedService.isCaptchaCaseSensitive()
     const isVerify = await this.captchaService.verify(captchaId, captchaValue, isCaseSensitive)
