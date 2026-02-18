@@ -48,6 +48,10 @@ export class SharedService {
     this.clsService.set('user', user)
   }
 
+  getCurrentUser() {
+    return this.clsService.get('user')
+  }
+
   /**
    * 验证码大小写敏感
    */
