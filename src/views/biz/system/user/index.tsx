@@ -1,11 +1,14 @@
+import type { PlusPageInstance } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
+
 import { ElButton, ElSpace } from 'element-plus'
+import { PlusDialogForm, PlusPage } from 'plus-pro-components'
 
+import { defineComponent, ref, shallowRef, unref } from 'vue'
+import { YesOrNoEnum } from '~shared/enums'
 import { useDict } from '~web/hooks/useDict'
-
-import { useCreate } from './hooks/useCreate'
-import { useRemove } from './hooks/useRemove'
-import { useUpdate } from './hooks/useUpdate'
+import { dictToOptions } from '~web/utils'
+import { useCreate, useRemove, useUpdate } from './hooks'
 
 export default defineComponent({
   setup() {
@@ -190,7 +193,7 @@ export default defineComponent({
       <div>
         <PlusPage ref="pageInstance" {...this.plusPageProps}>
           {{
-            ['table-title']: () => (
+            'table-title': () => (
               <ElSpace>
                 <ElButton
                   type="primary"

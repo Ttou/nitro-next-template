@@ -1,4 +1,10 @@
-import { ElNotification, ElScrollbar, ElTree, type TreeInstance } from 'element-plus'
+import type { TreeInstance } from 'element-plus'
+import type { FieldValues, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
+import type { Ref } from 'vue'
+import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
+import { computed, h, ref, shallowRef, unref } from 'vue'
+import { MenuTypeEnum } from '~shared/enums'
+import { listToTree } from '~web/utils'
 
 interface UseAssignMenuParams {
   pageInstance: Ref<PlusPageInstance>
@@ -34,31 +40,27 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
         label: '角色菜单',
         prop: 'menuIds',
         renderField(value, onChange, props) {
-          return h('div',
-            { style: { width: '100%', height: '400px', padding: '10px', border: '1px solid #eee' } },
-            [
-              h(ElScrollbar, {}, () => [
-                h(ElTree,
-                  {
-                    'ref': menuTreeRef,
-                    'data': unref(menuTree),
-                    'nodeKey': 'id',
-                    'showCheckbox': true,
-                    'checkStrictly': true,
-                    'props': { label: 'menuName', children: 'children' }, 'style': { width: '100%' },
-                    'onCheck-change': (node, checked, indeterminate) => {
-                      if (checked) {
-                        checkedKeys.value.add(node.id)
-                      }
-                      else {
-                        checkedKeys.value.delete(node.id)
-                      }
-                    },
-                  },
-                  { default: ({ node, data }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}` }),
-              ]),
-            ],
-          )
+          return h('div', { style: { width: '100%', height: '400px', padding: '10px', border: '1px solid #eee' } }, [
+            h(ElScrollbar, {}, () => [
+              h(ElTree, {
+                'ref': menuTreeRef,
+                'data': unref(menuTree),
+                'nodeKey': 'id',
+                'showCheckbox': true,
+                'checkStrictly': true,
+                'props': { label: 'menuName', children: 'children' },
+                'style': { width: '100%' },
+                'onCheck-change': (node, checked, indeterminate) => {
+                  if (checked) {
+                    checkedKeys.value.add(node.id)
+                  }
+                  else {
+                    checkedKeys.value.delete(node.id)
+                  }
+                },
+              }, { default: ({ node, data }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}` }),
+            ]),
+          ])
         },
       },
     ],

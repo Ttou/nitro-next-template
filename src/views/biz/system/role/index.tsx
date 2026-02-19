@@ -1,11 +1,13 @@
+import type { PlusColumn, PlusPageInstance } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { ElButton, ElLink, ElSpace } from 'element-plus'
-import { cloneDeep } from 'es-toolkit/compat'
 
-import { useAssignMenu } from './hooks/useAssignMenu'
-import { useCreate } from './hooks/useCreate'
-import { useRemove } from './hooks/useRemove'
-import { useUpdate } from './hooks/useUpdate'
+import { cloneDeep } from 'es-toolkit/compat'
+import { PlusDialogForm, PlusPage } from 'plus-pro-components'
+import { computed, defineComponent, ref, unref } from 'vue'
+import { useRouter } from 'vue-router'
+import { YesOrNoEnum } from '~shared/enums'
+import { useAssignMenu, useCreate, useRemove, useUpdate } from './hooks'
 
 export default defineComponent({
   setup() {
@@ -184,7 +186,7 @@ export default defineComponent({
           {...this.pageProps}
         >
           {{
-            ['table-title']: () => (
+            'table-title': () => (
               <ElSpace>
                 <ElButton
                   type="primary"

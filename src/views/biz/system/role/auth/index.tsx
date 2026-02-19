@@ -1,7 +1,11 @@
+import type { PlusPageInstance } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-import { ElButton, ElMessage, ElMessageBox, ElNotification, ElSpace } from 'element-plus'
 
-import { useCreate } from './hooks/useCreate'
+import { ElButton, ElMessage, ElMessageBox, ElNotification, ElSpace } from 'element-plus'
+import { PlusDialog, PlusPage } from 'plus-pro-components'
+import { computed, defineComponent, ref, unref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useCreate } from './hooks'
 
 export default defineComponent({
   setup() {
@@ -151,7 +155,8 @@ export default defineComponent({
         })
           .then(() => {
             handler()
-          }).catch(() => {})
+          })
+          .catch(() => {})
       }
       else {
         handler()
@@ -174,7 +179,7 @@ export default defineComponent({
           {...this.plusPageProps}
         >
           {{
-            ['table-title']: () => (
+            'table-title': () => (
               <ElSpace>
                 <ElButton
                   type="primary"
