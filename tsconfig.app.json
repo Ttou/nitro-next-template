@@ -14,7 +14,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "~web/*": ["web/*"],
+      "~web/*": ["src/*"],
       "~shared/*": ["shared/*"],
     }
   },

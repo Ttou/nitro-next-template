@@ -1,0 +1,4 @@
+/* 页面过度不显示滚动条 */
+.el-scrollbar__view > .el-main {
+  overflow-x: hidden;
+}

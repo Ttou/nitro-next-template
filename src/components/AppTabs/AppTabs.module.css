@@ -1,0 +1,11 @@
+.appTabs {
+  padding: 20px 20px 0;
+}
+
+.tabs {
+  --el-tabs-header-height: 36px;
+}
+
+.tabs :global(.el-tabs__header) {
+  margin-bottom: 0;
+}
