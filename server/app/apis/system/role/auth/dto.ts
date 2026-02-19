@@ -35,6 +35,8 @@ export class AllocateUserForRoleReqDto {
 
 export class UnallocateUserForRoleReqDto extends AllocateUserForRoleReqDto {}
 
-export class FindAllocatedUserPageForRoleResDto extends ResultResDto(PageResDto(SysUserEntity)) {}
+class FindAllocatedUserPageForRoleData extends PageResDto(SysUserEntity) {}
+
+export class FindAllocatedUserPageForRoleResDto extends ResultResDto(FindAllocatedUserPageForRoleData) {}
 
 export class FindUnallocatedUserPageForRoleResDto extends FindAllocatedUserPageForRoleResDto {}

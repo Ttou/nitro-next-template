@@ -23,7 +23,7 @@ export class SysPostEntity extends BaseEntity {
   @Property({ nullable: true })
   remark?: string
 
-  @ApiProperty({ description: '用户列表' })
+  @ApiProperty({ description: '用户列表', type: () => [SysUserEntity] })
   @ManyToMany(() => SysUserEntity, user => user.posts)
   users = new Collection<SysUserEntity>(this)
 }

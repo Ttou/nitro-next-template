@@ -36,7 +36,7 @@ export class SysOnlineEntity {
   @Property()
   loginTime: Date
 
-  @ApiProperty({ description: '用户' })
+  @ApiProperty({ description: '用户', type: () => SysUserEntity })
   @ManyToOne(() => SysUserEntity, { joinColumn: 'user_id' })
   user: SysUserEntity
 }

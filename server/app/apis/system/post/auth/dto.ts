@@ -35,6 +35,8 @@ export class AllocateUserForPostReqDto {
 
 export class UnallocateUserForPostReqDto extends AllocateUserForPostReqDto {}
 
-export class FindAllocatedUserPageForPostResDto extends ResultResDto(PageResDto(SysUserEntity)) {}
+class FindAllocatedUserPageForPostData extends PageResDto(SysUserEntity) {}
+
+export class FindAllocatedUserPageForPostResDto extends ResultResDto(FindAllocatedUserPageForPostData) {}
 
 export class FindUnallocatedUserPageForPostResDto extends FindAllocatedUserPageForPostResDto {}

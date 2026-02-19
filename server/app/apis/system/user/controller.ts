@@ -22,7 +22,7 @@ export class SystemUserController {
 
   @ApiOperation({ summary: '查询系统用户分页列表' })
   @ApiOkResponse({ type: FindSystemUserPageResDto })
-  @Permission('sys.menu.system.user.page')
+  @Permission('sys.menu.system.user.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindSystemUserPageReqDto) {
     return await this.systemUserService.findPage(dto)

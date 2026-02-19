@@ -63,7 +63,7 @@ export class SysMenuEntity extends BaseEntity {
   @Property({ nullable: true })
   remark?: string
 
-  @ApiProperty({ description: '角色列表' })
+  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntity] })
   @ManyToMany(() => SysRoleEntity, role => role.menus)
   roles = new Collection<SysRoleEntity>(this)
 }

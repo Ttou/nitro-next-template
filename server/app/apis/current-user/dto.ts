@@ -1,5 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
+import { SysUserEntity } from '~server/app/entities'
+import { ResultResDto } from '~server/app/openapi'
 import { IsEqual } from '~server/app/validators'
 
 /**
@@ -42,3 +44,7 @@ export class UpdateCurrentUserProfileReqDto {
   @IsOptional()
   avatar?: string
 }
+
+export class SystemUserGetInfoResDto extends ResultResDto(OmitType(SysUserEntity, ['password'])) {}
+
+export class SystemUserGetProfileResDto extends SystemUserGetInfoResDto {}

@@ -28,11 +28,11 @@ export class SysDeptEntity extends BaseEntity {
   @Property({ nullable: true })
   remark?: string
 
-  @ApiProperty({ description: '角色' })
+  @ApiProperty({ description: '角色', type: () => [SysRoleEntity] })
   @ManyToMany(() => SysRoleEntity, role => role.depts)
   roles = new Collection<SysRoleEntity>(this)
 
-  @ApiProperty({ description: '用户' })
+  @ApiProperty({ description: '用户', type: () => [SysUserEntity] })
   @ManyToMany(() => SysUserEntity, user => user.depts)
   users = new Collection<SysUserEntity>(this)
 }

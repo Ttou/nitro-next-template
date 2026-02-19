@@ -58,4 +58,6 @@ export class UpdateSystemRoleReqDto extends CreateSystemRoleReqDto {
   id: bigint
 }
 
-export class FindSystemRolePageResDto extends ResultResDto(PageResDto(SysRoleEntity)) {}
+class FindSystemRolePageData extends PageResDto(SysRoleEntity) {}
+
+export class FindSystemRolePageResDto extends ResultResDto(FindSystemRolePageData) {}

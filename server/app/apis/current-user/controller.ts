@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { SystemUserGetInfoResDto, SystemUserGetProfileResDto, UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 import { CurrentUserService } from './service'
 
 @ApiTags('当前用户接口')
@@ -12,12 +12,14 @@ export class CurrentUserController {
   ) {}
 
   @ApiOperation({ summary: '获取当前用户信息' })
+  @ApiOkResponse({ type: SystemUserGetInfoResDto })
   @Get('info')
   async getInfo() {
     return await this.currentUserService.getInfo()
   }
 
   @ApiOperation({ summary: '获取当前用户个人信息' })
+  @ApiOkResponse({ type: SystemUserGetProfileResDto })
   @Get('profile')
   async getProfile() {
     return await this.currentUserService.getProfile()

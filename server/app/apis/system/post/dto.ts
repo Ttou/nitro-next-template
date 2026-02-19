@@ -58,4 +58,6 @@ export class UpdateSystemPostReqDto extends CreateSystemPostReqDto {
   id: bigint
 }
 
-export class FindSystemPostPageResDto extends ResultResDto(PageResDto(SysPostEntity)) {}
+class FindSystemPostPageData extends PageResDto(SysPostEntity) {}
+
+export class FindSystemPostPageResDto extends ResultResDto(FindSystemPostPageData) {}

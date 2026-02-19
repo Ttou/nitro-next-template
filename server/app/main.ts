@@ -19,10 +19,10 @@ export async function initApp() {
   )
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Nitro Template')
+    .setDescription('Nitro 模板接口文档')
     .setVersion('1.0')
-    .addTag('cats')
+    .addBearerAuth()
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
 

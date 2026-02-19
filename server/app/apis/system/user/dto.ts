@@ -86,4 +86,6 @@ export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
   id: bigint
 }
 
-export class FindSystemUserPageResDto extends ResultResDto(PageResDto(SysUserEntity)) {}
+class FindSystemUserPageData extends PageResDto(SysUserEntity) {}
+
+export class FindSystemUserPageResDto extends ResultResDto(FindSystemUserPageData) {}

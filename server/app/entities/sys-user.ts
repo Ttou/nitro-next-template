@@ -49,15 +49,15 @@ export class SysUserEntity extends BaseEntity {
   @Property({ nullable: true })
   remark?: string
 
-  @ApiProperty({ description: '部门列表' })
+  @ApiProperty({ description: '部门列表', type: () => [SysDeptEntity] })
   @ManyToMany(() => SysDeptEntity, 'users', { owner: true, ref: true, pivotTable: 'rel_user_dept', joinColumn: 'user_id', inverseJoinColumn: 'dept_id' })
   depts = new Collection<SysDeptEntity>(this)
 
-  @ApiProperty({ description: '岗位列表' })
+  @ApiProperty({ description: '岗位列表', type: () => [SysPostEntity] })
   @ManyToMany(() => SysPostEntity, 'users', { owner: true, ref: true, pivotTable: 'rel_user_post', joinColumn: 'user_id', inverseJoinColumn: 'post_id' })
   posts = new Collection<SysPostEntity>(this)
 
-  @ApiProperty({ description: '角色列表' })
+  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntity] })
   @ManyToMany(() => SysRoleEntity, 'users', { owner: true, ref: true, pivotTable: 'rel_user_role', joinColumn: 'user_id', inverseJoinColumn: 'role_id' })
   roles = new Collection<SysRoleEntity>(this)
 }

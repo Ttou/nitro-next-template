@@ -51,4 +51,6 @@ export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
   id: bigint
 }
 
-export class FindSystemDictDataListResDto extends ResultResDto(PageResDto(SysDictDataEntity)) {}
+class FindSystemDictDataListData extends PageResDto(SysDictDataEntity) {}
+
+export class FindSystemDictDataListResDto extends ResultResDto(FindSystemDictDataListData) {}

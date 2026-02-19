@@ -67,4 +67,6 @@ export class FindSystemDictDetailByKeyReqDto {
 
 export class FindSystemDictDetailByKeyResDto extends ResultResDto([SysDictDataEntity]) {}
 
-export class FindSystemDictTypePageResDto extends ResultResDto(PageResDto(SysDictTypeEntity)) {}
+class FindSystemDictTypePageData extends PageResDto(SysDictTypeEntity) {}
+
+export class FindSystemDictTypePageResDto extends ResultResDto(FindSystemDictTypePageData) {}
