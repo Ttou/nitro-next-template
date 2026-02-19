@@ -1,8 +1,15 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const monitorOnlineApi = {
-  remove(params: RemoveDto) {
-    return $fetch('/api/monitor/online/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/monitor/online/remove', { data: params })
   },
-  findPage(params: FindMonitorOnlinePageDto) {
-    return $fetch('/api/monitor/online/findPage', { method: 'POST', body: params })
+  findPage(params: FindMonitorOnlinePageReqDto): Promise<FindMonitorOnlinePageResDto> {
+    return ajax.post('/api/monitor/online/findPage', params)
   },
 }
+
+export type FindMonitorOnlinePageReqDto = components['schemas']['FindMonitorOnlinePageReqDto']
+export type FindMonitorOnlinePageResDto = components['schemas']['FindMonitorOnlinePageResDto']

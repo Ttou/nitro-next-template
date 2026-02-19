@@ -45,6 +45,6 @@ export class UpdateCurrentUserProfileReqDto {
   avatar?: string
 }
 
-export class SystemUserGetInfoResDto extends ResultResDto(OmitType(SysUserEntity, ['password'])) {}
+export class CurrentUserGetInfoResDto extends ResultResDto(OmitType(SysUserEntity, ['password'])) {}
 
-export class SystemUserGetProfileResDto extends SystemUserGetInfoResDto {}
+export class CurrentUserGetProfileResDto extends CurrentUserGetInfoResDto {}

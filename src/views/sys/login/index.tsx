@@ -1,10 +1,11 @@
 import type { FormRules } from 'element-plus'
 import type { PlusColumn } from 'plus-pro-components'
+import type { LoginReqDto } from '~web/apis'
+
 import { Icon } from '@iconify/vue'
-
 import { ElButton } from 'element-plus'
-import { PlusForm } from 'plus-pro-components'
 
+import { PlusForm } from 'plus-pro-components'
 import { computed, defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ImageCaptcha from '~web/components/ImageCaptcha/ImageCaptcha'
@@ -18,14 +19,14 @@ export default defineComponent({
     const userStore = useUserStore()
 
     const loading = ref(false)
-    const formModel = ref<LoginDto>({
+    const formModel = ref<LoginReqDto>({
       userName: '',
       password: '',
       captchaId: '',
       captchaValue: '',
     })
 
-    const formRules = ref<FormRules<LoginDto>>({
+    const formRules = ref<FormRules<LoginReqDto>>({
       userName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
       password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
       captchaValue: [{ required: true, message: '请输入验证码', trigger: 'blur' }],

@@ -1,4 +1,7 @@
+import type { PlusPageInstance } from 'plus-pro-components'
+import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { monitorOnlineApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -27,7 +30,8 @@ export function useRemove({ pageInstance, selectedIds }: UseCreateParams) {
       })
         .then(() => {
           handleRemove(ids)
-        }).catch(() => {})
+        })
+        .catch(() => {})
     }
     else {
       handleRemove(ids)

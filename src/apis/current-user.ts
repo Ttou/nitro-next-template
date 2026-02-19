@@ -1,14 +1,22 @@
+import type { components } from './schema'
+import { ajax } from '~web/utils'
+
 export const currentUserApi = {
-  getInfo() {
-    return $fetch('/api/current-user/info')
+  getInfo(): Promise<CurrentUserGetInfoResDto> {
+    return ajax.get('/api/current-user/info')
   },
-  getProfile() {
-    return $fetch('/api/current-user/profile')
+  getProfile(): Promise<CurrentUserGetProfileResDto> {
+    return ajax.get('/api/current-user/profile')
   },
-  updateProfile(data: UpdateCurrentUserProfileDto) {
-    return $fetch('/api/current-user/updateProfile', { method: 'POST', body: data })
+  updateProfile(params: UpdateCurrentUserProfileReqDto) {
+    return ajax.post('/api/current-user/updateProfile', params)
   },
-  updatePassword(data: UpdateCurrentUserPasswordDto) {
-    return $fetch('/api/current-user/updatePassword', { method: 'POST', body: data })
+  updatePassword(params: UpdateCurrentUserPasswordReqDto) {
+    return ajax.post('/api/current-user/updatePassword', params)
   },
 }
+
+export type CurrentUserGetInfoResDto = components['schemas']['CurrentUserGetInfoResDto']
+export type CurrentUserGetProfileResDto = components['schemas']['CurrentUserGetProfileResDto']
+export type UpdateCurrentUserProfileReqDto = components['schemas']['UpdateCurrentUserProfileReqDto']
+export type UpdateCurrentUserPasswordReqDto = components['schemas']['UpdateCurrentUserPasswordReqDto']

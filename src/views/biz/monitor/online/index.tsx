@@ -6,6 +6,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
+import { monitorOnlineApi } from '~web/apis'
 import { useRemove } from './hooks'
 
 export default defineComponent({

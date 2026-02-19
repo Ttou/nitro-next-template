@@ -1,8 +1,14 @@
+import type { components } from './schema'
+import { ajax } from '~web/utils'
+
 export const authApi = {
-  login(data: LoginDto) {
-    return $fetch('/api/auth/login', { method: 'POST', body: data })
+  login(params: LoginReqDto): Promise<LoginResDto> {
+    return ajax.post('/api/auth/login', params)
   },
   logout() {
-    return $fetch('/api/auth/logout', { method: 'POST' })
+    return ajax.post('/api/auth/logout')
   },
 }
+
+export type LoginReqDto = components['schemas']['LoginReqDto']
+export type LoginResDto = components['schemas']['LoginResDto']

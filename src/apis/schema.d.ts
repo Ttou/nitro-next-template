@@ -1318,7 +1318,7 @@ export interface components {
             /** @description 角色列表 */
             roles: components["schemas"]["SysRoleEntity"][];
         };
-        SystemUserGetInfoResDto: {
+        CurrentUserGetInfoResDto: {
             /**
              * @description 时间戳
              * @example 1606827398000
@@ -1332,7 +1332,7 @@ export interface components {
             /** @description 响应数据 */
             data: components["schemas"]["OmitTypeClass"];
         };
-        SystemUserGetProfileResDto: {
+        CurrentUserGetProfileResDto: {
             /**
              * @description 时间戳
              * @example 1606827398000
@@ -2632,7 +2632,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SystemUserGetInfoResDto"];
+                    "application/json": components["schemas"]["CurrentUserGetInfoResDto"];
                 };
             };
         };
@@ -2651,7 +2651,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["SystemUserGetProfileResDto"];
+                    "application/json": components["schemas"]["CurrentUserGetProfileResDto"];
                 };
             };
         };
