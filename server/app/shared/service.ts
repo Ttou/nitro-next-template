@@ -16,10 +16,16 @@ export class SharedService {
     private readonly em: EntityManager,
   ) {}
 
+  /**
+   * 获取当前请求对象
+   */
   getRequest() {
     return this.request
   }
 
+  /**
+   * 获取当前请求的 JWT 令牌
+   */
   getToken() {
     const { authorization } = this.request.headers
 
@@ -36,6 +42,10 @@ export class SharedService {
     return token
   }
 
+  /**
+   * 设置当前用户
+   * @param payload JWT 负载
+   */
   async setCurrentUser(payload: any) {
     const user = await this.em.findOne(SysUserEntity, {
       id: { $eq: payload.sub },
@@ -48,8 +58,28 @@ export class SharedService {
     this.clsService.set('user', user)
   }
 
+  /**
+   * 获取当前用户
+   */
   getCurrentUser() {
     return this.clsService.get('user')
+  }
+
+  /**
+   * 判断当前用户是否有指定权限
+   * @param permission
+   */
+  async isCurrentUserHasPermission(permission: string) {
+    const currentUser = this.getCurrentUser()
+
+    const user = await this.em.findOne(SysUserEntity, {
+      $and: [
+        { id: { $eq: currentUser.id } },
+        { roles: { menus: { menuKey: { $eq: permission } } } },
+      ],
+    })
+
+    return !!user
   }
 
   /**
@@ -74,10 +104,18 @@ export class SharedService {
     return userSingleOnlineConfig!.configValue === YesOrNoEnum.YES
   }
 
+  /**
+   * 解析用户代理字符串
+   * @param ua 用户代理字符串
+   */
   parseUA(ua: string) {
     return UAParser(ua)
   }
 
+  /**
+   * 解析IP地址
+   * @param ip IP地址
+   */
   async parseIP(ip: string) {
     if (isIP(ip) === 0) {
       return {

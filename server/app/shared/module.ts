@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common'
 import { RedisProvider } from '../providers'
-import { CacheService, CaptchaService, HashService, RedisScanner } from '../services'
+import { CacheService, CaptchaService, HashService, LogoutService, RedisScanner } from '../services'
 import { SharedService } from './service'
 
 @Global()
@@ -11,6 +11,7 @@ import { SharedService } from './service'
     CacheService,
     HashService,
     CaptchaService,
+    LogoutService,
     SharedService,
   ],
   exports: [
@@ -19,6 +20,7 @@ import { SharedService } from './service'
     CacheService,
     HashService,
     CaptchaService,
+    LogoutService,
     SharedService,
   ],
 })

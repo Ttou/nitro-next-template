@@ -3,19 +3,17 @@ import { EntityManager } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { SysOnlineEntity, SysUserEntity } from '~server/app/entities'
-import { CacheService, CaptchaService, HashService } from '~server/app/services'
+import { CaptchaService, HashService, LogoutService } from '~server/app/services'
 import { SharedService } from '~server/app/shared'
 import { LoginReqDto } from './dto'
 
 @Injectable()
 export class AuthService {
-  private readonly logoutKey = 'logout:'
-
   constructor(
-    private readonly cacheService: CacheService,
     private readonly captchaService: CaptchaService,
     private readonly jwtService: JwtService,
     private readonly hashService: HashService,
+    private readonly logoutService: LogoutService,
     private readonly sharedService: SharedService,
     private readonly em: EntityManager,
   ) {}
@@ -57,7 +55,7 @@ export class AuthService {
 
       if (oldOnlineRecord) {
         await this.em.remove(oldOnlineRecord).flush()
-        await this.addToLogout(oldOnlineRecord.token)
+        await this.logoutService.addToLogout(oldOnlineRecord.token)
       }
     }
 
@@ -68,7 +66,7 @@ export class AuthService {
 
   async logout() {
     const token = this.sharedService.getToken()
-    await this.addToLogout(token)
+    await this.logoutService.addToLogout(token)
   }
 
   private createSign(payload: any) {
@@ -105,29 +103,5 @@ export class AuthService {
     })
 
     await this.em.persist(online).flush()
-  }
-
-  /**
-   * 添加到已登出
-   */
-  async addToLogout(token: string) {
-    const result = await this.jwtService.verify(token)
-    const ttl = (result.exp - result.iat) * 1000
-
-    this.cacheService.set(this.getCacheKey(result.jti), 1, `${ttl}`)
-  }
-
-  /**
-   * 校验是否已登出
-   */
-  async verifyLogout(token: string) {
-    const result = await this.jwtService.verify(token)
-    const isLogout = await this.cacheService.get(this.getCacheKey(result.jti))
-
-    return isLogout === 1
-  }
-
-  private getCacheKey(tokenId: string) {
-    return this.logoutKey + tokenId
   }
 }

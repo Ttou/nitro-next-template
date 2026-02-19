@@ -10,7 +10,7 @@ import { ClsModule } from 'nestjs-cls'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { DefaultFilter } from './filters'
-import { AuthenticationGuard } from './guards'
+import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor, ResponseInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
 import { SharedModule } from './shared'
@@ -66,6 +66,10 @@ import { SharedModule } from './shared'
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthorizationGuard,
     },
     {
       provide: APP_PIPE,

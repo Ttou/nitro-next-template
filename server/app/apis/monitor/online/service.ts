@@ -1,15 +1,15 @@
+import type { LogoutService } from '~server/app/services'
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { SysOnlineEntity } from '~server/app/entities'
 import { RemoveReqDto } from '~server/app/openapi'
-import { AuthService } from '../../auth/service'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
 @Injectable()
 export class MonitorOnlineService {
   constructor(
     private readonly em: EntityManager,
-    private readonly authService: AuthService,
+    private readonly logoutService: LogoutService,
   ) {}
 
   async findPage(dto: FindMonitorOnlinePageReqDto) {
@@ -40,7 +40,7 @@ export class MonitorOnlineService {
     await this.em.remove(oldRecords).flush()
 
     for (const record of oldRecords) {
-      await this.authService.addToLogout(record.token)
+      await this.logoutService.addToLogout(record.token)
     }
   }
 }

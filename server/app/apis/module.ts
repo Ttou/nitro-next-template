@@ -4,7 +4,7 @@ import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
 import { MonitorOnlineModule } from './monitor'
-import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictTypeModule, SystemLangModule } from './system'
+import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictTypeModule, SystemLangModule, SystemMenuModule, SystemPostAuthModule, SystemPostModule, SystemRoleAuthModule, SystemRoleMenuModule, SystemRoleModule, SystemUserModule } from './system'
 
 @Module({
   imports: [
@@ -17,6 +17,13 @@ import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictT
     SystemDictTypeModule,
     SystemDictDataModule,
     SystemLangModule,
+    SystemMenuModule,
+    SystemPostModule,
+    SystemPostAuthModule,
+    SystemRoleModule,
+    SystemRoleAuthModule,
+    SystemRoleMenuModule,
+    SystemUserModule,
     RouterModule.register([
       {
         path: 'api',
@@ -69,6 +76,38 @@ import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictT
               {
                 path: 'lang',
                 module: SystemLangModule,
+              },
+              {
+                path: 'menu',
+                module: SystemMenuModule,
+              },
+              {
+                path: 'post',
+                module: SystemPostModule,
+                children: [
+                  {
+                    path: 'auth',
+                    module: SystemPostAuthModule,
+                  },
+                ],
+              },
+              {
+                path: 'role',
+                module: SystemRoleModule,
+                children: [
+                  {
+                    path: 'auth',
+                    module: SystemRoleAuthModule,
+                  },
+                  {
+                    path: 'menu',
+                    module: SystemRoleMenuModule,
+                  },
+                ],
+              },
+              {
+                path: 'user',
+                module: SystemUserModule,
               },
             ],
           },
