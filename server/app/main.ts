@@ -26,7 +26,9 @@ export async function initApp() {
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
 
-  app.use('/openapi', apiReference({
+  SwaggerModule.setup('swagger', app, documentFactory)
+
+  app.use('/scalar', apiReference({
     content: documentFactory(),
   }))
 

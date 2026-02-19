@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env APP_ENV=dev vite",
-    "build": "vite build"
+    "build": "vite build",
+    "gen:types": "jiti scripts/genTypes"
   },
   "dependencies": {
     "@cj-tech-master/excelts": "5.1.3",
@@ -40,7 +41,6 @@
     "ms": "2.1.3",
     "nanoid": "5.1.6",
     "nestjs-cls": "6.2.0",
-    "ofetch": "^1.5.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "plus-pro-components": "^0.1.30",
@@ -68,13 +68,13 @@
     "eslint": "^9.39.2",
     "jiti": "^2.6.1",
     "nitro": "^3.0.1-alpha.2",
+    "openapi-typescript": "^7.13.0",
     "postcss-nested": "^7.0.2",
     "stylelint": "^17.3.0",
     "stylelint-config-clean-order": "^8.0.1",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "~5.9.3",
-    "vite": "^8.0.0-beta.15",
-    "vite-plugin-node-polyfills": "^0.25.0"
+    "vite": "^8.0.0-beta.15"
   },
   "overrides": {
     "vite": "^8.0.0-beta.15"

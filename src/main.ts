@@ -6,8 +6,6 @@ import './assets/styles/main.css'
 import './assets/styles/reset.css'
 import './assets/styles/transition.css'
 import './assets/styles/view-transition.css'
-import './buffer-polyfill'
-import './fetch-polyfill'
 
 import ElementPlus from 'element-plus'
 import PlusProComponents from 'plus-pro-components'

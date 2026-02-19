@@ -1,4 +1,6 @@
 import { joinURL } from 'ufo'
+import { defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'RedirectView',

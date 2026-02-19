@@ -2,6 +2,7 @@ import { ElInput } from 'element-plus'
 import { defineComponent, ref } from 'vue'
 
 import { stringProp } from 'vue-ts-types'
+import { captchaApi } from '~web/apis'
 import styles from './ImageCaptcha.module.css'
 
 export default defineComponent({

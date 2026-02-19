@@ -23,5 +23,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "shared/**/*.ts",
+    "types/**/*.d.ts",
   ]
 }

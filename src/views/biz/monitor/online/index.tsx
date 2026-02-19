@@ -1,8 +1,12 @@
+import type { PlusColumn, PlusPageInstance } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { ElButton, ElSpace } from 'element-plus'
-import { cloneDeep } from 'es-toolkit/compat'
 
-import { useRemove } from './hooks/useRemove'
+import { cloneDeep } from 'es-toolkit/compat'
+import { PlusPage } from 'plus-pro-components'
+import { computed, defineComponent, ref, unref } from 'vue'
+import { YesOrNoEnum } from '~shared/enums'
+import { useRemove } from './hooks'
 
 export default defineComponent({
   setup() {
@@ -170,7 +174,7 @@ export default defineComponent({
           {...this.pageProps}
         >
           {{
-            ['table-title']: () => (
+            'table-title': () => (
               <ElSpace>
                 <ElButton
                   type="danger"

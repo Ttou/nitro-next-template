@@ -3,7 +3,8 @@ import { app } from './app/main'
 
 const SERVER_URLS = [
   '/api',
-  '/openapi',
+  '/scalar',
+  '/swagger',
 ]
 
 let fetchHandler: ReturnType<typeof toFetchHandler> | null = null

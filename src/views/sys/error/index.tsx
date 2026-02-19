@@ -1,7 +1,9 @@
+import type { IStatus } from './index.define'
 import { ElButton, ElResult } from 'element-plus'
-import { useRoute, useRouter } from 'vue-router'
 
-import { type IStatus, STATUS_MAP } from './index.define'
+import { computed, defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { STATUS_MAP } from './index.define'
 
 export default defineComponent({
   name: 'ErrorView',
