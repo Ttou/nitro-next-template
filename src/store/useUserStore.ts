@@ -1,9 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router'
+import type { LoginReqDto } from '~web/apis'
 import { Icon } from '@iconify/vue'
 import { pascalCase, uniqBy } from 'es-toolkit'
 import { defineStore } from 'pinia'
 import { h, ref } from 'vue'
-import { YesOrNoEnum } from '~shared/enums'
+import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
+import { authApi, currentUserApi } from '~web/apis'
+import { listToTree } from '~web/utils'
 
 const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
 function loadComponent(component: string) {
@@ -69,7 +72,7 @@ export const useUserStore = defineStore(
     const infoRequested = ref(false)
     const homePath = ref<string>('')
 
-    async function login(data: LoginDto) {
+    async function login(data: LoginReqDto) {
       const result = await authApi.login(data)
 
       token.value = result

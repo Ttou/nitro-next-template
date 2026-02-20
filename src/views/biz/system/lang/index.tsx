@@ -6,7 +6,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { PlusDrawerForm, PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { LangEnum, YesOrNoEnum } from '~shared/enums'
-import { systemLangApi } from '~web/apis/system/lang'
+import { systemLangApi } from '~web/apis'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
 export default defineComponent({

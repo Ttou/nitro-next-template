@@ -2,7 +2,7 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusPageInstance } from 
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemDictTypeApi } from '~web/apis/system/dict-type'
+import { systemDictTypeApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>

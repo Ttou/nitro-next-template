@@ -1,14 +1,23 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemMenuApi = {
-  findList(params: FindSystemMenuListDto) {
-    return $fetch('/api/system/menu/findList', { method: 'POST', body: params })
+  findList(params: FindSystemMenuListReqDto): Promise<FindSystemMenuListResDto> {
+    return ajax.post('/api/system/menu/findList', params)
   },
-  create(params: CreateSystemMenuDto) {
-    return $fetch('/api/system/menu/create', { method: 'POST', body: params })
+  create(params: CreateSystemMenuReqDto) {
+    return ajax.post('/api/system/menu/create', params)
   },
-  update(params: UpdateSystemMenuDto) {
-    return $fetch('/api/system/menu/update', { method: 'POST', body: params })
+  update(params: UpdateSystemMenuReqDto) {
+    return ajax.post('/api/system/menu/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/menu/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/menu/remove', { data: params })
   },
 }
+
+export type FindSystemMenuListReqDto = components['schemas']['FindSystemMenuListReqDto']
+export type FindSystemMenuListResDto = components['schemas']['FindSystemMenuListResDto']
+export type CreateSystemMenuReqDto = components['schemas']['CreateSystemMenuReqDto']
+export type UpdateSystemMenuReqDto = components['schemas']['UpdateSystemMenuReqDto']

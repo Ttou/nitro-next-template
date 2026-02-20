@@ -1,14 +1,23 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemDeptApi = {
-  findList(params: FindSystemDeptListDto) {
-    return $fetch('/api/system/dept/findList', { method: 'POST', body: params })
+  findList(params: FindSystemDeptListReqDto): Promise<FindSystemDeptListResDto> {
+    return ajax.post('/api/system/dept/findList', params)
   },
-  create(params: CreateSystemDeptDto) {
-    return $fetch('/api/system/dept/create', { method: 'POST', body: params })
+  create(params: CreateSystemDeptReqDto) {
+    return ajax.post('/api/system/dept/create', params)
   },
-  update(params: UpdateSystemDeptDto) {
-    return $fetch('/api/system/dept/update', { method: 'POST', body: params })
+  update(params: UpdateSystemDeptReqDto) {
+    return ajax.post('/api/system/dept/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/dept/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/dept/remove', { data: params })
   },
 }
+
+export type FindSystemDeptListReqDto = components['schemas']['FindSystemDeptListReqDto']
+export type FindSystemDeptListResDto = components['schemas']['FindSystemDeptListResDto']
+export type CreateSystemDeptReqDto = components['schemas']['CreateSystemDeptReqDto']
+export type UpdateSystemDeptReqDto = components['schemas']['UpdateSystemDeptReqDto']

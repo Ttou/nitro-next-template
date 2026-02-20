@@ -1,14 +1,23 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemRoleApi = {
-  create(params: CreateSystemRoleDto) {
-    return $fetch('/api/system/role/create', { method: 'POST', body: params })
+  create(params: CreateSystemRoleReqDto) {
+    return ajax.post('/api/system/role/create', params)
   },
-  update(params: UpdateSystemRoleDto) {
-    return $fetch('/api/system/role/update', { method: 'POST', body: params })
+  update(params: UpdateSystemRoleReqDto) {
+    return ajax.post('/api/system/role/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/role/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/role/remove', { data: params })
   },
-  findPage(params: FindSystemRolePageDto) {
-    return $fetch('/api/system/role/findPage', { method: 'POST', body: params })
+  findPage(params: FindSystemRolePageReqDto): Promise<FindSystemRolePageResDto> {
+    return ajax.post('/api/system/role/findPage', params)
   },
 }
+
+export type CreateSystemRoleReqDto = components['schemas']['CreateSystemRoleReqDto']
+export type UpdateSystemRoleReqDto = components['schemas']['UpdateSystemRoleReqDto']
+export type FindSystemRolePageReqDto = components['schemas']['FindSystemRolePageReqDto']
+export type FindSystemRolePageResDto = components['schemas']['FindSystemRolePageResDto']

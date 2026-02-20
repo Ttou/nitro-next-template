@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { RemoveReqDto } from '~server/app/openapi'
-import { CreateSystemDictTypeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
+import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
 @ApiTags('字典类型接口')
@@ -16,7 +16,7 @@ export class SystemDictTypeController {
   @ApiOperation({ summary: '创建字典类型' })
   @Permission('sys.menu.system.dictType.create')
   @Post('create')
-  async create(@Body() dto: CreateSystemDictTypeDto) {
+  async create(@Body() dto: CreateSystemDictTypeReqDto) {
     await this.systemDictTypeService.create(dto)
   }
 

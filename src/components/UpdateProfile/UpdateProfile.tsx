@@ -4,6 +4,7 @@ import { pick } from 'es-toolkit/compat'
 import { PlusDrawerForm } from 'plus-pro-components'
 
 import { computed, defineComponent, ref, unref } from 'vue'
+import { currentUserApi } from '~web/apis'
 import { useDict } from '~web/hooks/useDict'
 import { dictToOptions } from '~web/utils'
 

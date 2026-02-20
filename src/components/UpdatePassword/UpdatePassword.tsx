@@ -2,6 +2,7 @@ import type { FieldValues, PlusDialogProps, PlusFormProps } from 'plus-pro-compo
 import { ElNotification } from 'element-plus'
 import { PlusDialogForm } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
+import { currentUserApi } from '~web/apis'
 import { useUserStore } from '~web/store'
 
 export default defineComponent({

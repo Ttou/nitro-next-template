@@ -6,6 +6,7 @@ import { PlusDialog, PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
+import { systemPostAuthApi } from '~web/apis'
 import { useCreate } from './hooks'
 
 export default defineComponent({

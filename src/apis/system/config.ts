@@ -1,14 +1,23 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemConfigApi = {
-  create(params: CreateSystemConfigDto) {
-    return $fetch('/api/system/config/create', { method: 'POST', body: params })
+  create(params: CreateSystemConfigReqDto) {
+    return ajax.post('/api/system/config/create', params)
   },
-  update(params: UpdateSystemConfigDto) {
-    return $fetch('/api/system/config/update', { method: 'POST', body: params })
+  update(params: UpdateSystemConfigReqDto) {
+    return ajax.post('/api/system/config/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/config/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/config/remove', { data: params })
   },
-  findPage(params: FindSystemConfigPageDto) {
-    return $fetch('/api/system/config/findPage', { method: 'POST', body: params })
+  findPage(params: FindSystemConfigPageReqDto): Promise<FindSystemConfigPageResDto> {
+    return ajax.post('/api/system/config/findPage', params)
   },
 }
+
+export type CreateSystemConfigReqDto = components['schemas']['CreateSystemConfigReqDto']
+export type UpdateSystemConfigReqDto = components['schemas']['UpdateSystemConfigReqDto']
+export type FindSystemConfigPageReqDto = components['schemas']['FindSystemConfigPageReqDto']
+export type FindSystemConfigPageResDto = components['schemas']['FindSystemConfigPageResDto']

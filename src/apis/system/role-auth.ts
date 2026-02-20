@@ -1,14 +1,24 @@
+import type { components } from '../schema'
+import { ajax } from '~web/utils'
+
 export const systemRoleAuthApi = {
-  findAllocatedUserPage(params: FindAllocatedUserPageForRoleDto) {
-    return $fetch('/api/system/role/auth/findAllocatedUserPage', { method: 'POST', body: params })
+  findAllocatedUserPage(params: FindAllocatedUserPageForRoleReqDto): Promise<FindAllocatedUserPageForRoleResDto> {
+    return ajax.post('/api/system/role/auth/findAllocatedUserPage', params)
   },
-  findUnallocatedUserPage(params: FindUnallocatedUserPageForRoleDto) {
-    return $fetch('/api/system/role/auth/findUnallocatedUserPage', { method: 'POST', body: params })
+  findUnallocatedUserPage(params: FindUnallocatedUserPageForRoleReqDto): Promise<FindUnallocatedUserPageForRoleResDto> {
+    return ajax.post('/api/system/role/auth/findUnallocatedUserPage', params)
   },
-  allocateUser(params: AllocateUserForRoleDto) {
-    return $fetch('/api/system/role/auth/allocateUser', { method: 'POST', body: params })
+  allocateUser(params: AllocateUserForRoleReqDto): Promise<void> {
+    return ajax.post('/api/system/role/auth/allocateUser', params)
   },
-  unallocateUser(params: UnallocateUserForRoleDto) {
-    return $fetch('/api/system/role/auth/unallocateUser', { method: 'POST', body: params })
+  unallocateUser(params: UnallocateUserForRoleReqDto): Promise<void> {
+    return ajax.post('/api/system/role/auth/unallocateUser', params)
   },
 }
+
+export type FindAllocatedUserPageForRoleReqDto = components['schemas']['FindAllocatedUserPageForRoleReqDto']
+export type FindAllocatedUserPageForRoleResDto = components['schemas']['FindAllocatedUserPageForRoleResDto']
+export type FindUnallocatedUserPageForRoleReqDto = components['schemas']['FindUnallocatedUserPageForRoleReqDto']
+export type FindUnallocatedUserPageForRoleResDto = components['schemas']['FindUnallocatedUserPageForRoleResDto']
+export type AllocateUserForRoleReqDto = components['schemas']['AllocateUserForRoleReqDto']
+export type UnallocateUserForRoleReqDto = components['schemas']['UnallocateUserForRoleReqDto']

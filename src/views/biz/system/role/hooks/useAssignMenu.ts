@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
 import { computed, h, ref, shallowRef, unref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
+import { systemRoleMenuApi } from '~web/apis'
 import { listToTree } from '~web/utils'
 
 interface UseAssignMenuParams {

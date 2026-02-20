@@ -33,7 +33,7 @@ export class FindSystemDictTypePageReqDto extends PageReqDto {
   endTime?: string
 }
 
-export class CreateSystemDictTypeDto {
+export class CreateSystemDictTypeReqDto {
   @ApiPropertyOptional({ description: '字典名称' })
   @IsNotEmpty({ message: '字典名称不能为空' })
   dictName: string
@@ -52,7 +52,7 @@ export class CreateSystemDictTypeDto {
   remark?: string
 }
 
-export class UpdateSystemDictTypeReqDto extends CreateSystemDictTypeDto {
+export class UpdateSystemDictTypeReqDto extends CreateSystemDictTypeReqDto {
   @ApiProperty({ description: 'ID' })
   @IsNotEmpty({ message: 'ID不能为空' })
   @Transform(({ value }) => BigInt(value))

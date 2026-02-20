@@ -1,10 +1,11 @@
 import type { PlusColumn, PlusDrawerFormProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { CreateSystemLangReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
 import { computed, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
-import { systemLangApi } from '~web/apis/system/lang'
+import { systemLangApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -13,7 +14,7 @@ interface UseCreateParams {
 
 export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createVisible = ref(false)
-  const createValues = ref<CreateSystemLangDto>({})
+  const createValues = ref<CreateSystemLangReqDto>({})
   const createConfirmLoading = ref(false)
 
   const createDrawerProps = computed<PlusDrawerFormProps>(() => ({

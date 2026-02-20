@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
+import { systemRoleAuthApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>

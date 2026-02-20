@@ -1,17 +1,26 @@
+import type { components, paths } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemDictTypeApi = {
-  create(params: CreateSystemDictTypeDto) {
-    return $fetch('/api/system/dict/type/create', { method: 'POST', body: params })
+  create(params: CreateSystemDictTypeReqDto) {
+    return ajax.post('/api/system/dict/type/create', params)
   },
-  update(params: UpdateSystemDictTypeDto) {
-    return $fetch('/api/system/dict/type/update', { method: 'POST', body: params })
+  update(params: UpdateSystemDictTypeReqDto) {
+    return ajax.post('/api/system/dict/type/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/dict/type/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/dict/type/remove', { data: params })
   },
-  findPage(params: FindSystemDictTypePageDto) {
-    return $fetch('/api/system/dict/type/findPage', { method: 'POST', body: params })
+  findPage(params: FindSystemDictTypePageReqDto) {
+    return ajax.post('/api/system/dict/type/findPage', params)
   },
-  findByKey(params: FindSystemDictDetailByKeyDto) {
-    return $fetch('/api/system/dict/type/findByKey', { method: 'GET', params })
+  findByKey(params: FindSystemDictDetailByKeyReqDto) {
+    return ajax.get('/api/system/dict/type/findByKey', { params })
   },
 }
+
+export type CreateSystemDictTypeReqDto = components['schemas']['CreateSystemDictTypeReqDto']
+export type UpdateSystemDictTypeReqDto = components['schemas']['UpdateSystemDictTypeReqDto']
+export type FindSystemDictTypePageReqDto = components['schemas']['FindSystemDictTypePageReqDto']
+export type FindSystemDictDetailByKeyReqDto = paths['/api/system/dict/type/findByKey']['get']['parameters']['query']

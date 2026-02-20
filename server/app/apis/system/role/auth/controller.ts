@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindAllocatedUserPageForRoleResDto, FindUnallocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleResDto, UnallocateUserForRoleReqDto } from './dto'
@@ -15,7 +15,7 @@ export class SystemRoleAuthController {
   @ApiOperation({ summary: '为角色分配用户' })
   @Permission('sys.menu.system.roleAuth.allocateUser')
   @Post('allocateUser')
-  async allocateUser(dto: AllocateUserForRoleReqDto) {
+  async allocateUser(@Body() dto: AllocateUserForRoleReqDto) {
     await this.systemRoleAuthService.allocateUser(dto)
   }
 
@@ -23,7 +23,7 @@ export class SystemRoleAuthController {
   @ApiOkResponse({ type: FindAllocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findAllocatedUserPage')
   @Post('findAllocatedUserPage')
-  async findAllocatedUserPage(dto: FindAllocatedUserPageForRoleReqDto) {
+  async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForRoleReqDto) {
     return await this.systemRoleAuthService.findAllocatedUserPage(dto)
   }
 
@@ -31,14 +31,14 @@ export class SystemRoleAuthController {
   @ApiOkResponse({ type: FindUnallocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findUnallocatedUserPage')
   @Post('findUnallocatedUserPage')
-  async findUnallocatedUserPage(dto: FindUnallocatedUserPageForRoleReqDto) {
+  async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForRoleReqDto) {
     return await this.systemRoleAuthService.findUnallocatedUserPage(dto)
   }
 
   @ApiOperation({ summary: '为角色取消分配用户' })
   @Permission('sys.menu.system.roleAuth.unallocateUser')
   @Post('unallocateUser')
-  async unallocateUser(dto: UnallocateUserForRoleReqDto) {
+  async unallocateUser(@Body() dto: UnallocateUserForRoleReqDto) {
     await this.systemRoleAuthService.unallocateUser(dto)
   }
 }

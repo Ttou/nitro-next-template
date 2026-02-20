@@ -1,7 +1,7 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { systemLangApi } from '~web/apis/system/lang'
+import { systemLangApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>

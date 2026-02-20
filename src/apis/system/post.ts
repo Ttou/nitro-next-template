@@ -1,14 +1,23 @@
+import type { components } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemPostApi = {
-  create(params: CreateSystemPostDto) {
-    return $fetch('/api/system/post/create', { method: 'POST', body: params })
+  create(params: CreateSystemPostReqDto) {
+    return ajax.post('/api/system/post/create', params)
   },
-  update(params: UpdateSystemPostDto) {
-    return $fetch('/api/system/post/update', { method: 'POST', body: params })
+  update(params: UpdateSystemPostReqDto) {
+    return ajax.post('/api/system/post/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/post/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/post/remove', { data: params })
   },
-  findPage(params: FindSystemPostPageDto) {
-    return $fetch('/api/system/post/findPage', { method: 'POST', body: params })
+  findPage(params: FindSystemPostPageReqDto): Promise<FindSystemPostPageResDto> {
+    return ajax.post('/api/system/post/findPage', params)
   },
 }
+
+export type CreateSystemPostReqDto = components['schemas']['CreateSystemPostReqDto']
+export type UpdateSystemPostReqDto = components['schemas']['UpdateSystemPostReqDto']
+export type FindSystemPostPageReqDto = components['schemas']['FindSystemPostPageReqDto']
+export type FindSystemPostPageResDto = components['schemas']['FindSystemPostPageResDto']

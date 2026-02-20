@@ -2,6 +2,7 @@ import { ElConfigProvider, ElWatermark } from 'element-plus'
 import { defineComponent, onBeforeMount } from 'vue'
 import { RouterView } from 'vue-router'
 
+import { systemLangApi } from './apis'
 import { useElementPlusConfig } from './hooks/useElementPlusConfig'
 import { useAppStore } from './store'
 

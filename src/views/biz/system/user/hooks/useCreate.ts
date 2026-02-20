@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { CreateSystemUserReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { systemUserApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -10,7 +12,7 @@ interface UseCreateParams {
 
 export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createVisible = ref(false)
-  const createValues = ref<CreateSystemUserDto>({})
+  const createValues = ref<CreateSystemUserReqDto>({})
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({

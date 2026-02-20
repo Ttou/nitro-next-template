@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { UpdateSystemMenuReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { systemMenuApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -11,7 +13,7 @@ interface UseUpdateParams {
 
 export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
   const updateVisible = ref(false)
-  const updateValues = ref<UpdateSystemMenuDto>({})
+  const updateValues = ref<UpdateSystemMenuReqDto>({})
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({

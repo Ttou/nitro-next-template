@@ -6,6 +6,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { PlusDialogForm, PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
+import { systemConfigApi } from '~web/apis'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
 export default defineComponent({

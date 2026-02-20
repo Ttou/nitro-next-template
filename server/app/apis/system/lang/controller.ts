@@ -15,7 +15,7 @@ export class SystemLangController {
 
   @ApiOperation({ summary: '创建系统语言' })
   @Post('create')
-  async create(dto: CreateSystemLangReqDto) {
+  async create(@Body() dto: CreateSystemLangReqDto) {
     await this.systemLangService.create(dto)
   }
 

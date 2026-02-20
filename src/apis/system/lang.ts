@@ -1,20 +1,33 @@
+import type { components, paths } from '../schema'
+import type { RemoveReqDto } from '../type'
+import { ajax } from '~web/utils'
+
 export const systemLangApi = {
-  create(params: CreateSystemLangDto) {
-    return $fetch('/api/system/lang/create', { method: 'POST', body: params })
+  create(params: CreateSystemLangReqDto) {
+    return ajax.post('/api/system/lang/create', params)
   },
-  update(params: UpdateSystemLangDto) {
-    return $fetch('/api/system/lang/update', { method: 'POST', body: params })
+  update(params: UpdateSystemLangReqDto) {
+    return ajax.post('/api/system/lang/update', params)
   },
-  remove(params: RemoveDto) {
-    return $fetch('/api/system/lang/remove', { method: 'DELETE', body: params })
+  remove(params: RemoveReqDto) {
+    return ajax.delete('/api/system/lang/remove', { data: params })
   },
-  findPage(params: FindSystemLangPageDto) {
-    return $fetch('/api/system/lang/findPage', { method: 'POST', body: params })
+  findPage(params: FindSystemLangPageReqDto) {
+    return ajax.post('/api/system/lang/findPage', { data: params })
   },
-  findByKey(params: FindSystemLangOneDto) {
-    return $fetch('/api/system/lang/findByKey', { method: 'GET', params })
+  findByKey(params: FindSystemLangOneReqDto): Promise<FindSystemLangOneResDto> {
+    return ajax.get('/api/system/lang/findByKey', { params })
   },
-  findAll(params: FindSystemLangAllDto) {
-    return $fetch('/api/system/lang/findAll', { method: 'GET', params })
+  findAll(params: FindSystemLangAllReqDto): Promise<FindSystemLangAllResDto> {
+    return ajax.get('/api/system/lang/findAll', { params })
   },
 }
+
+export type CreateSystemLangReqDto = components['schemas']['CreateSystemLangReqDto']
+export type UpdateSystemLangReqDto = components['schemas']['UpdateSystemLangReqDto']
+export type FindSystemLangPageReqDto = components['schemas']['FindSystemLangPageReqDto']
+export type FindSystemLangPageResDto = components['schemas']['FindSystemLangPageResDto']
+export type FindSystemLangOneReqDto = paths['/api/system/lang/findByKey']['get']['parameters']['query']
+export type FindSystemLangOneResDto = components['schemas']['FindSystemLangOneResDto']
+export type FindSystemLangAllReqDto = paths['/api/system/lang/findAll']['get']['parameters']['query']
+export type FindSystemLangAllResDto = components['schemas']['FindSystemLangAllResDto']

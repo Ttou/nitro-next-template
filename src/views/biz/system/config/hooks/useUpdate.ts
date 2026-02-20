@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { UpdateSystemConfigReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { systemConfigApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -10,7 +12,7 @@ interface UseUpdateParams {
 
 export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateVisible = ref(false)
-  const updateValues = ref<UpdateSystemConfigDto>({})
+  const updateValues = ref<UpdateSystemConfigReqDto>({})
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({

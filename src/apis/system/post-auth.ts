@@ -1,14 +1,24 @@
+import type { components } from '../schema'
+import { ajax } from '~web/utils'
+
 export const systemPostAuthApi = {
-  findAllocatedUserPage(params: FindAllocatedUserPageForPostDto) {
-    return $fetch('/api/system/post/auth/findAllocatedUserPage', { method: 'POST', body: params })
+  findAllocatedUserPage(params: FindAllocatedUserPageForPostReqDto): Promise<FindAllocatedUserPageForPostResDto> {
+    return ajax.post('/api/system/post/auth/findAllocatedUserPage', params)
   },
-  findUnallocatedUserPage(params: FindUnallocatedUserPageForPostDto) {
-    return $fetch('/api/system/post/auth/findUnallocatedUserPage', { method: 'POST', body: params })
+  findUnallocatedUserPage(params: FindUnallocatedUserPageForPostReqDto): Promise<FindUnallocatedUserPageForPostResDto> {
+    return ajax.post('/api/system/post/auth/findUnallocatedUserPage', params)
   },
-  allocateUser(params: AllocateUserForPostDto) {
-    return $fetch('/api/system/post/auth/allocateUser', { method: 'POST', body: params })
+  allocateUser(params: AllocateUserForPostReqDto) {
+    return ajax.post('/api/system/post/auth/allocateUser', params)
   },
-  unallocateUser(params: UnallocateUserForPostDto) {
-    return $fetch('/api/system/post/auth/unallocateUser', { method: 'POST', body: params })
+  unallocateUser(params: UnallocateUserForPostReqDto) {
+    return ajax.post('/api/system/post/auth/unallocateUser', params)
   },
 }
+
+export type FindAllocatedUserPageForPostReqDto = components['schemas']['FindAllocatedUserPageForPostReqDto']
+export type FindAllocatedUserPageForPostResDto = components['schemas']['FindAllocatedUserPageForPostResDto']
+export type FindUnallocatedUserPageForPostReqDto = components['schemas']['FindUnallocatedUserPageForPostReqDto']
+export type FindUnallocatedUserPageForPostResDto = components['schemas']['FindUnallocatedUserPageForPostResDto']
+export type AllocateUserForPostReqDto = components['schemas']['AllocateUserForPostReqDto']
+export type UnallocateUserForPostReqDto = components['schemas']['UnallocateUserForPostReqDto']

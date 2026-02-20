@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity, SysDictTypeEntity } from '~server/app/entities'
 import { RemoveReqDto } from '~server/app/openapi'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemDictTypeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
+import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
 
 @Injectable()
 export class SystemDictTypeService {
@@ -11,7 +11,7 @@ export class SystemDictTypeService {
     private readonly em: EntityManager,
   ) {}
 
-  async create(dto: CreateSystemDictTypeDto) {
+  async create(dto: CreateSystemDictTypeReqDto) {
     const { dictType } = dto
 
     const oldRecord = await this.em.findOne(SysDictTypeEntity, {

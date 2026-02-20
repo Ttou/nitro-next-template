@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { systemDictTypeApi } from '~web/apis'
 
 export function useDict(dictTypes: string[] = []) {
   const dict = ref<Map<string, SysDictDataEntity[]>>(new Map())

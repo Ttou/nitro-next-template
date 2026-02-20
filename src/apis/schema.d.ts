@@ -1657,7 +1657,7 @@ export interface components {
              */
             id: number;
         };
-        CreateSystemDictTypeDto: {
+        CreateSystemDictTypeReqDto: {
             /** @description 字典名称 */
             dictName?: string;
             /** @description 字典类型 */
@@ -1874,6 +1874,19 @@ export interface components {
              * @description ID
              */
             id: number;
+        };
+        CreateSystemLangReqDto: {
+            /** @description 词条标识 */
+            langKey: string;
+            /** @description 词条值 */
+            langValue: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark?: string;
         };
         FindSystemLangAllResDto: {
             /**
@@ -2390,6 +2403,36 @@ export interface components {
              */
             id: number;
         };
+        AllocateUserForRoleReqDto: {
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
+            /** @description 用户ID数组 */
+            ids: string[];
+        };
+        FindAllocatedUserPageForRoleReqDto: {
+            /**
+             * @description 页码
+             * @default 1
+             */
+            page: number;
+            /**
+             * @description 页长
+             * @default 15
+             */
+            pageSize: number;
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
+            /** @description 用户名 */
+            userName?: string;
+            /** @description 昵称 */
+            nickName?: string;
+        };
         FindAllocatedUserPageForRoleData: {
             /** @description 页码 */
             page: number;
@@ -2414,6 +2457,27 @@ export interface components {
             /** @description 响应数据 */
             data: components["schemas"]["FindAllocatedUserPageForRoleData"];
         };
+        FindUnallocatedUserPageForRoleReqDto: {
+            /**
+             * @description 页码
+             * @default 1
+             */
+            page: number;
+            /**
+             * @description 页长
+             * @default 15
+             */
+            pageSize: number;
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
+            /** @description 用户名 */
+            userName?: string;
+            /** @description 昵称 */
+            nickName?: string;
+        };
         FindUnallocatedUserPageForRoleResDto: {
             /**
              * @description 时间戳
@@ -2427,6 +2491,31 @@ export interface components {
             status: number;
             /** @description 响应数据 */
             data: components["schemas"]["FindAllocatedUserPageForRoleData"];
+        };
+        UnallocateUserForRoleReqDto: {
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
+            /** @description 用户ID数组 */
+            ids: string[];
+        };
+        AssignMenuForRoleReqDto: {
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
+            /** @description 菜单ID数组 */
+            menuIds: string[];
+        };
+        FindAssignedMenuForRoleReqDto: {
+            /**
+             * Format: int64
+             * @description 角色ID
+             */
+            id: number;
         };
         FindAssignedMenuForRoleResDto: {
             /**
@@ -2945,7 +3034,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateSystemDictTypeDto"];
+                "application/json": components["schemas"]["CreateSystemDictTypeReqDto"];
             };
         };
         responses: {
@@ -3137,7 +3226,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateSystemLangReqDto"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -3609,7 +3702,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AllocateUserForRoleReqDto"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -3626,7 +3723,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindAllocatedUserPageForRoleReqDto"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -3645,7 +3746,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindUnallocatedUserPageForRoleReqDto"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -3664,7 +3769,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UnallocateUserForRoleReqDto"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -3681,7 +3790,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignMenuForRoleReqDto"];
+            };
+        };
         responses: {
             201: {
                 headers: {
@@ -3698,7 +3811,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindAssignedMenuForRoleReqDto"];
+            };
+        };
         responses: {
             200: {
                 headers: {

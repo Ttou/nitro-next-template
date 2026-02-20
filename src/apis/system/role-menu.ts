@@ -1,8 +1,14 @@
+import type { components } from '../schema'
+import { ajax } from '~web/utils'
+
 export const systemRoleMenuApi = {
-  assign(params: AssignMenuForRoleDto) {
-    return $fetch('/api/system/role/menu/assign', { method: 'POST', body: params })
+  assign(params: AssignMenuForRoleReqDto) {
+    return ajax.post('/api/system/role/menu/assign', params)
   },
-  assigned(params: FindAssignedMenuForRoleDto) {
-    return $fetch('/api/system/role/menu/assigned', { method: 'POST', body: params })
+  assigned(params: FindAssignedMenuForRoleReqDto) {
+    return ajax.post('/api/system/role/menu/assigned', params)
   },
 }
+
+export type AssignMenuForRoleReqDto = components['schemas']['AssignMenuForRoleReqDto']
+export type FindAssignedMenuForRoleReqDto = components['schemas']['FindAssignedMenuForRoleReqDto']

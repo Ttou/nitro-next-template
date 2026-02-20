@@ -7,6 +7,7 @@ import { PlusDialogForm, PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
+import { systemDictDataApi } from '~web/apis'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
 export default defineComponent({
