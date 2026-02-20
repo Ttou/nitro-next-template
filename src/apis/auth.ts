@@ -1,4 +1,5 @@
 import type { components } from './schema'
+import type { RealRes } from './type'
 import { ajax } from '~web/utils'
 
 export const authApi = {
@@ -11,4 +12,4 @@ export const authApi = {
 }
 
 export type LoginReqDto = components['schemas']['LoginReqDto']
-export type LoginResDto = components['schemas']['LoginResDto']
+export type LoginResDto = RealRes<components['schemas']['LoginResDto']>

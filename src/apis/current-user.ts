@@ -1,4 +1,5 @@
 import type { components } from './schema'
+import type { RealRes } from './type'
 import { ajax } from '~web/utils'
 
 export const currentUserApi = {
@@ -16,7 +17,7 @@ export const currentUserApi = {
   },
 }
 
-export type CurrentUserGetInfoResDto = components['schemas']['CurrentUserGetInfoResDto']
-export type CurrentUserGetProfileResDto = components['schemas']['CurrentUserGetProfileResDto']
+export type CurrentUserGetInfoResDto = RealRes<components['schemas']['CurrentUserGetInfoResDto']>
+export type CurrentUserGetProfileResDto = RealRes<components['schemas']['CurrentUserGetProfileResDto']>
 export type UpdateCurrentUserProfileReqDto = components['schemas']['UpdateCurrentUserProfileReqDto']
 export type UpdateCurrentUserPasswordReqDto = components['schemas']['UpdateCurrentUserPasswordReqDto']

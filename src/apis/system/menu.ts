@@ -1,5 +1,5 @@
 import type { components } from '../schema'
-import type { RemoveReqDto } from '../type'
+import type { RealRes, RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemMenuApi = {
@@ -18,6 +18,6 @@ export const systemMenuApi = {
 }
 
 export type FindSystemMenuListReqDto = components['schemas']['FindSystemMenuListReqDto']
-export type FindSystemMenuListResDto = components['schemas']['FindSystemMenuListResDto']
+export type FindSystemMenuListResDto = RealRes<components['schemas']['FindSystemMenuListResDto']>
 export type CreateSystemMenuReqDto = components['schemas']['CreateSystemMenuReqDto']
 export type UpdateSystemMenuReqDto = components['schemas']['UpdateSystemMenuReqDto']

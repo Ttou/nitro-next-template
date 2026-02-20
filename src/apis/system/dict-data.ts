@@ -1,5 +1,5 @@
 import type { components } from '../schema'
-import type { RemoveReqDto } from '../type'
+import type { RealRes, RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemDictDataApi = {
@@ -18,6 +18,6 @@ export const systemDictDataApi = {
 }
 
 export type FindSystemDictDataListReqDto = components['schemas']['FindSystemDictDataListReqDto']
-export type FindSystemDictDataListResDto = components['schemas']['FindSystemDictDataListResDto']
+export type FindSystemDictDataListResDto = RealRes<components['schemas']['FindSystemDictDataListResDto']>
 export type CreateSystemDictDataReqDto = components['schemas']['CreateSystemDictDataReqDto']
 export type UpdateSystemDictDataReqDto = components['schemas']['UpdateSystemDictDataReqDto']

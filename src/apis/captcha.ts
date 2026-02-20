@@ -1,4 +1,5 @@
 import type { components } from './schema'
+import type { RealRes } from './type'
 import { ajax } from '~web/utils'
 
 export const captchaApi = {
@@ -7,4 +8,4 @@ export const captchaApi = {
   },
 }
 
-export type CaptchaImageResDto = components['schemas']['CaptchaImageResDto']
+export type CaptchaImageResDto = RealRes<components['schemas']['CaptchaImageResDto']>

@@ -1,5 +1,5 @@
 import type { components } from '../schema'
-import type { RemoveReqDto } from '../type'
+import type { RealRes, RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemConfigApi = {
@@ -20,4 +20,4 @@ export const systemConfigApi = {
 export type CreateSystemConfigReqDto = components['schemas']['CreateSystemConfigReqDto']
 export type UpdateSystemConfigReqDto = components['schemas']['UpdateSystemConfigReqDto']
 export type FindSystemConfigPageReqDto = components['schemas']['FindSystemConfigPageReqDto']
-export type FindSystemConfigPageResDto = components['schemas']['FindSystemConfigPageResDto']
+export type FindSystemConfigPageResDto = RealRes<components['schemas']['FindSystemConfigPageResDto']>

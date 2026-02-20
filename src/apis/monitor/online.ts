@@ -1,5 +1,5 @@
 import type { components } from '../schema'
-import type { RemoveReqDto } from '../type'
+import type { RealRes, RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const monitorOnlineApi = {
@@ -12,4 +12,4 @@ export const monitorOnlineApi = {
 }
 
 export type FindMonitorOnlinePageReqDto = components['schemas']['FindMonitorOnlinePageReqDto']
-export type FindMonitorOnlinePageResDto = components['schemas']['FindMonitorOnlinePageResDto']
+export type FindMonitorOnlinePageResDto = RealRes<components['schemas']['FindMonitorOnlinePageResDto']>

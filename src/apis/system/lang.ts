@@ -1,5 +1,5 @@
 import type { components, paths } from '../schema'
-import type { RemoveReqDto } from '../type'
+import type { RealRes, RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemLangApi = {
@@ -26,8 +26,8 @@ export const systemLangApi = {
 export type CreateSystemLangReqDto = components['schemas']['CreateSystemLangReqDto']
 export type UpdateSystemLangReqDto = components['schemas']['UpdateSystemLangReqDto']
 export type FindSystemLangPageReqDto = components['schemas']['FindSystemLangPageReqDto']
-export type FindSystemLangPageResDto = components['schemas']['FindSystemLangPageResDto']
+export type FindSystemLangPageResDto = RealRes<components['schemas']['FindSystemLangPageResDto']>
 export type FindSystemLangOneReqDto = paths['/api/system/lang/findByKey']['get']['parameters']['query']
-export type FindSystemLangOneResDto = components['schemas']['FindSystemLangOneResDto']
+export type FindSystemLangOneResDto = RealRes<components['schemas']['FindSystemLangOneResDto']>
 export type FindSystemLangAllReqDto = paths['/api/system/lang/findAll']['get']['parameters']['query']
-export type FindSystemLangAllResDto = components['schemas']['FindSystemLangAllResDto']
+export type FindSystemLangAllResDto = RealRes<components['schemas']['FindSystemLangAllResDto']>

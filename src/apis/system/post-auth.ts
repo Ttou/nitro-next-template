@@ -1,4 +1,5 @@
 import type { components } from '../schema'
+import type { RealRes } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemPostAuthApi = {
@@ -17,8 +18,8 @@ export const systemPostAuthApi = {
 }
 
 export type FindAllocatedUserPageForPostReqDto = components['schemas']['FindAllocatedUserPageForPostReqDto']
-export type FindAllocatedUserPageForPostResDto = components['schemas']['FindAllocatedUserPageForPostResDto']
+export type FindAllocatedUserPageForPostResDto = RealRes<components['schemas']['FindAllocatedUserPageForPostResDto']>
 export type FindUnallocatedUserPageForPostReqDto = components['schemas']['FindUnallocatedUserPageForPostReqDto']
-export type FindUnallocatedUserPageForPostResDto = components['schemas']['FindUnallocatedUserPageForPostResDto']
+export type FindUnallocatedUserPageForPostResDto = RealRes<components['schemas']['FindUnallocatedUserPageForPostResDto']>
 export type AllocateUserForPostReqDto = components['schemas']['AllocateUserForPostReqDto']
 export type UnallocateUserForPostReqDto = components['schemas']['UnallocateUserForPostReqDto']
