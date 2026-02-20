@@ -11,7 +11,7 @@ import ElementPlus from 'element-plus'
 import PlusProComponents from 'plus-pro-components'
 import { createApp } from 'vue'
 
-import App from './App'
+import App from './App.vue'
 import { useIcons } from './hooks/useIcons'
 import i18n from './i18n'
 import { router } from './router'
