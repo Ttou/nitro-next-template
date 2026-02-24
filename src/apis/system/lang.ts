@@ -13,7 +13,7 @@ export const systemLangApi = {
     return ajax.delete('/api/system/lang/remove', { data: params })
   },
   findPage(params: FindSystemLangPageReqDto) {
-    return ajax.post('/api/system/lang/findPage', { data: params })
+    return ajax.post('/api/system/lang/findPage', params)
   },
   findByKey(params: FindSystemLangOneReqDto): Promise<FindSystemLangOneResDto> {
     return ajax.get('/api/system/lang/findByKey', { params })

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/vue'
 
 import { ElButton, ElSpace } from 'element-plus'
 import { PlusDialogForm, PlusPage } from 'plus-pro-components'
-import { computed, defineComponent, ref, unref } from 'vue'
+import { computed, defineComponent, h, ref, unref } from 'vue'
 import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
 import { systemMenuApi } from '~web/apis'
 import { listToTree } from '~web/utils'

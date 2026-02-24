@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Permission } from '~server/app/decorators'
+import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
+import { CacheInterceptor } from '~server/app/interceptors'
 import { RemoveReqDto } from '~server/app/openapi'
 import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
@@ -22,6 +23,9 @@ export class SystemDictTypeController {
 
   @ApiOperation({ summary: '根据字典类型查询字典数据' })
   @ApiOkResponse({ type: FindSystemDictDetailByKeyResDto })
+  @CacheKey(req => `sys_dict:${req.query.dictType}`)
+  @CacheTTL('1d')
+  @UseInterceptors(CacheInterceptor)
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemDictDetailByKeyReqDto) {
     return await this.systemDictTypeService.findByKey(dto)
@@ -30,7 +34,7 @@ export class SystemDictTypeController {
   @ApiOperation({ summary: '查询字典类型分页列表' })
   @ApiOkResponse({ type: FindSystemDictTypePageResDto })
   @Permission('sys.menu.system.dictType.findPage')
-  @Get('findPage')
+  @Post('findPage')
   async findPage(@Body() dto: FindSystemDictTypePageReqDto) {
     return await this.systemDictTypeService.findPage(dto)
   }

@@ -1,4 +1,4 @@
-import type { PlusHeaderProps } from 'plus-pro-components'
+import type { PlusHeaderProps, PlusSidebarProps } from 'plus-pro-components'
 import type { RouteRecordRaw } from 'vue-router'
 import { ElMessageBox, ElSpace } from 'element-plus'
 import { cloneDeep, pick } from 'es-toolkit/compat'
@@ -8,11 +8,7 @@ import { joinURL } from 'ufo'
 import { computed, defineComponent, Transition, unref, useTemplateRef } from 'vue'
 
 import { RouterView, useRoute, useRouter } from 'vue-router'
-import AppTabs from '~web/components/AppTabs/AppTabs'
-import DarkToggle from '~web/components/DarkToggle/DarkToggle'
-import LangSelect from '~web/components/LangSelect/LangSelect'
-import UpdatePassword from '~web/components/UpdatePassword/UpdatePassword'
-import UpdateProfile from '~web/components/UpdateProfile/UpdateProfile'
+import { AppTabs, DarkToggle, LangSelect, UpdatePassword, UpdateProfile } from '~web/components'
 import { useUserStore } from '~web/store'
 
 export default defineComponent({
@@ -22,6 +18,7 @@ export default defineComponent({
     const router = useRouter()
     const userStore = useUserStore()
 
+    const plusLayoutRef = useTemplateRef<InstanceType<typeof PlusLayout>>('plusLayoutRef')
     const updatePasswordRef = useTemplateRef<InstanceType<typeof UpdatePassword>>('updatePasswordRef')
     const updateProfileRef = useTemplateRef<InstanceType<typeof UpdateProfile>>('updateProfileRef')
 
@@ -83,6 +80,12 @@ export default defineComponent({
       return {
         routes: unref(filteredRoutes),
         defaultActive: route.path,
+        onToggleCollapse: (collapse: boolean) => {
+          if (!collapse) {
+            // 展开时需要更新打开的路由
+            plusLayoutRef.value?.plusSidebarInstance?.plusSidebarInstance?.updateActiveIndex(route.path)
+          }
+        },
       }
     })
 
@@ -111,6 +114,7 @@ export default defineComponent({
   render() {
     return (
       <PlusLayout
+        ref="plusLayoutRef"
         headerProps={this.headerProps}
         sidebarProps={this.sidebarProps}
         hasBreadcrumb={false}

@@ -1,6 +1,6 @@
 export { default as AppTabs } from './AppTabs/AppTabs'
 export { default as DarkToggle } from './DarkToggle/DarkToggle'
 export { default as ImageCaptcha } from './ImageCaptcha/ImageCaptcha'
-export { default as LangSelect } from './LangSelect/LangSelect'
+export { default as LangSelect } from './LangSelect/LangSelect.vue'
 export { default as UpdatePassword } from './UpdatePassword/UpdatePassword'
 export { default as UpdateProfile } from './UpdateProfile/UpdateProfile'

@@ -12,6 +12,7 @@ import { RedisScanner } from './redis-scanner'
 export class CacheService {
   private readonly keyPrefix = 'cache'
   private readonly keyPrefixSeparator = ':'
+  private readonly ttl: StringValue = '15m'
 
   constructor(
     @Inject(REDIS) private readonly redis: Redis,
@@ -28,13 +29,8 @@ export class CacheService {
         finalValue = JSON.stringify(value)
       }
 
-      if (expire) {
-        const parsedExpire = parseMs('seconds', expire)
-        await this.redis.setex(cacheKey, parsedExpire, finalValue)
-      }
-      else {
-        await this.redis.set(cacheKey, finalValue)
-      }
+      const parsedExpire = parseMs('seconds', expire ?? this.ttl)
+      await this.redis.setex(cacheKey, parsedExpire, finalValue)
     }
     catch (error) {
       console.error(`缓存设置失败: ${error}`, { 0: CacheService.name })

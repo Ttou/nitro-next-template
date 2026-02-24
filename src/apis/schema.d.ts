@@ -346,10 +346,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** 查询字典类型分页列表 */
-        get: operations["SystemDictTypeController_findPage"];
+        get?: never;
         put?: never;
-        post?: never;
+        /** 查询字典类型分页列表 */
+        post: operations["SystemDictTypeController_findPage"];
         delete?: never;
         options?: never;
         head?: never;

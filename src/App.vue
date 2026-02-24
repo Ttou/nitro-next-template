@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
 import { systemLangApi } from './apis'
-import { useElementPlusConfig } from './hooks/useElementPlusConfig'
+import { useElementPlusConfig } from './hooks'
 import { useAppStore } from './store'
 
 const config = useElementPlusConfig()
