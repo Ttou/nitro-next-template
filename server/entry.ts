@@ -1,23 +1,22 @@
 import { FastURL, toFetchHandler } from 'srvx/node'
-import { app } from './app/main'
+import { expressApp, initNestApp } from './app/main'
+
+initNestApp()
 
 const SERVER_URLS = [
   '/api',
   '/openapi',
 ]
 
-let fetchHandler: ReturnType<typeof toFetchHandler> | null = null
-
 export default {
   async fetch(request: Request) {
     const { pathname } = new FastURL(request.url)
 
     if (SERVER_URLS.some(url => pathname.startsWith(url))) {
-      if (!fetchHandler) {
-        const instance = app.getHttpAdapter().getInstance()
-        fetchHandler = toFetchHandler(instance)
+      if (!expressApp) {
+        return new Response('503 Service Unavailable', { status: 503 })
       }
-      return fetchHandler(request)
+      return toFetchHandler(expressApp)(request)
     }
     return undefined
   },

@@ -7,12 +7,12 @@ const router = createRouter({
   routes: [
     {
       path: '/login',
-      component: () => import('~web/views/sys/login'),
+      component: () => import('~web/views/sys/login/index.vue'),
       meta: { title: '登录' },
     },
     {
       path: '/error',
-      component: () => import('~web/views/sys/error'),
+      component: () => import('~web/views/sys/error/index.vue'),
       meta: { title: '错误' },
     },
     {
@@ -21,7 +21,7 @@ const router = createRouter({
       children: [
         {
           path: '/redirect/:path(.*)',
-          component: () => import('~web/views/sys/redirect'),
+          component: () => import('~web/views/sys/redirect/index.vue'),
         },
       ],
     },

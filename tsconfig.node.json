@@ -2,26 +2,8 @@
   "extends": "nitro/tsconfig",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "ES2023",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "types": ["node"],
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
+    
     "strictPropertyInitialization": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    /* Decorators */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
@@ -35,6 +17,7 @@
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
+    "openapi-ts.config.ts",
     "vite.config.ts"
   ]
 }

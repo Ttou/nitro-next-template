@@ -1,5 +1,5 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
-import type { Request, Response } from 'express'
+import type { Express } from 'express'
 import { NestFactory } from '@nestjs/core'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -7,10 +7,11 @@ import { apiReference } from '@scalar/nestjs-api-reference'
 import { AppModule } from './app'
 import { NestLogger } from './loggers'
 
-export let app: NestExpressApplication
+export let nestApp: NestExpressApplication
+export let expressApp: Express
 
-export async function initApp() {
-  app = await NestFactory.create<NestExpressApplication>(
+export async function initNestApp() {
+  nestApp = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(),
     {
@@ -18,6 +19,7 @@ export async function initApp() {
       logger: new NestLogger(),
     },
   )
+  expressApp = nestApp.getHttpAdapter().getInstance()
 
   const config = new DocumentBuilder()
     .setTitle('Nitro Template')
@@ -25,19 +27,19 @@ export async function initApp() {
     .setVersion('1.0')
     .addBearerAuth()
     .build()
-  const document = SwaggerModule.createDocument(app, config)
+  const document = SwaggerModule.createDocument(nestApp, config)
 
-  app.use('/openapi', apiReference({
+  nestApp.use('/openapi', apiReference({
     content: document,
   }))
 
-  app.use('/openapi-json', (req: Request, res: Response) => {
+  expressApp.get('/openapi-json', (req, res) => {
     res.json(document)
   })
 
-  await app.init()
+  await nestApp.init()
 }
 
-export async function closeApp() {
-  await app.close()
+export async function closeNestApp() {
+  await nestApp.close()
 }
