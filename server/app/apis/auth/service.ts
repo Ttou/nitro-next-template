@@ -1,10 +1,10 @@
-import { randomUUID } from 'node:crypto'
 import { EntityManager } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { SysOnlineEntity, SysUserEntity } from '~server/app/entities'
 import { CaptchaService, HashService, LogoutService } from '~server/app/services'
 import { SharedService } from '~server/app/shared'
+import { generateId } from '~shared/utils'
 import { LoginReqDto } from './dto'
 
 @Injectable()
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   private createSign(payload: any) {
-    const jti = randomUUID()
+    const jti = generateId()
     const claims = {
       ...payload,
       jti,

@@ -1,12 +1,15 @@
 import type { Request } from 'express'
-import { randomUUID } from 'node:crypto'
+import { ExpressAdapter } from '@bull-board/express'
+import { BullBoardModule } from '@bull-board/nestjs'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
+import basicAuth from 'express-basic-auth'
 import { ClsModule } from 'nestjs-cls'
+import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { DefaultFilter } from './filters'
@@ -30,12 +33,26 @@ import { SharedModule } from './shared'
           mount: true,
           generateId: true,
           idGenerator: (req: Request) =>
-            (req.headers['X-Request-Id'] as string) ?? randomUUID(),
+            (req.headers['X-Request-Id'] as string) ?? generateId(),
         },
         guard: {
           mount: true,
         },
       }),
+    }),
+    BullBoardModule.forRootAsync({
+      useFactory: async () => {
+        return {
+          route: '/bull-ui',
+          adapter: ExpressAdapter,
+          middleware: basicAuth({
+            challenge: true,
+            users: {
+              bull: '123456',
+            },
+          }),
+        }
+      },
     }),
     JwtModule.registerAsync({
       global: true,

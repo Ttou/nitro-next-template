@@ -5,6 +5,7 @@ initNestApp()
 
 const SERVER_URLS = [
   '/api',
+  '/bull',
   '/openapi',
 ]
 

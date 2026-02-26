@@ -1,5 +1,5 @@
-import { nanoid } from 'nanoid'
+import { v7 } from 'uuid'
 
 export {
-  nanoid as generateId,
+  v7 as generateId,
 }

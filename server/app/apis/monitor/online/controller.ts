@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Permission } from '~server/app/decorators'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { AutoOperation, Permission } from '~server/app/decorators'
 import { RemoveReqDto } from '~server/app/openapi'
 import { FindMonitorOnlinePageReqDto, FindMonitorOnlinePageResDto } from './dto'
 import { MonitorOnlineService } from './service'
@@ -11,7 +11,7 @@ import { MonitorOnlineService } from './service'
 export class MonitorOnlineController {
   constructor(private readonly monitorOnlineService: MonitorOnlineService) {}
 
-  @ApiOperation({ summary: '分页查询在线用户' })
+  @AutoOperation({ summary: '分页查询在线用户' })
   @ApiOkResponse({ type: FindMonitorOnlinePageResDto })
   @Permission('sys.menu.monitor.online.findPage')
   @Post('findPage')
@@ -19,7 +19,7 @@ export class MonitorOnlineController {
     return this.monitorOnlineService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除在线用户' })
+  @AutoOperation({ summary: '删除在线用户' })
   @Permission('sys.menu.monitor.online.remove')
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {

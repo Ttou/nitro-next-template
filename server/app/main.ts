@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
+import basicAuth from 'express-basic-auth'
 import { AppModule } from './app'
 import { NestLogger } from './loggers'
 
@@ -29,7 +30,13 @@ export async function initNestApp() {
     .build()
   const document = SwaggerModule.createDocument(nestApp, config)
 
-  nestApp.use('/openapi', apiReference({
+  expressApp.use('/openapi-ui', basicAuth({
+    challenge: true,
+    users: {
+      openapi: '123456',
+    },
+  }))
+  nestApp.use('/openapi-ui', apiReference({
     content: document,
   }))
 

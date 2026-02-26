@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Public } from '~server/app/decorators'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { AutoOperation, Public } from '~server/app/decorators'
 import { RemoveReqDto } from '~server/app/openapi'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangAllResDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
@@ -13,13 +13,13 @@ export class SystemLangController {
     private readonly systemLangService: SystemLangService,
   ) {}
 
-  @ApiOperation({ summary: '创建系统语言' })
+  @AutoOperation({ summary: '创建系统语言' })
   @Post('create')
   async create(@Body() dto: CreateSystemLangReqDto) {
     await this.systemLangService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言' })
+  @AutoOperation({ summary: '查询系统语言' })
   @ApiOkResponse({ type: FindSystemLangAllResDto })
   @Public()
   @Get('findAll')
@@ -27,27 +27,27 @@ export class SystemLangController {
     return await this.systemLangService.findAll(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言词条' })
+  @AutoOperation({ summary: '查询系统语言词条' })
   @ApiOkResponse({ type: FindSystemLangOneResDto })
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemLangOneReqDto) {
     return await this.systemLangService.findByKey(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言词条分页' })
+  @AutoOperation({ summary: '查询系统语言词条分页' })
   @ApiOkResponse({ type: FindSystemLangPageResDto })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemLangPageReqDto) {
     return await this.systemLangService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除系统语言词条' })
+  @AutoOperation({ summary: '删除系统语言词条' })
   @Post('remove')
   async remove(@Body() dto: RemoveReqDto) {
     await this.systemLangService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新系统语言词条' })
+  @AutoOperation({ summary: '更新系统语言词条' })
   @Post('update')
   async update(@Body() dto: UpdateSystemLangReqDto) {
     await this.systemLangService.update(dto)
