@@ -28,6 +28,7 @@ export default defineConfig({
       },
     ],
   },
+  publicDir: false,
   plugins: [
     vue(),
     vueJsx(),
