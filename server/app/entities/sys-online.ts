@@ -1,12 +1,13 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { ApiProperty } from '@nestjs/swagger'
+import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
 @Entity({ tableName: 'sys_online' })
 export class SysOnlineEntity {
   @ApiProperty({ description: '主键' })
-  @PrimaryKey({ type: 'bigint', autoincrement: true })
-  id!: bigint
+  @PrimaryKey()
+  id = generateId()
 
   @ApiProperty({ description: '会话ID' })
   @Property()

@@ -1,7 +1,6 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDeptEntity } from '~server/app/entities'
 import { ResultResDto } from '~server/app/openapi'
 import { IsEnumValues } from '~server/app/validators'
@@ -25,8 +24,8 @@ export class FindSystemDeptListReqDto {
 export class CreateSystemDeptReqDto {
   @ApiPropertyOptional({ description: '父部门ID' })
   @IsOptional()
-  @Transform(({ value }) => value ? BigInt(value) : null)
-  parentId?: bigint
+  @IsUUID('7', { message: '父部门ID格式不正确' })
+  parentId?: string
 
   @ApiPropertyOptional({ description: '部门名称' })
   @IsNotEmpty({ message: '部门名称不能为空' })
@@ -49,8 +48,8 @@ export class CreateSystemDeptReqDto {
 export class UpdateSystemDeptReqDto extends CreateSystemDeptReqDto {
   @ApiProperty({ description: 'ID' })
   @IsNotEmpty({ message: 'ID不能为空' })
-  @Transform(({ value }) => BigInt(value))
-  id: bigint
+  @IsUUID('7', { message: 'ID格式不正确' })
+  id: string
 }
 
 export class FindSystemDeptListResDto extends ResultResDto([SysDeptEntity]) {}

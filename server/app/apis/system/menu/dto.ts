@@ -1,7 +1,7 @@
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysMenuEntity } from '~server/app/entities'
 import { ResultResDto } from '~server/app/openapi'
 import { IsEnumValues } from '~server/app/validators'
@@ -25,8 +25,8 @@ export class FindSystemMenuListReqDto {
 export class CreateSystemMenuReqDto {
   @ApiPropertyOptional({ description: '父菜单ID' })
   @IsOptional()
-  @Transform(({ value }) => value ? BigInt(value) : null)
-  parentId?: bigint
+  @IsUUID('7', { message: '父菜单ID格式不正确' })
+  parentId?: string
 
   @ApiProperty({ description: '菜单标识' })
   @IsNotEmpty({ message: '菜单标识不能为空' })
@@ -90,8 +90,8 @@ export class CreateSystemMenuReqDto {
 export class UpdateSystemMenuReqDto extends CreateSystemMenuReqDto {
   @ApiProperty({ description: 'ID' })
   @IsNotEmpty({ message: 'ID不能为空' })
-  @Transform(({ value }) => BigInt(value))
-  id: bigint
+  @IsUUID('7', { message: 'ID格式不正确' })
+  id: string
 }
 
 export class FindSystemMenuListResDto extends ResultResDto([SysMenuEntity]) {}

@@ -34,3 +34,11 @@ export function getUnixTimestamp(type: 'milliseconds' | 'seconds', value: dayjs.
 export function formatTime(date: dayjs.ConfigType, template = 'YYYY-MM-DD HH:mm:ss') {
   return dayjs(date).format(template)
 }
+
+/**
+ * 延迟执行
+ * @param ms 毫秒
+ */
+export function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}

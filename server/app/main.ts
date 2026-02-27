@@ -6,7 +6,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import basicAuth from 'express-basic-auth'
 import { AppModule } from './app'
+import { setupDev } from './dev'
 import { NestLogger } from './loggers'
+import { IsDev } from './utils'
 
 export let nestApp: NestExpressApplication
 export let expressApp: Express
@@ -43,6 +45,10 @@ export async function initNestApp() {
   expressApp.get('/openapi-json', (req, res) => {
     res.json(document)
   })
+
+  if (IsDev) {
+    setupDev(nestApp, expressApp)
+  }
 
   await nestApp.init()
 }

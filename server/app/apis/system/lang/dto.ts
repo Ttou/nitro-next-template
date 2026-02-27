@@ -1,7 +1,6 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysLangEntity } from '~server/app/entities'
 import { PageReqDto, PageResDto, ResultResDto } from '~server/app/openapi'
 import { IsEnumValues } from '~server/app/validators'
@@ -72,8 +71,8 @@ export class CreateSystemLangReqDto {
 export class UpdateSystemLangReqDto extends CreateSystemLangReqDto {
   @ApiProperty({ description: 'ID' })
   @IsNotEmpty({ message: 'ID不能为空' })
-  @Transform(({ value }) => BigInt(value))
-  id: bigint
+  @IsUUID('7', { message: 'ID格式不正确' })
+  id: string
 }
 
 export class FindSystemLangAllResDto extends ResultResDto(Object) {}

@@ -1,7 +1,6 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDictDataEntity } from '~server/app/entities'
 import { PageResDto, ResultResDto } from '~server/app/openapi'
 import { IsEnumValues } from '~server/app/validators'
@@ -47,8 +46,9 @@ export class CreateSystemDictDataReqDto {
 
 export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
   @ApiProperty({ description: 'ID' })
-  @Transform(({ value }) => BigInt(value))
-  id: bigint
+  @IsNotEmpty({ message: 'ID不能为空' })
+  @IsUUID('7', { message: 'ID格式不正确' })
+  id: string
 }
 
 class FindSystemDictDataListData extends PageResDto(SysDictDataEntity) {}

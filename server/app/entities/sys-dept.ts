@@ -9,8 +9,8 @@ import { SysUserEntity } from './sys-user'
 @Entity({ tableName: 'sys_dept' })
 export class SysDeptEntity extends BaseEntity {
   @ApiProperty({ description: '父部门ID' })
-  @Property({ type: 'bigint', nullable: true })
-  parentId?: bigint
+  @Property({ nullable: true })
+  parentId?: string
 
   @ApiProperty({ description: '部门键值' })
   @Property({ unique: true })

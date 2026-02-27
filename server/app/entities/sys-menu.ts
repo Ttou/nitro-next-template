@@ -8,8 +8,8 @@ import { SysRoleEntity } from './sys-role'
 @Entity({ tableName: 'sys_menu' })
 export class SysMenuEntity extends BaseEntity {
   @ApiProperty({ description: '父菜单ID' })
-  @Property({ type: 'bigint', nullable: true })
-  parentId?: bigint
+  @Property({ nullable: true })
+  parentId?: string
 
   @ApiProperty({ description: '菜单名称' })
   @Property()

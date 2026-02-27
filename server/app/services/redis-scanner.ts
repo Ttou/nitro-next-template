@@ -1,5 +1,6 @@
 import type { Redis } from '../providers'
 import { Inject, Injectable } from '@nestjs/common'
+import { delay } from '~shared/utils'
 import { REDIS } from '../providers'
 
 interface IRedisScannerOptions {
@@ -38,7 +39,7 @@ export class RedisScanner {
           'MATCH',
           pattern,
           'COUNT',
-          config.batchSize,
+          config.batchSize!,
         )
 
         cursor = nextCursor
@@ -46,19 +47,19 @@ export class RedisScanner {
         iterations++
 
         // 安全检查
-        if (iterations > config.maxIterations) {
+        if (iterations > config.maxIterations!) {
           console.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
           break
         }
 
-        if (allKeys.length >= config.maxKeys) {
+        if (allKeys.length >= config.maxKeys!) {
           console.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
           break
         }
 
         // 批次间延迟
-        if (config.delayBetweenBatches > 0) {
-          await delay(config.delayBetweenBatches)
+        if (config.delayBetweenBatches! > 0) {
+          await delay(config.delayBetweenBatches!)
         }
       } while (cursor !== '0')
 
@@ -99,7 +100,7 @@ export class RedisScanner {
         'MATCH',
         pattern,
         'COUNT',
-        config.batchSize,
+        config.batchSize!,
       )
 
       cursor = nextCursor
@@ -107,12 +108,12 @@ export class RedisScanner {
       iterations++
 
       // 安全检查
-      if (iterations > config.maxIterations) {
+      if (iterations > config.maxIterations!) {
         console.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
         break
       }
 
-      if (allKeys.length >= config.maxKeys) {
+      if (allKeys.length >= config.maxKeys!) {
         console.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
         break
       }
@@ -147,7 +148,7 @@ export class RedisScanner {
     const results = await pipeline.exec()
 
     return keys.map((key, index) => {
-      const [error, value] = results[index]
+      const [error, value] = results![index]!
       if (error) {
         console.error(`获取键 ${key} 的值失败:`, error)
         return { key, value: null, error: error.message }

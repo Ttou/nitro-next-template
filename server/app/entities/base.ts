@@ -1,11 +1,12 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
 import { ApiProperty } from '@nestjs/swagger'
+import { generateId } from '~shared/utils'
 
 @Entity({ abstract: true })
 export class BaseEntity {
   @ApiProperty({ description: '主键' })
-  @PrimaryKey({ type: 'bigint', autoincrement: true })
-  id!: bigint
+  @PrimaryKey()
+  id = generateId()
 
   @ApiProperty({ description: '创建人' })
   @Property({ nullable: true })

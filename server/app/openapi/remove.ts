@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ArrayNotEmpty } from 'class-validator'
+import { ArrayNotEmpty, IsUUID } from 'class-validator'
 
 /**
  * 删除请求传输对象
@@ -11,5 +11,6 @@ export class RemoveReqDto {
     items: { type: 'string' },
   })
   @ArrayNotEmpty({ message: '主键数组不能为空' })
-  ids: any[]
+  @IsUUID('7', { each: true, message: '主键格式不正确' })
+  ids: string[]
 }
