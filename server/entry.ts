@@ -1,5 +1,5 @@
 import { FastURL, toFetchHandler } from 'srvx/node'
-import { expressApp, initNestApp } from './app/main'
+import { serverApp, initNestApp } from './app/main'
 
 initNestApp()
 
@@ -15,10 +15,10 @@ export default {
     const { pathname } = new FastURL(request.url)
 
     if (SERVER_URLS.some(url => pathname.startsWith(url))) {
-      if (!expressApp) {
+      if (!serverApp) {
         return new Response('503 Service Unavailable', { status: 503 })
       }
-      return toFetchHandler(expressApp)(request)
+      return toFetchHandler(serverApp)(request)
     }
     return undefined
   },

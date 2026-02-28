@@ -1,6 +1,6 @@
+import type { ISchema } from '~server/app/extends'
 import { ApiProperty } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsUUID } from 'class-validator'
-import { ResultResDto } from '~server/app/openapi'
 
 export class AssignMenuForRoleReqDto {
   @ApiProperty({ description: '角色ID' })
@@ -21,4 +21,9 @@ export class FindAssignedMenuForRoleReqDto {
   id: string
 }
 
-export class FindAssignedMenuForRoleResDto extends ResultResDto([String]) {}
+export const FindAssignedMenuForRoleResDto: ISchema = {
+  type: 'array',
+  items: {
+    type: 'string',
+  },
+}

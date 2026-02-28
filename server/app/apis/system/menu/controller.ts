@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { AutoOperation, Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/openapi'
+import { RemoveReqDto } from '~server/app/extends'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, FindSystemMenuListResDto, UpdateSystemMenuReqDto } from './dto'
 import { SystemMenuService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemMenuController {
   }
 
   @AutoOperation({ summary: '查询菜单列表' })
-  @ApiOkResponse({ type: FindSystemMenuListResDto })
+  @ApiOkResponse({ schema: FindSystemMenuListResDto })
   @Permission('sys.menu.system.menu.findList')
   @Post('findList')
   async findList(@Body() dto: FindSystemMenuListReqDto) {

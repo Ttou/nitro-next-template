@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { AutoOperation, CacheKey, CacheTTL, Permission } from '~server/app/decorators'
+import { RemoveReqDto } from '~server/app/extends'
 import { CacheInterceptor } from '~server/app/interceptors'
-import { RemoveReqDto } from '~server/app/openapi'
 import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 

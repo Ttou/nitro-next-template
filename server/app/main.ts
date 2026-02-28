@@ -1,17 +1,17 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
-import type { Express } from 'express'
+import type { IServer } from './interfaces'
 import { NestFactory } from '@nestjs/core'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import basicAuth from 'express-basic-auth'
 import { AppModule } from './app'
-import { setupDev } from './dev'
 import { NestLogger } from './loggers'
+import { setupDev } from './setup-dev'
 import { IsDev } from './utils'
 
 export let nestApp: NestExpressApplication
-export let expressApp: Express
+export let serverApp: IServer
 
 export async function initNestApp() {
   nestApp = await NestFactory.create<NestExpressApplication>(
@@ -22,7 +22,7 @@ export async function initNestApp() {
       logger: new NestLogger(),
     },
   )
-  expressApp = nestApp.getHttpAdapter().getInstance()
+  serverApp = nestApp.getHttpAdapter().getInstance()
 
   const config = new DocumentBuilder()
     .setTitle('Nitro Template')
@@ -32,7 +32,7 @@ export async function initNestApp() {
     .build()
   const document = SwaggerModule.createDocument(nestApp, config)
 
-  expressApp.use('/openapi-ui', basicAuth({
+  serverApp.use('/openapi-ui', basicAuth({
     challenge: true,
     users: {
       openapi: '123456',
@@ -42,12 +42,12 @@ export async function initNestApp() {
     content: document,
   }))
 
-  expressApp.get('/openapi-json', (req, res) => {
+  serverApp.get('/openapi-json', (req, res) => {
     res.json(document)
   })
 
   if (IsDev) {
-    setupDev(nestApp, expressApp)
+    setupDev(nestApp, serverApp)
   }
 
   await nestApp.init()

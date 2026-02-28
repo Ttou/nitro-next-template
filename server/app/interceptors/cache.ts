@@ -1,5 +1,5 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
-import type { Request } from 'express'
+import type { IRequest } from '../interfaces'
 import { Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { of, tap } from 'rxjs'
@@ -21,7 +21,7 @@ export class CacheInterceptor implements NestInterceptor {
       return next.handle()
     }
 
-    const request = context.switchToHttp().getRequest<Request>()
+    const request = context.switchToHttp().getRequest<IRequest>()
     const cacheKey = cacheKeyFunc(request)
     const cacheTTL = this.reflector.get(CacheTTL, context.getHandler())
 

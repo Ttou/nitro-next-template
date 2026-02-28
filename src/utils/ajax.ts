@@ -31,7 +31,7 @@ ajax.interceptors.request.use((req) => {
 
 ajax.interceptors.response.use(
   (res) => {
-    return res.data.data
+    return res.data
   },
   (err) => {
     const res = err.response

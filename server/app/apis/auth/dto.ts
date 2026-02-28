@@ -1,6 +1,6 @@
+import type { ISchema } from '~server/app/extends'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, MinLength } from 'class-validator'
-import { ResultResDto } from '~server/app/openapi'
 
 /**
  * 登录请求传输对象
@@ -39,4 +39,6 @@ export class LoginReqDto {
 /**
  * 登录响应传输对象
  */
-export class LoginResDto extends ResultResDto(String) {}
+export const LoginResDto: ISchema = {
+  type: 'string',
+}

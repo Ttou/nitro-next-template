@@ -1,4 +1,4 @@
-import type { Request } from 'express'
+import type { IRequest } from './interfaces'
 import { ExpressAdapter } from '@bull-board/express'
 import { BullBoardModule } from '@bull-board/nestjs'
 import { MySqlDriver } from '@mikro-orm/mysql'
@@ -14,7 +14,7 @@ import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
-import { LoggingInterceptor, ResponseInterceptor } from './interceptors'
+import { LoggingInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
 import { SharedModule } from './shared'
 
@@ -32,7 +32,7 @@ import { SharedModule } from './shared'
         middleware: {
           mount: true,
           generateId: true,
-          idGenerator: (req: Request) =>
+          idGenerator: (req: IRequest) =>
             (req.headers['X-Request-Id'] as string) ?? generateId(),
         },
         guard: {
@@ -75,10 +75,6 @@ import { SharedModule } from './shared'
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ResponseInterceptor,
     },
     {
       provide: APP_GUARD,

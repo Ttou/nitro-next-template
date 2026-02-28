@@ -1,8 +1,8 @@
-import type { Request } from 'express'
 import type { StringValue } from 'ms'
+import type { IRequest } from '../interfaces'
 import { Reflector } from '@nestjs/core'
 
-type CacheFunc = (req: Request) => string
+type CacheFunc = (req: IRequest) => string
 
 export const CacheKey = Reflector.createDecorator<CacheFunc>()
 

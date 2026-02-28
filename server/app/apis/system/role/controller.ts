@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { AutoOperation, Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/openapi'
+import { RemoveReqDto } from '~server/app/extends'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 

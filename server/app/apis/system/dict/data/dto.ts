@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDictDataEntity } from '~server/app/entities'
-import { PageResDto, ResultResDto } from '~server/app/openapi'
+import { PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -51,6 +51,4 @@ export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
   id: string
 }
 
-class FindSystemDictDataListData extends PageResDto(SysDictDataEntity) {}
-
-export class FindSystemDictDataListResDto extends ResultResDto(FindSystemDictDataListData) {}
+export class FindSystemDictDataListResDto extends PageResDto(SysDictDataEntity) {}

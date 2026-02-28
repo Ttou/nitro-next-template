@@ -1,5 +1,4 @@
-import type { Request } from 'express'
-import type { ICtxClsStore } from '../utils'
+import type { ICtxClsStore, IRequest } from '../interfaces'
 import { isIP } from 'node:net'
 import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
@@ -11,7 +10,7 @@ import { SysConfigEntity, SysUserEntity } from '../entities'
 @Injectable()
 export class SharedService {
   constructor(
-    @Inject(CLS_REQ) private readonly request: Request,
+    @Inject(CLS_REQ) private readonly request: IRequest,
     private readonly clsService: ClsService<ICtxClsStore>,
     private readonly em: EntityManager,
   ) {}

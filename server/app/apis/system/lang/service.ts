@@ -1,7 +1,7 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysLangEntity } from '~server/app/entities'
-import { RemoveReqDto } from '~server/app/openapi'
+import { RemoveReqDto } from '~server/app/extends'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
 
 @Injectable()
@@ -28,7 +28,7 @@ export class SystemLangService {
     const result = await this.em.findAll(SysLangEntity)
 
     return result.reduce((acc, cur) => {
-      const langValue = JSON.parse(cur.langValue)[dto.langCode]
+      const langValue = JSON.parse(cur.langValue!)[dto.langCode]
 
       if (langValue) {
         acc[cur.langKey] = langValue

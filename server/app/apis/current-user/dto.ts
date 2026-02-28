@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
 import { SysUserEntity } from '~server/app/entities'
-import { ResultResDto } from '~server/app/openapi'
 import { IsEqual } from '~server/app/validators'
 
 /**
@@ -45,6 +44,6 @@ export class UpdateCurrentUserProfileReqDto {
   avatar?: string
 }
 
-export class CurrentUserGetInfoResDto extends ResultResDto(OmitType(SysUserEntity, ['password'])) {}
+export class CurrentUserGetInfoResDto extends OmitType(SysUserEntity, ['password'] as const) {}
 
 export class CurrentUserGetProfileResDto extends CurrentUserGetInfoResDto {}

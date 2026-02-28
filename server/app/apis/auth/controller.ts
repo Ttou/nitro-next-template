@@ -12,7 +12,7 @@ export class AuthController {
   ) {}
 
   @AutoOperation({ summary: '登录' })
-  @ApiOkResponse({ type: LoginResDto })
+  @ApiOkResponse({ schema: LoginResDto })
   @Public()
   @Post('login')
   async login(@Body() dto: LoginReqDto) {

@@ -1,8 +1,9 @@
+import type { ISchema } from '~server/app/extends'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysLangEntity } from '~server/app/entities'
-import { PageReqDto, PageResDto, ResultResDto } from '~server/app/openapi'
+import { PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
 import { LangEnumMap, LangEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -75,8 +76,15 @@ export class UpdateSystemLangReqDto extends CreateSystemLangReqDto {
   id: string
 }
 
-export class FindSystemLangAllResDto extends ResultResDto(Object) {}
+export const FindSystemLangAllResDto: ISchema = {
+  type: 'object',
+}
 
-export class FindSystemLangOneResDto extends ResultResDto([SysLangEntity]) {}
+export const FindSystemLangOneResDto: ISchema = {
+  type: 'array',
+  items: {
+    $ref: getSchemaPath(SysLangEntity),
+  },
+}
 
-export class FindSystemLangPageResDto extends ResultResDto([PageResDto(SysLangEntity)]) {}
+export class FindSystemLangPageResDto extends PageResDto(SysLangEntity) {}

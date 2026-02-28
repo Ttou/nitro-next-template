@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysPostEntity } from '~server/app/entities'
-import { PageReqDto, PageResDto, ResultResDto } from '~server/app/openapi'
+import { PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -57,6 +57,4 @@ export class UpdateSystemPostReqDto extends CreateSystemPostReqDto {
   id: string
 }
 
-class FindSystemPostPageData extends PageResDto(SysPostEntity) {}
-
-export class FindSystemPostPageResDto extends ResultResDto(FindSystemPostPageData) {}
+export class FindSystemPostPageResDto extends PageResDto(SysPostEntity) {}

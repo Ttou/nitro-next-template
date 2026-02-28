@@ -1,5 +1,5 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
-import type { Request } from 'express'
+import type { IRequest } from '../interfaces'
 import { Injectable } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { tap } from 'rxjs/operators'
@@ -12,7 +12,7 @@ export class LoggingInterceptor implements NestInterceptor {
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler) {
-    const req = context.switchToHttp().getRequest<Request>()
+    const req = context.switchToHttp().getRequest<IRequest>()
     const requestId = this.clsService.getId()
     const message = `${req.method} - ${req.path}`
 

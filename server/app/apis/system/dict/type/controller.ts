@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { AutoOperation, CacheKey, CacheTTL, Permission } from '~server/app/decorators'
+import { RemoveReqDto } from '~server/app/extends'
 import { CacheInterceptor } from '~server/app/interceptors'
-import { RemoveReqDto } from '~server/app/openapi'
 import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
@@ -22,7 +22,7 @@ export class SystemDictTypeController {
   }
 
   @AutoOperation({ summary: '根据字典类型查询字典数据' })
-  @ApiOkResponse({ type: FindSystemDictDetailByKeyResDto })
+  @ApiOkResponse({ schema: FindSystemDictDetailByKeyResDto })
   @CacheKey(req => `sys_dict:${req.query.dictType}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)

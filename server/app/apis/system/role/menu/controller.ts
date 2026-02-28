@@ -20,7 +20,7 @@ export class SystemRoleMenuController {
   }
 
   @AutoOperation({ summary: '查询角色已分配菜单' })
-  @ApiOkResponse({ type: FindAssignedMenuForRoleResDto })
+  @ApiOkResponse({ schema: FindAssignedMenuForRoleResDto })
   @Permission('sys.menu.system.roleMenu.assigned')
   @Post('assigned')
   async assigned(@Body() dto: FindAssignedMenuForRoleReqDto) {

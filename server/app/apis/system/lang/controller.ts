@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { AutoOperation, Public } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/openapi'
+import { RemoveReqDto } from '~server/app/extends'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangAllResDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
 
@@ -20,7 +20,7 @@ export class SystemLangController {
   }
 
   @AutoOperation({ summary: '查询系统语言' })
-  @ApiOkResponse({ type: FindSystemLangAllResDto })
+  @ApiOkResponse({ schema: FindSystemLangAllResDto })
   @Public()
   @Get('findAll')
   async findAll(@Query() dto: FindSystemLangAllReqDto) {
@@ -28,7 +28,7 @@ export class SystemLangController {
   }
 
   @AutoOperation({ summary: '查询系统语言词条' })
-  @ApiOkResponse({ type: FindSystemLangOneResDto })
+  @ApiOkResponse({ schema: FindSystemLangOneResDto })
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemLangOneReqDto) {
     return await this.systemLangService.findByKey(dto)
