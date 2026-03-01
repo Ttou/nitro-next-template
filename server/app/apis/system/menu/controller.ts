@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { AutoOperation, Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/extends'
+import { Permission } from '~server/app/decorators'
+import { AutoOperation, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, FindSystemMenuListResDto, UpdateSystemMenuReqDto } from './dto'
 import { SystemMenuService } from './service'
 

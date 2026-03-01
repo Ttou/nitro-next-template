@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { of, tap } from 'rxjs'
 import { CacheKey, CacheTTL } from '../decorators'
-import { logger } from '../loggers'
 import { CacheService } from '../services'
 
 @Injectable()
@@ -28,14 +27,11 @@ export class CacheInterceptor implements NestInterceptor {
     const cachedValue = await this.cacheService.get(cacheKey)
 
     if (cachedValue) {
-      logger.info(`Cache hit - ${cacheKey}`)
-
       return of(cachedValue)
     }
 
     return next.handle().pipe(
       tap((value) => {
-        logger.info(`Cache miss - ${cacheKey}`)
         this.cacheService.set(cacheKey, value, cacheTTL)
       }),
     )

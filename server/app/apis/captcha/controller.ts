@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { AutoOperation, Public } from '~server/app/decorators'
+import { Public } from '~server/app/decorators'
+import { AutoOperation } from '~server/app/extends'
 import { CaptchaService } from '~server/app/services'
 import { CaptchaImageResDto } from './dto'
 

@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { AutoOperation, Public } from '~server/app/decorators'
+import { Public } from '~server/app/decorators'
+import { AutoOperation } from '~server/app/extends'
 import { LoginReqDto, LoginResDto } from './dto'
 import { AuthService } from './service'
 

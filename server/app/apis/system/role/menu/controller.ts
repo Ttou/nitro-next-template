@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { AutoOperation, Permission } from '~server/app/decorators'
+import { Permission } from '~server/app/decorators'
+import { AutoOperation } from '~server/app/extends'
 import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto, FindAssignedMenuForRoleResDto } from './dto'
 import { SystemRoleMenuService } from './service'
 

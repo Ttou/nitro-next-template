@@ -1,7 +1,7 @@
-import type { Redis } from '../providers'
+import type { RedisClient } from '../extends'
 import { Inject, Injectable } from '@nestjs/common'
 import { delay } from '~shared/utils'
-import { REDIS } from '../providers'
+import { REDIS } from '../extends'
 
 interface IRedisScannerOptions {
   batchSize?: number
@@ -20,7 +20,7 @@ export class RedisScanner {
   }
 
   constructor(
-    @Inject(REDIS) private readonly redis: Redis,
+    @Inject(REDIS) private readonly redis: RedisClient,
   ) {}
 
   /**
