@@ -6,4 +6,5 @@ export const redisScannerDefaultOptions: IRedisScannerOptions = {
   batchSize: 1000,
   maxIterations: 100,
   maxKeys: 10000,
+  delayBetweenBatches: 0,
 }

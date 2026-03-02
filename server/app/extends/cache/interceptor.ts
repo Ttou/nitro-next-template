@@ -1,10 +1,10 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
-import type { IRequest } from '../interfaces'
+import type { IRequest } from '~server/app/interfaces'
 import { Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { of, tap } from 'rxjs'
-import { CacheKey, CacheTTL } from '../decorators'
-import { CacheService } from '../services'
+import { CacheKey, CacheTTL } from '~server/app/decorators'
+import { CacheService } from './service'
 
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {

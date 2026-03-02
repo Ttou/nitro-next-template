@@ -1,6 +1,6 @@
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { JwtModuleOptions } from '@nestjs/jwt'
-import type { RedisModuleOptions } from '../extends'
+import type { CacheModuleOptions, RedisModuleOptions } from '../extends'
 
 export class ConfigSchema {
   appName: string
@@ -9,6 +9,8 @@ export class ConfigSchema {
     cost?: number
     salt?: string | Uint8Array
   }
+
+  cache?: CacheModuleOptions
 
   jwt: JwtModuleOptions
 

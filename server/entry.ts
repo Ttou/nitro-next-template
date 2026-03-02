@@ -1,5 +1,5 @@
 import { FastURL, toFetchHandler } from 'srvx/node'
-import { serverApp, initNestApp } from './app/main'
+import { initNestApp, serverApp } from './app/main'
 
 initNestApp()
 

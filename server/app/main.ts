@@ -7,7 +7,9 @@ import { NestLogger } from './loggers'
 import { setupDev } from './setup-dev'
 import { IsDev } from './utils'
 
+// eslint-disable-next-line import/no-mutable-exports
 export let nestApp: NestExpressApplication
+// eslint-disable-next-line import/no-mutable-exports
 export let serverApp: IServer
 
 export async function initNestApp() {

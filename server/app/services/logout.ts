@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { CacheService } from './cache'
+import { CacheService } from '~server/app/extends'
 
 @Injectable()
 export class LogoutService {
