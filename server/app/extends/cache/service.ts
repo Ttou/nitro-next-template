@@ -2,7 +2,7 @@ import type { StringValue } from 'ms'
 import type { ConfigSchema } from '~server/app/configs'
 import type { RedisClient } from '~server/app/extends'
 import type { CacheModuleOptions } from './interface'
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { REDIS_CLIENT, RedisScannerService } from '~server/app/extends'
 import { parseMs } from '~shared/utils'
@@ -14,10 +14,10 @@ export class CacheService {
   private logger = new Logger(CacheService.name)
 
   constructor(
-    @Inject(REDIS_CLIENT) private readonly redisClient: RedisClient,
-    @Inject(CACHE_MODULE_OPTIONS) private readonly cacheModuleOptions: CacheModuleOptions,
-    private readonly redisScannerService: RedisScannerService,
-    private readonly configService: ConfigService,
+    @Inject(CACHE_MODULE_OPTIONS) private cacheModuleOptions: CacheModuleOptions,
+    @Inject(forwardRef(() => REDIS_CLIENT)) private redisClient: RedisClient,
+    @Inject(forwardRef(() => RedisScannerService)) private redisScannerService: RedisScannerService,
+    private configService: ConfigService,
   ) {}
 
   async set(key: string, value: number | string, expire: StringValue = null) {
@@ -29,7 +29,7 @@ export class CacheService {
         finalValue = JSON.stringify(value)
       }
 
-      const parsedExpire = parseMs('seconds', expire ?? this.ttl)
+      const parsedExpire = parseMs('seconds', expire ?? this.options.ttl)
       await this.redisClient.setex(cacheKey, parsedExpire, finalValue)
     }
     catch (error) {
