@@ -3,11 +3,11 @@ import type { RedisModuleOptions } from './interface'
 import { Logger } from '@nestjs/common'
 import { Redis } from 'ioredis'
 import { colorGreen } from '~shared/utils'
-import { REDIS } from './constant'
+import { REDIS_CLIENT } from './constant'
 import { REDIS_MODULE_OPTIONS } from './module-define'
 
 export const RedisProvider: FactoryProvider = {
-  provide: REDIS,
+  provide: REDIS_CLIENT,
   useFactory: async (options: RedisModuleOptions) => {
     const logger = new Logger('RedisModule')
     const redisClient = new Redis({
