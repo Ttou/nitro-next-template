@@ -6,7 +6,7 @@ import bcrypt from '@node-rs/bcrypt'
 @Injectable()
 export class HashService {
   constructor(
-    private readonly configService: ConfigService,
+    private configService: ConfigService,
   ) {}
 
   /**

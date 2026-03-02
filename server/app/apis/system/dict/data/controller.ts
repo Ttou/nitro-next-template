@@ -10,7 +10,7 @@ import { SystemDictDataService } from './service'
 @Controller()
 export class SystemDictDataController {
   constructor(
-    private readonly systemDictDataService: SystemDictDataService,
+    private systemDictDataService: SystemDictDataService,
   ) {}
 
   @AutoOperation({ summary: '创建字典数据' })

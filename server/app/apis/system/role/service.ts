@@ -7,7 +7,7 @@ import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDt
 @Injectable()
 export class SystemRoleService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemRoleReqDto) {

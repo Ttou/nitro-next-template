@@ -10,9 +10,9 @@ import { SysConfigEntity, SysUserEntity } from '../entities'
 @Injectable()
 export class SharedService {
   constructor(
-    @Inject(CLS_REQ) private readonly request: IRequest,
-    private readonly clsService: ClsService<ICtxClsStore>,
-    private readonly em: EntityManager,
+    @Inject(CLS_REQ) private request: IRequest,
+    private clsService: ClsService<ICtxClsStore>,
+    private em: EntityManager,
   ) {}
 
   /**

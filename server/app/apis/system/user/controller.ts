@@ -10,7 +10,7 @@ import { SystemUserService } from './service'
 @Controller()
 export class SystemUserController {
   constructor(
-    private readonly systemUserService: SystemUserService,
+    private systemUserService: SystemUserService,
   ) {}
 
   @AutoOperation({ summary: '创建系统用户' })

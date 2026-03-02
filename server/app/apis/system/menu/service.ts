@@ -7,7 +7,7 @@ import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDt
 @Injectable()
 export class SystemMenuService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemMenuReqDto) {

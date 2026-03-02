@@ -10,7 +10,7 @@ import { SystemRoleService } from './service'
 @Controller()
 export class SystemRoleController {
   constructor(
-    private readonly systemRoleService: SystemRoleService,
+    private systemRoleService: SystemRoleService,
   ) {}
 
   @AutoOperation({ summary: '创建系统角色' })

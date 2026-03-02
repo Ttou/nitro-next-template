@@ -6,10 +6,10 @@ import { generateId } from '~shared/utils'
 
 @Injectable()
 export class CaptchaService {
-  private readonly captchaKey = 'captcha:'
+  private captchaKey = 'captcha:'
 
   constructor(
-    private readonly cacheService: CacheService,
+    private cacheService: CacheService,
   ) {}
 
   async image() {

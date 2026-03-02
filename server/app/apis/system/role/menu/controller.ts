@@ -10,7 +10,7 @@ import { SystemRoleMenuService } from './service'
 @Controller()
 export class SystemRoleMenuController {
   constructor(
-    private readonly systemRoleMenuService: SystemRoleMenuService,
+    private systemRoleMenuService: SystemRoleMenuService,
   ) {}
 
   @AutoOperation({ summary: '为角色分配菜单' })

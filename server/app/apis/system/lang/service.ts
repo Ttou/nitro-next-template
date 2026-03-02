@@ -7,7 +7,7 @@ import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDt
 @Injectable()
 export class SystemLangService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemLangReqDto) {

@@ -8,7 +8,7 @@ import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfig
 @Injectable()
 export class SystemConfigService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemConfigReqDto) {

@@ -9,7 +9,7 @@ import { AuthService } from './service'
 @Controller()
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
+    private authService: AuthService,
   ) {}
 
   @AutoOperation({ summary: '登录' })

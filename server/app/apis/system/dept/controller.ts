@@ -10,7 +10,7 @@ import { SystemDeptService } from './service'
 @Controller()
 export class SystemDeptController {
   constructor(
-    private readonly systemDeptService: SystemDeptService,
+    private systemDeptService: SystemDeptService,
   ) {}
 
   @AutoOperation({ summary: '创建部门' })

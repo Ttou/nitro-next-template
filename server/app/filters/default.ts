@@ -9,7 +9,7 @@ import { logger } from '../loggers'
 @Catch()
 export class DefaultFilter implements ExceptionFilter {
   constructor(
-    private readonly httpAdapterHost: HttpAdapterHost,
+    private httpAdapterHost: HttpAdapterHost,
   ) {}
 
   catch(exception: unknown, host: ArgumentsHost) {

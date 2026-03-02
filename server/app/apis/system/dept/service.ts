@@ -7,7 +7,7 @@ import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDt
 @Injectable()
 export class SystemDeptService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemDeptReqDto) {

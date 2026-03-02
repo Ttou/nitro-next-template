@@ -9,7 +9,7 @@ import { CurrentUserService } from './service'
 @Controller()
 export class CurrentUserController {
   constructor(
-    private readonly currentUserService: CurrentUserService,
+    private currentUserService: CurrentUserService,
   ) {}
 
   @AutoOperation({ summary: '获取当前用户信息' })

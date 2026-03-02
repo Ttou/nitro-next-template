@@ -10,7 +10,7 @@ import { SystemPostService } from './service'
 @Controller()
 export class SystemPostController {
   constructor(
-    private readonly systemPostService: SystemPostService,
+    private systemPostService: SystemPostService,
   ) {}
 
   @AutoOperation({ summary: '创建岗位' })

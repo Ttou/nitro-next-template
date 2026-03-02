@@ -10,8 +10,8 @@ import { SharedService } from '~server/app/shared'
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector,
-    private readonly sharedService: SharedService,
+    private reflector: Reflector,
+    private sharedService: SharedService,
   ) {}
 
   async canActivate(context: ExecutionContext) {

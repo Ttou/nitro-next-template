@@ -8,7 +8,7 @@ import { logger } from '../loggers'
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   constructor(
-    private readonly clsService: ClsService,
+    private clsService: ClsService,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler) {

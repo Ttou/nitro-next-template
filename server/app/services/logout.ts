@@ -4,11 +4,11 @@ import { CacheService } from '~server/app/extends'
 
 @Injectable()
 export class LogoutService {
-  private readonly logoutKey = 'logout:'
+  private logoutKey = 'logout:'
 
   constructor(
-    private readonly cacheService: CacheService,
-    private readonly jwtService: JwtService,
+    private cacheService: CacheService,
+    private jwtService: JwtService,
   ) {}
 
   /**

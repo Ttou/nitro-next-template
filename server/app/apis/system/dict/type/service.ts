@@ -8,7 +8,7 @@ import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystem
 @Injectable()
 export class SystemDictTypeService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemDictTypeReqDto) {

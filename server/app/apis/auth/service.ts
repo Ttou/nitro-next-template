@@ -10,12 +10,12 @@ import { LoginReqDto } from './dto'
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly captchaService: CaptchaService,
-    private readonly jwtService: JwtService,
-    private readonly hashService: HashService,
-    private readonly logoutService: LogoutService,
-    private readonly sharedService: SharedService,
-    private readonly em: EntityManager,
+    private captchaService: CaptchaService,
+    private jwtService: JwtService,
+    private hashService: HashService,
+    private logoutService: LogoutService,
+    private sharedService: SharedService,
+    private em: EntityManager,
   ) {}
 
   async login(dto: LoginReqDto) {

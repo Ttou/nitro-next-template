@@ -10,7 +10,7 @@ import { SystemDictTypeService } from './service'
 @Controller()
 export class SystemDictTypeController {
   constructor(
-    private readonly systemDictTypeService: SystemDictTypeService,
+    private systemDictTypeService: SystemDictTypeService,
   ) {}
 
   @AutoOperation({ summary: '创建字典类型' })

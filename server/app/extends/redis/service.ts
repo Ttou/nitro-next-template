@@ -7,7 +7,7 @@ import { REDIS_CLIENT, redisScannerDefaultOptions } from './constant'
 @Injectable()
 export class RedisScannerService {
   constructor(
-    @Inject(REDIS_CLIENT) private readonly redisClient: RedisClient,
+    @Inject(REDIS_CLIENT) private redisClient: RedisClient,
   ) {}
 
   /**

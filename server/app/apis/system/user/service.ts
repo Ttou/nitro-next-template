@@ -9,8 +9,8 @@ import { CreateSystemUserReqDto, FindSystemUserPageReqDto, UpdateSystemUserReqDt
 @Injectable()
 export class SystemUserService {
   constructor(
-    private readonly em: EntityManager,
-    private readonly hashService: HashService,
+    private em: EntityManager,
+    private hashService: HashService,
   ) {}
 
   async create(dto: CreateSystemUserReqDto) {

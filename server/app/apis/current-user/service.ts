@@ -8,9 +8,9 @@ import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from 
 @Injectable()
 export class CurrentUserService {
   constructor(
-    private readonly hashService: HashService,
-    private readonly sharedService: SharedService,
-    private readonly em: EntityManager,
+    private hashService: HashService,
+    private sharedService: SharedService,
+    private em: EntityManager,
   ) {}
 
   async getInfo() {

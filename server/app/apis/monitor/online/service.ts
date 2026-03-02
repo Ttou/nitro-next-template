@@ -8,8 +8,8 @@ import { FindMonitorOnlinePageReqDto } from './dto'
 @Injectable()
 export class MonitorOnlineService {
   constructor(
-    private readonly em: EntityManager,
-    private readonly logoutService: LogoutService,
+    private em: EntityManager,
+    private logoutService: LogoutService,
   ) {}
 
   async findPage(dto: FindMonitorOnlinePageReqDto) {

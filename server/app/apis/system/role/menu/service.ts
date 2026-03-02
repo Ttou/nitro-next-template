@@ -6,7 +6,7 @@ import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './dto'
 @Injectable()
 export class SystemRoleMenuService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async assign(dto: AssignMenuForRoleReqDto) {

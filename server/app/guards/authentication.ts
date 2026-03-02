@@ -11,9 +11,9 @@ import { SharedService } from '~server/app/shared'
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
-    private readonly sharedService: SharedService,
+    private jwtService: JwtService,
+    private reflector: Reflector,
+    private sharedService: SharedService,
   ) {}
 
   async canActivate(context: ExecutionContext) {

@@ -9,8 +9,8 @@ import { CacheService } from './service'
 @Injectable()
 export class CacheInterceptor implements NestInterceptor {
   constructor(
-    private readonly reflector: Reflector,
-    private readonly cacheService: CacheService,
+    private reflector: Reflector,
+    private cacheService: CacheService,
   ) {}
 
   async intercept(context: ExecutionContext, next: CallHandler<any>) {

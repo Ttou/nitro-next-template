@@ -6,7 +6,7 @@ import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnal
 @Injectable()
 export class SystemPostAuthService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async allocateUser(dto: AllocateUserForPostReqDto) {

@@ -6,7 +6,7 @@ import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnal
 @Injectable()
 export class SystemRoleAuthService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async allocateUser(dto: AllocateUserForRoleReqDto) {

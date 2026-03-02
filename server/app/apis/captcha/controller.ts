@@ -9,7 +9,7 @@ import { CaptchaImageResDto } from './dto'
 @Controller()
 export class CaptchaController {
   constructor(
-    private readonly captchaService: CaptchaService,
+    private captchaService: CaptchaService,
   ) {}
 
   @AutoOperation({ summary: '图形验证码' })

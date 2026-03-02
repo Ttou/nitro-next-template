@@ -9,7 +9,7 @@ import { MonitorOnlineService } from './service'
 @ApiBearerAuth()
 @Controller()
 export class MonitorOnlineController {
-  constructor(private readonly monitorOnlineService: MonitorOnlineService) {}
+  constructor(private monitorOnlineService: MonitorOnlineService) {}
 
   @AutoOperation({ summary: '分页查询在线用户' })
   @ApiOkResponse({ type: FindMonitorOnlinePageResDto })

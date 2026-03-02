@@ -10,7 +10,7 @@ import { SystemLangService } from './service'
 @Controller()
 export class SystemLangController {
   constructor(
-    private readonly systemLangService: SystemLangService,
+    private systemLangService: SystemLangService,
   ) {}
 
   @AutoOperation({ summary: '创建系统语言' })

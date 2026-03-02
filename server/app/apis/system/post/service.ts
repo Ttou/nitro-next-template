@@ -7,7 +7,7 @@ import { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDt
 @Injectable()
 export class SystemPostService {
   constructor(
-    private readonly em: EntityManager,
+    private em: EntityManager,
   ) {}
 
   async create(dto: CreateSystemPostReqDto) {

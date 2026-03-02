@@ -9,7 +9,7 @@ import { SystemConfigService } from './service'
 @ApiBearerAuth()
 @Controller()
 export class SystemConfigController {
-  constructor(private readonly systemConfigService: SystemConfigService) {}
+  constructor(private systemConfigService: SystemConfigService) {}
 
   @AutoOperation({ summary: '创建系统配置' })
   @Permission('sys.menu.system.config.create')

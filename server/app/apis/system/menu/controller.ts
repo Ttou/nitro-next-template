@@ -10,7 +10,7 @@ import { SystemMenuService } from './service'
 @Controller()
 export class SystemMenuController {
   constructor(
-    private readonly systemMenuService: SystemMenuService,
+    private systemMenuService: SystemMenuService,
   ) {}
 
   @AutoOperation({ summary: '创建菜单' })

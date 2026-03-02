@@ -10,7 +10,7 @@ import { SystemPostAuthService } from './service'
 @Controller()
 export class SystemPostAuthController {
   constructor(
-    private readonly systemPostAuthService: SystemPostAuthService,
+    private systemPostAuthService: SystemPostAuthService,
   ) {}
 
   @AutoOperation({ summary: '为岗位分配用户' })
