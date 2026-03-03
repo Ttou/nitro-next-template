@@ -1,16 +1,16 @@
 import { Global, Module } from '@nestjs/common'
-import { LogoutService } from '../services'
-import { SharedService } from './service'
+import { ContextService } from './context'
+import { ParseService } from './parse'
 
 @Global()
 @Module({
   providers: [
-    LogoutService,
-    SharedService,
+    ContextService,
+    ParseService,
   ],
   exports: [
-    LogoutService,
-    SharedService,
+    ContextService,
+    ParseService,
   ],
 })
 export class SharedModule {}

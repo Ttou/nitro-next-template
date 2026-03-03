@@ -1,14 +1,12 @@
 import type { ICtxClsStore, IRequest } from '../interfaces'
-import { isIP } from 'node:net'
 import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
-import { UAParser } from 'ua-parser-js'
 import { YesOrNoEnum } from '~shared/enums'
 import { SysConfigEntity, SysUserEntity } from '../entities'
 
 @Injectable()
-export class SharedService {
+export class ContextService {
   constructor(
     @Inject(CLS_REQ) private request: IRequest,
     private clsService: ClsService<ICtxClsStore>,
@@ -101,33 +99,5 @@ export class SharedService {
     })
 
     return userSingleOnlineConfig!.configValue === YesOrNoEnum.YES
-  }
-
-  /**
-   * 解析用户代理字符串
-   * @param ua 用户代理字符串
-   */
-  parseUA(ua: string) {
-    return UAParser(ua)
-  }
-
-  /**
-   * 解析IP地址
-   * @param ip IP地址
-   */
-  async parseIP(ip: string) {
-    if (isIP(ip) === 0) {
-      return {
-        location: 'UNKNOWN',
-        ip: 'UNKNOWN',
-      }
-    }
-
-    // const result = await <any>('https://api.vore.top/api/IPdata', { method: 'GET', params: { ip } })
-
-    return {
-      location: '',
-      ip,
-    }
   }
 }

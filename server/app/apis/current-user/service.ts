@@ -2,19 +2,19 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysUserEntity } from '~server/app/entities'
 import { HashService } from '~server/app/extends'
-import { SharedService } from '~server/app/shared'
+import { ContextService } from '~server/app/shared'
 import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 
 @Injectable()
 export class CurrentUserService {
   constructor(
     private hashService: HashService,
-    private sharedService: SharedService,
+    private contextService: ContextService,
     private em: EntityManager,
   ) {}
 
   async getInfo() {
-    const currentUser = this.sharedService.getCurrentUser()
+    const currentUser = this.contextService.getCurrentUser()
 
     const userInfo = await this.em.findOne(SysUserEntity, {
       userName: { $eq: currentUser.userName },
@@ -27,7 +27,7 @@ export class CurrentUserService {
   }
 
   async getProfile() {
-    const currentUser = this.sharedService.getCurrentUser()
+    const currentUser = this.contextService.getCurrentUser()
 
     const userProfile = await this.em.findOne(SysUserEntity, {
       id: { $eq: currentUser.id },
@@ -39,7 +39,7 @@ export class CurrentUserService {
   }
 
   async updateProfile(data: UpdateCurrentUserProfileReqDto) {
-    const currentUser = this.sharedService.getCurrentUser()
+    const currentUser = this.contextService.getCurrentUser()
 
     const oldRecord = await this.em.findOne(SysUserEntity, {
       id: { $eq: currentUser.id },
@@ -53,7 +53,7 @@ export class CurrentUserService {
   }
 
   async updatePassword(data: UpdateCurrentUserPasswordReqDto) {
-    const currentUser = this.sharedService.getCurrentUser()
+    const currentUser = this.contextService.getCurrentUser()
     const { oldPassword, newPassword } = data
 
     const isMatch = await this.hashService.compare(oldPassword, currentUser.password)

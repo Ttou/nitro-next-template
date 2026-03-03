@@ -1,8 +1,6 @@
 import type { StringValue } from 'ms'
-import type { ConfigSchema } from '~server/app/configs'
 import type { CacheModuleOptions } from './interface'
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { merge } from 'es-toolkit'
 import { RedisService } from '~server/app/extends'
 import { parseMs } from '~shared/utils'
@@ -16,7 +14,6 @@ export class CacheService {
   constructor(
     @Inject(CACHE_MODULE_OPTIONS) private cacheModuleOptions: CacheModuleOptions,
     @Inject(forwardRef(() => RedisService)) private redisService: RedisService,
-    private configService: ConfigService,
   ) {}
 
   get options() {
@@ -102,6 +99,6 @@ export class CacheService {
   }
 
   private getCacheKey(key: string) {
-    return [this.configService.get<ConfigSchema['appName']>('appName'), this.options.keyPrefix, key].join(this.options.keyPrefixSeparator)
+    return [this.options.keyPrefix, key].join(this.options.keyPrefixSeparator)
   }
 }

@@ -1,22 +1,21 @@
 import type { IRequest } from './interfaces'
-import { ExpressAdapter } from '@bull-board/express'
-import { BullBoardModule } from '@bull-board/nestjs'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
+import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
-import basicAuth from 'express-basic-auth'
 import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, HashModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, HashModule, LogoutModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
+import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 
 @Module({
@@ -54,22 +53,14 @@ import { SharedModule } from './shared'
     CaptchaModule.register({
       isGlobal: true,
     }),
+    LogoutModule.register({
+      isGlobal: true,
+    }),
     HashModule.register({
       isGlobal: true,
     }),
-    BullBoardModule.forRootAsync({
-      useFactory: async () => {
-        return {
-          route: '/bull-ui',
-          adapter: ExpressAdapter,
-          middleware: basicAuth({
-            challenge: true,
-            users: {
-              bull: '123456',
-            },
-          }),
-        }
-      },
+    HttpModule.register({
+      global: true,
     }),
     JwtModule.registerAsync({
       global: true,
@@ -85,6 +76,7 @@ import { SharedModule } from './shared'
       },
       inject: [ConfigService],
     }),
+    QueuesModule,
     SharedModule,
     ApisModule,
   ],

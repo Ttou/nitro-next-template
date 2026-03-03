@@ -1,15 +1,22 @@
-import { Injectable } from '@nestjs/common'
+import type { LogoutModuleOptions } from './interface'
+import { Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { merge } from 'es-toolkit'
 import { CacheService } from '~server/app/extends'
+import { defaultOptions } from './constant'
+import { LOGOUT_MODULE_OPTIONS } from './module-define'
 
 @Injectable()
 export class LogoutService {
-  private logoutKey = 'logout:'
-
   constructor(
+    @Inject(LOGOUT_MODULE_OPTIONS) private logoutModuleOptions: LogoutModuleOptions,
     private cacheService: CacheService,
     private jwtService: JwtService,
   ) {}
+
+  get options() {
+    return merge(defaultOptions, this.logoutModuleOptions)
+  }
 
   /**
    * 添加到已登出
@@ -32,6 +39,6 @@ export class LogoutService {
   }
 
   private getCacheKey(tokenId: string) {
-    return this.logoutKey + tokenId
+    return [this.options.logoutKey, tokenId].join(this.cacheService.options.keyPrefixSeparator)
   }
 }

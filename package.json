@@ -21,6 +21,7 @@
     "@mikro-orm/nestjs": "6.1.1",
     "@mikro-orm/seeder": "^6.6.7",
     "@napi-rs/canvas": "0.1.95",
+    "@nestjs/axios": "4.0.1",
     "@nestjs/bullmq": "11.0.4",
     "@nestjs/common": "11.1.14",
     "@nestjs/config": "4.0.3",

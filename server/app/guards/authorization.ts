@@ -2,7 +2,7 @@ import type { CanActivate, ExecutionContext } from '@nestjs/common'
 import { ForbiddenException, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Permission } from '~server/app/decorators'
-import { SharedService } from '~server/app/shared'
+import { ContextService } from '~server/app/shared'
 
 /**
  * 鉴权守卫
@@ -11,7 +11,7 @@ import { SharedService } from '~server/app/shared'
 export class AuthorizationGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private sharedService: SharedService,
+    private contextService: ContextService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -21,7 +21,7 @@ export class AuthorizationGuard implements CanActivate {
       return true
     }
 
-    const hasPermission = await this.sharedService.isCurrentUserHasPermission(permission)
+    const hasPermission = await this.contextService.isCurrentUserHasPermission(permission)
 
     if (!hasPermission) {
       throw new ForbiddenException('没有权限访问')

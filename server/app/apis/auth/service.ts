@@ -1,28 +1,31 @@
+import type { Queue } from 'bullmq'
 import { EntityManager } from '@mikro-orm/core'
+import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { SysOnlineEntity, SysUserEntity } from '~server/app/entities'
-import { CaptchaService, HashService } from '~server/app/extends'
-import { LogoutService } from '~server/app/services'
-import { SharedService } from '~server/app/shared'
+import { CaptchaService, HashService, LogoutService } from '~server/app/extends'
+import { QueueNameEnum } from '~server/app/queues'
+import { ContextService } from '~server/app/shared'
 import { generateId } from '~shared/utils'
 import { LoginReqDto } from './dto'
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectQueue(QueueNameEnum.ONLINE_USER) private onlineUserQueue: Queue,
     private captchaService: CaptchaService,
     private jwtService: JwtService,
     private hashService: HashService,
     private logoutService: LogoutService,
-    private sharedService: SharedService,
+    private contextService: ContextService,
     private em: EntityManager,
   ) {}
 
   async login(dto: LoginReqDto) {
     const { captchaId, captchaValue, userName, password } = dto
 
-    const isCaseSensitive = await this.sharedService.isCaptchaCaseSensitive()
+    const isCaseSensitive = await this.contextService.isCaptchaCaseSensitive()
     const isVerify = await this.captchaService.verify(captchaId, captchaValue, isCaseSensitive)
 
     if (!isVerify) {
@@ -45,7 +48,7 @@ export class AuthService {
 
     const { token, tokenId } = this.createSign({ sub: oldRecord.id.toString() })
 
-    const isSingleOnline = await this.sharedService.isUserSingleOnline()
+    const isSingleOnline = await this.contextService.isUserSingleOnline()
 
     if (isSingleOnline) {
       const oldOnlineRecord = await this.em.findOne(SysOnlineEntity, {
@@ -60,13 +63,27 @@ export class AuthService {
       }
     }
 
-    await this.addToOnline(token, tokenId, oldRecord)
+    // #region 执行添加在线记录
+    const request = this.contextService.getRequest()
+    const userAgent = request.headers['user-agent']!
+    const ip = request.ip!
+    await this.onlineUserQueue.add(
+      '',
+      {
+        tokenId,
+        token,
+        user: oldRecord,
+        userAgent,
+        ip,
+      },
+    )
+    // #endregion
 
     return token
   }
 
   async logout() {
-    const token = this.sharedService.getToken()
+    const token = this.contextService.getToken()
     await this.logoutService.addToLogout(token)
   }
 
@@ -82,27 +99,5 @@ export class AuthService {
       token,
       tokenId: jti,
     }
-  }
-
-  private async addToOnline(token: string, tokenId: string, user: SysUserEntity) {
-    const request = this.sharedService.getRequest()
-    const userAgent = request.headers['user-agent']!
-    const ip = request.ip!
-
-    const usResult = this.sharedService.parseUA(userAgent)
-    const ipResult = await this.sharedService.parseIP(ip)
-
-    const online = this.em.create(SysOnlineEntity, {
-      tokenId,
-      token,
-      browser: [usResult.browser.name, usResult.browser.version].join(' '),
-      os: [usResult.os.name, usResult.os.version].join(' '),
-      ip: ipResult.ip,
-      location: ipResult.location,
-      loginTime: new Date(),
-      user,
-    })
-
-    await this.em.persist(online).flush()
   }
 }

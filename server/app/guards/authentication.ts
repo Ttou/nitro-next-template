@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { Public } from '~server/app/decorators'
-import { SharedService } from '~server/app/shared'
+import { ContextService } from '~server/app/shared'
 
 /**
  * 登录守卫
@@ -13,7 +13,7 @@ export class AuthenticationGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
-    private sharedService: SharedService,
+    private contextService: ContextService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -26,7 +26,7 @@ export class AuthenticationGuard implements CanActivate {
       return true
     }
 
-    const token = this.sharedService.getToken()
+    const token = this.contextService.getToken()
 
     try {
       const res = await this.jwtService.verify(token, {
@@ -34,7 +34,7 @@ export class AuthenticationGuard implements CanActivate {
       })
 
       if (typeof res !== 'string') {
-        await this.sharedService.setCurrentUser(res.payload)
+        await this.contextService.setCurrentUser(res.payload)
 
         return true
       }
