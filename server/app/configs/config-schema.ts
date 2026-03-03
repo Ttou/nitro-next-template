@@ -1,6 +1,6 @@
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { JwtModuleOptions } from '@nestjs/jwt'
-import type { CacheModuleOptions, RedisModuleOptions } from '../extends'
+import type { CacheModuleOptions, CaptchaModuleOptions, RedisModuleOptions } from '../extends'
 
 export class ConfigSchema {
   appName: string
@@ -11,6 +11,8 @@ export class ConfigSchema {
   }
 
   cache?: CacheModuleOptions
+
+  captcha?: CaptchaModuleOptions
 
   jwt: JwtModuleOptions
 

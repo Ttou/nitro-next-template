@@ -1,8 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/app/decorators'
-import { AutoOperation, AutoResponse } from '~server/app/extends'
-import { CaptchaService } from '~server/app/services'
+import { AutoOperation, AutoResponse, CaptchaService } from '~server/app/extends'
 import { CaptchaImageResDto } from './dto'
 
 @ApiTags('验证码接口')

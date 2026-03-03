@@ -3,6 +3,7 @@ import type { ConfigSchema } from '~server/app/configs'
 import type { CacheModuleOptions } from './interface'
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { merge } from 'es-toolkit'
 import { RedisService } from '~server/app/extends'
 import { parseMs } from '~shared/utils'
 import { defaultOptions } from './constant'
@@ -17,6 +18,10 @@ export class CacheService {
     @Inject(forwardRef(() => RedisService)) private redisService: RedisService,
     private configService: ConfigService,
   ) {}
+
+  get options() {
+    return merge(defaultOptions, this.cacheModuleOptions)
+  }
 
   async set(key: string, value: number | string, expire: StringValue = null) {
     try {
@@ -93,13 +98,6 @@ export class CacheService {
     }
     catch (error) {
       this.logger.error(`清空缓存失败: ${error}`)
-    }
-  }
-
-  private get options() {
-    return {
-      ...defaultOptions,
-      ...this.cacheModuleOptions,
     }
   }
 

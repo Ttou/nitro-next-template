@@ -12,7 +12,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor } from './interceptors'
@@ -49,6 +49,9 @@ import { SharedModule } from './shared'
       inject: [ConfigService],
     }),
     CacheModule.register({
+      isGlobal: true,
+    }),
+    CaptchaModule.register({
       isGlobal: true,
     }),
     BullBoardModule.forRootAsync({

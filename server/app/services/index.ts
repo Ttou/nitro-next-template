@@ -1,3 +1,2 @@
-export * from './captcha'
 export * from './hash'
 export * from './logout'
