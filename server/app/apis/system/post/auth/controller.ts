@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
+import { AutoOperation, AutoResponse } from '~server/app/extends'
 import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindAllocatedUserPageForPostResDto, FindUnallocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostResDto, UnallocateUserForPostReqDto } from './dto'
 import { SystemPostAuthService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemPostAuthController {
   }
 
   @AutoOperation({ summary: '查询岗位已分配用户分页' })
-  @ApiOkResponse({ type: FindAllocatedUserPageForPostResDto })
+  @AutoResponse({ type: FindAllocatedUserPageForPostResDto })
   @Permission('sys.menu.system.postAuth.findAllocatedUserPage')
   @Post('findAllocatedUserPage')
   async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForPostReqDto) {
@@ -29,7 +29,7 @@ export class SystemPostAuthController {
   }
 
   @AutoOperation({ summary: '查询岗位未分配用户分页' })
-  @ApiOkResponse({ type: FindUnallocatedUserPageForPostResDto })
+  @AutoResponse({ type: FindUnallocatedUserPageForPostResDto })
   @Permission('sys.menu.system.postAuth.findUnallocatedUserPage')
   @Post('findUnallocatedUserPage')
   async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForPostReqDto) {

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemPostReqDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
 import { SystemPostService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemPostController {
   }
 
   @AutoOperation({ summary: '查询岗位分页列表' })
-  @ApiOkResponse({ type: FindSystemPostPageResDto })
+  @AutoResponse({ type: FindSystemPostPageResDto })
   @Permission('sys.menu.system.post.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindSystemPostPageReqDto) {

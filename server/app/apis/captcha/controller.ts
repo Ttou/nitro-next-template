@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
+import { AutoOperation, AutoResponse } from '~server/app/extends'
 import { CaptchaService } from '~server/app/services'
 import { CaptchaImageResDto } from './dto'
 
@@ -13,7 +13,7 @@ export class CaptchaController {
   ) {}
 
   @AutoOperation({ summary: '图形验证码' })
-  @ApiOkResponse({ type: CaptchaImageResDto })
+  @AutoResponse({ type: CaptchaImageResDto })
   @Public()
   @Get('image')
   async image() {

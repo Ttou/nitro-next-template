@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemRoleController {
   }
 
   @AutoOperation({ summary: '查询系统角色分页列表' })
-  @ApiOkResponse({ type: FindSystemRolePageResDto })
+  @AutoResponse({ type: FindSystemRolePageResDto })
   @Permission('sys.menu.system.role.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindSystemRolePageReqDto) {

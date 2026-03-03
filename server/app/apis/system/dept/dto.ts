@@ -1,6 +1,5 @@
-import type { ISchema } from '~server/app/extends'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDeptEntity } from '~server/app/entities'
 import { IsEnumValues } from '~server/app/validators'
@@ -52,9 +51,4 @@ export class UpdateSystemDeptReqDto extends CreateSystemDeptReqDto {
   id: string
 }
 
-export const FindSystemDeptListResDto: ISchema = {
-  type: 'array',
-  items: {
-    $ref: getSchemaPath(SysDeptEntity),
-  },
-}
+export class FindSystemDeptListResDto extends SysDeptEntity {}

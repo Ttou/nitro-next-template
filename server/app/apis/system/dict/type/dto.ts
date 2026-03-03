@@ -1,6 +1,5 @@
-import type { ISchema } from '~server/app/extends'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDictDataEntity, SysDictTypeEntity } from '~server/app/entities'
 import { PageReqDto, PageResDto } from '~server/app/extends'
@@ -64,11 +63,6 @@ export class FindSystemDictDetailByKeyReqDto {
   dictType: string
 }
 
-export const FindSystemDictDetailByKeyResDto: ISchema = {
-  type: 'array',
-  items: {
-    $ref: getSchemaPath(SysDictDataEntity),
-  },
-}
+export class FindSystemDictDetailByKeyResDto extends SysDictDataEntity {}
 
 export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntity) {}

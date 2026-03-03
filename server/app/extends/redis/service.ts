@@ -5,10 +5,14 @@ import { delay } from '~shared/utils'
 import { REDIS_CLIENT, redisScannerDefaultOptions } from './constant'
 
 @Injectable()
-export class RedisScannerService {
+export class RedisService {
   constructor(
     @Inject(REDIS_CLIENT) private redisClient: RedisClient,
   ) {}
+
+  get client() {
+    return this.redisClient
+  }
 
   /**
    * 扫描返回键名数组

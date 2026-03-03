@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
+import { AutoOperation, AutoResponse } from '~server/app/extends'
 import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindAllocatedUserPageForRoleResDto, FindUnallocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleResDto, UnallocateUserForRoleReqDto } from './dto'
 import { SystemRoleAuthService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemRoleAuthController {
   }
 
   @AutoOperation({ summary: '查询角色已分配用户分页' })
-  @ApiOkResponse({ type: FindAllocatedUserPageForRoleResDto })
+  @AutoResponse({ type: FindAllocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findAllocatedUserPage')
   @Post('findAllocatedUserPage')
   async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForRoleReqDto) {
@@ -29,7 +29,7 @@ export class SystemRoleAuthController {
   }
 
   @AutoOperation({ summary: '查询角色未分配用户分页' })
-  @ApiOkResponse({ type: FindUnallocatedUserPageForRoleResDto })
+  @AutoResponse({ type: FindUnallocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findUnallocatedUserPage')
   @Post('findUnallocatedUserPage')
   async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForRoleReqDto) {

@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
-import { LoginReqDto, LoginResDto } from './dto'
+import { AutoOperation, AutoResponse } from '~server/app/extends'
+import { LoginReqDto } from './dto'
 import { AuthService } from './service'
 
 @ApiTags('鉴权接口')
@@ -13,7 +13,7 @@ export class AuthController {
   ) {}
 
   @AutoOperation({ summary: '登录' })
-  @ApiOkResponse({ schema: LoginResDto })
+  @AutoResponse({ type: String })
   @Public()
   @Post('login')
   async login(@Body() dto: LoginReqDto) {

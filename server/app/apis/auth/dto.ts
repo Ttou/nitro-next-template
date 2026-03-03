@@ -1,4 +1,3 @@
-import type { ISchema } from '~server/app/extends'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, MinLength } from 'class-validator'
 
@@ -34,11 +33,4 @@ export class LoginReqDto {
   @ApiProperty({ description: '验证码值', example: '' })
   @IsNotEmpty({ message: '验证码值不能为空' })
   captchaValue: string
-}
-
-/**
- * 登录响应传输对象
- */
-export const LoginResDto: ISchema = {
-  type: 'string',
 }

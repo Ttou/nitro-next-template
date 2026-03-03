@@ -1,18 +1,16 @@
 import type { DynamicModule } from '@nestjs/common'
 import { Module } from '@nestjs/common'
-import { REDIS_CLIENT } from './constant'
 import { ASYNC_OPTIONS_TYPE, ConfigurableModuleClass, OPTIONS_TYPE } from './module-define'
 import { RedisProvider } from './provider'
-import { RedisScannerService } from './service'
+import { RedisService } from './service'
 
 @Module({
   providers: [
     RedisProvider,
-    RedisScannerService,
+    RedisService,
   ],
   exports: [
-    REDIS_CLIENT,
-    RedisScannerService,
+    RedisService,
   ],
 })
 export class RedisModule extends ConfigurableModuleClass {

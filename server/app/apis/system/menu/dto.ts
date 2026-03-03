@@ -1,6 +1,5 @@
-import type { ISchema } from '~server/app/extends'
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysMenuEntity } from '~server/app/entities'
@@ -94,9 +93,4 @@ export class UpdateSystemMenuReqDto extends CreateSystemMenuReqDto {
   id: string
 }
 
-export const FindSystemMenuListResDto: ISchema = {
-  type: 'array',
-  items: {
-    $ref: getSchemaPath(SysMenuEntity),
-  },
-}
+export class FindSystemMenuListResDto extends SysMenuEntity {}

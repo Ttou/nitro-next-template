@@ -1,10 +1,9 @@
 import type { StringValue } from 'ms'
 import type { ConfigSchema } from '~server/app/configs'
-import type { RedisClient } from '~server/app/extends'
 import type { CacheModuleOptions } from './interface'
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { REDIS_CLIENT, RedisScannerService } from '~server/app/extends'
+import { RedisService } from '~server/app/extends'
 import { parseMs } from '~shared/utils'
 import { defaultOptions } from './constant'
 import { CACHE_MODULE_OPTIONS } from './module-define'
@@ -15,8 +14,7 @@ export class CacheService {
 
   constructor(
     @Inject(CACHE_MODULE_OPTIONS) private cacheModuleOptions: CacheModuleOptions,
-    @Inject(forwardRef(() => REDIS_CLIENT)) private redisClient: RedisClient,
-    @Inject(forwardRef(() => RedisScannerService)) private redisScannerService: RedisScannerService,
+    @Inject(forwardRef(() => RedisService)) private redisService: RedisService,
     private configService: ConfigService,
   ) {}
 
@@ -30,7 +28,7 @@ export class CacheService {
       }
 
       const parsedExpire = parseMs('seconds', expire ?? this.options.ttl)
-      await this.redisClient.setex(cacheKey, parsedExpire, finalValue)
+      await this.redisService.client.setex(cacheKey, parsedExpire, finalValue)
     }
     catch (error) {
       console.error(`缓存设置失败: ${error}`, { 0: CacheService.name })
@@ -40,7 +38,7 @@ export class CacheService {
   async get(key: string) {
     try {
       const cacheKey = this.getCacheKey(key)
-      const value = await this.redisClient.get(cacheKey)
+      const value = await this.redisService.client.get(cacheKey)
       if (!value)
         return null
 
@@ -60,7 +58,7 @@ export class CacheService {
   async delete(key: string) {
     try {
       const cacheKey = this.getCacheKey(key)
-      await this.redisClient.del(cacheKey)
+      await this.redisService.client.del(cacheKey)
     }
     catch (error) {
       this.logger.error(`删除缓存失败: ${error}`)
@@ -75,7 +73,7 @@ export class CacheService {
 
       const cacheKeys = keys.map(key => this.getCacheKey(key))
 
-      await this.redisClient.del(...cacheKeys)
+      await this.redisService.client.del(...cacheKeys)
     }
     catch (error) {
       this.logger.error(`删除多个缓存失败: ${error}`)
@@ -85,13 +83,13 @@ export class CacheService {
   async clear() {
     try {
       const pattern = this.getCacheKey('*')
-      const keys = await this.redisScannerService.scan(pattern)
+      const keys = await this.redisService.scan(pattern)
 
       if (keys.length === 0) {
         return
       }
 
-      await this.redisClient.del(...keys)
+      await this.redisService.client.del(...keys)
     }
     catch (error) {
       this.logger.error(`清空缓存失败: ${error}`)

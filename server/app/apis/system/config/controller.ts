@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
-import { AutoOperation, CacheInterceptor, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, AutoResponse, CacheInterceptor, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 
@@ -19,7 +19,7 @@ export class SystemConfigController {
   }
 
   @AutoOperation({ summary: '根据键名查询系统配置' })
-  @ApiOkResponse({ type: FindSystemConfigByKeyResDto })
+  @AutoResponse({ type: FindSystemConfigByKeyResDto })
   @CacheKey(req => `sys_config:${req.query.configKey}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)
@@ -29,7 +29,7 @@ export class SystemConfigController {
   }
 
   @AutoOperation({ summary: '查询系统配置分页列表' })
-  @ApiOkResponse({ type: FindSystemConfigPageResDto })
+  @AutoResponse({ type: FindSystemConfigPageResDto })
   @Permission('sys.menu.system.config.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindSystemConfigPageReqDto) {
