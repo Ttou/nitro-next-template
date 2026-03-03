@@ -1,5 +1,6 @@
 export * from './cache'
 export * from './captcha'
 export * from './excel'
+export * from './hash'
 export * from './openapi'
 export * from './redis'
