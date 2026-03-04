@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/app/decorators'
-import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
 
@@ -20,7 +20,7 @@ export class SystemLangController {
   }
 
   @AutoOperation({ summary: '查询系统语言' })
-  @AutoResponse({ type: Object })
+  @ApiOkResponse({ type: Object })
   @Public()
   @Get('findAll')
   async findAll(@Query() dto: FindSystemLangAllReqDto) {
@@ -28,14 +28,14 @@ export class SystemLangController {
   }
 
   @AutoOperation({ summary: '查询系统语言词条' })
-  @AutoResponse({ type: [FindSystemLangOneResDto] })
+  @ApiOkResponse({ type: [FindSystemLangOneResDto] })
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemLangOneReqDto) {
     return await this.systemLangService.findByKey(dto)
   }
 
   @AutoOperation({ summary: '查询系统语言词条分页' })
-  @AutoResponse({ type: FindSystemLangPageResDto })
+  @ApiOkResponse({ type: FindSystemLangPageResDto })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemLangPageReqDto) {
     return await this.systemLangService.findPage(dto)

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, FindSystemDeptListResDto, UpdateSystemDeptReqDto } from './dto'
 import { SystemDeptService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemDeptController {
   }
 
   @AutoOperation({ summary: '查询部门列表' })
-  @AutoResponse({ type: [FindSystemDeptListResDto] })
+  @ApiOkResponse({ type: [FindSystemDeptListResDto] })
   @Permission('sys.menu.system.dept.findList')
   @Post('findList')
   async findList(@Body() dto: FindSystemDeptListReqDto) {

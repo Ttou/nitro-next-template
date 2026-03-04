@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, AutoResponse } from '~server/app/extends'
+import { AutoOperation } from '~server/app/extends'
 import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './dto'
 import { SystemRoleMenuService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemRoleMenuController {
   }
 
   @AutoOperation({ summary: '查询角色已分配菜单' })
-  @AutoResponse({ type: [String] })
+  @ApiOkResponse({ type: [String] })
   @Permission('sys.menu.system.roleMenu.assigned')
   @Post('assigned')
   async assigned(@Body() dto: FindAssignedMenuForRoleReqDto) {

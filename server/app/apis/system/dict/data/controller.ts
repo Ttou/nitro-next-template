@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
 import { SystemDictDataService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemDictDataController {
   }
 
   @AutoOperation({ summary: '查询字典数据列表' })
-  @AutoResponse({ type: [FindSystemDictDataListResDto] })
+  @ApiOkResponse({ type: [FindSystemDictDataListResDto] })
   @Permission('sys.menu.system.dictData.findList')
   @Post('findList')
   async findList(@Body() dto: FindSystemDictDataListReqDto) {

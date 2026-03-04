@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation, AutoResponse, RemoveReqDto } from '~server/app/extends'
+import { AutoOperation, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemUserReqDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
@@ -21,7 +21,7 @@ export class SystemUserController {
   }
 
   @AutoOperation({ summary: '查询系统用户分页列表' })
-  @AutoResponse({ type: FindSystemUserPageResDto })
+  @ApiOkResponse({ type: FindSystemUserPageResDto })
   @Permission('sys.menu.system.user.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindSystemUserPageReqDto) {
