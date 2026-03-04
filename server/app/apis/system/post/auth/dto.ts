@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysUserEntity } from '~server/app/entities'
+import { SysPostEntityNoRelations, SysUserEntityNoRelations } from '~server/app/entities'
 import { PageReqDto, PageResDto } from '~server/app/extends'
 
 export class FindAllocatedUserPageForPostReqDto extends PageReqDto {
@@ -34,6 +34,11 @@ export class AllocateUserForPostReqDto {
 
 export class UnallocateUserForPostReqDto extends AllocateUserForPostReqDto {}
 
-export class FindAllocatedUserPageForPostResDto extends PageResDto(SysUserEntity) {}
+class SysUserEntityWithPosts extends SysUserEntityNoRelations {
+  @ApiProperty({ description: '岗位列表', type: () => [SysPostEntityNoRelations] })
+  posts: SysPostEntityNoRelations[]
+}
+
+export class FindAllocatedUserPageForPostResDto extends PageResDto(SysUserEntityWithPosts) {}
 
 export class FindUnallocatedUserPageForPostResDto extends FindAllocatedUserPageForPostResDto {}

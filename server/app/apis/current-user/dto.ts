@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
-import { SysUserEntity } from '~server/app/entities'
+import { SysMenuEntityNoRelations, SysRoleEntityNoRelations, SysUserEntity, SysUserEntityNoRelations } from '~server/app/entities'
 import { IsEqual } from '~server/app/validators'
 
 /**
@@ -44,6 +44,14 @@ export class UpdateCurrentUserProfileReqDto {
   avatar?: string
 }
 
-export class CurrentUserGetInfoResDto extends OmitType(SysUserEntity, ['password'] as const) {}
+class SysRoleEntityWithMenusRelation extends SysRoleEntityNoRelations {
+  @ApiProperty({ description: '菜单列表', type: () => [SysMenuEntityNoRelations] })
+  menus: SysMenuEntityNoRelations[]
+}
 
-export class CurrentUserGetProfileResDto extends CurrentUserGetInfoResDto {}
+export class CurrentUserGetInfoResDto extends OmitType(SysUserEntityNoRelations, ['password'] as const) {
+  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityWithMenusRelation] })
+  roles: SysRoleEntityWithMenusRelation[]
+}
+
+export class CurrentUserGetProfileResDto extends OmitType(SysUserEntityNoRelations, ['password'] as const) {}

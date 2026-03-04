@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
-import { SysOnlineEntity, SysUserEntity } from '~server/app/entities'
+import { SysOnlineEntity, SysOnlineEntityNoRelations, SysUserEntityNoRelations } from '~server/app/entities'
 import { PageReqDto, PageResDto } from '~server/app/extends'
 
 /**
@@ -26,7 +26,12 @@ export class FindMonitorOnlinePageReqDto extends PageReqDto {
   endTime?: string
 }
 
+class SysOnlineEntityNoToken extends OmitType(SysOnlineEntityNoRelations, ['token']) {
+  @ApiProperty({ description: '用户', type: () => SysUserEntityNoRelations })
+  user: SysUserEntityNoRelations
+}
+
 /**
  * 分页查询在线用户响应
  */
-export class FindMonitorOnlinePageResDto extends PageResDto(SysOnlineEntity) {}
+export class FindMonitorOnlinePageResDto extends PageResDto(SysOnlineEntityNoToken) {}

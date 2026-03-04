@@ -79,6 +79,4 @@ export class UpdateSystemConfigReqDto extends CreateSystemConfigReqDto {
 
 export class FindSystemConfigByKeyResDto extends SysConfigEntity {}
 
-class FindSystemConfigPageData extends PageResDto(SysConfigEntity) {}
-
-export class FindSystemConfigPageResDto extends FindSystemConfigPageData {}
+export class FindSystemConfigPageResDto extends PageResDto(SysConfigEntity) {}

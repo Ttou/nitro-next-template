@@ -2,7 +2,7 @@ import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysMenuEntity } from '~server/app/entities'
+import { SysMenuEntityNoRelations } from '~server/app/entities'
 import { IsEnumValues } from '~server/app/validators'
 import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -93,4 +93,4 @@ export class UpdateSystemMenuReqDto extends CreateSystemMenuReqDto {
   id: string
 }
 
-export class FindSystemMenuListResDto extends SysMenuEntity {}
+export class FindSystemMenuListResDto extends SysMenuEntityNoRelations {}

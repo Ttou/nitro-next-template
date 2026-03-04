@@ -20,7 +20,7 @@ export class SystemRoleAuthService {
     }, { populate: ['roles'] })
 
     for (const user of users) {
-      user.roles.add(role)
+      user.roles.add(role!)
     }
 
     await this.em.persist(users).flush()

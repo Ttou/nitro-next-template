@@ -1,7 +1,7 @@
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
-import { SysUserEntity } from '~server/app/entities'
+import { SysUserEntityNoRelations } from '~server/app/entities'
 import { PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
@@ -85,4 +85,6 @@ export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
   id: string
 }
 
-export class FindSystemUserPageResDto extends PageResDto(SysUserEntity) {}
+class SysUserEntityNoRelationsNoPassword extends OmitType(SysUserEntityNoRelations, ['password'] as const) {}
+
+export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelationsNoPassword) {}

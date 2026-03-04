@@ -20,13 +20,13 @@ export class SystemRoleMenuService {
       id: { $in: dto.menuIds },
     })
 
-    role.menus.removeAll()
+    role!.menus.removeAll()
 
     for (const menu of menus) {
-      role.menus.add(menu)
+      role!.menus.add(menu)
     }
 
-    await this.em.persist(role).flush()
+    await this.em.persist(role!).flush()
   }
 
   async assigned(dto: FindAssignedMenuForRoleReqDto) {
@@ -34,6 +34,6 @@ export class SystemRoleMenuService {
       id: { $eq: dto.id },
     }, { populate: ['menus'] })
 
-    return role.menus.map(v => String(v.id))
+    return role!.menus.map(v => String(v.id))
   }
 }

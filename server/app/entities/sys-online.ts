@@ -1,11 +1,11 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
 @Entity({ tableName: 'sys_online' })
 export class SysOnlineEntity {
-  @ApiProperty({ description: '主键' })
+  @ApiProperty({ description: '主键', type: String })
   @PrimaryKey()
   id = generateId()
 
@@ -41,3 +41,5 @@ export class SysOnlineEntity {
   @ManyToOne(() => SysUserEntity, { joinColumn: 'user_id' })
   user: SysUserEntity
 }
+
+export class SysOnlineEntityNoRelations extends OmitType(SysOnlineEntity, ['user'] as const) {}

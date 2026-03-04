@@ -1,6 +1,6 @@
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { Collection, Entity, Enum, ManyToMany, Property } from '@mikro-orm/core'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 import { SysRoleEntity } from './sys-role'
@@ -67,3 +67,5 @@ export class SysMenuEntity extends BaseEntity {
   @ManyToMany(() => SysRoleEntity, role => role.menus)
   roles = new Collection<SysRoleEntity>(this)
 }
+
+export class SysMenuEntityNoRelations extends OmitType(SysMenuEntity, ['roles'] as const) {}

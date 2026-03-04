@@ -20,7 +20,7 @@ export class SystemPostAuthService {
     }, { populate: ['posts'] })
 
     for (const user of users) {
-      user.posts.add(post)
+      user.posts.add(post!)
     }
 
     await this.em.persist(users).flush()

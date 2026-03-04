@@ -1,6 +1,6 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection, Entity, Enum, ManyToMany, Property } from '@mikro-orm/core'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 import { SysDeptEntity } from './sys-dept'
@@ -61,3 +61,5 @@ export class SysUserEntity extends BaseEntity {
   @ManyToMany(() => SysRoleEntity, 'users', { owner: true, ref: true, pivotTable: 'rel_user_role', joinColumn: 'user_id', inverseJoinColumn: 'role_id' })
   roles = new Collection<SysRoleEntity>(this)
 }
+
+export class SysUserEntityNoRelations extends OmitType(SysUserEntity, ['depts', 'posts', 'roles'] as const) {}

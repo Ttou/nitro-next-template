@@ -43,7 +43,7 @@ export class SystemUserService {
         { sex: rest.sex ? { $eq: rest.sex } : {} },
         { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
       ],
-    }, { limit: pageSize, offset: page - 1 })
+    }, { limit: pageSize, offset: page - 1, exclude: ['password'] })
 
     return { page, pageSize, data, total }
   }
