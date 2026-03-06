@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
 import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindAllocatedUserPageForRoleResDto, FindUnallocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleResDto, UnallocateUserForRoleReqDto } from './dto'
 import { SystemRoleAuthService } from './service'
 
@@ -13,14 +12,14 @@ export class SystemRoleAuthController {
     private systemRoleAuthService: SystemRoleAuthService,
   ) {}
 
-  @AutoOperation({ summary: '为角色分配用户' })
+  @ApiOperation({ summary: '为角色分配用户' })
   @Permission('sys.menu.system.roleAuth.allocateUser')
   @Post('allocateUser')
   async allocateUser(@Body() dto: AllocateUserForRoleReqDto) {
     await this.systemRoleAuthService.allocateUser(dto)
   }
 
-  @AutoOperation({ summary: '查询角色已分配用户分页' })
+  @ApiOperation({ summary: '查询角色已分配用户分页' })
   @ApiOkResponse({ type: FindAllocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findAllocatedUserPage')
   @Post('findAllocatedUserPage')
@@ -28,7 +27,7 @@ export class SystemRoleAuthController {
     return await this.systemRoleAuthService.findAllocatedUserPage(dto)
   }
 
-  @AutoOperation({ summary: '查询角色未分配用户分页' })
+  @ApiOperation({ summary: '查询角色未分配用户分页' })
   @ApiOkResponse({ type: FindUnallocatedUserPageForRoleResDto })
   @Permission('sys.menu.system.roleAuth.findUnallocatedUserPage')
   @Post('findUnallocatedUserPage')
@@ -36,7 +35,7 @@ export class SystemRoleAuthController {
     return await this.systemRoleAuthService.findUnallocatedUserPage(dto)
   }
 
-  @AutoOperation({ summary: '为角色取消分配用户' })
+  @ApiOperation({ summary: '为角色取消分配用户' })
   @Permission('sys.menu.system.roleAuth.unallocateUser')
   @Post('unallocateUser')
   async unallocateUser(@Body() dto: UnallocateUserForRoleReqDto) {

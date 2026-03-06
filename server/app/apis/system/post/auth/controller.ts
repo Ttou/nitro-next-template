@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { AutoOperation } from '~server/app/extends'
 import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindAllocatedUserPageForPostResDto, FindUnallocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostResDto, UnallocateUserForPostReqDto } from './dto'
 import { SystemPostAuthService } from './service'
 
@@ -13,14 +12,14 @@ export class SystemPostAuthController {
     private systemPostAuthService: SystemPostAuthService,
   ) {}
 
-  @AutoOperation({ summary: '为岗位分配用户' })
+  @ApiOperation({ summary: '为岗位分配用户' })
   @Permission('sys.menu.system.postAuth.allocateUser')
   @Post('allocateUser')
   async allocateUser(@Body() dto: AllocateUserForPostReqDto) {
     return await this.systemPostAuthService.allocateUser(dto)
   }
 
-  @AutoOperation({ summary: '查询岗位已分配用户分页' })
+  @ApiOperation({ summary: '查询岗位已分配用户分页' })
   @ApiOkResponse({ type: FindAllocatedUserPageForPostResDto })
   @Permission('sys.menu.system.postAuth.findAllocatedUserPage')
   @Post('findAllocatedUserPage')
@@ -28,7 +27,7 @@ export class SystemPostAuthController {
     return await this.systemPostAuthService.findAllocatedUserPage(dto)
   }
 
-  @AutoOperation({ summary: '查询岗位未分配用户分页' })
+  @ApiOperation({ summary: '查询岗位未分配用户分页' })
   @ApiOkResponse({ type: FindUnallocatedUserPageForPostResDto })
   @Permission('sys.menu.system.postAuth.findUnallocatedUserPage')
   @Post('findUnallocatedUserPage')
@@ -36,7 +35,7 @@ export class SystemPostAuthController {
     return await this.systemPostAuthService.findUnallocatedUserPage(dto)
   }
 
-  @AutoOperation({ summary: '为岗位取消分配用户' })
+  @ApiOperation({ summary: '为岗位取消分配用户' })
   @Permission('sys.menu.system.postAuth.unallocateUser')
   @Post('unallocateUser')
   async unallocateUser(@Body() dto: UnallocateUserForPostReqDto) {

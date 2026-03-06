@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { AutoOperation } from '~server/app/extends'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CurrentUserGetInfoResDto, CurrentUserGetProfileResDto, UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 import { CurrentUserService } from './service'
 
@@ -12,27 +11,27 @@ export class CurrentUserController {
     private currentUserService: CurrentUserService,
   ) {}
 
-  @AutoOperation({ summary: '获取当前用户信息' })
+  @ApiOperation({ summary: '获取当前用户信息' })
   @ApiOkResponse({ type: CurrentUserGetInfoResDto })
   @Get('info')
   async getInfo() {
     return await this.currentUserService.getInfo()
   }
 
-  @AutoOperation({ summary: '获取当前用户个人信息' })
+  @ApiOperation({ summary: '获取当前用户个人信息' })
   @ApiOkResponse({ type: CurrentUserGetProfileResDto })
   @Get('profile')
   async getProfile() {
     return await this.currentUserService.getProfile()
   }
 
-  @AutoOperation({ summary: '更新当前用户个人信息' })
+  @ApiOperation({ summary: '更新当前用户个人信息' })
   @Post('update-profile')
   async updateProfile(@Body() data: UpdateCurrentUserProfileReqDto) {
     return await this.currentUserService.updateProfile(data)
   }
 
-  @AutoOperation({ summary: '更新当前用户密码' })
+  @ApiOperation({ summary: '更新当前用户密码' })
   @Post('update-password')
   async updatePassword(@Body() data: UpdateCurrentUserPasswordReqDto) {
     return await this.currentUserService.updatePassword(data)

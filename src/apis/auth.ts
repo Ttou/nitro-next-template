@@ -1,5 +1,4 @@
-import type { components } from './schema'
-import type { RealRes } from './type'
+import type { components, paths } from './schema'
 import { ajax } from '~web/utils'
 
 export const authApi = {
@@ -12,4 +11,4 @@ export const authApi = {
 }
 
 export type LoginReqDto = components['schemas']['LoginReqDto']
-export type LoginResDto = RealRes<components['schemas']['LoginResDto']>
+export type LoginResDto = paths['/api/auth/login']['post']['responses']['200']['content']['application/json']

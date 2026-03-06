@@ -10,10 +10,6 @@ export class RedisService {
     @Inject(REDIS_CLIENT) private redisClient: RedisClient,
   ) {}
 
-  get client() {
-    return this.redisClient
-  }
-
   /**
    * 扫描返回键名数组
    */

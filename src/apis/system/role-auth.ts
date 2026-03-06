@@ -1,5 +1,4 @@
 import type { components } from '../schema'
-import type { RealRes } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemRoleAuthApi = {
@@ -18,8 +17,8 @@ export const systemRoleAuthApi = {
 }
 
 export type FindAllocatedUserPageForRoleReqDto = components['schemas']['FindAllocatedUserPageForRoleReqDto']
-export type FindAllocatedUserPageForRoleResDto = RealRes<components['schemas']['FindAllocatedUserPageForRoleResDto']>
+export type FindAllocatedUserPageForRoleResDto = components['schemas']['FindAllocatedUserPageForRoleResDto']
 export type FindUnallocatedUserPageForRoleReqDto = components['schemas']['FindUnallocatedUserPageForRoleReqDto']
-export type FindUnallocatedUserPageForRoleResDto = RealRes<components['schemas']['FindUnallocatedUserPageForRoleResDto']>
+export type FindUnallocatedUserPageForRoleResDto = components['schemas']['FindUnallocatedUserPageForRoleResDto']
 export type AllocateUserForRoleReqDto = components['schemas']['AllocateUserForRoleReqDto']
 export type UnallocateUserForRoleReqDto = components['schemas']['UnallocateUserForRoleReqDto']

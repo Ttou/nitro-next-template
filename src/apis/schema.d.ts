@@ -1028,21 +1028,7 @@ export interface components {
              */
             captchaValue: string;
         };
-        LoginResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: string;
-        };
-        CaptchaImageData: {
+        CaptchaImageResDto: {
             /**
              * @description 验证码ID
              * @example
@@ -1054,39 +1040,25 @@ export interface components {
              */
             captchaImage: string;
         };
-        CaptchaImageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["CaptchaImageData"];
-        };
-        SysMenuEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        SysMenuEntityNoRelations: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
             /**
-             * Format: int64
-             * @description 父菜单ID
+             * Format: date-time
+             * @description 更新时间
              */
-            parentId: number;
+            updatedAt: string;
+            /** @description 父菜单ID */
+            parentId: string;
             /** @description 菜单名称 */
             menuName: string;
             /** @description 菜单键值 */
@@ -1128,98 +1100,24 @@ export interface components {
             isVisible: "0" | "1";
             /** @description 备注 */
             remark: string;
-            /** @description 角色列表 */
-            roles: components["schemas"]["SysRoleEntity"][];
         };
-        SysPostEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        SysRoleEntityWithMenusRelation: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
-            /** @description 岗位键值 */
-            postKey: string;
-            /** @description 岗位名称 */
-            postName: string;
             /**
-             * @description 是否可用
-             * @enum {string}
+             * Format: date-time
+             * @description 更新时间
              */
-            isAvailable: "0" | "1";
-            /** @description 备注 */
-            remark: string;
-            /** @description 用户列表 */
-            users: components["schemas"]["SysUserEntity"][];
-        };
-        SysUserEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
-            /** @description 创建人 */
-            createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
-            /** @description 更新人 */
-            updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
-            /** @description 账号 */
-            userName: string;
-            /** @description 昵称 */
-            nickName: string;
-            /** @description 密码 */
-            password: string;
-            /** @description 邮箱 */
-            email: string;
-            /** @description 手机号码 */
-            phone: string;
-            /** @description 性别 */
-            sex: string;
-            /** @description 头像 */
-            avatar: string;
-            /**
-             * @description 是否可用
-             * @enum {string}
-             */
-            isAvailable: "0" | "1";
-            /**
-             * @description 是否删除
-             * @enum {string}
-             */
-            isDelete: "0" | "1";
-            /** @description 备注 */
-            remark: string;
-            /** @description 部门列表 */
-            depts: components["schemas"]["SysDeptEntity"][];
-            /** @description 岗位列表 */
-            posts: components["schemas"]["SysPostEntity"][];
-            /** @description 角色列表 */
-            roles: components["schemas"]["SysRoleEntity"][];
-        };
-        SysRoleEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
-            /** @description 创建人 */
-            createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
-            /** @description 更新人 */
-            updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            updatedAt: string;
             /** @description 角色键值 */
             roleKey: string;
             /** @description 角色名称 */
@@ -1231,62 +1129,26 @@ export interface components {
             isAvailable: "0" | "1";
             /** @description 备注 */
             remark: string;
-            /** @description 部门列表 */
-            depts: components["schemas"]["SysDeptEntity"][];
             /** @description 菜单列表 */
-            menus: components["schemas"]["SysMenuEntity"][];
-            /** @description 用户列表 */
-            users: components["schemas"]["SysUserEntity"][];
+            menus: components["schemas"]["SysMenuEntityNoRelations"][];
         };
-        SysDeptEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        CurrentUserGetInfoResDto: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
             /**
-             * Format: int64
-             * @description 父部门ID
+             * Format: date-time
+             * @description 更新时间
              */
-            parentId: number;
-            /** @description 部门键值 */
-            deptKey: string;
-            /** @description 部门名称 */
-            deptName: string;
-            /**
-             * @description 是否可用
-             * @enum {string}
-             */
-            isAvailable: "0" | "1";
-            /** @description 备注 */
-            remark: string;
-            /** @description 角色 */
-            roles: components["schemas"]["SysRoleEntity"][];
-            /** @description 用户 */
-            users: components["schemas"]["SysUserEntity"][];
-        };
-        OmitTypeClass: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
-            /** @description 创建人 */
-            createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
-            /** @description 更新人 */
-            updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            updatedAt: string;
             /** @description 账号 */
             userName: string;
             /** @description 昵称 */
@@ -1311,40 +1173,50 @@ export interface components {
             isDelete: "0" | "1";
             /** @description 备注 */
             remark: string;
-            /** @description 部门列表 */
-            depts: components["schemas"]["SysDeptEntity"][];
-            /** @description 岗位列表 */
-            posts: components["schemas"]["SysPostEntity"][];
             /** @description 角色列表 */
-            roles: components["schemas"]["SysRoleEntity"][];
-        };
-        CurrentUserGetInfoResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["OmitTypeClass"];
+            roles: components["schemas"]["SysRoleEntityWithMenusRelation"][];
         };
         CurrentUserGetProfileResDto: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
             /**
-             * @description 时间戳
-             * @example 1606827398000
+             * Format: date-time
+             * @description 创建时间
              */
-            timestamp: number;
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
             /**
-             * @description 状态码
-             * @example 200
+             * Format: date-time
+             * @description 更新时间
              */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["OmitTypeClass"];
+            updatedAt: string;
+            /** @description 账号 */
+            userName: string;
+            /** @description 昵称 */
+            nickName: string;
+            /** @description 邮箱 */
+            email: string;
+            /** @description 手机号码 */
+            phone: string;
+            /** @description 性别 */
+            sex: string;
+            /** @description 头像 */
+            avatar: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否删除
+             * @enum {string}
+             */
+            isDelete: "0" | "1";
+            /** @description 备注 */
+            remark: string;
         };
         UpdateCurrentUserProfileReqDto: {
             /**
@@ -1405,16 +1277,55 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
-        SysOnlineEntity: {
+        SysUserEntityNoRelations: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
             /**
-             * Format: int64
-             * @description 主键
+             * Format: date-time
+             * @description 创建时间
              */
-            id: number;
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 账号 */
+            userName: string;
+            /** @description 昵称 */
+            nickName: string;
+            /** @description 密码 */
+            password: string;
+            /** @description 邮箱 */
+            email: string;
+            /** @description 手机号码 */
+            phone: string;
+            /** @description 性别 */
+            sex: string;
+            /** @description 头像 */
+            avatar: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否删除
+             * @enum {string}
+             */
+            isDelete: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        SysOnlineEntityNoToken: {
+            /** @description 主键 */
+            id: string;
             /** @description 会话ID */
             tokenId: string;
-            /** @description Token */
-            token: string;
             /** @description IP地址 */
             ip: string;
             /** @description 位置 */
@@ -1429,7 +1340,7 @@ export interface components {
              */
             loginTime: string;
             /** @description 用户 */
-            user: components["schemas"]["SysUserEntity"];
+            user: components["schemas"]["SysUserEntityNoRelations"];
         };
         FindMonitorOnlinePageResDto: {
             /** @description 页码 */
@@ -1439,7 +1350,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysOnlineEntity"][];
+            data: components["schemas"]["SysOnlineEntityNoToken"][];
         };
         RemoveReqDto: {
             /** @description 主键数组 */
@@ -1465,20 +1376,23 @@ export interface components {
             /** @description 备注 */
             remark?: string;
         };
-        SysConfigEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        FindSystemConfigByKeyResDto: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
             /** @description 配置名称 */
             configName: string;
             /** @description 配置键值 */
@@ -1497,20 +1411,6 @@ export interface components {
             isAvailable: "0" | "1";
             /** @description 备注 */
             remark: string;
-        };
-        FindSystemConfigByKeyResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["SysConfigEntity"];
         };
         FindSystemConfigPageReqDto: {
             /**
@@ -1542,7 +1442,43 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
-        FindSystemConfigPageData: {
+        SysConfigEntity: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 配置名称 */
+            configName: string;
+            /** @description 配置键值 */
+            configKey: string;
+            /** @description 配置值 */
+            configValue: string;
+            /**
+             * @description 是否内置
+             * @enum {string}
+             */
+            isBuiltin: "0" | "1";
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        FindSystemConfigPageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -1551,20 +1487,6 @@ export interface components {
             total: number;
             /** @description 列表 */
             data: components["schemas"]["SysConfigEntity"][];
-        };
-        FindSystemConfigPageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemConfigPageData"];
         };
         UpdateSystemConfigReqDto: {
             /** @description 参数名称 */
@@ -1585,18 +1507,12 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemDeptReqDto: {
-            /**
-             * Format: int64
-             * @description 父部门ID
-             */
-            parentId?: number;
+            /** @description 父部门ID */
+            parentId?: string;
             /** @description 部门名称 */
             deptName?: string;
             /** @description 部门标识 */
@@ -1621,25 +1537,39 @@ export interface components {
             isAvailable?: "0" | "1";
         };
         FindSystemDeptListResDto: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
             /**
-             * @description 时间戳
-             * @example 1606827398000
+             * Format: date-time
+             * @description 创建时间
              */
-            timestamp: number;
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
             /**
-             * @description 状态码
-             * @example 200
+             * Format: date-time
+             * @description 更新时间
              */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["SysDeptEntity"][];
+            updatedAt: string;
+            /** @description 父部门ID */
+            parentId: string;
+            /** @description 部门键值 */
+            deptKey: string;
+            /** @description 部门名称 */
+            deptName: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
         };
         UpdateSystemDeptReqDto: {
-            /**
-             * Format: int64
-             * @description 父部门ID
-             */
-            parentId?: number;
+            /** @description 父部门ID */
+            parentId?: string;
             /** @description 部门名称 */
             deptName?: string;
             /** @description 部门标识 */
@@ -1651,11 +1581,8 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemDictTypeReqDto: {
             /** @description 字典名称 */
@@ -1670,20 +1597,23 @@ export interface components {
             /** @description 备注 */
             remark?: string;
         };
-        SysDictDataEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        FindSystemDictDetailByKeyResDto: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
             /** @description 字典标签 */
             dictLabel: string;
             /** @description 字典值 */
@@ -1697,20 +1627,6 @@ export interface components {
             isAvailable: "0" | "1";
             /** @description 备注 */
             remark: string;
-        };
-        FindSystemDictDetailByKeyResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["SysDictDataEntity"][];
         };
         FindSystemDictTypePageReqDto: {
             /**
@@ -1738,19 +1654,22 @@ export interface components {
             endTime?: string;
         };
         SysDictTypeEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
             /** @description 字典名称 */
             dictName: string;
             /** @description 字典类型 */
@@ -1763,7 +1682,7 @@ export interface components {
             /** @description 备注 */
             remark: string;
         };
-        FindSystemDictTypePageData: {
+        FindSystemDictTypePageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -1772,20 +1691,6 @@ export interface components {
             total: number;
             /** @description 列表 */
             data: components["schemas"]["SysDictTypeEntity"][];
-        };
-        FindSystemDictTypePageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemDictTypePageData"];
         };
         UpdateSystemDictTypeReqDto: {
             /** @description 字典名称 */
@@ -1799,11 +1704,8 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemDictDataReqDto: {
             /** @description 字典标签 */
@@ -1831,29 +1733,36 @@ export interface components {
              */
             isAvailable?: "0" | "1";
         };
-        FindSystemDictDataListData: {
-            /** @description 页码 */
-            page: number;
-            /** @description 页长 */
-            pageSize: number;
-            /** @description 总数 */
-            total: number;
-            /** @description 列表 */
-            data: components["schemas"]["SysDictDataEntity"][];
-        };
         FindSystemDictDataListResDto: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
             /**
-             * @description 时间戳
-             * @example 1606827398000
+             * Format: date-time
+             * @description 创建时间
              */
-            timestamp: number;
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
             /**
-             * @description 状态码
-             * @example 200
+             * Format: date-time
+             * @description 更新时间
              */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemDictDataListData"];
+            updatedAt: string;
+            /** @description 字典标签 */
+            dictLabel: string;
+            /** @description 字典值 */
+            dictValue: string;
+            /** @description 字典类型 */
+            dictType: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
         };
         UpdateSystemDictDataReqDto: {
             /** @description 字典标签 */
@@ -1869,11 +1778,8 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemLangReqDto: {
             /** @description 词条标识 */
@@ -1888,34 +1794,23 @@ export interface components {
             /** @description 备注 */
             remark?: string;
         };
-        FindSystemLangAllResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: Record<string, never>;
-        };
-        SysLangEntity: {
-            /**
-             * Format: int64
-             * @description 主键
-             */
-            id: number;
+        FindSystemLangOneResDto: {
+            /** @description 主键 */
+            id: string;
             /** @description 创建人 */
             createBy: string;
-            /** @description 创建时间 */
-            createdAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
             /** @description 更新人 */
             updateBy: string;
-            /** @description 更新时间 */
-            updatedAt: Record<string, never>;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
             /** @description 语言键值 */
             langKey: string;
             /** @description 语言值 */
@@ -1932,20 +1827,6 @@ export interface components {
             isAvailable: "0" | "1";
             /** @description 备注 */
             remark: string;
-        };
-        FindSystemLangOneResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["SysLangEntity"][];
         };
         FindSystemLangPageReqDto: {
             /**
@@ -1977,7 +1858,41 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
-        Page: {
+        SysLangEntity: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 语言键值 */
+            langKey: string;
+            /** @description 语言值 */
+            langValue: string;
+            /**
+             * @description 是否内置
+             * @enum {string}
+             */
+            isBuiltin: "0" | "1";
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        FindSystemLangPageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -1986,20 +1901,6 @@ export interface components {
             total: number;
             /** @description 列表 */
             data: components["schemas"]["SysLangEntity"][];
-        };
-        FindSystemLangPageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["Page"][];
         };
         UpdateSystemLangReqDto: {
             /** @description 词条标识 */
@@ -2013,18 +1914,12 @@ export interface components {
             isAvailable: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemMenuReqDto: {
-            /**
-             * Format: int64
-             * @description 父菜单ID
-             */
-            parentId?: number;
+            /** @description 父菜单ID */
+            parentId?: string;
             /** @description 菜单标识 */
             menuKey: string;
             /** @description 菜单名称 */
@@ -2079,25 +1974,69 @@ export interface components {
             isAvailable?: "0" | "1";
         };
         FindSystemMenuListResDto: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
             /**
-             * @description 时间戳
-             * @example 1606827398000
+             * Format: date-time
+             * @description 创建时间
              */
-            timestamp: number;
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
             /**
-             * @description 状态码
-             * @example 200
+             * Format: date-time
+             * @description 更新时间
              */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["SysMenuEntity"][];
+            updatedAt: string;
+            /** @description 父菜单ID */
+            parentId: string;
+            /** @description 菜单名称 */
+            menuName: string;
+            /** @description 菜单键值 */
+            menuKey: string;
+            /**
+             * @description 菜单类型
+             * @enum {string}
+             */
+            menuType: "C" | "F" | "M";
+            /** @description 排序 */
+            orderNum: number;
+            /** @description 路径 */
+            path: string;
+            /** @description 组件 */
+            component: string;
+            /** @description 重定向 */
+            redirect: string;
+            /** @description 图标 */
+            icon: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否缓存
+             * @enum {string}
+             */
+            isCache: "0" | "1";
+            /**
+             * @description 是否内嵌
+             * @enum {string}
+             */
+            isFrame: "0" | "1";
+            /**
+             * @description 是否显示
+             * @enum {string}
+             */
+            isVisible: "0" | "1";
+            /** @description 备注 */
+            remark: string;
         };
         UpdateSystemMenuReqDto: {
-            /**
-             * Format: int64
-             * @description 父菜单ID
-             */
-            parentId?: number;
+            /** @description 父菜单ID */
+            parentId?: string;
             /** @description 菜单标识 */
             menuKey: string;
             /** @description 菜单名称 */
@@ -2139,11 +2078,8 @@ export interface components {
             isVisible?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         CreateSystemPostReqDto: {
             /** @description 岗位名称 */
@@ -2183,7 +2119,36 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
-        FindSystemPostPageData: {
+        SysPostEntityNoRelations: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 岗位键值 */
+            postKey: string;
+            /** @description 岗位名称 */
+            postName: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        FindSystemPostPageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -2191,21 +2156,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysPostEntity"][];
-        };
-        FindSystemPostPageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemPostPageData"];
+            data: components["schemas"]["SysPostEntityNoRelations"][];
         };
         UpdateSystemPostReqDto: {
             /** @description 岗位名称 */
@@ -2219,18 +2170,12 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         AllocateUserForPostReqDto: {
-            /**
-             * Format: int64
-             * @description 岗位ID
-             */
-            id: number;
+            /** @description 岗位ID */
+            id: string;
             /** @description 用户ID数组 */
             ids: string[];
         };
@@ -2245,17 +2190,60 @@ export interface components {
              * @default 15
              */
             pageSize: number;
-            /**
-             * Format: int64
-             * @description 岗位ID
-             */
-            id: number;
+            /** @description 岗位ID */
+            id: string;
             /** @description 用户名 */
             userName?: string;
             /** @description 昵称 */
             nickName?: string;
         };
-        FindAllocatedUserPageForPostData: {
+        SysUserEntityWithPosts: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 账号 */
+            userName: string;
+            /** @description 昵称 */
+            nickName: string;
+            /** @description 密码 */
+            password: string;
+            /** @description 邮箱 */
+            email: string;
+            /** @description 手机号码 */
+            phone: string;
+            /** @description 性别 */
+            sex: string;
+            /** @description 头像 */
+            avatar: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否删除
+             * @enum {string}
+             */
+            isDelete: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+            /** @description 岗位列表 */
+            posts: components["schemas"]["SysPostEntityNoRelations"][];
+        };
+        FindAllocatedUserPageForPostResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -2263,21 +2251,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysUserEntity"][];
-        };
-        FindAllocatedUserPageForPostResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindAllocatedUserPageForPostData"];
+            data: components["schemas"]["SysUserEntityWithPosts"][];
         };
         FindUnallocatedUserPageForPostReqDto: {
             /**
@@ -2290,36 +2264,26 @@ export interface components {
              * @default 15
              */
             pageSize: number;
-            /**
-             * Format: int64
-             * @description 岗位ID
-             */
-            id: number;
+            /** @description 岗位ID */
+            id: string;
             /** @description 用户名 */
             userName?: string;
             /** @description 昵称 */
             nickName?: string;
         };
         FindUnallocatedUserPageForPostResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindAllocatedUserPageForPostData"];
+            /** @description 页码 */
+            page: number;
+            /** @description 页长 */
+            pageSize: number;
+            /** @description 总数 */
+            total: number;
+            /** @description 列表 */
+            data: components["schemas"]["SysUserEntityWithPosts"][];
         };
         UnallocateUserForPostReqDto: {
-            /**
-             * Format: int64
-             * @description 岗位ID
-             */
-            id: number;
+            /** @description 岗位ID */
+            id: string;
             /** @description 用户ID数组 */
             ids: string[];
         };
@@ -2361,7 +2325,36 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
-        FindSystemRolePageData: {
+        SysRoleEntityNoRelations: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 角色键值 */
+            roleKey: string;
+            /** @description 角色名称 */
+            roleName: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        FindSystemRolePageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -2369,21 +2362,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysRoleEntity"][];
-        };
-        FindSystemRolePageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemRolePageData"];
+            data: components["schemas"]["SysRoleEntityNoRelations"][];
         };
         UpdateSystemRoleReqDto: {
             /** @description 角色名称 */
@@ -2397,18 +2376,12 @@ export interface components {
             isAvailable?: "0" | "1";
             /** @description 备注 */
             remark?: string;
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
         AllocateUserForRoleReqDto: {
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
+            /** @description 角色ID */
+            id: string;
             /** @description 用户ID数组 */
             ids: string[];
         };
@@ -2423,17 +2396,60 @@ export interface components {
              * @default 15
              */
             pageSize: number;
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
+            /** @description 角色ID */
+            id: string;
             /** @description 用户名 */
             userName?: string;
             /** @description 昵称 */
             nickName?: string;
         };
-        FindAllocatedUserPageForRoleData: {
+        SysUserEntityWithRoles: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 账号 */
+            userName: string;
+            /** @description 昵称 */
+            nickName: string;
+            /** @description 密码 */
+            password: string;
+            /** @description 邮箱 */
+            email: string;
+            /** @description 手机号码 */
+            phone: string;
+            /** @description 性别 */
+            sex: string;
+            /** @description 头像 */
+            avatar: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否删除
+             * @enum {string}
+             */
+            isDelete: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+            /** @description 角色列表 */
+            roles: components["schemas"]["SysRoleEntityNoRelations"][];
+        };
+        FindAllocatedUserPageForRoleResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -2441,21 +2457,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysUserEntity"][];
-        };
-        FindAllocatedUserPageForRoleResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindAllocatedUserPageForRoleData"];
+            data: components["schemas"]["SysUserEntityWithRoles"][];
         };
         FindUnallocatedUserPageForRoleReqDto: {
             /**
@@ -2468,68 +2470,38 @@ export interface components {
              * @default 15
              */
             pageSize: number;
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
+            /** @description 角色ID */
+            id: string;
             /** @description 用户名 */
             userName?: string;
             /** @description 昵称 */
             nickName?: string;
         };
         FindUnallocatedUserPageForRoleResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindAllocatedUserPageForRoleData"];
+            /** @description 页码 */
+            page: number;
+            /** @description 页长 */
+            pageSize: number;
+            /** @description 总数 */
+            total: number;
+            /** @description 列表 */
+            data: components["schemas"]["SysUserEntityWithRoles"][];
         };
         UnallocateUserForRoleReqDto: {
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
+            /** @description 角色ID */
+            id: string;
             /** @description 用户ID数组 */
             ids: string[];
         };
         AssignMenuForRoleReqDto: {
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
+            /** @description 角色ID */
+            id: string;
             /** @description 菜单ID数组 */
             menuIds: string[];
         };
         FindAssignedMenuForRoleReqDto: {
-            /**
-             * Format: int64
-             * @description 角色ID
-             */
-            id: number;
-        };
-        FindAssignedMenuForRoleResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: string[];
+            /** @description 角色ID */
+            id: string;
         };
         CreateSystemUserReqDto: {
             /** @description 用户名 */
@@ -2584,7 +2556,49 @@ export interface components {
              */
             isAvailable?: "0" | "1";
         };
-        FindSystemUserPageData: {
+        SysUserEntityNoRelationsNoPassword: {
+            /** @description 主键 */
+            id: string;
+            /** @description 创建人 */
+            createBy: string;
+            /**
+             * Format: date-time
+             * @description 创建时间
+             */
+            createdAt: string;
+            /** @description 更新人 */
+            updateBy: string;
+            /**
+             * Format: date-time
+             * @description 更新时间
+             */
+            updatedAt: string;
+            /** @description 账号 */
+            userName: string;
+            /** @description 昵称 */
+            nickName: string;
+            /** @description 邮箱 */
+            email: string;
+            /** @description 手机号码 */
+            phone: string;
+            /** @description 性别 */
+            sex: string;
+            /** @description 头像 */
+            avatar: string;
+            /**
+             * @description 是否可用
+             * @enum {string}
+             */
+            isAvailable: "0" | "1";
+            /**
+             * @description 是否删除
+             * @enum {string}
+             */
+            isDelete: "0" | "1";
+            /** @description 备注 */
+            remark: string;
+        };
+        FindSystemUserPageResDto: {
             /** @description 页码 */
             page: number;
             /** @description 页长 */
@@ -2592,21 +2606,7 @@ export interface components {
             /** @description 总数 */
             total: number;
             /** @description 列表 */
-            data: components["schemas"]["SysUserEntity"][];
-        };
-        FindSystemUserPageResDto: {
-            /**
-             * @description 时间戳
-             * @example 1606827398000
-             */
-            timestamp: number;
-            /**
-             * @description 状态码
-             * @example 200
-             */
-            status: number;
-            /** @description 响应数据 */
-            data: components["schemas"]["FindSystemUserPageData"];
+            data: components["schemas"]["SysUserEntityNoRelationsNoPassword"][];
         };
         UpdateSystemUserReqDto: {
             /** @description 用户名 */
@@ -2633,11 +2633,8 @@ export interface components {
              * @enum {string}
              */
             isAvailable?: "0" | "1";
-            /**
-             * Format: int64
-             * @description ID
-             */
-            id: number;
+            /** @description ID */
+            id: string;
         };
     };
     responses: never;
@@ -2666,7 +2663,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["LoginResDto"];
+                    "application/json": string;
                 };
             };
         };
@@ -2978,7 +2975,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemDeptListResDto"];
+                    "application/json": components["schemas"]["FindSystemDeptListResDto"][];
                 };
             };
         };
@@ -3063,7 +3060,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemDictDetailByKeyResDto"];
+                    "application/json": components["schemas"]["FindSystemDictDetailByKeyResDto"][];
                 };
             };
         };
@@ -3172,7 +3169,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemDictDataListResDto"];
+                    "application/json": components["schemas"]["FindSystemDictDataListResDto"][];
                 };
             };
         };
@@ -3257,7 +3254,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemLangAllResDto"];
+                    "application/json": Record<string, never>;
                 };
             };
         };
@@ -3279,7 +3276,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemLangOneResDto"];
+                    "application/json": components["schemas"]["FindSystemLangOneResDto"][];
                 };
             };
         };
@@ -3388,7 +3385,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindSystemMenuListResDto"];
+                    "application/json": components["schemas"]["FindSystemMenuListResDto"][];
                 };
             };
         };
@@ -3822,7 +3819,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FindAssignedMenuForRoleResDto"];
+                    "application/json": string[];
                 };
             };
         };

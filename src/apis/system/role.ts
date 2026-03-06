@@ -1,5 +1,5 @@
 import type { components } from '../schema'
-import type { RealRes, RemoveReqDto } from '../type'
+import type { RemoveReqDto } from '../type'
 import { ajax } from '~web/utils'
 
 export const systemRoleApi = {
@@ -20,4 +20,4 @@ export const systemRoleApi = {
 export type CreateSystemRoleReqDto = components['schemas']['CreateSystemRoleReqDto']
 export type UpdateSystemRoleReqDto = components['schemas']['UpdateSystemRoleReqDto']
 export type FindSystemRolePageReqDto = components['schemas']['FindSystemRolePageReqDto']
-export type FindSystemRolePageResDto = RealRes<components['schemas']['FindSystemRolePageResDto']>
+export type FindSystemRolePageResDto = components['schemas']['FindSystemRolePageResDto']
