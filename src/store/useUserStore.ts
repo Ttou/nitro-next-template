@@ -6,6 +6,7 @@ import { defineStore } from 'pinia'
 import { h, ref } from 'vue'
 import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
 import { authApi, currentUserApi } from '~web/apis'
+import { DefaultLayout } from '~web/layouts'
 import { listToTree } from '~web/utils'
 
 const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
@@ -14,7 +15,6 @@ function loadComponent(component: string) {
     .map(v => routeComponents[`../views/biz/${component}/index.${v}`])
     .find(v => !!v)
 }
-const DefaultLayout = () => import('~web/layouts/DefaultLayout')
 
 async function createMenus(menus: any[]) {
   const res: any[] = []

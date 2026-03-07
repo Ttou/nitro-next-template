@@ -5,6 +5,7 @@ import { ElButton, ElMessage, ElMessageBox, ElNotification, ElSpace } from 'elem
 import { PlusDialog, PlusPage } from 'plus-pro-components'
 import { computed, defineComponent, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
+import { YesOrNoEnum } from '~shared/enums'
 import { systemRoleAuthApi } from '~web/apis'
 import { useCreate } from './hooks'
 
@@ -114,7 +115,7 @@ export default defineComponent({
             ],
           },
           onSelectionChange: (data: any[]) => {
-            selectedIds.value = [...data].map(item => item.id)
+            selectedIds.value = Array.from(data, item => item.id)
           },
         },
         request: async (params) => {
