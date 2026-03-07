@@ -1,15 +1,18 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
-import { CacheInterceptor, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
+import { CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
+import { CreateSystemConfigReqDto, ExportSystemConfigResDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 
 @ApiTags('系统配置接口')
 @ApiBearerAuth()
 @Controller()
 export class SystemConfigController {
-  constructor(private systemConfigService: SystemConfigService) {}
+  constructor(
+    private systemConfigService: SystemConfigService,
+    private excelService: ExcelService,
+  ) {}
 
   @ApiOperation({ summary: '创建系统配置' })
   @Permission('sys.menu.system.config.create')
@@ -48,5 +51,22 @@ export class SystemConfigController {
   @Post('update')
   async update(@Body() dto: UpdateSystemConfigReqDto) {
     return await this.systemConfigService.update(dto)
+  }
+
+  @ApiOperation({ summary: '导出系统配置' })
+  @ApiOkResponse({
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Post('export')
+  async export(@Body() dto: FindSystemConfigPageReqDto) {
+    const { data } = await this.systemConfigService.findPage(dto)
+    return this.excelService.exportStream(ExportSystemConfigResDto, data)
   }
 }

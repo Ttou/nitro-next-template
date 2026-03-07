@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysConfigEntity } from '~server/app/entities'
-import { PageReqDto, PageResDto } from '~server/app/extends'
+import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -80,3 +80,41 @@ export class UpdateSystemConfigReqDto extends CreateSystemConfigReqDto {
 export class FindSystemConfigByKeyResDto extends SysConfigEntity {}
 
 export class FindSystemConfigPageResDto extends PageResDto(SysConfigEntity) {}
+
+@ExcelFile({
+  fileName: '系统配置.xlsx',
+})
+export class ExportSystemConfigResDto implements SysConfigEntity {
+  @ExcelColumn({ header: 'ID' })
+  id: string
+
+  @ExcelColumn({ header: '参数名称' })
+  configName: string
+
+  @ExcelColumn({ header: '参数标识' })
+  configKey: string
+
+  @ExcelColumn({ header: '参数键值' })
+  configValue: string
+
+  @ExcelColumn({ header: '是否内置参数' })
+  isBuiltin: '0' | '1'
+
+  @ExcelColumn({ header: '是否可用' })
+  isAvailable: '0' | '1'
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  @ExcelColumn({ header: '创建人' })
+  createBy?: string
+
+  @ExcelColumn({ header: '创建时间' })
+  createdAt?: Date
+
+  @ExcelColumn({ header: '更新人' })
+  updateBy?: string
+
+  @ExcelColumn({ header: '更新时间' })
+  updatedAt?: Date
+}

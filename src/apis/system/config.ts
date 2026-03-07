@@ -15,6 +15,9 @@ export const systemConfigApi = {
   findPage(params: FindSystemConfigPageReqDto): Promise<FindSystemConfigPageResDto> {
     return ajax.post('/api/system/config/findPage', params)
   },
+  export(params: FindSystemConfigPageReqDto) {
+    return ajax.post('/api/system/config/export', params)
+  },
 }
 
 export type CreateSystemConfigReqDto = components['schemas']['CreateSystemConfigReqDto']
