@@ -11,7 +11,7 @@ import { listToTree } from '~web/utils'
 
 const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
 function loadComponent(component: string) {
-  return ['jsx', 'tsx', 'vue']
+  return ['vue']
     .map(v => routeComponents[`../views/biz/${component}/index.${v}`])
     .find(v => !!v)
 }

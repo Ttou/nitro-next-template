@@ -1,6 +1,5 @@
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoprefixer from 'autoprefixer'
 import { nitro } from 'nitro/vite'
 import postcssNested from 'postcss-nested'
@@ -31,7 +30,6 @@ export default defineConfig({
   publicDir: false,
   plugins: [
     vue(),
-    vueJsx(),
     nitro({
       serverDir: './server',
       serverEntry: './server/entry.ts',
