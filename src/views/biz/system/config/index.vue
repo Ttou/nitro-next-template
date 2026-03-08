@@ -6,7 +6,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
 import { systemConfigApi } from '~web/apis'
-import { useCreate, useRemove, useUpdate } from './hooks'
+import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
@@ -168,10 +168,11 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
+const { confirmExport } = useExport({ pageInstance })
 </script>
 
 <template>
-  <div>
+  <div class="auto-page">
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
@@ -186,6 +187,12 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
               <Icon icon="ep:delete" />
             </template>
             批量删除
+          </el-button>
+          <el-button type="success" @click="confirmExport">
+            <template #icon>
+              <Icon icon="ep:download" />
+            </template>
+            导出
           </el-button>
         </el-space>
       </template>

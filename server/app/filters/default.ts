@@ -1,13 +1,14 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
-import { Catch, HttpException, HttpStatus } from '@nestjs/common'
+import { Catch, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
-import { logger } from '../loggers'
 
 /**
  * 默认错误处理
  */
 @Catch()
 export class DefaultFilter implements ExceptionFilter {
+  private logger = new Logger(DefaultFilter.name)
+
   constructor(
     private httpAdapterHost: HttpAdapterHost,
   ) {}
@@ -19,7 +20,7 @@ export class DefaultFilter implements ExceptionFilter {
     const message = this.getMessage(exception)
 
     // @ts-ignore
-    logger.error(exception.stack, { 0: DefaultFilter.name })
+    this.logger.error(message, exception.stack)
 
     httpAdapter.reply(
       ctx.getResponse(),

@@ -64,6 +64,7 @@ export class SystemConfigController {
       },
     },
   })
+  @Permission('sys.menu.system.config.export')
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)

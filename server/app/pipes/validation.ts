@@ -13,11 +13,15 @@ export class ValidationPipe implements PipeTransform<any> {
       return value
     }
 
+    if (value === null || value === undefined) {
+      throw new UnprocessableEntityException('请求体不能为空')
+    }
+
     const object = plainToInstance(metatype, value)
     const errors = await validate(object, { stopAtFirstError: true })
 
     if (errors.length > 0) {
-      const errorMsg = Object.values(errors[0].constraints)[0]
+      const errorMsg = Object.values(errors[0]!.constraints!)[0]
       throw new UnprocessableEntityException(errorMsg)
     }
     return value

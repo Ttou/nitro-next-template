@@ -2,3 +2,35 @@
 .el-scrollbar__view > .el-main {
   overflow-x: hidden;
 }
+
+.auto-page {
+  height: calc(100vh - 130px);
+  
+  .plus-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .el-card.plus-page__table_wrapper {
+      flex: 1;
+
+      .el-card__body {
+        height: 100%;
+
+        .plus-table {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+
+          .el-table {
+            flex: 1;
+          }
+
+          .plus-pagination {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

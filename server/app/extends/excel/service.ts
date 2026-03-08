@@ -2,6 +2,7 @@ import type { IExcelFileOptions } from './interface'
 import { PassThrough } from 'node:stream'
 import { Workbook } from '@cj-tech-master/excelts'
 import { Injectable, StreamableFile } from '@nestjs/common'
+import { instanceToPlain } from 'class-transformer'
 import { EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
 @Injectable()
@@ -13,7 +14,7 @@ export class ExcelService {
     const buffer = await wb.xlsx.writeBuffer()
 
     return new StreamableFile(buffer, {
-      disposition: `attachment; filename="${encodeURIComponent(fileName || 'export.xlsx')}"`,
+      disposition: `attachment; filename=${encodeURIComponent(fileName || 'export.xlsx')}`,
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     })
   }
@@ -26,7 +27,7 @@ export class ExcelService {
     wb.xlsx.write(stream)
 
     return new StreamableFile(stream, {
-      disposition: `attachment; filename="${encodeURIComponent(fileName || 'export.xlsx')}"`,
+      disposition: `attachment; filename=${encodeURIComponent(fileName || 'export.xlsx')}`,
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     })
   }
@@ -36,9 +37,10 @@ export class ExcelService {
     const { sheetName, sheetOptions } = this.getFileOptions(cls)
     const ws = wb.addWorksheet(sheetName || 'Sheet1', sheetOptions)
     const columns = this.getColumns(cls)
+    const rows = this.getRows(cls, data)
 
     ws.columns = columns
-    ws.addRows(data)
+    ws.addRows(rows)
 
     return wb
   }
@@ -65,5 +67,13 @@ export class ExcelService {
     }
 
     return columns
+  }
+
+  private getRows(cls: any, data: any[]) {
+    const { transformOptions } = this.getFileOptions(cls)
+
+    return data.map(v =>
+      instanceToPlain(Reflect.construct(cls, [v]), transformOptions),
+    )
   }
 }

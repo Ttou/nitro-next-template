@@ -89,6 +89,7 @@ class ThirdLevelSeeder extends Seeder {
       em.create(SysMenuEntity, { menuName: '配置新增', menuKey: 'sys.menu.system.config.create', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: systemConfigMenu.id }),
       em.create(SysMenuEntity, { menuName: '配置编辑', menuKey: 'sys.menu.system.config.update', menuType: MenuTypeEnum.BUTTON, orderNum: 3, isAvailable: YesOrNoEnum.YES, parentId: systemConfigMenu.id }),
       em.create(SysMenuEntity, { menuName: '配置删除', menuKey: 'sys.menu.system.config.remove', menuType: MenuTypeEnum.BUTTON, orderNum: 4, isAvailable: YesOrNoEnum.YES, parentId: systemConfigMenu.id }),
+      em.create(SysMenuEntity, { menuName: '配置导出', menuKey: 'sys.menu.system.config.export', menuType: MenuTypeEnum.BUTTON, orderNum: 5, isAvailable: YesOrNoEnum.YES, parentId: systemConfigMenu.id }),
       em.create(SysMenuEntity, { menuName: '词库分页', menuKey: 'sys.menu.system.lang.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: systemLangMenu.id }),
       em.create(SysMenuEntity, { menuName: '词库新增', menuKey: 'sys.menu.system.lang.create', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: systemLangMenu.id }),
       em.create(SysMenuEntity, { menuName: '词库编辑', menuKey: 'sys.menu.system.lang.update', menuType: MenuTypeEnum.BUTTON, orderNum: 3, isAvailable: YesOrNoEnum.YES, parentId: systemLangMenu.id }),

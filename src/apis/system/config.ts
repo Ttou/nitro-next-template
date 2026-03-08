@@ -16,7 +16,7 @@ export const systemConfigApi = {
     return ajax.post('/api/system/config/findPage', params)
   },
   export(params: FindSystemConfigPageReqDto) {
-    return ajax.post('/api/system/config/export', params)
+    return ajax.post('/api/system/config/export', params, { responseType: 'blob' })
   },
 }
 

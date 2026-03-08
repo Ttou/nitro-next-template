@@ -31,6 +31,9 @@ ajax.interceptors.request.use((req) => {
 
 ajax.interceptors.response.use(
   (res) => {
+    if (res.config.responseType === 'blob') {
+      return res
+    }
     return res.data
   },
   (err) => {

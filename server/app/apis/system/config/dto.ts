@@ -1,10 +1,11 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysConfigEntity } from '~server/app/entities'
 import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
 export class FindSystemConfigByKeyReqDto {
   @ApiProperty({ description: '参数键名' })
@@ -98,10 +99,12 @@ export class ExportSystemConfigResDto implements SysConfigEntity {
   configValue: string
 
   @ExcelColumn({ header: '是否内置参数' })
-  isBuiltin: '0' | '1'
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isBuiltin: IYesOrNoEnum
 
   @ExcelColumn({ header: '是否可用' })
-  isAvailable: '0' | '1'
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
   remark?: string
@@ -117,4 +120,8 @@ export class ExportSystemConfigResDto implements SysConfigEntity {
 
   @ExcelColumn({ header: '更新时间' })
   updatedAt?: Date
+
+  constructor(entity: SysConfigEntity) {
+    Object.assign(this, entity)
+  }
 }
