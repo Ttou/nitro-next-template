@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/extends'
-import { CreateSystemPostReqDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
+import { ExcelService, RemoveReqDto } from '~server/app/extends'
+import { CreateSystemPostReqDto, ExportSystemPostResDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
 import { SystemPostService } from './service'
 
 @ApiTags('系统岗位接口')
@@ -11,6 +11,7 @@ import { SystemPostService } from './service'
 export class SystemPostController {
   constructor(
     private systemPostService: SystemPostService,
+    private excelService: ExcelService,
   ) {}
 
   @ApiOperation({ summary: '创建岗位' })
@@ -40,5 +41,23 @@ export class SystemPostController {
   @Post('update')
   async update(@Body() dto: UpdateSystemPostReqDto) {
     return await this.systemPostService.update(dto)
+  }
+
+  @ApiOperation({ summary: '导出岗位' })
+  @ApiOkResponse({
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Permission('sys.menu.system.post.export')
+  @Post('export')
+  async export(@Body() dto: FindSystemPostPageReqDto) {
+    const { data } = await this.systemPostService.findPage(dto)
+    return this.excelService.exportStream(ExportSystemPostResDto, data)
   }
 }

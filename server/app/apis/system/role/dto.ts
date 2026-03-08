@@ -1,10 +1,11 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysRoleEntityNoRelations } from '~server/app/entities'
-import { PageReqDto, PageResDto } from '~server/app/extends'
+import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
 export class FindSystemRolePageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '角色名称' })
@@ -58,3 +59,40 @@ export class UpdateSystemRoleReqDto extends CreateSystemRoleReqDto {
 }
 
 export class FindSystemRolePageResDto extends PageResDto(SysRoleEntityNoRelations) {}
+
+@ExcelFile({
+  fileName: '系统角色.xlsx',
+})
+export class ExportSystemRoleResDto implements SysRoleEntityNoRelations {
+  @ExcelColumn({ header: 'ID' })
+  id: string
+
+  @ExcelColumn({ header: '角色键值' })
+  roleKey: string
+
+  @ExcelColumn({ header: '角色名称' })
+  roleName: string
+
+  @ExcelColumn({ header: '是否可用' })
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isAvailable: IYesOrNoEnum
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  @ExcelColumn({ header: '创建人' })
+  createBy?: string
+
+  @ExcelColumn({ header: '创建时间' })
+  createdAt?: Date
+
+  @ExcelColumn({ header: '更新人' })
+  updateBy?: string
+
+  @ExcelColumn({ header: '更新时间' })
+  updatedAt?: Date
+
+  constructor(partial: any) {
+    Object.assign(this, partial)
+  }
+}

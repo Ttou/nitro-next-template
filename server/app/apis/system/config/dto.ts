@@ -92,7 +92,7 @@ export class ExportSystemConfigResDto implements SysConfigEntity {
   @ExcelColumn({ header: '参数名称' })
   configName: string
 
-  @ExcelColumn({ header: '参数标识' })
+  @ExcelColumn({ header: '参数键值' })
   configKey: string
 
   @ExcelColumn({ header: '参数键值' })
@@ -121,7 +121,7 @@ export class ExportSystemConfigResDto implements SysConfigEntity {
   @ExcelColumn({ header: '更新时间' })
   updatedAt?: Date
 
-  constructor(entity: SysConfigEntity) {
-    Object.assign(this, entity)
+  constructor(partial: any) {
+    Object.assign(this, partial)
   }
 }

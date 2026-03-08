@@ -15,6 +15,9 @@ export const systemRoleApi = {
   findPage(params: FindSystemRolePageReqDto): Promise<FindSystemRolePageResDto> {
     return ajax.post('/api/system/role/findPage', params)
   },
+  export(params: FindSystemRolePageReqDto) {
+    return ajax.post('/api/system/role/export', params, { responseType: 'blob' })
+  },
 }
 
 export type CreateSystemRoleReqDto = components['schemas']['CreateSystemRoleReqDto']

@@ -1,10 +1,11 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysPostEntityNoRelations } from '~server/app/entities'
-import { PageReqDto, PageResDto } from '~server/app/extends'
+import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
 export class FindSystemPostPageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '岗位标识' })
@@ -58,3 +59,40 @@ export class UpdateSystemPostReqDto extends CreateSystemPostReqDto {
 }
 
 export class FindSystemPostPageResDto extends PageResDto(SysPostEntityNoRelations) {}
+
+@ExcelFile({
+  fileName: '系统岗位.xlsx',
+})
+export class ExportSystemPostResDto implements SysPostEntityNoRelations {
+  @ExcelColumn({ header: 'ID' })
+  id: string
+
+  @ExcelColumn({ header: '岗位标识' })
+  postKey: string
+
+  @ExcelColumn({ header: '岗位名称' })
+  postName: string
+
+  @ExcelColumn({ header: '是否可用' })
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isAvailable: IYesOrNoEnum
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  @ExcelColumn({ header: '创建人' })
+  createBy?: string
+
+  @ExcelColumn({ header: '创建时间' })
+  createdAt?: Date
+
+  @ExcelColumn({ header: '更新人' })
+  updateBy?: string
+
+  @ExcelColumn({ header: '更新时间' })
+  updatedAt?: Date
+
+  constructor(partial: any) {
+    Object.assign(this, partial)
+  }
+}

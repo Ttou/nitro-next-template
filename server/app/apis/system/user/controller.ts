@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/extends'
-import { CreateSystemUserReqDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, UpdateSystemUserReqDto } from './dto'
+import { ExcelService, RemoveReqDto } from '~server/app/extends'
+import { CreateSystemUserReqDto, ExportSystemUserResDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
 @ApiTags('系统用户接口')
@@ -11,6 +11,7 @@ import { SystemUserService } from './service'
 export class SystemUserController {
   constructor(
     private systemUserService: SystemUserService,
+    private excelService: ExcelService,
   ) {}
 
   @ApiOperation({ summary: '创建系统用户' })
@@ -40,5 +41,23 @@ export class SystemUserController {
   @Post('update')
   async update(@Body() dto: UpdateSystemUserReqDto) {
     return await this.systemUserService.update(dto)
+  }
+
+  @ApiOperation({ summary: '导出系统用户' })
+  @ApiOkResponse({
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Permission('sys.menu.system.user.export')
+  @Post('export')
+  async export(@Body() dto: FindSystemUserPageReqDto) {
+    const { data } = await this.systemUserService.findPage(dto)
+    return this.excelService.exportStream(ExportSystemUserResDto, data)
   }
 }

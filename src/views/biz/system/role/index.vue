@@ -8,7 +8,7 @@ import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
 import { systemRoleApi } from '~web/apis'
-import { useAssignMenu, useCreate, useRemove, useUpdate } from './hooks'
+import { useAssignMenu, useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
@@ -158,6 +158,7 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
+const { confirmExport } = useExport({ pageInstance, selectedIds })
 const { assignMenuVisible, assignMenuValues, assignMenuDialogProps, assignMenuFormProps, showAssignMenu, confirmAssignMenu } = useAssignMenu({ pageInstance })
 </script>
 
@@ -177,6 +178,12 @@ const { assignMenuVisible, assignMenuValues, assignMenuDialogProps, assignMenuFo
               <Icon icon="ep:delete" />
             </template>
             批量删除
+          </el-button>
+          <el-button type="success" @click="confirmExport">
+            <template #icon>
+              <Icon icon="ep:download" />
+            </template>
+            导出
           </el-button>
         </el-space>
       </template>

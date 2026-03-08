@@ -1,10 +1,11 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
 import { SysUserEntityNoRelations } from '~server/app/entities'
-import { PageReqDto, PageResDto } from '~server/app/extends'
+import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
 export class FindSystemUserPageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '用户名' })
@@ -88,3 +89,59 @@ export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
 class SysUserEntityNoRelationsNoPassword extends OmitType(SysUserEntityNoRelations, ['password'] as const) {}
 
 export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelationsNoPassword) {}
+
+@ExcelFile({
+  fileName: '系统用户.xlsx',
+  transformOptions: {
+    exposeUnsetFields: false,
+  },
+})
+export class ExportSystemUserResDto implements SysUserEntityNoRelationsNoPassword {
+  @ExcelColumn({ header: 'ID' })
+  id: string
+
+  @ExcelColumn({ header: '账号' })
+  userName: string
+
+  @ExcelColumn({ header: '昵称' })
+  nickName: string
+
+  @ExcelColumn({ header: '手机号码' })
+  phone?: string
+
+  @ExcelColumn({ header: '邮箱' })
+  email?: string
+
+  @ExcelColumn({ header: '性别' })
+  sex?: string
+
+  @ExcelColumn({ header: '是否可用' })
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isAvailable: IYesOrNoEnum
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  @ExcelColumn({ header: '是否删除' })
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isDelete: IYesOrNoEnum
+
+  @ExcelColumn({ header: '头像' })
+  avatar?: string
+
+  @ExcelColumn({ header: '创建人' })
+  createBy?: string
+
+  @ExcelColumn({ header: '创建时间' })
+  createdAt?: Date
+
+  @ExcelColumn({ header: '更新人' })
+  updateBy?: string
+
+  @ExcelColumn({ header: '更新时间' })
+  updatedAt?: Date
+
+  constructor(partial: any) {
+    Object.assign(this, partial)
+  }
+}

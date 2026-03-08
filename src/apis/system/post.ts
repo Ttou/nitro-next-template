@@ -15,6 +15,9 @@ export const systemPostApi = {
   findPage(params: FindSystemPostPageReqDto): Promise<FindSystemPostPageResDto> {
     return ajax.post('/api/system/post/findPage', params)
   },
+  export(params: FindSystemPostPageReqDto) {
+    return ajax.post('/api/system/post/export', params, { responseType: 'blob' })
+  },
 }
 
 export type CreateSystemPostReqDto = components['schemas']['CreateSystemPostReqDto']

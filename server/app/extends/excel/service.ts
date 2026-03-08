@@ -3,7 +3,8 @@ import { PassThrough } from 'node:stream'
 import { Workbook } from '@cj-tech-master/excelts'
 import { Injectable, StreamableFile } from '@nestjs/common'
 import { instanceToPlain } from 'class-transformer'
-import { EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
+import { pick } from 'es-toolkit'
+import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
 @Injectable()
 export class ExcelService {
@@ -51,8 +52,7 @@ export class ExcelService {
 
   private getColumns(cls: any) {
     const columns = []
-    const instance = Reflect.construct(cls, [])
-    const keys = Object.keys(instance)
+    const keys = this.getKeys(cls)
 
     for (const key of keys) {
       const item = Reflect.getMetadata(
@@ -71,9 +71,15 @@ export class ExcelService {
 
   private getRows(cls: any, data: any[]) {
     const { transformOptions } = this.getFileOptions(cls)
+    const keys = this.getKeys(cls)
 
     return data.map(v =>
-      instanceToPlain(Reflect.construct(cls, [v]), transformOptions),
+      instanceToPlain(Reflect.construct(cls, [pick(v, keys)]), transformOptions),
     )
+  }
+
+  private getKeys(cls: any) {
+    const instance = instanceToPlain(Reflect.construct(cls, []), { groups: [EXCEL_COLUMN_EXPOSE] })
+    return Object.keys(instance)
   }
 }

@@ -1,10 +1,11 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysDictDataEntity, SysDictTypeEntity } from '~server/app/entities'
-import { PageReqDto, PageResDto } from '~server/app/extends'
+import { ExcelColumn, ExcelFile, PageReqDto, PageResDto } from '~server/app/extends'
 import { IsEnumValues } from '~server/app/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
 export class FindSystemDictTypePageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '字典名称' })
@@ -66,3 +67,40 @@ export class FindSystemDictDetailByKeyReqDto {
 export class FindSystemDictDetailByKeyResDto extends SysDictDataEntity {}
 
 export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntity) {}
+
+@ExcelFile({
+  fileName: '系统字典类型.xlsx',
+})
+export class ExportSystemDictTypeResDto implements SysDictTypeEntity {
+  @ExcelColumn({ header: 'ID' })
+  id: string
+
+  @ExcelColumn({ header: '字典名称' })
+  dictName: string
+
+  @ExcelColumn({ header: '字典类型' })
+  dictType: string
+
+  @ExcelColumn({ header: '可用状态' })
+  @Transform(({ value }) => YesOrNoEnum.label(value))
+  isAvailable: IYesOrNoEnum
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  @ExcelColumn({ header: '创建人' })
+  createBy?: string
+
+  @ExcelColumn({ header: '创建时间' })
+  createdAt?: Date
+
+  @ExcelColumn({ header: '更新人' })
+  updateBy?: string
+
+  @ExcelColumn({ header: '更新时间' })
+  updatedAt?: Date
+
+  constructor(partial: any) {
+    Object.assign(this, partial)
+  }
+}

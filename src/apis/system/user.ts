@@ -15,6 +15,9 @@ export const systemUserApi = {
   findPage(params: FindSystemUserPageReqDto): Promise<FindSystemUserPageResDto> {
     return ajax.post('/api/system/user/findPage', params)
   },
+  export(params: FindSystemUserPageReqDto) {
+    return ajax.post('/api/system/user/export', params, { responseType: 'blob' })
+  },
 }
 
 export type CreateSystemUserReqDto = components['schemas']['CreateSystemUserReqDto']

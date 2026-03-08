@@ -18,6 +18,9 @@ export const systemDictTypeApi = {
   findByKey(params: FindSystemDictDetailByKeyReqDto) {
     return ajax.get('/api/system/dict/type/findByKey', { params })
   },
+  export(params: FindSystemDictTypePageReqDto) {
+    return ajax.post('/api/system/dict/type/export', params, { responseType: 'blob' })
+  },
 }
 
 export type CreateSystemDictTypeReqDto = components['schemas']['CreateSystemDictTypeReqDto']

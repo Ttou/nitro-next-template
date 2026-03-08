@@ -407,6 +407,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/system/dict/type/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 导出字典类型 */
+        post: operations["SystemDictTypeController_export"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/system/dict/data/create": {
         parameters: {
             query?: never;
@@ -469,6 +486,23 @@ export interface paths {
         put?: never;
         /** 更新字典数据 */
         post: operations["SystemDictDataController_update"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/system/dict/data/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 导出字典数据 */
+        post: operations["SystemDictDataController_export"];
         delete?: never;
         options?: never;
         head?: never;
@@ -713,6 +747,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/system/post/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 导出岗位 */
+        post: operations["SystemPostController_export"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/system/post/auth/allocateUser": {
         parameters: {
             query?: never;
@@ -843,6 +894,23 @@ export interface paths {
         put?: never;
         /** 更新系统角色 */
         post: operations["SystemRoleController_update"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/system/role/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 导出系统角色 */
+        post: operations["SystemRoleController_export"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1013,6 +1081,23 @@ export interface paths {
         put?: never;
         /** 更新系统用户 */
         post: operations["SystemUserController_update"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/system/user/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 导出系统用户 */
+        post: operations["SystemUserController_export"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1410,10 +1495,10 @@ export interface components {
              * @description 更新时间
              */
             updatedAt: string;
-            /** @description 配置名称 */
-            configName: string;
             /** @description 配置键值 */
             configKey: string;
+            /** @description 配置名称 */
+            configName: string;
             /** @description 配置值 */
             configValue: string;
             /**
@@ -1476,10 +1561,10 @@ export interface components {
              * @description 更新时间
              */
             updatedAt: string;
-            /** @description 配置名称 */
-            configName: string;
             /** @description 配置键值 */
             configKey: string;
+            /** @description 配置名称 */
+            configName: string;
             /** @description 配置值 */
             configValue: string;
             /**
@@ -2966,11 +3051,13 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
             };
         };
     };
@@ -3168,6 +3255,29 @@ export interface operations {
             };
         };
     };
+    SystemDictTypeController_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindSystemDictTypePageReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+        };
+    };
     SystemDictDataController_create: {
         parameters: {
             query?: never;
@@ -3251,6 +3361,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    SystemDictDataController_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindSystemDictDataListReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
             };
         };
     };
@@ -3556,6 +3689,29 @@ export interface operations {
             };
         };
     };
+    SystemPostController_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindSystemPostPageReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
+            };
+        };
+    };
     SystemPostAuthController_allocateUser: {
         parameters: {
             query?: never;
@@ -3727,6 +3883,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    SystemRoleController_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindSystemRolePageReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
             };
         };
     };
@@ -3945,6 +4124,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    SystemUserController_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindSystemUserPageReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": string;
+                };
             };
         };
     };

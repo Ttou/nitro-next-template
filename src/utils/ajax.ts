@@ -60,7 +60,7 @@ ajax.interceptors.response.use(
     }
     else {
       ElMessage.error({
-        message: res.data.message,
+        message: res.message || res.data.message,
         duration: 1500,
         onClose: () => {
           if (res.status === 401 || res.data.status === 401) {

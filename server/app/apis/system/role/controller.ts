@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { RemoveReqDto } from '~server/app/extends'
-import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
+import { ExcelService, RemoveReqDto } from '~server/app/extends'
+import { CreateSystemRoleReqDto, ExportSystemRoleResDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 
 @ApiTags('系统角色接口')
@@ -11,6 +11,7 @@ import { SystemRoleService } from './service'
 export class SystemRoleController {
   constructor(
     private systemRoleService: SystemRoleService,
+    private excelService: ExcelService,
   ) {}
 
   @ApiOperation({ summary: '创建系统角色' })
@@ -40,5 +41,23 @@ export class SystemRoleController {
   @Post('update')
   async update(@Body() dto: UpdateSystemRoleReqDto) {
     return await this.systemRoleService.update(dto)
+  }
+
+  @ApiOperation({ summary: '导出系统角色' })
+  @ApiOkResponse({
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @Permission('sys.menu.system.role.export')
+  @Post('export')
+  async export(@Body() dto: FindSystemRolePageReqDto) {
+    const { data } = await this.systemRoleService.findPage(dto)
+    return this.excelService.exportStream(ExportSystemRoleResDto, data)
   }
 }

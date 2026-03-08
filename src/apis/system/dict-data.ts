@@ -15,6 +15,9 @@ export const systemDictDataApi = {
   findList(params: FindSystemDictDataListReqDto): Promise<FindSystemDictDataListResDto> {
     return ajax.post('/api/system/dict/data/findList', params)
   },
+  export(params: FindSystemDictDataListReqDto) {
+    return ajax.post('/api/system/dict/data/export', params, { responseType: 'blob' })
+  },
 }
 
 export type FindSystemDictDataListReqDto = components['schemas']['FindSystemDictDataListReqDto']

@@ -6,13 +6,13 @@ import { BaseEntity } from './base'
 
 @Entity({ tableName: 'sys_config' })
 export class SysConfigEntity extends BaseEntity {
-  @ApiProperty({ description: '配置名称' })
-  @Property()
-  configName: string
-
   @ApiProperty({ description: '配置键值' })
   @Property({ unique: true })
   configKey: string
+
+  @ApiProperty({ description: '配置名称' })
+  @Property()
+  configName: string
 
   @ApiProperty({ description: '配置值' })
   @Property()
