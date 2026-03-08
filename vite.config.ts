@@ -37,6 +37,18 @@ export default defineConfig({
         '~server': resolve(__dirname, 'server'),
         '~shared': resolve(__dirname, 'shared'),
       },
+      rolldownConfig: {
+        external: [
+          'pg',
+          'pg-query-stream',
+          'mysql',
+          'oracledb',
+          'better-sqlite3',
+          'sqlite3',
+          'tedious',
+        ],
+        output: {},
+      },
     }),
   ],
 })
