@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common'
+import type { IFile } from '~server/app/interfaces'
+import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
+import { ApiExcelResponse, ApiFile, ExcelService, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemUserReqDto, ExportSystemUserResDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
@@ -57,5 +59,12 @@ export class SystemUserController {
   @Post('exportTemplate')
   async exportTemplate() {
     return this.excelService.exportStream(ImportSystemUserReqDto, [])
+  }
+
+  @ApiOperation({ summary: '导入系统用户' })
+  @ApiFile()
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('importTemplate')
+  async importTemplate(@UploadedFile() file: IFile) {
   }
 }

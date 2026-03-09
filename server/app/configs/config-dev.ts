@@ -1,8 +1,11 @@
 import type { ConfigSchema } from './config-schema'
+import { mkdirSync } from 'node:fs'
+import { basename, extname } from 'node:path'
 import { ExpressAdapter } from '@bull-board/express'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import basicAuth from 'express-basic-auth'
+import { diskStorage } from 'multer'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
 import { OrmLogger } from '../loggers'
 
@@ -68,6 +71,21 @@ export default registerAs('', (): ConfigSchema => {
         challenge: true,
         users: {
           bull: '123456',
+        },
+      }),
+    },
+    multer: {
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          const uploadDir = './uploads'
+          mkdirSync(uploadDir, { recursive: true })
+          cb(null, uploadDir)
+        },
+        filename: (req, file, cb) => {
+          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+          const ext = extname(file.originalname)
+          const nameWithoutExt = basename(file.originalname, ext)
+          cb(null, `${nameWithoutExt}-${uniqueSuffix}${ext}`)
         },
       }),
     },

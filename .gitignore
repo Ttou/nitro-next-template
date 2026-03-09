@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .output
+uploads
 
 # Editor directories and files
 .vscode/*
