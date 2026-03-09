@@ -2,6 +2,7 @@ import type { BullBoardModuleOptions } from '@bull-board/nestjs'
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { BullRootModuleOptions } from '@nestjs/bullmq'
 import type { JwtModuleOptions } from '@nestjs/jwt'
+import type { MulterModuleOptions } from '@nestjs/platform-express'
 import type { CacheModuleOptions, CaptchaModuleOptions, HashModuleOptions, RedisModuleOptions } from '../extends'
 
 export class ConfigSchema {
@@ -22,4 +23,6 @@ export class ConfigSchema {
   bull: BullRootModuleOptions
 
   bullBoard: BullBoardModuleOptions
+
+  multer?: MulterModuleOptions
 }
