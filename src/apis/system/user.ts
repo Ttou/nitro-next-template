@@ -18,6 +18,9 @@ export const systemUserApi = {
   export(params: FindSystemUserPageReqDto) {
     return ajax.post('/api/system/user/export', params, { responseType: 'blob' })
   },
+  exportTemplate() {
+    return ajax.post('/api/system/user/exportTemplate', {}, { responseType: 'blob' })
+  },
 }
 
 export type CreateSystemUserReqDto = components['schemas']['CreateSystemUserReqDto']

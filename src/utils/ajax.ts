@@ -39,23 +39,15 @@ ajax.interceptors.response.use(
   (err) => {
     const res = err.response
 
-    if (res.status === 422) {
-      if (res.data.message) {
+    if (res.request.responseType === 'blob') {
+      const file = new FileReader()
+      file.readAsText(res.data)
+      file.onload = () => {
+        const res = JSON.parse(file.result as string)
         ElMessage.error({
-          message: res.data.message,
+          message: res.message,
           duration: 1500,
         })
-      }
-      else {
-        const file = new FileReader()
-        file.readAsText(res.data)
-        file.onload = () => {
-          const res = JSON.parse(file.result as string)
-          ElMessage.error({
-            message: res.message,
-            duration: 1500,
-          })
-        }
       }
     }
     else {

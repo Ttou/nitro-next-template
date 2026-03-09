@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemUserReqDto, ExportSystemUserResDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, UpdateSystemUserReqDto } from './dto'
+import { CreateSystemUserReqDto, ExportSystemUserResDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
 @ApiTags('系统用户接口')
@@ -50,5 +50,12 @@ export class SystemUserController {
   async export(@Body() dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)
     return this.excelService.exportStream(ExportSystemUserResDto, data)
+  }
+
+  @ApiOperation({ summary: '导出系统用户导入模板' })
+  @ApiExcelResponse()
+  @Post('exportTemplate')
+  async exportTemplate() {
+    return this.excelService.exportStream(ImportSystemUserReqDto, [])
   }
 }

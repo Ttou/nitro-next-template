@@ -145,3 +145,43 @@ export class ExportSystemUserResDto implements SysUserEntityNoRelationsNoPasswor
     Object.assign(this, partial)
   }
 }
+
+@ExcelFile({
+  fileName: '系统用户导入模板.xlsx',
+  sheetName: '系统用户',
+})
+export class ImportSystemUserReqDto implements SysUserEntityNoRelationsNoPassword {
+  id: string
+
+  @ExcelColumn({ header: '账号' })
+  userName: string
+
+  @ExcelColumn({ header: '昵称' })
+  nickName: string
+
+  @ExcelColumn({ header: '手机号码' })
+  phone?: string
+
+  @ExcelColumn({ header: '邮箱' })
+  email?: string
+
+  @ExcelColumn({ header: '性别' })
+  sex?: string
+
+  isAvailable: IYesOrNoEnum
+
+  @ExcelColumn({ header: '备注' })
+  remark?: string
+
+  isDelete: IYesOrNoEnum
+
+  avatar?: string
+
+  createBy?: string
+
+  createdAt?: Date
+
+  updateBy?: string
+
+  updatedAt?: Date
+}

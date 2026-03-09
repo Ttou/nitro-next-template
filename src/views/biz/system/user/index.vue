@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
 import { systemUserApi } from '~web/apis'
 import { useDict } from '~web/hooks/useDict'
 import { dictToOptions } from '~web/utils'
-import { useCreate, useExport, useRemove, useUpdate } from './hooks'
+import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
@@ -175,6 +174,7 @@ const { createVisible, createValues, createDialogProps, createFormProps, showCre
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
 const { confirmExport } = useExport({ pageInstance, selectedIds })
+const { importVisible, importValues, importDialogProps, importFormProps, importTemplateLoading, exportTemplateLoading, showImport, exportTemplate } = useImport({ pageInstance })
 </script>
 
 <template>
@@ -200,6 +200,12 @@ const { confirmExport } = useExport({ pageInstance, selectedIds })
             </template>
             导出
           </el-button>
+          <el-button type="info" @click="showImport">
+            <template #icon>
+              <Icon icon="ep:upload" />
+            </template>
+            导入
+          </el-button>
         </el-space>
       </template>
     </plus-page>
@@ -219,5 +225,48 @@ const { confirmExport } = useExport({ pageInstance, selectedIds })
       :form="updateFormProps"
       @confirm="confirmUpdate"
     />
+    <!-- 导入 -->
+    <plus-dialog-form
+      v-model:visible="importVisible"
+      v-model="importValues"
+      :dialog="importDialogProps"
+      :form="importFormProps"
+    >
+      <template #plus-field-template>
+        <el-button type="primary" :loading="exportTemplateLoading" @click="exportTemplate">
+          <template #icon>
+            <Icon icon="ep:download" />
+          </template>
+          下载
+        </el-button>
+      </template>
+      <template #plus-field-file>
+        <el-upload
+          v-loading="importTemplateLoading"
+          class="upload-wrap"
+          drag
+          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          multiple
+        >
+          <Icon class="upload-icon" icon="ep:upload-filled" />
+          <div class="el-upload__text">
+            Drop file here or <em>click to upload</em>
+          </div>
+        </el-upload>
+      </template>
+    </plus-dialog-form>
   </div>
 </template>
+
+<style scoped>
+.upload-wrap {
+  width: 90%;
+}
+
+.upload-icon {
+  margin-bottom: 16px;
+  font-size: 67px;
+  line-height: 50px;
+  color: var(--el-text-color-placeholder);
+}
+</style>
