@@ -2,18 +2,21 @@ import type { StreamableFileOptions } from '@nestjs/common/file-stream/interface
 import type { IExcelFileOptions } from './interface'
 import { PassThrough } from 'node:stream'
 import { Workbook, WorkbookWriter } from '@cj-tech-master/excelts'
-import { Injectable, StreamableFile } from '@nestjs/common'
+import { Injectable, Logger, StreamableFile } from '@nestjs/common'
 import { instanceToPlain } from 'class-transformer'
 import { pick } from 'es-toolkit'
 import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
 @Injectable()
 export class ExcelService {
+  private logger = new Logger(ExcelService.name)
+
   exportStream(cls: any, data: any[]) {
     const stream = new PassThrough()
     const streamableFileOptions = this.getStreamableFileOptions(cls)
 
     this.createWorkbook(stream, cls, data).catch((err) => {
+      this.logger.error('导出文件失败', err)
       stream.destroy(err)
     })
 
@@ -25,6 +28,7 @@ export class ExcelService {
     const streamableFileOptions = this.getStreamableFileOptions(cls)
 
     this.createLargeWorkbook(stream, cls, data).catch((err) => {
+      this.logger.error('导出大文件失败', err)
       stream.destroy(err)
     })
 
@@ -33,13 +37,15 @@ export class ExcelService {
 
   private async createWorkbook(stream: PassThrough, cls: any, data: any[]) {
     const wb = new Workbook()
-    const { sheetName, sheetOptions } = this.getFileOptions(cls)
+    const { fileName, sheetName, sheetOptions } = this.getFileOptions(cls)
     const ws = wb.addWorksheet(sheetName || 'Sheet1', sheetOptions)
     const columns = this.getColumns(cls)
     const rows = this.getRows(cls, data)
 
     ws.columns = columns
     ws.addRows(rows)
+
+    this.logger.debug(`${fileName} 开始写入小文件流`)
 
     return wb.xlsx.write(stream)
   }
@@ -48,7 +54,7 @@ export class ExcelService {
     const wb = new WorkbookWriter({
       stream,
     })
-    const { sheetName, sheetOptions } = this.getFileOptions(cls)
+    const { fileName, sheetName, sheetOptions } = this.getFileOptions(cls)
     const ws = wb.addWorksheet(sheetName || 'Sheet1', sheetOptions)
     const columns = this.getColumns(cls)
     const rows = this.getRows(cls, data)
@@ -57,6 +63,8 @@ export class ExcelService {
 
     const BATCH_SIZE = 1000
     const TOTAL_ROWS = rows.length
+
+    this.logger.debug(`${fileName} 开始写入大文件流`)
 
     for (let i = 0; i <= TOTAL_ROWS; i++) {
       ws.addRow(rows[i]).commit() // 立即提交该行
