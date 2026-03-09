@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
-import { CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
+import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemConfigReqDto, ExportSystemConfigResDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 
@@ -54,16 +54,7 @@ export class SystemConfigController {
   }
 
   @ApiOperation({ summary: '导出系统配置' })
-  @ApiOkResponse({
-    content: {
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
-        schema: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @ApiExcelResponse()
   @Permission('sys.menu.system.config.export')
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {

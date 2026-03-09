@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { ExcelService, RemoveReqDto } from '~server/app/extends'
+import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemDictDataReqDto, ExportSystemDictDataResDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
 import { SystemDictDataService } from './service'
 
@@ -44,16 +44,7 @@ export class SystemDictDataController {
   }
 
   @ApiOperation({ summary: '导出字典数据' })
-  @ApiOkResponse({
-    content: {
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
-        schema: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @ApiExcelResponse()
   @Permission('sys.menu.system.dictData.export')
   @Post('export')
   async export(@Body() dto: FindSystemDictDataListReqDto) {

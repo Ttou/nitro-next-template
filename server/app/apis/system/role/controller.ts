@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
-import { ExcelService, RemoveReqDto } from '~server/app/extends'
+import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemRoleReqDto, ExportSystemRoleResDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 
@@ -44,16 +44,7 @@ export class SystemRoleController {
   }
 
   @ApiOperation({ summary: '导出系统角色' })
-  @ApiOkResponse({
-    content: {
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
-        schema: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @ApiExcelResponse()
   @Permission('sys.menu.system.role.export')
   @Post('export')
   async export(@Body() dto: FindSystemRolePageReqDto) {

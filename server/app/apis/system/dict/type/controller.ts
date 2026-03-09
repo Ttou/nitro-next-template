@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
-import { CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
+import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
 import { CreateSystemDictTypeReqDto, ExportSystemDictTypeResDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
@@ -54,16 +54,7 @@ export class SystemDictTypeController {
   }
 
   @ApiOperation({ summary: '导出字典类型' })
-  @ApiOkResponse({
-    content: {
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
-        schema: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @ApiExcelResponse()
   @Permission('sys.menu.system.dictType.export')
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {
