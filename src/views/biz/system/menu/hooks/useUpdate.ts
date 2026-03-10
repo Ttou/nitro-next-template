@@ -1,4 +1,4 @@
-import type { FieldValues, PlusColumn, PlusDialogProps, PlusPageInstance } from 'plus-pro-components'
+import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemMenuReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
@@ -23,7 +23,6 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
     destroyOnClose: true,
   }))
 
-  // @ts-ignore
   const updateFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '120px',
     labelPosition: 'right',

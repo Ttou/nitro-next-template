@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PlusHeaderProps } from 'plus-pro-components'
+import type { PlusHeaderProps, PlusSidebarProps } from 'plus-pro-components'
 import type { RouteRecordRaw } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 import { cloneDeep, pick } from 'es-toolkit/compat'
@@ -22,7 +22,6 @@ const plusLayoutRef = useTemplateRef('plusLayoutRef')
 const updatePasswordRef = useTemplateRef('updatePasswordRef')
 const updateProfileRef = useTemplateRef('updateProfileRef')
 
-// @ts-ignore
 const filteredRoutes = computed(() => filterRoutes(cloneDeep(userStore.routes)))
 
 const headerProps = computed<PlusHeaderProps>(() => {
@@ -75,7 +74,6 @@ const headerProps = computed<PlusHeaderProps>(() => {
   }
 })
 
-// @ts-ignore
 const sidebarProps = computed<PlusSidebarProps>(() => {
   return {
     routes: unref(filteredRoutes),
@@ -94,7 +92,6 @@ function filterRoutes(routes: RouteRecordRaw[], basePath = '/') {
     .filter(v => v.meta?.hideInSidebar !== true)
     .map((v: any) => {
       if (v.children) {
-        // @ts-ignore
         v.children = filterRoutes(v.children, v.path)
 
         if (v.meta?.onlyShowChildren) {

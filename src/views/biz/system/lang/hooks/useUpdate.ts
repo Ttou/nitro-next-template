@@ -1,4 +1,4 @@
-import type { PlusColumn, PlusDialogProps, PlusPageInstance } from 'plus-pro-components'
+import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemLangReqDto } from '~web/apis'
 import { ElNotification } from 'element-plus'
@@ -24,14 +24,13 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     destroyOnClose: true,
   }))
 
-  // @ts-ignore
   const updateFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [].concat(unref(columns), LangEnum.items.map(v => ({
+    columns: [...[], ...unref(columns), ...LangEnum.items.map(v => ({
       label: v.label,
       prop: v.value,
-    }))),
+    }))],
     rules: {
       isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
       isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],

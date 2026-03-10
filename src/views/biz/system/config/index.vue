@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PlusColumn } from 'plus-pro-components'
+import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 
 import { cloneDeep } from 'es-toolkit/compat'
@@ -91,7 +91,6 @@ const columns = computed<PlusColumn[]>(() => [
   },
 ])
 
-// @ts-ignore
 const pageProps = computed<PlusPageProps>(() => {
   return {
     columns: unref(columns),

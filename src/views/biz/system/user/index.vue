@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
@@ -11,7 +12,6 @@ const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
 const dict = useDict(['sys.user.sex'])
 
-// @ts-ignore
 const columns = computed<PlusColumn[]>(() => [
   {
     label: '账号',
@@ -108,7 +108,6 @@ const columns = computed<PlusColumn[]>(() => [
   },
 ])
 
-// @ts-ignore
 const plusPageProps = computed<PlusPageProps>(() => {
   return {
     columns: unref(columns),

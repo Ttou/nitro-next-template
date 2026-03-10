@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { computed, ref, unref, useTemplateRef } from 'vue'
@@ -14,7 +15,6 @@ const route = useRoute()
 
 const id = computed(() => route.query.id as string)
 
-// @ts-ignore
 const pageProps = computed<PlusPageProps>(() => {
   return {
     columns: [
