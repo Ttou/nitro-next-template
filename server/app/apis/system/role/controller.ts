@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemRoleReqDto, ExportSystemRoleResDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
+import { CreateSystemRoleReqDto, ExportSystemRoleSerializeDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 
 @ApiTags('系统角色接口')
@@ -49,6 +49,6 @@ export class SystemRoleController {
   @Post('export')
   async export(@Body() dto: FindSystemRolePageReqDto) {
     const { data } = await this.systemRoleService.findPage(dto)
-    return this.excelService.exportStream(ExportSystemRoleResDto, data)
+    return this.excelService.exportFile(ExportSystemRoleSerializeDto, data)
   }
 }

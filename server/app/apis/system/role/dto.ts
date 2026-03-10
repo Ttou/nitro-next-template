@@ -63,7 +63,7 @@ export class FindSystemRolePageResDto extends PageResDto(SysRoleEntityNoRelation
 @ExcelFile({
   fileName: '系统角色.xlsx',
 })
-export class ExportSystemRoleResDto implements SysRoleEntityNoRelations {
+export class ExportSystemRoleSerializeDto implements SysRoleEntityNoRelations {
   @ExcelColumn({ header: 'ID' })
   id: string
 

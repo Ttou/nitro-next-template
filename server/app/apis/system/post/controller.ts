@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemPostReqDto, ExportSystemPostResDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
+import { CreateSystemPostReqDto, ExportSystemPostSerializeDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
 import { SystemPostService } from './service'
 
 @ApiTags('系统岗位接口')
@@ -49,6 +49,6 @@ export class SystemPostController {
   @Post('export')
   async export(@Body() dto: FindSystemPostPageReqDto) {
     const { data } = await this.systemPostService.findPage(dto)
-    return this.excelService.exportStream(ExportSystemPostResDto, data)
+    return this.excelService.exportFile(ExportSystemPostSerializeDto, data)
   }
 }

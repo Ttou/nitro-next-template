@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@ne
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
 import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemDictTypeReqDto, ExportSystemDictTypeResDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
+import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerializeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
 @ApiTags('字典类型接口')
@@ -59,6 +59,6 @@ export class SystemDictTypeController {
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)
-    return this.excelService.exportStream(ExportSystemDictTypeResDto, data)
+    return this.excelService.exportFile(ExportSystemDictTypeSerializeDto, data)
   }
 }

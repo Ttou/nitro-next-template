@@ -71,7 +71,7 @@ export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntity) 
 @ExcelFile({
   fileName: '系统字典类型.xlsx',
 })
-export class ExportSystemDictTypeResDto implements SysDictTypeEntity {
+export class ExportSystemDictTypeSerializeDto implements SysDictTypeEntity {
   @ExcelColumn({ header: 'ID' })
   id: string
 

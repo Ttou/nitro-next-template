@@ -63,7 +63,7 @@ export class FindSystemPostPageResDto extends PageResDto(SysPostEntityNoRelation
 @ExcelFile({
   fileName: '系统岗位.xlsx',
 })
-export class ExportSystemPostResDto implements SysPostEntityNoRelations {
+export class ExportSystemPostSerializeDto implements SysPostEntityNoRelations {
   @ExcelColumn({ header: 'ID' })
   id: string
 

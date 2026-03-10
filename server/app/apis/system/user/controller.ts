@@ -4,7 +4,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { ApiExcelResponse, ApiFile, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemUserReqDto, ExportSystemUserResDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, UpdateSystemUserReqDto } from './dto'
+import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
 @ApiTags('系统用户接口')
@@ -51,14 +51,14 @@ export class SystemUserController {
   @Post('export')
   async export(@Body() dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)
-    return this.excelService.exportStream(ExportSystemUserResDto, data)
+    return this.excelService.exportFile(ExportSystemUserSerializeDto, data)
   }
 
   @ApiOperation({ summary: '导出系统用户导入模板' })
   @ApiExcelResponse()
   @Post('exportTemplate')
   async exportTemplate() {
-    return this.excelService.exportStream(ImportSystemUserReqDto, [])
+    return this.excelService.exportFile(ImportSystemUserSerializeDto, [])
   }
 
   @ApiOperation({ summary: '导入系统用户' })
@@ -66,5 +66,8 @@ export class SystemUserController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('importTemplate')
   async importTemplate(@UploadedFile() file: IFile) {
+    const res = await this.excelService.importFile(ImportSystemUserSerializeDto, file)
+
+    console.log(res)
   }
 }

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@ne
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CacheKey, CacheTTL, Permission } from '~server/app/decorators'
 import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemConfigReqDto, ExportSystemConfigResDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
+import { CreateSystemConfigReqDto, ExportSystemConfigSerializeDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 
 @ApiTags('系统配置接口')
@@ -59,6 +59,6 @@ export class SystemConfigController {
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)
-    return this.excelService.exportStream(ExportSystemConfigResDto, data)
+    return this.excelService.exportFile(ExportSystemConfigSerializeDto, data)
   }
 }

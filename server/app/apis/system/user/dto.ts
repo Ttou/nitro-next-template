@@ -96,7 +96,7 @@ export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelation
     exposeUnsetFields: false,
   },
 })
-export class ExportSystemUserResDto implements SysUserEntityNoRelationsNoPassword {
+export class ExportSystemUserSerializeDto implements SysUserEntityNoRelationsNoPassword {
   @ExcelColumn({ header: 'ID' })
   id: string
 
@@ -150,7 +150,7 @@ export class ExportSystemUserResDto implements SysUserEntityNoRelationsNoPasswor
   fileName: '系统用户导入模板.xlsx',
   sheetName: '系统用户',
 })
-export class ImportSystemUserReqDto implements SysUserEntityNoRelationsNoPassword {
+export class ImportSystemUserSerializeDto implements SysUserEntityNoRelationsNoPassword {
   id: string
 
   @ExcelColumn({ header: '账号' })

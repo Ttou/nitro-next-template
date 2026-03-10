@@ -57,7 +57,7 @@ export class FindSystemDictDataListResDto extends SysDictDataEntity {}
 @ExcelFile({
   fileName: '系统字典数据.xlsx',
 })
-export class ExportSystemDictDataResDto implements SysDictDataEntity {
+export class ExportSystemDictDataSerializeDto implements SysDictDataEntity {
   @ExcelColumn({ header: 'ID' })
   id: string
 

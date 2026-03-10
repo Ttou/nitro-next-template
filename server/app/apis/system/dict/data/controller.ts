@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/app/decorators'
 import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/app/extends'
-import { CreateSystemDictDataReqDto, ExportSystemDictDataResDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
+import { CreateSystemDictDataReqDto, ExportSystemDictDataSerializeDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
 import { SystemDictDataService } from './service'
 
 @ApiTags('字典数据接口')
@@ -49,6 +49,6 @@ export class SystemDictDataController {
   @Post('export')
   async export(@Body() dto: FindSystemDictDataListReqDto) {
     const data = await this.systemDictDataService.findList(dto)
-    return this.excelService.exportStream(ExportSystemDictDataResDto, data)
+    return this.excelService.exportFile(ExportSystemDictDataSerializeDto, data)
   }
 }

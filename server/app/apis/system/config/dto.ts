@@ -85,7 +85,7 @@ export class FindSystemConfigPageResDto extends PageResDto(SysConfigEntity) {}
 @ExcelFile({
   fileName: '系统配置.xlsx',
 })
-export class ExportSystemConfigResDto implements SysConfigEntity {
+export class ExportSystemConfigSerializeDto implements SysConfigEntity {
   @ExcelColumn({ header: 'ID' })
   id: string
 

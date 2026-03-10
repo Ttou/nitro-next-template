@@ -1,9 +1,12 @@
 import type { StreamableFileOptions } from '@nestjs/common/file-stream/interfaces'
+import type { ClassConstructor } from 'class-transformer'
+import type { IFile } from '~server/app/interfaces'
 import type { IExcelFileOptions } from './interface'
-import { PassThrough } from 'node:stream'
-import { Workbook, WorkbookWriter } from '@cj-tech-master/excelts'
+import { createReadStream, promises } from 'node:fs'
+import { PassThrough, pipeline } from 'node:stream'
+import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
 import { Injectable, Logger, StreamableFile } from '@nestjs/common'
-import { instanceToPlain } from 'class-transformer'
+import { instanceToPlain, plainToInstance } from 'class-transformer'
 import { pick } from 'es-toolkit'
 import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
@@ -11,23 +14,55 @@ import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from 
 export class ExcelService {
   private logger = new Logger(ExcelService.name)
 
-  exportStream(cls: any, data: any[]) {
+  async importFile(cls: ClassConstructor<any>, file: IFile) {
+    const fileStream = createReadStream(file.path)
+    const stream = new PassThrough()
+
+    pipeline(fileStream, stream, (err) => {
+      if (err) {
+        this.logger.error('导入文件失败:', err)
+      }
+    })
+
+    const workbookReader = new WorkbookReader(stream, {
+      sharedStrings: 'cache',
+      hyperlinks: 'ignore',
+      styles: 'ignore',
+    })
+    const keys = this.getKeys(cls)
+    const result = []
+    let rowCount = 0
+
+    for await (const worksheetReader of workbookReader) {
+      for await (const row of worksheetReader) {
+        rowCount++
+
+        // 跳过表头
+        if (rowCount === 1) {
+          continue
+        }
+
+        const obj = {}
+
+        keys.forEach((key, index) => {
+          obj[key] = row.getCell(index + 1).value
+        })
+
+        result.push(plainToInstance(cls, obj))
+      }
+    }
+
+    // 处理完成后，可以删除临时文件（可选）
+    await promises.unlink(file.path)
+
+    return result
+  }
+
+  exportFile(cls: ClassConstructor<any>, data: any[]) {
     const stream = new PassThrough()
     const streamableFileOptions = this.getStreamableFileOptions(cls)
 
     this.createWorkbook(stream, cls, data).catch((err) => {
-      this.logger.error('导出文件失败', err)
-      stream.destroy(err)
-    })
-
-    return new StreamableFile(stream, streamableFileOptions)
-  }
-
-  exportLargeStream(cls: any, data: any[]) {
-    const stream = new PassThrough()
-    const streamableFileOptions = this.getStreamableFileOptions(cls)
-
-    this.createLargeWorkbook(stream, cls, data).catch((err) => {
       this.logger.error('导出大文件失败', err)
       stream.destroy(err)
     })
@@ -35,24 +70,11 @@ export class ExcelService {
     return new StreamableFile(stream, streamableFileOptions)
   }
 
-  private async createWorkbook(stream: PassThrough, cls: any, data: any[]) {
-    const wb = new Workbook()
-    const { fileName, sheetName, sheetOptions } = this.getFileOptions(cls)
-    const ws = wb.addWorksheet(sheetName || 'Sheet1', sheetOptions)
-    const columns = this.getColumns(cls)
-    const rows = this.getRows(cls, data)
-
-    ws.columns = columns
-    ws.addRows(rows)
-
-    this.logger.debug(`${fileName} 开始写入小文件流`)
-
-    return wb.xlsx.write(stream)
-  }
-
-  private async createLargeWorkbook(stream: PassThrough, cls: any, data: any[]) {
+  private async createWorkbook(stream: PassThrough, cls: ClassConstructor<any>, data: any[]) {
     const wb = new WorkbookWriter({
       stream,
+      useSharedStrings: true,
+      useStyles: false,
     })
     const { fileName, sheetName, sheetOptions } = this.getFileOptions(cls)
     const ws = wb.addWorksheet(sheetName || 'Sheet1', sheetOptions)
@@ -80,11 +102,11 @@ export class ExcelService {
     await wb.commit()
   }
 
-  private getFileOptions(cls: any): IExcelFileOptions {
+  private getFileOptions(cls: ClassConstructor<any>): IExcelFileOptions {
     return Reflect.getMetadata(EXCEL_FILE_METADATA, cls)
   }
 
-  private getColumns(cls: any) {
+  private getColumns(cls: ClassConstructor<any>) {
     const columns = []
     const keys = this.getKeys(cls)
 
@@ -103,7 +125,7 @@ export class ExcelService {
     return columns
   }
 
-  private getRows(cls: any, data: any[]) {
+  private getRows(cls: ClassConstructor<any>, data: any[]) {
     const { transformOptions } = this.getFileOptions(cls)
     const keys = this.getKeys(cls)
 
@@ -112,12 +134,12 @@ export class ExcelService {
     )
   }
 
-  private getKeys(cls: any) {
+  private getKeys(cls: ClassConstructor<any>) {
     const instance = instanceToPlain(Reflect.construct(cls, []), { groups: [EXCEL_COLUMN_EXPOSE] })
     return Object.keys(instance)
   }
 
-  private getStreamableFileOptions(cls: any): StreamableFileOptions {
+  private getStreamableFileOptions(cls: ClassConstructor<any>): StreamableFileOptions {
     const { fileName } = this.getFileOptions(cls)
     return {
       disposition: `attachment; filename=${encodeURIComponent(fileName || 'export.xlsx')}`,
