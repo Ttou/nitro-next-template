@@ -35,7 +35,7 @@ export class CacheService {
       await this.redisClient.setex(cacheKey, parsedExpire, finalValue)
     }
     catch (error) {
-      console.error(`缓存设置失败: ${error}`, { 0: CacheService.name })
+      this.logger.error(`缓存设置失败: ${error}`)
     }
   }
 
