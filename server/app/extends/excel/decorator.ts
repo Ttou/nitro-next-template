@@ -1,4 +1,5 @@
 import type { IExcelColumnOptions, IExcelFileOptions } from './interface'
+import { applyDecorators } from '@nestjs/common'
 import { Expose } from 'class-transformer'
 
 /**
@@ -7,9 +8,9 @@ import { Expose } from 'class-transformer'
 export const EXCEL_FILE_METADATA = 'excel:file'
 
 export function ExcelFile(options?: IExcelFileOptions) {
-  return function (target: any) {
-    Reflect.defineMetadata(EXCEL_FILE_METADATA, options, target)
-  }
+  return applyDecorators(
+    Reflect.metadata(EXCEL_FILE_METADATA, options),
+  )
 }
 
 /**
@@ -22,8 +23,8 @@ export const EXCEL_COLUMN_METADATA = 'excel:column'
 export const EXCEL_COLUMN_EXPOSE = 'excel:column:expose'
 
 export function ExcelColumn(options?: IExcelColumnOptions) {
-  return function (target: any, propertyKey: string) {
-    Reflect.defineMetadata(EXCEL_COLUMN_METADATA, options, target, propertyKey)
-    Expose({ groups: [EXCEL_COLUMN_EXPOSE] })
-  }
+  return applyDecorators(
+    Reflect.metadata(EXCEL_COLUMN_METADATA, options),
+    Expose({ groups: [EXCEL_COLUMN_EXPOSE] }),
+  )
 }

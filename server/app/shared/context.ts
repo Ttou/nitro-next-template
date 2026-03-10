@@ -100,4 +100,15 @@ export class ContextService {
 
     return userSingleOnlineConfig!.configValue === YesOrNoEnum.YES
   }
+
+  /**
+   * 获取用户初始密码
+   */
+  async getInitPassword() {
+    const initPasswordConfig = await this.em.findOne(SysConfigEntity, {
+      configKey: { $eq: 'sys.user.initPassword' },
+    })
+
+    return initPasswordConfig!.configValue
+  }
 }

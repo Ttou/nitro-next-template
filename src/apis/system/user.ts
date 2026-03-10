@@ -21,9 +21,13 @@ export const systemUserApi = {
   exportTemplate() {
     return ajax.post('/api/system/user/exportTemplate', {}, { responseType: 'blob' })
   },
+  importTemplate(params: FormData): Promise<ImportSystemUserResDto> {
+    return ajax.post('/api/system/user/importTemplate', params)
+  },
 }
 
 export type CreateSystemUserReqDto = components['schemas']['CreateSystemUserReqDto']
 export type UpdateSystemUserReqDto = components['schemas']['UpdateSystemUserReqDto']
 export type FindSystemUserPageReqDto = components['schemas']['FindSystemUserPageReqDto']
 export type FindSystemUserPageResDto = components['schemas']['FindSystemUserPageResDto']
+export type ImportSystemUserResDto = components['schemas']['ImportSystemUserResDto']

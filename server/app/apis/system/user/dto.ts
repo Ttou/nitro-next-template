@@ -92,9 +92,6 @@ export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelation
 
 @ExcelFile({
   fileName: '系统用户.xlsx',
-  transformOptions: {
-    exposeUnsetFields: false,
-  },
 })
 export class ExportSystemUserSerializeDto implements SysUserEntityNoRelationsNoPassword {
   @ExcelColumn({ header: 'ID' })
@@ -184,4 +181,19 @@ export class ImportSystemUserSerializeDto implements SysUserEntityNoRelationsNoP
   updateBy?: string
 
   updatedAt?: Date
+
+  constructor(partial: any) {
+    Object.assign(this, partial)
+  }
+}
+
+export class ImportSystemUserResDto {
+  @ApiProperty({ description: '成功数' })
+  success: number
+
+  @ApiProperty({ description: '失败数' })
+  fail: number
+
+  @ApiProperty({ description: '导入失败的用户名列表' })
+  items: string[]
 }

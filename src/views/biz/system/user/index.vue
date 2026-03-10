@@ -174,7 +174,7 @@ const { createVisible, createValues, createDialogProps, createFormProps, showCre
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
 const { confirmExport } = useExport({ pageInstance, selectedIds })
-const { importVisible, importValues, importDialogProps, importFormProps, importTemplateLoading, exportTemplateLoading, showImport, exportTemplate } = useImport({ pageInstance })
+const { importVisible, importValues, importDialogProps, importFormProps, importTemplateLoading, exportTemplateLoading, showImport, exportTemplate, httpRequest, beforeUpload } = useImport({ pageInstance })
 </script>
 
 <template>
@@ -243,15 +243,22 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
       <template #plus-field-file>
         <el-upload
           v-loading="importTemplateLoading"
+          element-loading-text="上传中..."
           class="upload-wrap"
           drag
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-          multiple
+          :http-request="httpRequest"
+          :before-upload="beforeUpload"
+          :show-file-list="false"
         >
           <Icon class="upload-icon" icon="ep:upload-filled" />
           <div class="el-upload__text">
-            Drop file here or <em>click to upload</em>
+            拖放文件或 <em>点击上传</em>
           </div>
+          <template #tip>
+            <div class="el-upload__tip">
+              Excel 文件大小不能超过 10mb
+            </div>
+          </template>
         </el-upload>
       </template>
     </plus-dialog-form>

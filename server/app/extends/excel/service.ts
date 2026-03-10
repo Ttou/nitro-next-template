@@ -6,8 +6,7 @@ import { createReadStream, promises } from 'node:fs'
 import { PassThrough, pipeline } from 'node:stream'
 import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
 import { Injectable, Logger, StreamableFile } from '@nestjs/common'
-import { instanceToPlain, plainToInstance } from 'class-transformer'
-import { pick } from 'es-toolkit'
+import { instanceToPlain } from 'class-transformer'
 import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
 @Injectable()
@@ -48,7 +47,7 @@ export class ExcelService {
           obj[key] = row.getCell(index + 1).value
         })
 
-        result.push(plainToInstance(cls, obj))
+        result.push(instanceToPlain(Reflect.construct(cls, [obj]), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] }))
       }
     }
 
@@ -126,16 +125,13 @@ export class ExcelService {
   }
 
   private getRows(cls: ClassConstructor<any>, data: any[]) {
-    const { transformOptions } = this.getFileOptions(cls)
-    const keys = this.getKeys(cls)
-
     return data.map(v =>
-      instanceToPlain(Reflect.construct(cls, [pick(v, keys)]), transformOptions),
+      instanceToPlain(Reflect.construct(cls, [v]), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] }),
     )
   }
 
   private getKeys(cls: ClassConstructor<any>) {
-    const instance = instanceToPlain(Reflect.construct(cls, []), { groups: [EXCEL_COLUMN_EXPOSE] })
+    const instance = instanceToPlain(Reflect.construct(cls, []), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] })
     return Object.keys(instance)
   }
 
