@@ -154,7 +154,7 @@ const { confirmExport } = useExport({ pageInstance, selectedIds, dictType })
 </script>
 
 <template>
-  <div>
+  <div class="auto-page">
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>

@@ -177,7 +177,7 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
 </script>
 
 <template>
-  <div>
+  <div class="auto-page">
     <plus-page ref="pageInstance" v-bind="plusPageProps">
       <template #table-title>
         <el-space>
