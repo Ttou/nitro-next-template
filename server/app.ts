@@ -10,7 +10,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LogoutModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor } from './interceptors'
@@ -54,9 +54,6 @@ import { SharedModule } from './shared'
       isGlobal: true,
     }),
     ExcelModule.register({
-      isGlobal: true,
-    }),
-    LogoutModule.register({
       isGlobal: true,
     }),
     HashModule.register({

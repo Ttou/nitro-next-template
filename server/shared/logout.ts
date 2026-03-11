@@ -1,21 +1,19 @@
-import type { LogoutModuleOptions } from './interface'
-import { Inject, Injectable } from '@nestjs/common'
+import type { ConfigSchema } from '~server/configs'
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-import { merge } from 'es-toolkit'
 import { CacheService } from '~server/extends'
-import { defaultOptions } from './constant'
-import { LOGOUT_MODULE_OPTIONS } from './module-define'
 
 @Injectable()
 export class LogoutService {
   constructor(
-    @Inject(LOGOUT_MODULE_OPTIONS) private logoutModuleOptions: LogoutModuleOptions,
+    private configService: ConfigService,
     private cacheService: CacheService,
     private jwtService: JwtService,
   ) {}
 
-  get options() {
-    return merge(defaultOptions, this.logoutModuleOptions)
+  get logoutKeyPrefix() {
+    return this.configService.get<ConfigSchema['logoutKeyPrefix']>('logoutKeyPrefix')
   }
 
   /**
@@ -39,6 +37,6 @@ export class LogoutService {
   }
 
   private getCacheKey(tokenId: string) {
-    return [this.options.logoutKey, tokenId].join(this.cacheService.options.keyPrefixSeparator)
+    return [this.logoutKeyPrefix, tokenId].join(this.cacheService.options.keyPrefixSeparator)
   }
 }

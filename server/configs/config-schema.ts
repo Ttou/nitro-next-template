@@ -8,6 +8,8 @@ import type { CacheModuleOptions, CaptchaModuleOptions, HashModuleOptions, Redis
 export class ConfigSchema {
   appName: string
 
+  logoutKeyPrefix: string
+
   hash: HashModuleOptions
 
   cache: CacheModuleOptions
