@@ -11,12 +11,10 @@ import { AllSeeders } from './seeders'
 import { IsDev } from './utils'
 
 // eslint-disable-next-line import/no-mutable-exports
-export let nestApp: NestExpressApplication
-// eslint-disable-next-line import/no-mutable-exports
 export let serverApp: IServer
 
-export async function bootstrap() {
-  nestApp = await NestFactory.create<NestExpressApplication>(
+async function bootstrap() {
+  const nestApp = await NestFactory.create<NestExpressApplication>(
     AppModule,
     new ExpressAdapter(),
     {

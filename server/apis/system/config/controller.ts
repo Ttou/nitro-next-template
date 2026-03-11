@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { CacheKey, CacheTTL, Permission } from '~server/decorators'
+import { CacheKey, CacheTTL, OperateLog, Permission } from '~server/decorators'
 import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/extends'
 import { CreateSystemConfigReqDto, ExportSystemConfigSerializeDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
@@ -15,6 +15,7 @@ export class SystemConfigController {
   ) {}
 
   @ApiOperation({ summary: '创建系统配置' })
+  @OperateLog()
   @Permission('sys.menu.system.config.create')
   @Post('create')
   async create(@Body() dto: CreateSystemConfigReqDto) {
@@ -34,6 +35,7 @@ export class SystemConfigController {
   @ApiOperation({ summary: '查询系统配置分页列表' })
   @ApiOkResponse({ type: FindSystemConfigPageResDto })
   @Permission('sys.menu.system.config.findPage')
+  @OperateLog()
   @Post('findPage')
   async findPage(@Body() dto: FindSystemConfigPageReqDto) {
     return await this.systemConfigService.findPage(dto)
@@ -41,6 +43,7 @@ export class SystemConfigController {
 
   @ApiOperation({ summary: '删除系统配置' })
   @Permission('sys.menu.system.config.remove')
+  @OperateLog()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemConfigService.remove(dto)
@@ -48,6 +51,7 @@ export class SystemConfigController {
 
   @ApiOperation({ summary: '更新系统配置' })
   @Permission('sys.menu.system.config.update')
+  @OperateLog()
   @Post('update')
   async update(@Body() dto: UpdateSystemConfigReqDto) {
     return await this.systemConfigService.update(dto)
@@ -56,6 +60,7 @@ export class SystemConfigController {
   @ApiOperation({ summary: '导出系统配置' })
   @ApiExcelResponse()
   @Permission('sys.menu.system.config.export')
+  @OperateLog()
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)

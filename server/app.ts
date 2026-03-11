@@ -13,7 +13,7 @@ import { ConfigSchema, configuration } from './configs'
 import { CacheModule, CaptchaModule, ExcelModule, HashModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
-import { LoggingInterceptor } from './interceptors'
+import { LoggingInterceptor, OperateLogInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
@@ -84,6 +84,10 @@ import { SharedModule } from './shared'
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OperateLogInterceptor,
     },
     {
       provide: APP_GUARD,

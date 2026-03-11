@@ -1,12 +1,13 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import type { IRequest } from '../interfaces'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { tap } from 'rxjs/operators'
-import { logger } from '../loggers'
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
+  private logger = new Logger(LoggingInterceptor.name)
+
   constructor(
     private clsService: ClsService,
   ) {}
@@ -16,11 +17,13 @@ export class LoggingInterceptor implements NestInterceptor {
     const requestId = this.clsService.getId()
     const message = `${req.method} - ${req.path}`
 
-    logger.info(`Request [${message}]`, { 0: LoggingInterceptor.name, requestId })
+    console.log('reqIp', req.ip)
+
+    this.logger.log(`Request [${message}]`, requestId)
 
     return next.handle().pipe(
       tap(() => {
-        logger.info(`Response [${message}]`, { 0: LoggingInterceptor.name, requestId })
+        this.logger.log(`Response [${message}]`, requestId)
       }),
     )
   }

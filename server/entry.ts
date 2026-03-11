@@ -1,12 +1,7 @@
 import { FastURL, toFetchHandler } from 'srvx/node'
 import { serverApp } from './main'
 
-const SERVER_URLS = [
-  '/api',
-  '/bull',
-  '/dev',
-  '/openapi',
-]
+const SERVER_URLS = ['/api', '/bull', '/dev', '/openapi']
 
 export default {
   async fetch(request: Request) {

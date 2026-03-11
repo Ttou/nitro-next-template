@@ -3,8 +3,21 @@ import { RouterModule } from '@nestjs/core'
 import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
-import { MonitorOnlineModule } from './monitor'
-import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictTypeModule, SystemLangModule, SystemMenuModule, SystemPostAuthModule, SystemPostModule, SystemRoleAuthModule, SystemRoleMenuModule, SystemRoleModule, SystemUserModule } from './system'
+import { MonitorOnlineModule, MonitorOperateModule } from './monitor'
+import {
+  SystemConfigModule,
+  SystemDeptModule,
+  SystemDictDataModule,
+  SystemDictTypeModule,
+  SystemLangModule,
+  SystemMenuModule,
+  SystemPostAuthModule,
+  SystemPostModule,
+  SystemRoleAuthModule,
+  SystemRoleMenuModule,
+  SystemRoleModule,
+  SystemUserModule,
+} from './system'
 
 @Module({
   imports: [
@@ -12,6 +25,7 @@ import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictT
     CaptchaModule,
     CurrentUserModule,
     MonitorOnlineModule,
+    MonitorOperateModule,
     SystemConfigModule,
     SystemDeptModule,
     SystemDictTypeModule,
@@ -46,6 +60,10 @@ import { SystemConfigModule, SystemDeptModule, SystemDictDataModule, SystemDictT
               {
                 path: 'online',
                 module: MonitorOnlineModule,
+              },
+              {
+                path: 'operate',
+                module: MonitorOperateModule,
               },
             ],
           },
