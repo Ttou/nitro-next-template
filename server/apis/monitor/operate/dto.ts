@@ -1,12 +1,12 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
-import { SysOnlineEntityNoRelations, SysUserEntityNoRelations } from '~server/entities'
+import { SysOperateEntityNoRelations, SysUserEntityNoRelations } from '~server/entities'
 import { PageReqDto, PageResDto } from '~server/extends'
 
 /**
- * 分页查询在线用户请求
+ * 分页查询操作日志请求
  */
-export class FindMonitorOnlinePageReqDto extends PageReqDto {
+export class FindMonitorOperatePageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '用户名' })
   @IsOptional()
   userName?: string
@@ -26,12 +26,12 @@ export class FindMonitorOnlinePageReqDto extends PageReqDto {
   endTime?: string
 }
 
-class SysOnlineEntityNoToken extends OmitType(SysOnlineEntityNoRelations, ['token']) {
+class SysOperateLogEntityWithUser extends SysOperateEntityNoRelations {
   @ApiProperty({ description: '用户', type: () => SysUserEntityNoRelations })
   user: SysUserEntityNoRelations
 }
 
 /**
- * 分页查询在线用户响应
+ * 分页查询操作日志响应
  */
-export class FindMonitorOnlinePageResDto extends PageResDto(SysOnlineEntityNoToken) {}
+export class FindMonitorOperatePageResDto extends PageResDto(SysOperateLogEntityWithUser) {}

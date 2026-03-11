@@ -13,7 +13,7 @@ import { LoginReqDto } from './dto'
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectQueue(QueueNameEnum.ONLINE_USER) private onlineUserQueue: Queue,
+    @InjectQueue(QueueNameEnum.ONLINE) private onlineUserQueue: Queue,
     private captchaService: CaptchaService,
     private jwtService: JwtService,
     private hashService: HashService,

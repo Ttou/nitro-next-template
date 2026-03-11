@@ -3,8 +3,8 @@ import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
-@Entity({ tableName: 'sys_operate_log' })
-export class SysOperateLogEntity {
+@Entity({ tableName: 'sys_operate' })
+export class SysOperateEntity {
   @ApiProperty({ description: '主键', type: String })
   @PrimaryKey()
   id = generateId()
@@ -17,7 +17,7 @@ export class SysOperateLogEntity {
   @Property()
   controllerName: string
 
-  @ApiProperty({ description: '处理方法名称' })
+  @ApiProperty({ description: '处理器名称' })
   @Property()
   handlerName: string
 
@@ -25,7 +25,7 @@ export class SysOperateLogEntity {
   @Property()
   requestMethod: string
 
-  @ApiProperty({ description: '请求URL' })
+  @ApiProperty({ description: '请求链接' })
   @Property()
   requestUrl: string
 
@@ -41,7 +41,7 @@ export class SysOperateLogEntity {
   @Property({ nullable: true })
   requestResult?: string
 
-  @ApiProperty({ description: '状态' })
+  @ApiProperty({ description: '请求状态' })
   @Property()
   status: number
 
@@ -62,4 +62,4 @@ export class SysOperateLogEntity {
   user: SysUserEntity
 }
 
-export class SysOperateLogEntityNoRelations extends OmitType(SysOperateLogEntity, ['user'] as const) {}
+export class SysOperateEntityNoRelations extends OmitType(SysOperateEntity, ['user'] as const) {}

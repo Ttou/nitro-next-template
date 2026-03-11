@@ -152,6 +152,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/monitor/operate/findPage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 分页查询在线用户 */
+        post: operations["MonitorOperateController_findPage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/system/config/create": {
         parameters: {
             query?: never;
@@ -1491,6 +1508,69 @@ export interface components {
         RemoveReqDto: {
             /** @description 主键数组 */
             ids: string[];
+        };
+        FindMonitorOperatePageReqDto: {
+            /**
+             * @description 页码
+             * @default 1
+             */
+            page: number;
+            /**
+             * @description 页长
+             * @default 15
+             */
+            pageSize: number;
+            /** @description 用户名 */
+            userName?: string;
+            /** @description 昵称 */
+            nickName?: string;
+            /** @description 开始时间 */
+            beginTime?: string;
+            /** @description 结束时间 */
+            endTime?: string;
+        };
+        SysOperateLogEntityWithUser: {
+            /** @description 主键 */
+            id: string;
+            /** @description 操作摘要 */
+            summary: string;
+            /** @description 控制器名称 */
+            controllerName: string;
+            /** @description 处理方法名称 */
+            handlerName: string;
+            /** @description 请求方法 */
+            requestMethod: string;
+            /** @description 请求链接 */
+            requestUrl: string;
+            /** @description 请求IP */
+            requestIp: string;
+            /** @description 请求参数 */
+            requestParams: string;
+            /** @description 请求结果 */
+            requestResult: string;
+            /** @description 请求状态 */
+            status: number;
+            /** @description 错误信息 */
+            errorMsg: string;
+            /**
+             * Format: date-time
+             * @description 操作时间
+             */
+            operateTime: string;
+            /** @description 耗时 */
+            costTime: number;
+            /** @description 用户 */
+            user: components["schemas"]["SysUserEntityNoRelations"];
+        };
+        FindMonitorOperatePageResDto: {
+            /** @description 页码 */
+            page: number;
+            /** @description 页长 */
+            pageSize: number;
+            /** @description 总数 */
+            total: number;
+            /** @description 列表 */
+            data: components["schemas"]["SysOperateLogEntityWithUser"][];
         };
         CreateSystemConfigReqDto: {
             /** @description 参数名称 */
@@ -2969,6 +3049,29 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    MonitorOperateController_findPage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindMonitorOperatePageReqDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FindMonitorOperatePageResDto"];
+                };
             };
         };
     };

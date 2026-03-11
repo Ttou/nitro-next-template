@@ -33,6 +33,7 @@ class SecondLevelSeeder extends Seeder {
     context.systemPostAuthMenu = em.create(SysMenuEntity, { menuName: '岗位分配用户', menuKey: 'sys.menu.system.postAuth', menuType: MenuTypeEnum.MENU, orderNum: 11, path: 'post/auth', component: 'system/post/auth', isAvailable: YesOrNoEnum.YES, isCache: YesOrNoEnum.NO, isFrame: YesOrNoEnum.NO, isVisible: YesOrNoEnum.NO, parentId: systemMenu.id })
     context.systemRoleMenuMenu = em.create(SysMenuEntity, { menuName: '角色分配菜单', menuKey: 'sys.menu.system.roleMenu', menuType: MenuTypeEnum.BUTTON, orderNum: 10, isAvailable: YesOrNoEnum.YES, isCache: YesOrNoEnum.NO, isFrame: YesOrNoEnum.NO, isVisible: YesOrNoEnum.NO, parentId: systemMenu.id })
     context.monitorOnlineMenu = em.create(SysMenuEntity, { menuName: '在线用户', menuKey: 'sys.menu.monitor.online', menuType: MenuTypeEnum.MENU, orderNum: 1, path: 'online', component: 'monitor/online', isAvailable: YesOrNoEnum.YES, isCache: YesOrNoEnum.NO, isFrame: YesOrNoEnum.NO, isVisible: YesOrNoEnum.YES, parentId: monitorMenu.id })
+    context.monitorOperateMenu = em.create(SysMenuEntity, { menuName: '操作日志', menuKey: 'sys.menu.monitor.operate', menuType: MenuTypeEnum.MENU, orderNum: 2, path: 'operate', component: 'monitor/operate', isAvailable: YesOrNoEnum.YES, isCache: YesOrNoEnum.NO, isFrame: YesOrNoEnum.NO, isVisible: YesOrNoEnum.YES, parentId: monitorMenu.id })
 
     context.menus.push(
       context.systemUserMenu,
@@ -48,13 +49,14 @@ class SecondLevelSeeder extends Seeder {
       context.systemPostAuthMenu,
       context.systemRoleMenuMenu,
       context.monitorOnlineMenu,
+      context.monitorOperateMenu,
     )
   }
 }
 
 class ThirdLevelSeeder extends Seeder {
   async run(em: EntityManager, context?: Dictionary) {
-    const { systemUserMenu, systemDeptMenu, systemPostMenu, systemRoleMenu, systemDictTypeMenu, systemDictDataMenu, systemMenuMenu, systemConfigMenu, systemLangMenu, systemRoleAuthMenu, systemPostAuthMenu, systemRoleMenuMenu, monitorOnlineMenu } = context
+    const { systemUserMenu, systemDeptMenu, systemPostMenu, systemRoleMenu, systemDictTypeMenu, systemDictDataMenu, systemMenuMenu, systemConfigMenu, systemLangMenu, systemRoleAuthMenu, systemPostAuthMenu, systemRoleMenuMenu, monitorOnlineMenu, monitorOperateMenu } = context
 
     context.menus.push(
       em.create(SysMenuEntity, { menuName: '用户分页', menuKey: 'sys.menu.system.user.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: systemUserMenu.id }),
@@ -111,6 +113,7 @@ class ThirdLevelSeeder extends Seeder {
       em.create(SysMenuEntity, { menuName: '已分配菜单', menuKey: 'sys.menu.system.roleMenu.assigned', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: systemRoleMenuMenu.id }),
       em.create(SysMenuEntity, { menuName: '在线用户分页', menuKey: 'sys.menu.monitor.online.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: monitorOnlineMenu.id }),
       em.create(SysMenuEntity, { menuName: '在线用户下线', menuKey: 'sys.menu.monitor.online.remove', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: monitorOnlineMenu.id }),
+      em.create(SysMenuEntity, { menuName: '操作日志分页', menuKey: 'sys.menu.monitor.operate.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: monitorOperateMenu.id }),
     )
   }
 }

@@ -1,6 +1,6 @@
 import { Reflector } from '@nestjs/core'
 
-interface OperateLogOptions {
+interface OperateOptions {
   ignoreRequest?: boolean
   ignoreResponse?: boolean
 }
@@ -8,6 +8,6 @@ interface OperateLogOptions {
 /**
  * 操作日志装饰器
  */
-export const OperateLog = Reflector.createDecorator<OperateLogOptions>({
-  key: 'operateLog:value',
+export const Operate = Reflector.createDecorator<OperateOptions>({
+  key: 'operate:value',
 })

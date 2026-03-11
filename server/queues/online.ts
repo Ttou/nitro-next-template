@@ -6,9 +6,9 @@ import { SysOnlineEntity } from '../entities'
 import { ParseService } from '../shared'
 import { QueueNameEnum } from './constant'
 
-@Processor(QueueNameEnum.ONLINE_USER)
-export class OnlineUserQueue extends WorkerHost {
-  private logger = new Logger(OnlineUserQueue.name)
+@Processor(QueueNameEnum.ONLINE)
+export class OnlineQueue extends WorkerHost {
+  private logger = new Logger(OnlineQueue.name)
 
   constructor(
     private parseService: ParseService,
@@ -25,6 +25,7 @@ export class OnlineUserQueue extends WorkerHost {
     const em = this.em.fork()
 
     try {
+      // @ts-ignore
       const online = em.create(SysOnlineEntity, {
         tokenId,
         token,

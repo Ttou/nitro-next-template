@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { OperateLog } from '~server/decorators'
+import { Operate } from '~server/decorators'
 import { CurrentUserGetInfoResDto, CurrentUserGetProfileResDto, UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 import { CurrentUserService } from './service'
 
@@ -27,14 +27,14 @@ export class CurrentUserController {
   }
 
   @ApiOperation({ summary: '更新当前用户个人信息' })
-  @OperateLog()
+  @Operate()
   @Post('update-profile')
   async updateProfile(@Body() data: UpdateCurrentUserProfileReqDto) {
     return await this.currentUserService.updateProfile(data)
   }
 
   @ApiOperation({ summary: '更新当前用户密码' })
-  @OperateLog()
+  @Operate()
   @Post('update-password')
   async updatePassword(@Body() data: UpdateCurrentUserPasswordReqDto) {
     return await this.currentUserService.updatePassword(data)
