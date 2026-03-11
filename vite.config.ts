@@ -6,6 +6,7 @@ import postcssNested from 'postcss-nested'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
+// @ts-ignore
 export default defineConfig({
   css: {
     modules: {
@@ -32,8 +33,14 @@ export default defineConfig({
     vue(),
     nitro({
       serverDir: './server',
-      serverEntry: './server/entry.ts',
+      serverEntry: false,
       imports: false,
+      routes: {
+        '/:path(api|bull-ui|dev|openapi-(ui|json))/**': {
+          handler: './server/main.ts',
+          format: 'node',
+        },
+      },
       alias: {
         '~server': resolve(__dirname, 'server'),
         '~shared': resolve(__dirname, 'shared'),

@@ -1,6 +1,6 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import type { Queue } from 'bullmq'
-import type { SysOperateEntity } from '~server/entities'
+import type { SysOperateLogEntity } from '~server/entities'
 import type { IRequest } from '../interfaces'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
@@ -23,10 +23,10 @@ export class OperateLogInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest<IRequest>()
 
-    const isOperateLog = this.reflector.get(OperateLog, context.getHandler())
+    const operateLog = this.reflector.get(OperateLog, context.getHandler())
 
     // 没有操作日志注解直接跳过
-    if (!isOperateLog) {
+    if (!operateLog) {
       return next.handle()
     }
 
@@ -35,21 +35,21 @@ export class OperateLogInterceptor implements NestInterceptor {
     const handlerName = context.getHandler().name
     const apiOperation = this.reflector.get('swagger/apiOperation', context.getHandler())
 
-    const operateData: Partial<SysOperateEntity> = {
+    const operateData: Partial<SysOperateLogEntity> = {
       summary: apiOperation?.summary || '',
       controllerName,
       handlerName,
       requestIp: req.ip,
       requestMethod: req.method,
       requestUrl: req.url,
-      requestParams: req.body instanceof FormData
-        ? JSON.stringify({ ...pick(req, ['params', 'query']), body: {} })
+      requestParams: operateLog.ignoreRequest
+        ? JSON.stringify(pick(req, ['params', 'query', 'body']))
         : JSON.stringify(pick(req, ['params', 'query', 'body'])),
       operateTime: new Date(),
     }
 
     return next.handle().pipe(
-      tap(async () => {
+      tap(async (data) => {
         const { operateTime, ...rest } = operateData
         const costTime = Date.now() - operateTime!.getTime()
 
@@ -57,7 +57,11 @@ export class OperateLogInterceptor implements NestInterceptor {
           '',
           {
             ...rest,
+            requestResult: operateLog.ignoreResponse
+              ? null
+              : JSON.stringify(data),
             user,
+            operateTime,
             costTime,
             status: 200,
           },
@@ -72,6 +76,7 @@ export class OperateLogInterceptor implements NestInterceptor {
           {
             ...rest,
             user,
+            operateTime,
             costTime,
             status: err.status || 500,
             errorMsg: err.message,

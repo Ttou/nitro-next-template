@@ -6,7 +6,7 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import basicAuth from 'express-basic-auth'
 import { diskStorage } from 'multer'
-import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
+import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateLogEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
 import { OrmLogger } from '../loggers'
 
 export default registerAs('', (): ConfigSchema => {
@@ -39,7 +39,7 @@ export default registerAs('', (): ConfigSchema => {
         SysRoleEntity,
         SysUserEntity,
         SysOnlineEntity,
-        SysOperateEntity,
+        SysOperateLogEntity,
       ],
       loggerFactory: options => new OrmLogger(options),
       debug: true,

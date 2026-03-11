@@ -3,8 +3,8 @@ import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
-@Entity({ tableName: 'sys_operate' })
-export class SysOperateEntity {
+@Entity({ tableName: 'sys_operate_log' })
+export class SysOperateLogEntity {
   @ApiProperty({ description: '主键', type: String })
   @PrimaryKey()
   id = generateId()
@@ -62,4 +62,4 @@ export class SysOperateEntity {
   user: SysUserEntity
 }
 
-export class SysOperateEntityNoRelations extends OmitType(SysOperateEntity, ['user'] as const) {}
+export class SysOperateLogEntityNoRelations extends OmitType(SysOperateLogEntity, ['user'] as const) {}

@@ -17,8 +17,6 @@ export class LoggingInterceptor implements NestInterceptor {
     const requestId = this.clsService.getId()
     const message = `${req.method} - ${req.path}`
 
-    console.log('reqIp', req.ip)
-
     this.logger.log(`Request [${message}]`, requestId)
 
     return next.handle().pipe(

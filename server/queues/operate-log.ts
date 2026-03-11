@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
-import { SysOperateEntity } from '../entities'
+import { SysOperateLogEntity } from '../entities'
 import { QueueNameEnum } from './constant'
 
 @Processor(QueueNameEnum.OPERATE_LOG)
@@ -21,7 +21,7 @@ export class OperateLogQueue extends WorkerHost {
     const em = this.em.fork()
 
     try {
-      const operateLog = em.create(SysOperateEntity, rest)
+      const operateLog = em.create(SysOperateLogEntity, rest)
       operateLog.user = user
 
       await em.persist(operateLog).flush()

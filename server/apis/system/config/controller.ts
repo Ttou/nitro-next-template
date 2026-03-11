@@ -35,7 +35,7 @@ export class SystemConfigController {
   @ApiOperation({ summary: '查询系统配置分页列表' })
   @ApiOkResponse({ type: FindSystemConfigPageResDto })
   @Permission('sys.menu.system.config.findPage')
-  @OperateLog()
+  @OperateLog({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemConfigPageReqDto) {
     return await this.systemConfigService.findPage(dto)
