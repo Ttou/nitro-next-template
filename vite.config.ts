@@ -33,6 +33,7 @@ export default defineConfig({
     nitro({
       serverDir: './server',
       serverEntry: './server/entry.ts',
+      imports: false,
       alias: {
         '~server': resolve(__dirname, 'server'),
         '~shared': resolve(__dirname, 'shared'),

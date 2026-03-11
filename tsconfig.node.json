@@ -17,7 +17,6 @@
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
-    "openapi-ts.config.ts",
     "vite.config.ts"
   ]
 }

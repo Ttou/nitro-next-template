@@ -1,0 +1,21 @@
+import { Controller, Get } from '@nestjs/common'
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Public } from '~server/decorators'
+import { CaptchaService } from '~server/extends'
+import { CaptchaImageResDto } from './dto'
+
+@ApiTags('验证码接口')
+@Controller()
+export class CaptchaController {
+  constructor(
+    private captchaService: CaptchaService,
+  ) {}
+
+  @ApiOperation({ summary: '图形验证码' })
+  @ApiOkResponse({ type: CaptchaImageResDto })
+  @Public()
+  @Get('image')
+  async image() {
+    return await this.captchaService.image()
+  }
+}

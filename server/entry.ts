@@ -1,7 +1,5 @@
 import { FastURL, toFetchHandler } from 'srvx/node'
-import { initNestApp, serverApp } from './app/main'
-
-initNestApp()
+import { serverApp } from './main'
 
 const SERVER_URLS = [
   '/api',

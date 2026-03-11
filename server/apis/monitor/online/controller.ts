@@ -1,0 +1,28 @@
+import { Body, Controller, Delete, Post } from '@nestjs/common'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Permission } from '~server/decorators'
+import { RemoveReqDto } from '~server/extends'
+import { FindMonitorOnlinePageReqDto, FindMonitorOnlinePageResDto } from './dto'
+import { MonitorOnlineService } from './service'
+
+@ApiTags('在线用户接口')
+@ApiBearerAuth()
+@Controller()
+export class MonitorOnlineController {
+  constructor(private monitorOnlineService: MonitorOnlineService) {}
+
+  @ApiOperation({ summary: '分页查询在线用户' })
+  @ApiOkResponse({ type: FindMonitorOnlinePageResDto })
+  @Permission('sys.menu.monitor.online.findPage')
+  @Post('findPage')
+  async findPage(@Body() dto: FindMonitorOnlinePageReqDto) {
+    return this.monitorOnlineService.findPage(dto)
+  }
+
+  @ApiOperation({ summary: '删除在线用户' })
+  @Permission('sys.menu.monitor.online.remove')
+  @Delete('remove')
+  async remove(@Body() dto: RemoveReqDto) {
+    return this.monitorOnlineService.remove(dto)
+  }
+}
