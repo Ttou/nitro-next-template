@@ -36,13 +36,29 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '请求IP',
-    prop: 'requestIp',
+    prop: 'ip',
+    minWidth: 100,
     valueType: 'text',
     fieldProps: {
       type: 'info',
     },
+    tableColumnProps: {
+      align: 'center',
+    },
     hideInSearch: true,
-    hideInTable: true,
+  },
+  {
+    label: '请求地点',
+    prop: 'location',
+    minWidth: 120,
+    valueType: 'text',
+    fieldProps: {
+      type: 'info',
+    },
+    tableColumnProps: {
+      align: 'center',
+    },
+    hideInSearch: true,
   },
   {
     label: '请求状态',
@@ -148,6 +164,19 @@ const columns = computed<PlusColumn[]>(() => [
       readonly: true,
       placeholder: '无',
     },
+    hideInSearch: true,
+    hideInTable: true,
+  },
+  {
+    label: '用户代理',
+    prop: 'userAgent',
+    valueType: 'textarea',
+    fieldProps: value => ({
+      rows: 4,
+      readonly: true,
+      placeholder: '无',
+      value: JSON.stringify(value),
+    }),
     hideInSearch: true,
     hideInTable: true,
   },

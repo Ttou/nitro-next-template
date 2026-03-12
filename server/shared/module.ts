@@ -3,8 +3,8 @@ import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MulterModule } from '@nestjs/platform-express'
 import { ContextService } from './context'
+import { IpService } from './ip'
 import { LogoutService } from './logout'
-import { ParseService } from './parse'
 
 @Global()
 @Module({
@@ -18,14 +18,14 @@ import { ParseService } from './parse'
   ],
   providers: [
     ContextService,
-    ParseService,
     LogoutService,
+    IpService,
   ],
   exports: [
     MulterModule,
     ContextService,
-    ParseService,
     LogoutService,
+    IpService,
   ],
 })
 export class SharedModule {}

@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
 import { SysOperateEntityNoRelations, SysUserEntityNoRelations } from '~server/entities'
-import { PageReqDto, PageResDto } from '~server/extends'
+import { PageReqDto, PageResDto, UserAgentSerializeDto } from '~server/extends'
 
 /**
  * 分页查询操作日志请求
@@ -26,7 +26,10 @@ export class FindMonitorOperatePageReqDto extends PageReqDto {
   endTime?: string
 }
 
-class SysOperateLogEntityWithUser extends SysOperateEntityNoRelations {
+class SysOperateLogEntityWithUser extends OmitType(SysOperateEntityNoRelations, ['userAgent'] as const) {
+  @ApiProperty({ description: '用户代理', type: () => UserAgentSerializeDto })
+  userAgent: UserAgentSerializeDto
+
   @ApiProperty({ description: '用户', type: () => SysUserEntityNoRelations })
   user: SysUserEntityNoRelations
 }

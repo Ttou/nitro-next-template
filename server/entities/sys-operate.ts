@@ -1,5 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { UserAgentSerializeDto } from '~server/extends'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
@@ -29,10 +30,6 @@ export class SysOperateEntity {
   @Property()
   requestUrl: string
 
-  @ApiProperty({ description: '请求IP' })
-  @Property()
-  requestIp: string
-
   @ApiProperty({ description: '请求参数' })
   @Property({ nullable: true })
   requestParams?: string
@@ -40,6 +37,18 @@ export class SysOperateEntity {
   @ApiProperty({ description: '请求结果' })
   @Property({ nullable: true })
   requestResult?: string
+
+  @ApiProperty({ description: 'IP地址' })
+  @Property()
+  ip: string
+
+  @ApiProperty({ description: '位置' })
+  @Property()
+  location: string
+
+  @ApiProperty({ description: '用户代理' })
+  @Property({ type: 'text', serializer: value => Reflect.construct(UserAgentSerializeDto, [value]) })
+  userAgent: string
 
   @ApiProperty({ description: '请求状态' })
   @Property()

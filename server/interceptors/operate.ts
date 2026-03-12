@@ -39,12 +39,13 @@ export class OperateInterceptor implements NestInterceptor {
       summary: apiOperation?.summary || '',
       controllerName,
       handlerName,
-      requestIp: req.ip,
-      requestMethod: req.method,
       requestUrl: req.url,
+      requestMethod: req.method,
       requestParams: operate.ignoreRequest
         ? JSON.stringify(pick(req, ['params', 'query', 'body']))
         : JSON.stringify(pick(req, ['params', 'query', 'body'])),
+      ip: req.ip,
+      userAgent: req.headers['user-agent'],
       operateTime: new Date(),
     }
 

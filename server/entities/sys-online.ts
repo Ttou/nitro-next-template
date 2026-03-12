@@ -1,5 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { UserAgentSerializeDto } from '~server/extends'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 
@@ -25,13 +26,9 @@ export class SysOnlineEntity {
   @Property()
   location: string
 
-  @ApiProperty({ description: '浏览器' })
-  @Property()
-  browser: string
-
-  @ApiProperty({ description: '操作系统' })
-  @Property()
-  os: string
+  @ApiProperty({ description: '用户代理' })
+  @Property({ type: 'text', serializer: value => Reflect.construct(UserAgentSerializeDto, [value]) })
+  userAgent: string
 
   @ApiProperty({ description: '登录时间' })
   @Property()

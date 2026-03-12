@@ -1430,6 +1430,32 @@ export interface components {
             /** @description 结束时间 */
             endTime?: string;
         };
+        UserAgentSerializeDto: {
+            /** @description 浏览器名称 */
+            browserName: string;
+            /** @description 浏览器版本 */
+            browserVersion: string;
+            /** @description 浏览器主版本号 */
+            browserMajor: string;
+            /** @description 浏览器类型 */
+            browserType: string;
+            /** @description CPU 架构 */
+            cpuArchitecture: string;
+            /** @description 设备类型 */
+            deviceType: string;
+            /** @description 设备型号 */
+            deviceModel: string;
+            /** @description 设备供应商 */
+            deviceVendor: string;
+            /** @description 浏览器引擎名称 */
+            engineName: string;
+            /** @description 浏览器引擎版本 */
+            engineVersion: string;
+            /** @description 操作系统名称 */
+            osName: string;
+            /** @description 操作系统版本 */
+            osVersion: string;
+        };
         SysUserEntityNoRelations: {
             /** @description 主键 */
             id: string;
@@ -1483,15 +1509,13 @@ export interface components {
             ip: string;
             /** @description 位置 */
             location: string;
-            /** @description 浏览器 */
-            browser: string;
-            /** @description 操作系统 */
-            os: string;
             /**
              * Format: date-time
              * @description 登录时间
              */
             loginTime: string;
+            /** @description 用户代理 */
+            userAgent: components["schemas"]["UserAgentSerializeDto"];
             /** @description 用户 */
             user: components["schemas"]["SysUserEntityNoRelations"];
         };
@@ -1536,18 +1560,20 @@ export interface components {
             summary: string;
             /** @description 控制器名称 */
             controllerName: string;
-            /** @description 处理方法名称 */
+            /** @description 处理器名称 */
             handlerName: string;
             /** @description 请求方法 */
             requestMethod: string;
             /** @description 请求链接 */
             requestUrl: string;
-            /** @description 请求IP */
-            requestIp: string;
             /** @description 请求参数 */
             requestParams: string;
             /** @description 请求结果 */
             requestResult: string;
+            /** @description IP地址 */
+            ip: string;
+            /** @description 位置 */
+            location: string;
             /** @description 请求状态 */
             status: number;
             /** @description 错误信息 */
@@ -1559,6 +1585,8 @@ export interface components {
             operateTime: string;
             /** @description 耗时 */
             costTime: number;
+            /** @description 用户代理 */
+            userAgent: components["schemas"]["UserAgentSerializeDto"];
             /** @description 用户 */
             user: components["schemas"]["SysUserEntityNoRelations"];
         };

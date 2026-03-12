@@ -15,7 +15,7 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '会话编号',
     prop: 'tokenId',
-    minWidth: 200,
+    minWidth: 350,
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
@@ -24,6 +24,7 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '登录名称',
     prop: 'user.userName',
+    minWidth: 120,
     tableColumnProps: {
       align: 'center',
     },
@@ -31,13 +32,15 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '登录昵称',
     prop: 'user.nickName',
+    minWidth: 120,
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: '主机',
+    label: '登录IP',
     prop: 'ip',
+    minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
@@ -46,6 +49,7 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '登录地点',
     prop: 'location',
+    minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
@@ -53,7 +57,8 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '浏览器',
-    prop: 'browser',
+    prop: 'userAgent.browserName',
+    minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
@@ -61,7 +66,8 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '操作系统',
-    prop: 'os',
+    prop: 'userAgent.osName',
+    minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
