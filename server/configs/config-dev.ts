@@ -2,6 +2,7 @@ import type { ConfigSchema } from './config-schema'
 import { mkdirSync } from 'node:fs'
 import { basename, extname } from 'node:path'
 import { ExpressAdapter } from '@bull-board/express'
+import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import basicAuth from 'express-basic-auth'
@@ -22,6 +23,7 @@ export default registerAs('', (): ConfigSchema => {
       db: 0,
     },
     orm: {
+      metadataProvider: ReflectMetadataProvider,
       driver: MySqlDriver,
       host: '127.0.0.1',
       port: 3306,

@@ -1,5 +1,6 @@
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
-import { Collection, Entity, Enum, ManyToMany, Property } from '@mikro-orm/core'
+import { Collection } from '@mikro-orm/core'
+import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'

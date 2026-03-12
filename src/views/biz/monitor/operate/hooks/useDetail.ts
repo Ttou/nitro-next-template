@@ -1,7 +1,9 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { FindMonitorOperatePageResDto } from '~web/apis'
-import { computed, ref, unref } from 'vue'
+import { ElText } from 'element-plus'
+import { omit } from 'es-toolkit'
+import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
 
 interface UseDetailParams {
@@ -38,16 +40,12 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       }
       if (column.prop === 'operateTime') {
         return {
-          ...column,
+          ...omit(column, ['valueType', 'fieldProps']),
           colProps: {
             span: 24,
           },
-          valueType: 'text',
-          fieldProps: {
-            type: 'info',
-          },
           renderField(value, onChange, props) {
-            return formatTime(value)
+            return h(ElText, { type: 'primary' }, { default: () => formatTime(value) })
           },
         }
       }

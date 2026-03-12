@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
+import { ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, unref, useTemplateRef } from 'vue'
+import { computed, h, unref, useTemplateRef } from 'vue'
 import { monitorOperateApi } from '~web/apis'
 import { useDetail } from './hooks'
 
@@ -112,9 +113,8 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '耗时',
     prop: 'costTime',
-    valueType: 'text',
-    fieldProps: {
-      type: 'warning',
+    renderField(value, onChange, props) {
+      return h(ElText, { type: 'warning' }, { default: () => `${value} ms` })
     },
     hideInSearch: true,
     hideInTable: true,

@@ -1,5 +1,5 @@
 import type { IYesOrNoEnum } from '~shared/enums'
-import { Entity, Enum, Index, Property } from '@mikro-orm/core'
+import { Entity, Enum, Index, Property } from '@mikro-orm/decorators/legacy'
 import { ApiProperty } from '@nestjs/swagger'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
