@@ -2,6 +2,7 @@ import type { LogEvent } from '@tsed/logger'
 import { Logger } from '@tsed/logger'
 import { PatternLayout } from '@tsed/logger-pattern-layout'
 import { StdoutAppender } from '@tsed/logger-std'
+import { colorYellow } from '~server/utils'
 import { formatTime } from '~shared/utils'
 
 const logger = new Logger()
@@ -20,7 +21,7 @@ logger.appenders.set('console', {
         const [message, rest] = logEvent.data
 
         return [
-          rest?.['0'] ? `[${rest['0']}]` : undefined,
+          rest?.['0'] ? colorYellow(`[${rest['0']}]`) : undefined,
           `${message}`,
         ]
           .filter(v => v !== undefined)

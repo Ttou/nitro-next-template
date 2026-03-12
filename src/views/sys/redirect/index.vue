@@ -13,7 +13,7 @@ const { params, query } = route
 const path = params.path as string
 
 router.replace({
-  path: joinURL('/', path),
+  path: path ? joinURL('/', path) : '/',
   query,
 })
 </script>

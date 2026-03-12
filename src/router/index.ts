@@ -1,5 +1,6 @@
 import { withQuery } from 'ufo'
 import { createRouter, createWebHistory } from 'vue-router'
+import { DefaultLayout } from '~web/layouts'
 import { useUserStore } from '~web/store'
 
 const router = createRouter({
@@ -17,7 +18,8 @@ const router = createRouter({
     },
     {
       path: '/redirect',
-      component: () => import('~web/layouts/DefaultLayout.vue'),
+      component: DefaultLayout,
+      redirect: '/redirect/',
       children: [
         {
           path: '/redirect/:path(.*)',

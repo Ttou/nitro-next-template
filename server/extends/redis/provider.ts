@@ -2,7 +2,7 @@ import type { FactoryProvider } from '@nestjs/common'
 import type { RedisModuleOptions } from './interface'
 import { Logger } from '@nestjs/common'
 import { Redis } from 'ioredis'
-import { colorGreen } from '~shared/utils'
+import { colorGreen } from '~server/utils'
 import { REDIS_CLIENT } from './constant'
 import { REDIS_MODULE_OPTIONS } from './module-define'
 
