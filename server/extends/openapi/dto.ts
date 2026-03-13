@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsPositive, IsUUID, Min } from 'class-validator'
+import { flattenObject, mapValues, toCamelCaseKeys } from 'es-toolkit'
+import { isObject } from 'es-toolkit/compat'
 import { UAParser } from 'ua-parser-js'
 
 /**
@@ -90,18 +92,8 @@ export class UserAgentSerializeDto {
   osVersion?: string
 
   constructor(userAgent: string) {
-    const result = UAParser(userAgent)
-    this.browserName = result.browser.name
-    this.browserVersion = result.browser.version
-    this.browserMajor = result.browser.major
-    this.browserType = result.browser.type
-    this.cpuArchitecture = result.cpu.architecture
-    this.deviceType = result.device.type
-    this.deviceModel = result.device.model
-    this.deviceVendor = result.device.vendor
-    this.engineName = result.engine.name
-    this.engineVersion = result.engine.version
-    this.osName = result.os.name
-    this.osVersion = result.os.version
+    const { ua, ...rest } = UAParser(userAgent)
+    const obj = toCamelCaseKeys(flattenObject(mapValues(rest, value => isObject(value) ? { ...value } : value)))
+    Object.assign(this, obj)
   }
 }
