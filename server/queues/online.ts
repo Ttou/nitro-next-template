@@ -1,20 +1,20 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
-import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
+import { LoggerService } from '~server/extends'
 import { SysOnlineEntity } from '../entities'
 import { IpService } from '../shared'
 import { QueueNameEnum } from './constant'
 
 @Processor(QueueNameEnum.ONLINE)
 export class OnlineQueue extends WorkerHost {
-  private logger = new Logger(OnlineQueue.name)
-
   constructor(
     private ipService: IpService,
     private em: EntityManager,
+    private loggerService: LoggerService,
   ) {
     super()
+    this.loggerService.setContext(OnlineQueue.name)
   }
 
   async process(job: Job<any>) {
@@ -36,7 +36,7 @@ export class OnlineQueue extends WorkerHost {
       await em.persist(online).flush()
     }
     catch (error) {
-      this.logger.error(error)
+      this.loggerService.error(error)
     }
   }
 }

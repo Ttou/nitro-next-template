@@ -5,7 +5,7 @@ import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import { AppModule } from './app'
-import { NestLogger } from './loggers'
+import { LoggerService } from './extends'
 import { AllSeeders } from './seeders'
 import { IsDev } from './utils'
 
@@ -14,10 +14,17 @@ const nestApp = await NestFactory.create<NestExpressApplication>(
   new ExpressAdapter(),
   {
     abortOnError: false,
-    logger: new NestLogger(),
+    bufferLogs: true,
   },
 )
 const serverApp = nestApp.getHttpAdapter().getInstance()
+
+// #region 日志配置
+const logger = await nestApp.resolve(LoggerService)
+nestApp.useLogger(logger)
+nestApp.flushLogs()
+
+// #endregion
 
 if (IsDev) {
   // #region Swagger 接口文档配置

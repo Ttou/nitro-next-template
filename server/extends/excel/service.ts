@@ -5,13 +5,18 @@ import type { IExcelFileOptions } from './interface'
 import { createReadStream, promises } from 'node:fs'
 import { PassThrough, pipeline } from 'node:stream'
 import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
-import { Injectable, Logger, StreamableFile } from '@nestjs/common'
+import { Injectable, StreamableFile } from '@nestjs/common'
 import { instanceToPlain } from 'class-transformer'
+import { LoggerService } from '../logger'
 import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './decorator'
 
 @Injectable()
 export class ExcelService {
-  private logger = new Logger(ExcelService.name)
+  constructor(
+    private loggerService: LoggerService,
+  ) {
+    this.loggerService.setContext(ExcelService.name)
+  }
 
   async importFile(cls: ClassConstructor<any>, file: IFile) {
     const fileStream = createReadStream(file.path)
@@ -19,7 +24,7 @@ export class ExcelService {
 
     pipeline(fileStream, stream, (err) => {
       if (err) {
-        this.logger.error('导入文件失败:', err)
+        this.loggerService.error('导入文件失败:', err)
       }
     })
 
@@ -62,7 +67,7 @@ export class ExcelService {
     const streamableFileOptions = this.getStreamableFileOptions(cls)
 
     this.createWorkbook(stream, cls, data).catch((err) => {
-      this.logger.error('导出大文件失败', err)
+      this.loggerService.error('导出大文件失败', err)
       stream.destroy(err)
     })
 
@@ -85,7 +90,7 @@ export class ExcelService {
     const BATCH_SIZE = 1000
     const TOTAL_ROWS = rows.length
 
-    this.logger.debug(`${fileName} 开始写入大文件流`)
+    this.loggerService.debug(`${fileName} 开始写入大文件流`)
 
     for (let i = 0; i <= TOTAL_ROWS; i++) {
       ws.addRow(rows[i]).commit() // 立即提交该行

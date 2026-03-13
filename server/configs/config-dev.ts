@@ -8,7 +8,6 @@ import { registerAs } from '@nestjs/config'
 import basicAuth from 'express-basic-auth'
 import { diskStorage } from 'multer'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
-import { OrmLogger } from '../loggers'
 
 export default registerAs('', (): ConfigSchema => {
   const appName = 'nitro_template'
@@ -43,7 +42,6 @@ export default registerAs('', (): ConfigSchema => {
         SysOnlineEntity,
         SysOperateEntity,
       ],
-      loggerFactory: options => new OrmLogger(options),
       debug: true,
     },
     jwt: {

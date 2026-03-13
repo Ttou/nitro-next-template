@@ -1,16 +1,18 @@
 import type { AxiosError } from 'axios'
 import { isIPv4, isIPv6 } from 'node:net'
 import { HttpService } from '@nestjs/axios'
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { catchError, firstValueFrom } from 'rxjs'
+import { LoggerService } from '~server/extends'
 
 @Injectable()
 export class IpService {
-  private logger = new Logger(IpService.name)
-
   constructor(
     private httpService: HttpService,
-  ) {}
+    private loggerService: LoggerService,
+  ) {
+    this.loggerService.setContext(IpService.name)
+  }
 
   async toLocation(ip: string) {
     if (this.isInternalIP(ip)) {
@@ -20,7 +22,7 @@ export class IpService {
     const { data } = await firstValueFrom(
       this.httpService.get('https://zj.v.api.aa1.cn/api/ip-taobao', { params: { ip } }).pipe(
         catchError((err: AxiosError) => {
-          this.logger.error(err.response.data)
+          this.loggerService.error(err.response.data)
           throw err
         }),
       ),

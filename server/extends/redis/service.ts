@@ -1,16 +1,18 @@
 import type { IRedisScannerOptions, RedisClient } from './interface'
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { delay } from '~shared/utils'
 
+import { LoggerService } from '../logger'
 import { REDIS_CLIENT, redisScannerDefaultOptions } from './constant'
 
 @Injectable()
 export class RedisService {
-  private logger = new Logger(RedisService.name)
-
   constructor(
     @Inject(REDIS_CLIENT) private redisClient: RedisClient,
-  ) {}
+    private loggerService: LoggerService,
+  ) {
+    this.loggerService.setContext(RedisService.name)
+  }
 
   /**
    * 扫描返回键名数组
@@ -37,12 +39,12 @@ export class RedisService {
 
         // 安全检查
         if (iterations > config.maxIterations!) {
-          this.logger.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
+          this.loggerService.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
           break
         }
 
         if (allKeys.length >= config.maxKeys!) {
-          this.logger.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
+          this.loggerService.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
           break
         }
 
@@ -55,7 +57,7 @@ export class RedisService {
       return allKeys
     }
     catch (error) {
-      this.logger.error(`SCAN 操作失败: `, error)
+      this.loggerService.error(`SCAN 操作失败: `, error)
     }
   }
 
@@ -97,12 +99,12 @@ export class RedisService {
 
       // 安全检查
       if (iterations > config.maxIterations!) {
-        this.logger.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
+        this.loggerService.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
         break
       }
 
       if (allKeys.length >= config.maxKeys!) {
-        this.logger.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
+        this.loggerService.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
         break
       }
     } while (cursor !== '0' && allKeys.length < endIndex)
@@ -138,7 +140,7 @@ export class RedisService {
     return keys.map((key, index) => {
       const [error, value] = results![index]!
       if (error) {
-        this.logger.error(`获取键 ${key} 的值失败: `, error)
+        this.loggerService.error(`获取键 ${key} 的值失败: `, error)
         return { key, value: null, error: error.message }
       }
 

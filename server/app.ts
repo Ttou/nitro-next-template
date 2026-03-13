@@ -1,4 +1,6 @@
+import type { LogContext, LoggerNamespace } from '@mikro-orm/core'
 import type { IRequest } from './interfaces'
+import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { HttpModule } from '@nestjs/axios'
@@ -10,13 +12,14 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
+import { colorGray } from './utils'
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { SharedModule } from './shared'
           mount: true,
         },
       }),
+    }),
+    LoggerModule.register({
+      isGlobal: true,
     }),
     RedisModule.registerAsync({
       isGlobal: true,
@@ -71,10 +77,33 @@ import { SharedModule } from './shared'
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
-      useFactory: (configService: ConfigService) => {
-        return configService.get<ConfigSchema['orm']>('orm')!
+      useFactory: (configService: ConfigService, loggerService: LoggerService) => {
+        loggerService.setContext(MikroOrmModule.name)
+
+        class OrmLogger extends DefaultLogger {
+          override log(namespace: LoggerNamespace, message: string, context?: LogContext) {
+            loggerService.log(this.getMessage(namespace, message), context)
+          }
+
+          override error(namespace: LoggerNamespace, message: string, context?: LogContext) {
+            loggerService.error(this.getMessage(namespace, message), context)
+          }
+
+          override warn(namespace: LoggerNamespace, message: string, context?: LogContext) {
+            loggerService.warn(this.getMessage(namespace, message), context)
+          }
+
+          private getMessage(namespace: LoggerNamespace, message: string) {
+            return [colorGray(`[${namespace}]`), message].join(' ')
+          }
+        }
+
+        return {
+          ...configService.get<ConfigSchema['orm']>('orm')!,
+          loggerFactory: options => new OrmLogger(options),
+        }
       },
-      inject: [ConfigService],
+      inject: [ConfigService, LoggerService],
     }),
     QueuesModule,
     SharedModule,
