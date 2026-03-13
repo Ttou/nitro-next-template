@@ -40,7 +40,7 @@ if (IsDev) {
 
   // #region 数据库初始化
   serverApp.get('/dev/dbInit', async (req, res) => {
-    await nestApp.get(MikroORM).schema.refreshDatabase()
+    await nestApp.get(MikroORM).schema.refresh()
     res.send('初始化数据库结构成功')
   })
 
