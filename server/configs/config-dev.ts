@@ -94,5 +94,11 @@ export default registerAs('', (): ConfigSchema => {
         },
       }),
     },
+    healthBasicAuth: basicAuth({
+      challenge: true,
+      users: {
+        health: '123456',
+      },
+    }),
   }
 })

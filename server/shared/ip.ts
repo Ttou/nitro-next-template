@@ -3,6 +3,7 @@ import { isIPv4, isIPv6 } from 'node:net'
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { catchError, firstValueFrom } from 'rxjs'
+import { UrlEnum } from '~server/constants'
 import { LoggerService } from '~server/extends'
 
 @Injectable()
@@ -20,7 +21,7 @@ export class IpService {
     }
 
     const { data } = await firstValueFrom(
-      this.httpService.get('https://zj.v.api.aa1.cn/api/ip-taobao', { params: { ip } }).pipe(
+      this.httpService.get(UrlEnum.IP_PARSER, { params: { ip } }).pipe(
         catchError((err: AxiosError) => {
           this.loggerService.error(err.response.data)
           throw err

@@ -8,6 +8,8 @@ import type { CacheModuleOptions, CaptchaModuleOptions, HashModuleOptions, Logou
 export class ConfigSchema {
   appName: string
 
+  healthBasicAuth: any
+
   logout: LogoutModuleOptions
 
   hash: HashModuleOptions

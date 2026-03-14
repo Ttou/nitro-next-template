@@ -15,6 +15,7 @@ import { ConfigSchema, configuration } from './configs'
 import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
+import { HealthModule } from './health'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
 import { ValidationPipe } from './pipes'
 import { QueuesModule } from './queues'
@@ -123,6 +124,7 @@ import { colorGray } from './utils'
     QueuesModule,
     SharedModule,
     ApisModule,
+    HealthModule,
   ],
   providers: [
     {
