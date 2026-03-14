@@ -40,7 +40,7 @@ export class AuthenticationGuard implements CanActivate {
       }
     }
     catch (error) {
-      throw new UnauthorizedException('Authorization token is invalid')
+      throw new UnauthorizedException('登录凭证无效，请重新登录')
     }
 
     return true
