@@ -1,7 +1,7 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { monitorOnlineApi } from '~web/apis'
+import Apis from '~web/api'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -10,7 +10,7 @@ interface UseCreateParams {
 
 export function useRemove({ pageInstance, selectedIds }: UseCreateParams) {
   function handleRemove(ids: string[]) {
-    monitorOnlineApi.remove({ ids })
+    Apis.MonitorOnline.remove({ data: { ids } })
       .then(() => {
         ElNotification.success({ title: '通知', message: '删除成功' })
         pageInstance.value.getList()

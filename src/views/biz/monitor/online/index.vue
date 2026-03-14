@@ -5,7 +5,7 @@ import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { monitorOnlineApi } from '~web/apis'
+import Apis from '~web/api'
 import { useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -149,7 +149,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.loginTime[1])
       }
 
-      return await monitorOnlineApi.findPage(_params)
+      return await Apis.MonitorOnline.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

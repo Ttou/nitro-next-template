@@ -10,6 +10,7 @@
     "gen:types": "jiti scripts/genTypes"
   },
   "dependencies": {
+    "@alova/adapter-axios": "^2.0.18",
     "@bull-board/api": "6.20.5",
     "@bull-board/express": "6.20.5",
     "@bull-board/nestjs": "6.20.5",
