@@ -66,8 +66,12 @@ import { colorGray } from './utils'
     ExcelModule.register({
       isGlobal: true,
     }),
-    HashModule.register({
+    HashModule.registerAsync({
       isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['hash']>('hash')!
+      },
+      inject: [ConfigService],
     }),
     HttpModule.register({
       global: true,

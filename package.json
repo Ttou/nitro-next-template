@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "cross-env APP_ENV=dev vite",
     "build": "vite build",
-    "gen:apis": "alova gen -f",
-    "gen:types": "jiti scripts/genTypes"
+    "gen:apis": "alova gen -f"
   },
   "dependencies": {
     "@alova/adapter-axios": "^2.0.18",
@@ -82,7 +81,6 @@
     "eslint": "^9.39.4",
     "jiti": "^2.6.1",
     "nitro": "^3.0.260311-beta",
-    "openapi-typescript": "^7.13.0",
     "postcss-html": "^1.8.1",
     "stylelint": "^17.4.0",
     "stylelint-config-clean-order": "^8.0.1",
