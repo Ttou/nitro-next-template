@@ -6,6 +6,7 @@ import './assets/styles/main.css'
 import './assets/styles/reset.css'
 import './assets/styles/transition.css'
 import './assets/styles/view-transition.css'
+import './apis'
 
 import ElementPlus from 'element-plus'
 import PlusProComponents from 'plus-pro-components'

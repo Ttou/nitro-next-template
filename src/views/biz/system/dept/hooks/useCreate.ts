@@ -2,7 +2,6 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemDeptApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -50,7 +49,7 @@ export function useCreate({ pageInstance, columns, getDeptTree }: UseCreateParam
     try {
       createConfirmLoading.value = true
 
-      await systemDeptApi.create(values)
+      await Apis.SystemDept.create({ data: values })
 
       createValues.value = Object.create({})
       createVisible.value = false

@@ -2,7 +2,6 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemDeptApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -52,7 +51,7 @@ export function useUpdate({ pageInstance, columns, getDeptTree }: UseUpdateParam
     try {
       updateConfirmLoading.value = true
 
-      await systemDeptApi.update(values)
+      await Apis.SystemDept.update({ data: values })
 
       updateValues.value = Object.create({})
       updateVisible.value = false

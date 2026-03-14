@@ -1,6 +1,6 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { FindMonitorOperatePageResDto } from '~web/apis'
+import type { FindMonitorOperatePageResDto } from '~web/apis/globals'
 import { ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'

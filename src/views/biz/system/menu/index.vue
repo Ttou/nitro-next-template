@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-
 import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
-import { systemMenuApi } from '~web/apis'
 import { listToTree } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
@@ -243,7 +241,7 @@ const pageProps = computed<PlusPageProps>(() => {
       },
     },
     request: async ({ ...rest }) => {
-      const list = await systemMenuApi.findList(rest)
+      const list = await Apis.SystemMenu.findList({ data: rest })
       const data = listToTree(list)
 
       return { data }
@@ -259,7 +257,7 @@ const pageProps = computed<PlusPageProps>(() => {
 })
 
 async function getTree() {
-  const list = await systemMenuApi.findList({})
+  const list = await Apis.SystemMenu.findList({ data: {} })
   tree.value = listToTree(list)
 }
 

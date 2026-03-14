@@ -2,7 +2,6 @@ import type { PlusDialogProps, PlusPageInstance, PlusPageProps } from 'plus-pro-
 import type { ComputedRef, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemPostAuthApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -69,13 +68,15 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
     table: {
       isSelection: true,
       onSelectionChange: (data: any[]) => {
-        createSelectedIds.value = [...data].map(item => item.id)
+        createSelectedIds.value = Array.from(data, item => item.id)
       },
     },
     request: async (params) => {
-      return await systemPostAuthApi.findUnallocatedUserPage({
-        id: unref(id),
-        ...params,
+      return await Apis.SystemPostAuth.findUnallocatedUserPage({
+        data: {
+          id: unref(id),
+          ...params,
+        },
       })
     },
     searchCardProps: {
@@ -99,9 +100,11 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await systemPostAuthApi.allocateUser({
-        id: unref(id),
-        ids: unref(createSelectedIds),
+      await Apis.SystemPostAuth.allocateUser({
+        data: {
+          id: unref(id),
+          ids: unref(createSelectedIds),
+        },
       })
 
       createConfirmLoading.value = false

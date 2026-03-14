@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { stringProp } from 'vue-ts-types'
-import { captchaApi } from '~web/apis'
 
 defineOptions({
   name: 'ImageCaptcha',
@@ -21,7 +20,7 @@ function handleInput(val: string) {
 }
 
 async function refresh() {
-  const data = await captchaApi.image()
+  const data = await Apis.Captcha.image()
 
   imgSrc.value = data.captchaImage
 

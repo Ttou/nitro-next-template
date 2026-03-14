@@ -1,8 +1,10 @@
+import type { FindSystemDictDetailByKeyResDto } from '~web/apis/globals'
+
 /**
  * 字典转选项
  * @param dict
  */
-export function dictToOptions(dict: SysDictDataEntity[]) {
+export function dictToOptions(dict: FindSystemDictDetailByKeyResDto[]) {
   if (!dict) {
     return []
   }

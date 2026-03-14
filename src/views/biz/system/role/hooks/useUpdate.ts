@@ -1,9 +1,8 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { UpdateSystemRoleReqDto } from '~web/apis'
+import type { UpdateSystemRoleReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemRoleApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -42,7 +41,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await systemRoleApi.update(values)
+      await Apis.SystemRole.update({ data: values })
 
       updateValues.value = Object.create({})
       updateVisible.value = false

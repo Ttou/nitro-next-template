@@ -1,11 +1,10 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { UpdateSystemLangReqDto } from '~web/apis'
+import type { UpdateSystemLangReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
 import { computed, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
-import { systemLangApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -50,9 +49,11 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await systemLangApi.update({
-        ...values,
-        langValue: langValue.value,
+      await Apis.SystemLang.update({
+        data: {
+          ...values,
+          langValue: langValue.value,
+        },
       })
 
       updateValues.value = Object.create({})

@@ -1,7 +1,6 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { systemConfigApi } from '~web/apis'
 
 interface UseRemoveParams {
   pageInstance: Ref<PlusPageInstance>
@@ -10,7 +9,7 @@ interface UseRemoveParams {
 
 export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   function handleRemove(ids: string[]) {
-    systemConfigApi.remove({ ids })
+    Apis.SystemConfig.remove({ data: { ids } })
       .then(() => {
         ElNotification.success({ title: '通知', message: '删除成功' })
         pageInstance.value.getList()

@@ -3,7 +3,6 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemUserApi } from '~web/apis'
 import { useDict } from '~web/hooks/useDict'
 import { dictToOptions } from '~web/utils'
 import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
@@ -158,7 +157,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
       },
     },
     request: async (params) => {
-      return await systemUserApi.findPage(params)
+      return await Apis.SystemUser.findPage({ data: params })
     },
     searchCardProps: {
       shadow: 'never',

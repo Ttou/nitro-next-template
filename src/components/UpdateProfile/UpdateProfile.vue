@@ -3,7 +3,6 @@ import type { PlusDrawerFormProps } from 'plus-pro-components'
 import { ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit/compat'
 import { computed, ref, unref } from 'vue'
-import { currentUserApi } from '~web/apis'
 import { useDict } from '~web/hooks'
 import { dictToOptions } from '~web/utils'
 
@@ -56,7 +55,7 @@ function open() {
   visible.value = true
   confirmLoading.value = true
 
-  currentUserApi.getProfile()
+  Apis.CurrentUser.getProfile()
     .then((res) => {
       Object.assign(formModel.value, pick(res, ['nickName', 'phone', 'email', 'sex']))
     })
@@ -68,7 +67,7 @@ function open() {
 function handleConfirm(values: any) {
   confirmLoading.value = true
 
-  currentUserApi.updateProfile(values)
+  Apis.CurrentUser.updateProfile({ data: values })
     .then(() => {
       visible.value = false
       ElNotification.success({ title: '通知', message: '修改成功' })

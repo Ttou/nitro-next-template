@@ -1,10 +1,10 @@
+import type { FindSystemDictDetailByKeyResDto } from '~web/apis/globals'
 import { ref } from 'vue'
-import { systemDictTypeApi } from '~web/apis'
 
 export function useDict(dictTypes: string[] = []) {
-  const dict = ref<Map<string, SysDictDataEntity[]>>(new Map())
+  const dict = ref<Map<string, FindSystemDictDetailByKeyResDto[]>>(new Map())
 
-  Promise.all(dictTypes.map(dictType => systemDictTypeApi.findByKey({ dictType }))).then((values) => {
+  Promise.all(dictTypes.map(dictType => Apis.SystemDictType.findByKey({ params: { dictType } }))).then((values) => {
     for (const value of values) {
       dict.value.set(value[0].dictType, value)
     }

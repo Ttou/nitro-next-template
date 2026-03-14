@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-
-import { ElNotification } from 'element-plus'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemDeptApi } from '~web/apis'
 import { listToTree } from '~web/utils'
-import { useCreate, useUpdate } from './hooks'
+import { useCreate, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const deptTree = ref<any[]>([])
@@ -125,18 +122,14 @@ const pageProps = computed<PlusPageProps>(() => {
               },
             },
             onConfirm({ row }) {
-              systemDeptApi.remove({ ids: [row.id] })
-                .then(() => {
-                  ElNotification.success({ title: '通知', message: '删除成功' })
-                  pageInstance.value.getList()
-                })
+              confirmRemove([row.id])
             },
           },
         ],
       },
     },
     request: async ({ page, pageSize, ...rest }) => {
-      const list = await systemDeptApi.findList(rest)
+      const list = await Apis.SystemDept.findList({ data: rest })
       const data = listToTree(list)
 
       return { data }
@@ -152,12 +145,13 @@ const pageProps = computed<PlusPageProps>(() => {
 })
 
 async function getDeptTree() {
-  const list = await systemDeptApi.findList({})
+  const list = await Apis.SystemDept.findList({ data: { } })
   deptTree.value = listToTree(list)
 }
 
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns, getDeptTree })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns, getDeptTree })
+const { confirmRemove } = useRemove({ pageInstance })
 </script>
 
 <template>

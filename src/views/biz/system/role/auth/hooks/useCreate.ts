@@ -3,7 +3,6 @@ import type { ComputedRef, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemRoleAuthApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -70,13 +69,15 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
     table: {
       isSelection: true,
       onSelectionChange: (data: any[]) => {
-        createSelectedIds.value = [...data].map(item => item.id)
+        createSelectedIds.value = Array.from(data, item => item.id)
       },
     },
     request: async (params) => {
-      return await systemRoleAuthApi.findUnallocatedUserPage({
-        id: unref(id),
-        ...params,
+      return await Apis.SystemRoleAuth.findUnallocatedUserPage({
+        data: {
+          id: unref(id),
+          ...params,
+        },
       })
     },
     searchCardProps: {
@@ -100,9 +101,11 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await systemRoleAuthApi.allocateUser({
-        id: unref(id),
-        ids: unref(createSelectedIds),
+      await Apis.SystemRoleAuth.allocateUser({
+        data: {
+          id: unref(id),
+          ids: unref(createSelectedIds),
+        },
       })
 
       createConfirmLoading.value = false

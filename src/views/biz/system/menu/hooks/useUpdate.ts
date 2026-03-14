@@ -1,9 +1,8 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { UpdateSystemMenuReqDto } from '~web/apis'
+import type { UpdateSystemMenuReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemMenuApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -59,9 +58,7 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await systemMenuApi.update({
-        ...values,
-      })
+      await Apis.SystemMenu.update({ data: values })
 
       updateValues.value = Object.create({})
       updateVisible.value = false

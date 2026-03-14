@@ -3,7 +3,6 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, unref, useTemplateRef } from 'vue'
-import { monitorOperateApi } from '~web/apis'
 import { useDetail } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -230,7 +229,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.operateTime[1])
       }
 
-      return await monitorOperateApi.findPage(_params)
+      return await Apis.MonitorOperate.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

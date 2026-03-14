@@ -2,7 +2,6 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemDictTypeApi } from '~web/apis'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -42,9 +41,11 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
     try {
       updateConfirmLoading.value = true
 
-      await systemDictTypeApi.update({
-        ...values,
-        dictType: unref(dictType),
+      await Apis.SystemDictData.update({
+        data: {
+          ...values,
+          dictType: unref(dictType),
+        },
       })
 
       updateValues.value = Object.create({})

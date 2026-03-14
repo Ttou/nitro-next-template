@@ -1,9 +1,8 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { CreateSystemMenuReqDto } from '~web/apis'
+import type { CreateSystemMenuReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemMenuApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -59,7 +58,7 @@ export function useCreate({ pageInstance, columns, getTree }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await systemMenuApi.create(values)
+      await Apis.SystemMenu.create({ data: values })
 
       createValues.value = Object.create({})
       createVisible.value = false

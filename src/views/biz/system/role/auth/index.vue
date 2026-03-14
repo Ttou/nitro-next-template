@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { PlusPageProps } from 'plus-pro-components'
-
 import { Icon } from '@iconify/vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemRoleAuthApi } from '~web/apis'
 import { useCreate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -116,9 +114,11 @@ const pageProps = computed<PlusPageProps>(() => {
       },
     },
     request: async (params) => {
-      return await systemRoleAuthApi.findAllocatedUserPage({
-        id: unref(id),
-        ...params,
+      return await Apis.SystemRoleAuth.findAllocatedUserPage({
+        data: {
+          id: unref(id),
+          ...params,
+        },
       })
     },
     searchCardProps: {
@@ -133,13 +133,15 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createDialogProps, createPageProps, showCreate, confirmCreate } = useCreate({ pageInstance, id })
 
 function confirmRemove(ids: string[], batch: boolean = false) {
-  const handler = () => systemRoleAuthApi.unallocateUser({
-    id: unref(id),
-    ids,
+  const handler = () => Apis.SystemRoleAuth.unallocateUser({
+    data: {
+      id: unref(id),
+      ids,
+    },
   })
     .then(() => {
       ElNotification.success({ title: '通知', message: '取消授权成功' })
-      pageInstance.value.getList()
+      pageInstance.value?.getList()
     })
 
   if (batch) {

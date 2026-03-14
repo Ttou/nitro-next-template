@@ -7,7 +7,6 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemDictTypeApi } from '~web/apis'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -137,7 +136,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.createdAt[1])
       }
 
-      return await systemDictTypeApi.findPage(_params)
+      return await Apis.SystemDictType.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

@@ -1,11 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
-import type { LoginReqDto } from '~web/apis'
+import type { LoginReqDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
 import { pascalCase, uniqBy } from 'es-toolkit'
 import { defineStore } from 'pinia'
 import { h, ref } from 'vue'
 import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
-import { authApi, currentUserApi } from '~web/apis'
 import { DefaultLayout } from '~web/layouts'
 import { listToTree } from '~web/utils'
 
@@ -73,19 +72,19 @@ export const useUserStore = defineStore(
     const homePath = ref<string>('')
 
     async function login(data: LoginReqDto) {
-      const result = await authApi.login(data)
+      const result = await Apis.Auth.login({ data })
 
       token.value = result
     }
 
     async function logout() {
-      await authApi.logout()
+      await Apis.Auth.logout()
 
       await clear()
     }
 
     async function getInfo() {
-      const result = await currentUserApi.getInfo()
+      const result = await Apis.CurrentUser.getInfo()
 
       const { roles, ...restInfo } = result
 

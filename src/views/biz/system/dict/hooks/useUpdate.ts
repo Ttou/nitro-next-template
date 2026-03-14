@@ -40,7 +40,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await systemDictTypeApi.update(values)
+      await Apis.SystemDictType.update({ data: values })
 
       updateValues.value = Object.create({})
       updateVisible.value = false

@@ -3,7 +3,6 @@ import type { PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-
 import type { Ref } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemUserApi } from '~web/apis'
 import { download } from '~web/utils'
 
 interface UseImportParams {
@@ -51,7 +50,9 @@ export function useImport({ pageInstance }: UseImportParams) {
 
   function exportTemplate() {
     exportTemplateLoading.value = true
-    systemUserApi.exportTemplate().then((res) => {
+    Apis.SystemUser.exportTemplate({
+      responseType: 'blob',
+    }).then((res) => {
       download(res)
     }).finally(() => {
       exportTemplateLoading.value = false
@@ -66,7 +67,9 @@ export function useImport({ pageInstance }: UseImportParams) {
       const formData = new FormData()
       formData.append('file', file as File)
 
-      const res = await systemUserApi.importTemplate(formData)
+      const res = await Apis.SystemUser.importTemplate({
+        data: formData,
+      })
       ElNotification.info({
         title: '导入结果',
         message: `成功导入 ${res.success} 条记录，失败 ${res.fail} 条记录。`,

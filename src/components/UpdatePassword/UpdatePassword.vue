@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { FieldValues, PlusDrawerFormProps } from 'plus-pro-components'
-import type { UpdateCurrentUserPasswordReqDto } from '~web/apis'
+import type { UpdateCurrentUserPasswordReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { currentUserApi } from '~web/apis'
 import { useUserStore } from '~web/store'
 
 defineOptions({
@@ -66,7 +65,7 @@ async function handleConfirm(values: FieldValues) {
   try {
     confirmLoading.value = true
 
-    await currentUserApi.updatePassword(values)
+    await Apis.CurrentUser.updatePassword({ data: values })
 
     formModel.value = Object.create({})
     visible.value = false

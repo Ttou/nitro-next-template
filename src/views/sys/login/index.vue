@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { FormRules } from 'element-plus'
 import type { PlusColumn } from 'plus-pro-components'
-import type { LoginReqDto } from '~web/apis'
 
+import type { LoginReqDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'

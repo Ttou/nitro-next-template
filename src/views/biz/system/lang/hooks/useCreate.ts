@@ -1,11 +1,10 @@
 import type { PlusColumn, PlusDrawerFormProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { CreateSystemLangReqDto } from '~web/apis'
+import type { CreateSystemLangReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
 import { computed, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
-import { systemLangApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -27,10 +26,10 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [].concat(unref(columns), LangEnum.items.map(v => ({
+    columns: [...[], ...unref(columns), ...LangEnum.items.map(v => ({
       label: v.label,
       prop: v.value,
-    }))),
+    }))],
     rules: {
       langKey: [{ required: true, message: '请输入词条标识', trigger: 'blur' }],
       isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
@@ -50,9 +49,11 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await systemLangApi.create({
-        ...values,
-        langValue: langValue.value,
+      await Apis.SystemLang.create({
+        data: {
+          ...values,
+          langValue: langValue.value,
+        },
       })
 
       createValues.value = Object.create({})

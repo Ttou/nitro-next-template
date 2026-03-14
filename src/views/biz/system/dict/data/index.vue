@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemDictDataApi } from '~web/apis'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -133,7 +131,7 @@ const pageProps = computed<PlusPageProps>(() => {
 
       Reflect.set(_params, 'dictType', unref(dictType))
 
-      const data = await systemDictDataApi.findList(_params)
+      const data = await Apis.SystemDictData.findList({ data: _params })
 
       return { data }
     },

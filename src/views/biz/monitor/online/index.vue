@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import Apis from '~web/api'
 import { useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')

@@ -60,7 +60,7 @@ export class SystemConfigController {
   @ApiOperation({ summary: '导出系统配置' })
   @ApiExcelResponse()
   @Permission('sys.menu.system.config.export')
-  @Operate()
+  @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)

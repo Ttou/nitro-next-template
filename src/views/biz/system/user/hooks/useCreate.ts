@@ -1,9 +1,8 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { CreateSystemUserReqDto } from '~web/apis'
+import type { CreateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { systemUserApi } from '~web/apis'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -47,7 +46,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await systemUserApi.create(values)
+      await Apis.SystemUser.create({ data: values })
 
       createValues.value = Object.create({})
       createVisible.value = false

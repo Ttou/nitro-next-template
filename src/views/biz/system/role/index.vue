@@ -2,12 +2,10 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { ElLink } from 'element-plus'
-
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemRoleApi } from '~web/apis'
 import { useAssignMenu, useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -143,7 +141,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.createdAt[1])
       }
 
-      return await systemRoleApi.findPage(_params)
+      return await Apis.SystemRole.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

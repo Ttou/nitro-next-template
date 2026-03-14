@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { systemConfigApi } from '~web/apis'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -153,7 +151,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.createdAt[1])
       }
 
-      return await systemConfigApi.findPage(_params)
+      return await Apis.SystemConfig.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

@@ -4,7 +4,6 @@ import type { Ref } from 'vue'
 import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
 import { computed, h, ref, shallowRef, unref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
-import { systemRoleMenuApi } from '~web/apis'
 import { listToTree } from '~web/utils'
 
 interface UseAssignMenuParams {
@@ -86,9 +85,11 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
     try {
       assignMenuConfirmLoading.value = true
 
-      await systemRoleMenuApi.assign({
-        id: values.id,
-        menuIds: Array.from(checkedKeys.value),
+      await Apis.SystemRoleMenu.assign({
+        data: {
+          id: values.id,
+          menuIds: [...checkedKeys.value],
+        },
       })
 
       assignMenuValues.value = Object.create({})
@@ -105,7 +106,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   }
 
   async function getMenuIds() {
-    const menuIds = await systemRoleMenuApi.assigned({ id: assignMenuValues.value.id })
+    const menuIds = await Apis.SystemRoleMenu.assigned({ data: { id: assignMenuValues.value.id } })
 
     menuIds.forEach((id) => {
       checkedKeys.value.add(id)
@@ -114,7 +115,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   }
 
   async function getMenuTree() {
-    const list = await systemMenuApi.findList({})
+    const list = await Apis.SystemMenu.findList({ data: {} })
     menuTree.value = listToTree(list)
   }
 
