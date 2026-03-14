@@ -17,6 +17,7 @@
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
+    "alova.config.ts",
     "nitro.config.ts",
     "vite.config.ts"
   ]

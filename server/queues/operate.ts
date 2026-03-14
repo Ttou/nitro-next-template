@@ -6,7 +6,19 @@ import { IpService } from '~server/shared'
 import { SysOperateEntity } from '../entities'
 import { QueueNameEnum } from './constant'
 
-@Processor(QueueNameEnum.OPERATE)
+@Processor(
+  QueueNameEnum.OPERATE,
+  {
+    removeOnComplete: {
+      age: 2 * 24 * 60 * 1000,
+      count: 100,
+    },
+    removeOnFail: {
+      age: 5 * 24 * 60 * 1000,
+      count: 100,
+    },
+  },
+)
 export class OperateQueue extends WorkerHost {
   constructor(
     private ipService: IpService,

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Public } from '~server/decorators'
+import { Operate, Public } from '~server/decorators'
 import { RemoveReqDto } from '~server/extends'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
@@ -14,6 +14,7 @@ export class SystemLangController {
   ) {}
 
   @ApiOperation({ summary: '创建系统语言' })
+  @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemLangReqDto) {
     await this.systemLangService.create(dto)
@@ -36,18 +37,21 @@ export class SystemLangController {
 
   @ApiOperation({ summary: '查询系统语言词条分页' })
   @ApiOkResponse({ type: FindSystemLangPageResDto })
+  @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemLangPageReqDto) {
     return await this.systemLangService.findPage(dto)
   }
 
   @ApiOperation({ summary: '删除系统语言词条' })
+  @Operate()
   @Post('remove')
   async remove(@Body() dto: RemoveReqDto) {
     await this.systemLangService.remove(dto)
   }
 
   @ApiOperation({ summary: '更新系统语言词条' })
+  @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemLangReqDto) {
     await this.systemLangService.update(dto)

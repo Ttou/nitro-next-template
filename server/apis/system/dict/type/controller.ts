@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { CacheKey, CacheTTL, Permission } from '~server/decorators'
+import { CacheKey, CacheTTL, Operate, Permission } from '~server/decorators'
 import { ApiExcelResponse, CacheInterceptor, ExcelService, RemoveReqDto } from '~server/extends'
 import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerializeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
@@ -16,6 +16,7 @@ export class SystemDictTypeController {
 
   @ApiOperation({ summary: '创建字典类型' })
   @Permission('sys.menu.system.dictType.create')
+  @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemDictTypeReqDto) {
     await this.systemDictTypeService.create(dto)
@@ -34,6 +35,7 @@ export class SystemDictTypeController {
   @ApiOperation({ summary: '查询字典类型分页列表' })
   @ApiOkResponse({ type: FindSystemDictTypePageResDto })
   @Permission('sys.menu.system.dictType.findPage')
+  @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemDictTypePageReqDto) {
     return await this.systemDictTypeService.findPage(dto)
@@ -41,6 +43,7 @@ export class SystemDictTypeController {
 
   @ApiOperation({ summary: '删除字典类型' })
   @Permission('sys.menu.system.dictType.remove')
+  @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemDictTypeService.remove(dto)
@@ -48,6 +51,7 @@ export class SystemDictTypeController {
 
   @ApiOperation({ summary: '更新字典类型' })
   @Permission('sys.menu.system.dictType.update')
+  @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemDictTypeReqDto) {
     return await this.systemDictTypeService.update(dto)
@@ -56,6 +60,7 @@ export class SystemDictTypeController {
   @ApiOperation({ summary: '导出字典类型' })
   @ApiExcelResponse()
   @Permission('sys.menu.system.dictType.export')
+  @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)

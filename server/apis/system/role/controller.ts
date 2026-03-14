@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Permission } from '~server/decorators'
+import { Operate, Permission } from '~server/decorators'
 import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/extends'
 import { CreateSystemRoleReqDto, ExportSystemRoleSerializeDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
@@ -16,6 +16,7 @@ export class SystemRoleController {
 
   @ApiOperation({ summary: '创建系统角色' })
   @Permission('sys.menu.system.role.create')
+  @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemRoleReqDto) {
     return await this.systemRoleService.create(dto)
@@ -24,6 +25,7 @@ export class SystemRoleController {
   @ApiOperation({ summary: '查询系统角色分页列表' })
   @ApiOkResponse({ type: FindSystemRolePageResDto })
   @Permission('sys.menu.system.role.findPage')
+  @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemRolePageReqDto) {
     return await this.systemRoleService.findPage(dto)
@@ -31,6 +33,7 @@ export class SystemRoleController {
 
   @ApiOperation({ summary: '删除系统角色' })
   @Permission('sys.menu.system.role.remove')
+  @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemRoleService.remove(dto)
@@ -38,6 +41,7 @@ export class SystemRoleController {
 
   @ApiOperation({ summary: '更新系统角色' })
   @Permission('sys.menu.system.role.update')
+  @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemRoleReqDto) {
     return await this.systemRoleService.update(dto)
@@ -46,6 +50,7 @@ export class SystemRoleController {
   @ApiOperation({ summary: '导出系统角色' })
   @ApiExcelResponse()
   @Permission('sys.menu.system.role.export')
+  @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemRolePageReqDto) {
     const { data } = await this.systemRoleService.findPage(dto)

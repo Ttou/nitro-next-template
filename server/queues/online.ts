@@ -6,7 +6,19 @@ import { SysOnlineEntity } from '../entities'
 import { IpService } from '../shared'
 import { QueueNameEnum } from './constant'
 
-@Processor(QueueNameEnum.ONLINE)
+@Processor(
+  QueueNameEnum.ONLINE,
+  {
+    removeOnComplete: {
+      age: 2 * 24 * 60 * 1000,
+      count: 100,
+    },
+    removeOnFail: {
+      age: 5 * 24 * 60 * 1000,
+      count: 100,
+    },
+  },
+)
 export class OnlineQueue extends WorkerHost {
   constructor(
     private ipService: IpService,
