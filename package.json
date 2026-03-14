@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env APP_ENV=dev vite",
     "build": "vite build",
+    "preview": "nitro preview",
     "gen:apis": "alova gen -f"
   },
   "dependencies": {
