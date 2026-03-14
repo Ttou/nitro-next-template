@@ -4,6 +4,7 @@ import type { LoggerModuleOptions } from './interface'
 import { Logger } from '@tsed/logger'
 import { PatternLayout } from '@tsed/logger-pattern-layout'
 import { StdoutAppender } from '@tsed/logger-std'
+import { ClsServiceManager } from 'nestjs-cls'
 import { colorGray, colorYellow } from '~server/utils'
 import { formatTime } from '~shared/utils'
 import { LOGGER } from './constant'
@@ -26,10 +27,12 @@ export const LoggerProvider: FactoryProvider = {
           },
           message: (logEvent: LogEvent) => {
             const [message, rest] = logEvent.data
+            const cls = ClsServiceManager.getClsService()
+            const requestId = cls.getId()
 
             return [
               rest?.context ? colorYellow(`[${rest.context}]`) : undefined,
-              rest?.requestId ? colorGray(`[${rest.requestId}]`) : undefined,
+              requestId ? colorGray(`[${requestId}]`) : undefined,
               `${message}`,
             ]
               .filter(v => v !== undefined)
