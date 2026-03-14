@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { Public } from '~server/decorators'
-import { ContextService } from '~server/shared'
+import { ContextService, LogoutService } from '~server/shared'
 
 /**
  * 登录守卫
@@ -14,6 +14,7 @@ export class AuthenticationGuard implements CanActivate {
     private jwtService: JwtService,
     private reflector: Reflector,
     private contextService: ContextService,
+    private logoutService: LogoutService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -29,6 +30,12 @@ export class AuthenticationGuard implements CanActivate {
     const token = this.contextService.getToken()
 
     try {
+      const isLogout = await this.logoutService.verify(token)
+
+      if (isLogout) {
+        throw new UnauthorizedException('登录凭证已过期，请重新登录')
+      }
+
       const res = await this.jwtService.verify(token, {
         complete: true,
       })

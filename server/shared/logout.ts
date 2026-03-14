@@ -19,7 +19,7 @@ export class LogoutService {
   /**
    * 添加到已登出
    */
-  async addToLogout(token: string) {
+  async add(token: string) {
     const result = await this.jwtService.verify(token)
     const ttl = (result.exp - result.iat) * 1000
 
@@ -29,7 +29,7 @@ export class LogoutService {
   /**
    * 校验是否已登出
    */
-  async verifyLogout(token: string) {
+  async verify(token: string) {
     const result = await this.jwtService.verify(token)
     const isLogout = await this.cacheService.get(this.getCacheKey(result.jti))
 

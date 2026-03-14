@@ -59,7 +59,7 @@ export class AuthService {
 
       if (oldOnlineRecord) {
         await this.em.remove(oldOnlineRecord).flush()
-        await this.logoutService.addToLogout(oldOnlineRecord.token)
+        await this.logoutService.add(oldOnlineRecord.token)
       }
     }
 
@@ -84,7 +84,7 @@ export class AuthService {
 
   async logout() {
     const token = this.contextService.getToken()
-    await this.logoutService.addToLogout(token)
+    await this.logoutService.add(token)
   }
 
   private createSign(payload: any) {

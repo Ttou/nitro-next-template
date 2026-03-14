@@ -40,7 +40,7 @@ export class MonitorOnlineService {
     await this.em.remove(oldRecords).flush()
 
     for (const record of oldRecords) {
-      await this.logoutService.addToLogout(record.token)
+      await this.logoutService.add(record.token)
     }
   }
 }
