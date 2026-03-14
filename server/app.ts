@@ -53,8 +53,12 @@ import { colorGray } from './utils'
       },
       inject: [ConfigService],
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['cache']>('cache')!
+      },
+      inject: [ConfigService],
     }),
     CaptchaModule.register({
       isGlobal: true,
