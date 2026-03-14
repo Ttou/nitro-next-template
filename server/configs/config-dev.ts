@@ -15,7 +15,10 @@ export default registerAs('', (): ConfigSchema => {
 
   return {
     appName,
-    logoutKeyPrefix: 'logout',
+    logout: {
+      keyPrefix: [appName, 'logout'].join(redisKeyPrefixSeparator),
+      keyPrefixSeparator: redisKeyPrefixSeparator,
+    },
     redis: {
       host: '127.0.0.1',
       port: 6379,

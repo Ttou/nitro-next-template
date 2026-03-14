@@ -3,7 +3,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { Public } from '~server/decorators'
-import { ContextService, LogoutService } from '~server/shared'
+import { LogoutService } from '~server/extends'
+import { ContextService } from '~server/shared'
 
 /**
  * 登录守卫

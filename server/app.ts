@@ -12,7 +12,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
@@ -62,6 +62,13 @@ import { colorGray } from './utils'
     }),
     CaptchaModule.register({
       isGlobal: true,
+    }),
+    LogoutModule.registerAsync({
+      isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['logout']>('logout')!
+      },
+      inject: [ConfigService],
     }),
     ExcelModule.register({
       isGlobal: true,

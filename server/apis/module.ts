@@ -3,7 +3,7 @@ import { RouterModule } from '@nestjs/core'
 import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
-import { MonitorOnlineModule, MonitorOperateModule } from './monitor'
+import { MonitorCacheModule, MonitorOnlineModule, MonitorOperateModule } from './monitor'
 import {
   SystemConfigModule,
   SystemDeptModule,
@@ -24,6 +24,7 @@ import {
     AuthModule,
     CaptchaModule,
     CurrentUserModule,
+    MonitorCacheModule,
     MonitorOnlineModule,
     MonitorOperateModule,
     SystemConfigModule,
@@ -64,6 +65,10 @@ import {
               {
                 path: 'operate',
                 module: MonitorOperateModule,
+              },
+              {
+                path: 'cache',
+                module: MonitorCacheModule,
               },
             ],
           },

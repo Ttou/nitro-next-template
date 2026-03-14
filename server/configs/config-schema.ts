@@ -3,12 +3,12 @@ import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { BullRootModuleOptions } from '@nestjs/bullmq'
 import type { JwtModuleOptions } from '@nestjs/jwt'
 import type { MulterModuleOptions } from '@nestjs/platform-express'
-import type { CacheModuleOptions, CaptchaModuleOptions, HashModuleOptions, RedisModuleOptions } from '../extends'
+import type { CacheModuleOptions, CaptchaModuleOptions, HashModuleOptions, LogoutModuleOptions, RedisModuleOptions } from '../extends'
 
 export class ConfigSchema {
   appName: string
 
-  logoutKeyPrefix: string
+  logout: LogoutModuleOptions
 
   hash: HashModuleOptions
 

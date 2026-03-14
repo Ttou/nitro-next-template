@@ -1,8 +1,7 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { SysOnlineEntity } from '~server/entities'
-import { RemoveReqDto } from '~server/extends'
-import { LogoutService } from '~server/shared'
+import { LogoutService, RemoveReqDto } from '~server/extends'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
 @Injectable()

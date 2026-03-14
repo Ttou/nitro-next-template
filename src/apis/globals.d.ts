@@ -139,6 +139,26 @@ export interface UpdateCurrentUserPasswordReqDto {
    */
   confirmPassword: string;
 }
+export interface FindMonitorCachePageReqDto {
+  /**
+   * 页码
+   */
+  page: number;
+  /**
+   * 页长
+   */
+  pageSize: number;
+  /**
+   * 缓存键
+   */
+  key?: string;
+}
+export interface RemoveMonitorCacheReqDto {
+  /**
+   * 缓存键数组
+   */
+  keys: string[];
+}
 export interface FindMonitorOnlinePageReqDto {
   /**
    * 页码
@@ -2770,6 +2790,91 @@ declare global {
       >(
         config: Config
       ): Alova2Method<null, 'CurrentUser.updatePassword', Config>;
+    };
+    MonitorCache: {
+      /**
+       * ---
+       *
+       * [POST] 查询缓存列表
+       *
+       * **path:** /api/monitor/cache/findPage
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // 页码
+       *   page: number
+       *   // 页长
+       *   pageSize: number
+       *   // 缓存键
+       *   key?: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = null
+       * ```
+       */
+      findPage<
+        Config extends Alova2MethodConfig<null> & {
+          data: FindMonitorCachePageReqDto;
+        }
+      >(
+        config: Config
+      ): Alova2Method<null, 'MonitorCache.findPage', Config>;
+      /**
+       * ---
+       *
+       * [DELETE] 删除缓存
+       *
+       * **path:** /api/monitor/cache/remove
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // 缓存键数组
+       *   // [items] start
+       *   // [items] end
+       *   keys: string[]
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = null
+       * ```
+       */
+      remove<
+        Config extends Alova2MethodConfig<null> & {
+          data: RemoveMonitorCacheReqDto;
+        }
+      >(
+        config: Config
+      ): Alova2Method<null, 'MonitorCache.remove', Config>;
+      /**
+       * ---
+       *
+       * [DELETE] 清空缓存
+       *
+       * **path:** /api/monitor/cache/clear
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = null
+       * ```
+       */
+      clear<Config extends Alova2MethodConfig<null>>(config?: Config): Alova2Method<null, 'MonitorCache.clear', Config>;
     };
     MonitorOnline: {
       /**

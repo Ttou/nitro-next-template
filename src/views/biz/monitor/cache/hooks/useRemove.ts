@@ -1,0 +1,59 @@
+import type { PlusPageInstance } from 'plus-pro-components'
+import type { Ref } from 'vue'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+
+interface UseRemoveParams {
+  pageInstance: Ref<PlusPageInstance>
+  selectedIds: Ref<string[]>
+}
+
+export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
+  function handleRemove(keys: string[]) {
+    Apis.MonitorCache.remove({ data: { keys } })
+      .then(() => {
+        ElNotification.success({ title: '通知', message: '删除成功' })
+        pageInstance.value.getList()
+      })
+  }
+
+  function confirmRemove(ids: string[], batch: boolean = false) {
+    if (batch) {
+      if (!selectedIds.value.length) {
+        ElMessage.warning('请选择要删除的数据')
+        return
+      }
+
+      ElMessageBox.confirm('确定删除选中的数据吗？', {
+        type: 'warning',
+        title: '提示',
+      })
+        .then(() => {
+          handleRemove(ids)
+        })
+        .catch(() => {})
+    }
+    else {
+      handleRemove(ids)
+    }
+  }
+
+  function confirmClear() {
+    ElMessageBox.confirm('确定清空缓存吗？', {
+      type: 'warning',
+      title: '提示',
+    })
+      .then(() => {
+        Apis.MonitorCache.clear()
+          .then(() => {
+            ElNotification.success({ title: '通知', message: '清空成功' })
+            pageInstance.value.getList()
+          })
+      })
+      .catch(() => {})
+  }
+
+  return {
+    confirmRemove,
+    confirmClear,
+  }
+}

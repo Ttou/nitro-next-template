@@ -20,7 +20,7 @@ export class RedisService {
   async scan(pattern = '*', options: IRedisScannerOptions = {}) {
     const config = { ...redisScannerDefaultOptions, ...options }
     let cursor = '0'
-    const allKeys = []
+    const allKeys: string[] = []
     let iterations = 0
 
     try {
@@ -37,7 +37,6 @@ export class RedisService {
         allKeys.push(...keys)
         iterations++
 
-        // 安全检查
         if (iterations > config.maxIterations!) {
           this.loggerService.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
           break
@@ -48,7 +47,6 @@ export class RedisService {
           break
         }
 
-        // 批次间延迟
         if (config.delayBetweenBatches! > 0) {
           await delay(config.delayBetweenBatches!)
         }
@@ -58,6 +56,7 @@ export class RedisService {
     }
     catch (error) {
       this.loggerService.error(`SCAN 操作失败: `, error)
+      return []
     }
   }
 
@@ -131,20 +130,31 @@ export class RedisService {
       return []
     }
 
-    // 批量获取值
     const pipeline = this.redisClient.pipeline()
-    keys.forEach(key => pipeline.get(key))
+    keys.forEach((key) => {
+      pipeline.get(key)
+      pipeline.ttl(key)
+    })
 
     const results = await pipeline.exec()
 
     return keys.map((key, index) => {
-      const [error, value] = results![index]!
-      if (error) {
-        this.loggerService.error(`获取键 ${key} 的值失败: `, error)
-        return { key, value: null, error: error.message }
+      const valueResult = results![index * 2]!
+      const ttlResult = results![index * 2 + 1]!
+
+      const [valueError, value] = valueResult
+      const [ttlError, ttl] = ttlResult
+
+      if (valueError) {
+        this.loggerService.error(`获取键 ${key} 的值失败: ${valueError.message}`)
+        return { key, value: null, ttl: -1, error: valueError.message }
       }
 
-      // 尝试解析 JSON
+      if (ttlError) {
+        this.loggerService.error(`获取键 ${key} 的 TTL 失败: ${ttlError.message}`)
+        return { key, value: null, ttl: -1, error: ttlError.message }
+      }
+
       let parsedValue = value
       try {
         if (value) {
@@ -152,10 +162,9 @@ export class RedisService {
         }
       }
       catch {
-        // 保持原始值
       }
 
-      return { key, value: parsedValue }
+      return { key, value: parsedValue, ttl }
     })
   }
 }
