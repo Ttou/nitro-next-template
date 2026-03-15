@@ -1,6 +1,5 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import { MikroORM } from '@mikro-orm/core'
-import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -19,17 +18,11 @@ const nestApp = await NestFactory.create<NestExpressApplication>(
   },
 )
 const serverApp = nestApp.getHttpAdapter().getInstance()
-const configService = nestApp.get(ConfigService)
 
 // #region 日志配置
 const logger = await nestApp.resolve(LoggerService)
 nestApp.useLogger(logger)
 nestApp.flushLogs()
-
-// #endregion
-
-// #region 健康检查
-serverApp.use('/health', configService.get('healthBasicAuth')!)
 // #endregion
 
 if (IsDev) {
