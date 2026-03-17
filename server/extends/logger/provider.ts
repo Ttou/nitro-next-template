@@ -34,6 +34,7 @@ export const LoggerProvider: FactoryProvider = {
               rest?.context ? colorYellow(`[${rest.context}]`) : undefined,
               requestId ? colorGray(`[${requestId}]`) : undefined,
               `${message}`,
+              rest?.optionalParams ? colorGray(`[${rest.optionalParams}]`) : undefined,
             ]
               .filter(v => v !== undefined)
               .join(' ')

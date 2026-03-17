@@ -32,7 +32,7 @@ export class LoggerService extends ConsoleLogger {
 
   private getRestData(optionalParams?: any) {
     return this.context
-      ? { context: this.context, ...optionalParams }
+      ? { context: this.context, ...(typeof optionalParams === 'string' ? { optionalParams } : optionalParams) }
       : { context: optionalParams }
   }
 }

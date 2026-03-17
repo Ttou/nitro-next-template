@@ -4,7 +4,7 @@ import { generateId } from '~shared/utils'
 
 @Entity({ abstract: true })
 export class BaseEntity {
-  @ApiProperty({ description: '主键', type: String })
+  @ApiProperty({ description: '主键' })
   @PrimaryKey()
   id = generateId()
 
@@ -12,7 +12,7 @@ export class BaseEntity {
   @Property({ nullable: true })
   createBy?: string
 
-  @ApiProperty({ description: '创建时间', type: Date })
+  @ApiProperty({ description: '创建时间' })
   @Property()
   createdAt? = new Date()
 
@@ -20,7 +20,7 @@ export class BaseEntity {
   @Property({ nullable: true })
   updateBy?: string
 
-  @ApiProperty({ description: '更新时间', type: Date })
+  @ApiProperty({ description: '更新时间' })
   @Property({ onUpdate: () => new Date() })
   updatedAt? = new Date()
 }

@@ -3,9 +3,6 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 
-/**
- * 参数校验管道
- */
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
   async transform(value: any, { metatype }: ArgumentMetadata) {
@@ -17,18 +14,37 @@ export class ValidationPipe implements PipeTransform<any> {
       throw new UnprocessableEntityException('请求体不能为空')
     }
 
-    const object = plainToInstance(metatype, value)
+    const filteredValue = this.filterDtoFields(value, metatype)
+    const object = plainToInstance(metatype, filteredValue)
     const errors = await validate(object, { stopAtFirstError: true })
 
     if (errors.length > 0) {
       const errorMsg = Object.values(errors[0]!.constraints!)[0]
       throw new UnprocessableEntityException(errorMsg)
     }
-    return value
+    return filteredValue
   }
 
   private toValidate(metatype: any): boolean {
     const types = [String, Boolean, Number, Array, Object]
     return !types.includes(metatype)
+  }
+
+  private filterDtoFields(value: any, metatype: any): any {
+    if (!value || typeof value !== 'object') {
+      return value
+    }
+
+    const instance = plainToInstance(metatype, {}) as object
+    const dtoFields = Object.keys(instance)
+
+    const filtered: any = {}
+    dtoFields.forEach((field) => {
+      if (field in value) {
+        filtered[field] = value[field]
+      }
+    })
+
+    return filtered
   }
 }

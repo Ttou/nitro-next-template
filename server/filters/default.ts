@@ -22,7 +22,7 @@ export class DefaultFilter implements ExceptionFilter {
     const message = this.getMessage(exception)
 
     // @ts-ignore
-    this.loggerService.error(message)
+    this.loggerService.error(message, exception.stack)
 
     httpAdapter.reply(
       ctx.getResponse(),
