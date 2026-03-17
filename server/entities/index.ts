@@ -1,3 +1,4 @@
+export * from './base'
 export * from './sys-config'
 export * from './sys-dept'
 export * from './sys-dict-data'

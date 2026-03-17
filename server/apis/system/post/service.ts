@@ -2,12 +2,14 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysPostEntity } from '~server/entities'
 import { RemoveReqDto } from '~server/extends'
+import { ContextService } from '~server/shared'
 import { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
 
 @Injectable()
 export class SystemPostService {
   constructor(
     private em: EntityManager,
+    private contextService: ContextService,
   ) {}
 
   async create(dto: CreateSystemPostReqDto) {
@@ -22,6 +24,7 @@ export class SystemPostService {
     }
 
     const newRecord = this.em.create(SysPostEntity, dto)
+    this.contextService.bindCurrentUserToEntity(newRecord, 'create')
 
     await this.em.persist(newRecord).flush()
   }
@@ -66,6 +69,7 @@ export class SystemPostService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

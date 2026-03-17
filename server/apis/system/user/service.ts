@@ -41,6 +41,7 @@ export class SystemUserService {
         password,
       },
     )
+    this.contextService.bindCurrentUserToEntity(newRecord, 'create')
     await this.em.persist(newRecord).flush()
   }
 
@@ -75,7 +76,12 @@ export class SystemUserService {
       },
     )
 
-    await this.em.remove(oldRecords).flush()
+    oldRecords.forEach((item) => {
+      item.isDelete = YesOrNoEnum.YES
+      this.contextService.bindCurrentUserToEntity(item, 'update')
+    })
+
+    await this.em.persist(oldRecords).flush()
   }
 
   async update(dto: UpdateSystemUserReqDto) {
@@ -96,6 +102,7 @@ export class SystemUserService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

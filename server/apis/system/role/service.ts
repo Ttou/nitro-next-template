@@ -2,12 +2,14 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysRoleEntity } from '~server/entities'
 import { RemoveReqDto } from '~server/extends'
+import { ContextService } from '~server/shared'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 
 @Injectable()
 export class SystemRoleService {
   constructor(
     private em: EntityManager,
+    private contextService: ContextService,
   ) {}
 
   async create(dto: CreateSystemRoleReqDto) {
@@ -22,6 +24,7 @@ export class SystemRoleService {
     }
 
     const config = this.em.create(SysRoleEntity, dto)
+    this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()
   }
@@ -66,6 +69,7 @@ export class SystemRoleService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

@@ -2,6 +2,7 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysConfigEntity } from '~server/entities'
 import { RemoveReqDto } from '~server/extends'
+import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './dto'
 
@@ -9,6 +10,7 @@ import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfig
 export class SystemConfigService {
   constructor(
     private em: EntityManager,
+    private contextService: ContextService,
   ) {}
 
   async create(dto: CreateSystemConfigReqDto) {
@@ -23,6 +25,7 @@ export class SystemConfigService {
     }
 
     const config = this.em.create(SysConfigEntity, dto)
+    this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()
   }
@@ -82,6 +85,7 @@ export class SystemConfigService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

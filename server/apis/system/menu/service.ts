@@ -2,12 +2,14 @@ import type { RemoveReqDto } from '~server/extends'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysMenuEntity } from '~server/entities'
+import { ContextService } from '~server/shared'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 
 @Injectable()
 export class SystemMenuService {
   constructor(
     private em: EntityManager,
+    private contextService: ContextService,
   ) {}
 
   async create(dto: CreateSystemMenuReqDto) {
@@ -22,6 +24,7 @@ export class SystemMenuService {
     }
 
     const newRecord = this.em.create(SysMenuEntity, dto)
+    this.contextService.bindCurrentUserToEntity(newRecord, 'create')
 
     await this.em.persist(newRecord).flush()
   }
@@ -65,6 +68,7 @@ export class SystemMenuService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

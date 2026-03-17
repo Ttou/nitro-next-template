@@ -2,12 +2,14 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysLangEntity } from '~server/entities'
 import { RemoveReqDto } from '~server/extends'
+import { ContextService } from '~server/shared'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
 
 @Injectable()
 export class SystemLangService {
   constructor(
     private em: EntityManager,
+    private contextService: ContextService,
   ) {}
 
   async create(dto: CreateSystemLangReqDto) {
@@ -20,6 +22,7 @@ export class SystemLangService {
     }
 
     const lang = this.em.create(SysLangEntity, dto)
+    this.contextService.bindCurrentUserToEntity(lang, 'create')
 
     await this.em.persist(lang).flush()
   }
@@ -86,6 +89,7 @@ export class SystemLangService {
     }
 
     wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
   }

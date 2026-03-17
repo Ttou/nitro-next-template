@@ -2,8 +2,9 @@ import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
+import { match } from 'ts-pattern'
 import { YesOrNoEnum } from '~shared/enums'
-import { SysConfigEntity, SysUserEntity } from '../entities'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '../entities'
 
 @Injectable()
 export class ContextService {
@@ -110,5 +111,13 @@ export class ContextService {
     })
 
     return initPasswordConfig!.configValue
+  }
+
+  bindCurrentUserToEntity<T extends BaseEntity>(entity: T, bindType: 'create' | 'update') {
+    match(bindType).with('create', () => {
+      entity.createBy = this.getCurrentUser().userName
+    }).with('update', () => {
+      entity.updateBy = this.getCurrentUser().userName
+    }).exhaustive()
   }
 }
