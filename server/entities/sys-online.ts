@@ -27,8 +27,14 @@ export class SysOnlineEntity {
   location: string
 
   @ApiProperty({ description: '用户代理' })
-  @Property({ type: 'text', serializer: value => Reflect.construct(UserAgentSerializeDto, [value]) })
+  @Property({ type: 'text' })
   userAgent: string
+
+  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerializeDto })
+  @Property({ persist: false })
+  get userAgentParsed() {
+    return Reflect.construct(UserAgentSerializeDto, [this.userAgent])
+  }
 
   @ApiProperty({ description: '登录时间' })
   @Property()

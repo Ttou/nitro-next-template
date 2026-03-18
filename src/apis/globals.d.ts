@@ -1487,6 +1487,10 @@ export interface SysOnlineEntityNoToken {
    */
   location: string;
   /**
+   * 用户代理解析
+   */
+  userAgentParsed: UserAgentSerializeDto;
+  /**
    * 登录时间
    */
   loginTime: string;
@@ -1558,6 +1562,10 @@ export interface SysOperateLogEntityWithUser {
    * 位置
    */
   location: string;
+  /**
+   * 用户代理解析
+   */
+  userAgentParsed: UserAgentSerializeDto;
   /**
    * 请求状态
    */
@@ -2927,6 +2935,33 @@ declare global {
        *     ip: string
        *     // 位置
        *     location: string
+       *     // 用户代理解析
+       *     userAgentParsed: {
+       *       // 浏览器名称
+       *       browserName: string
+       *       // 浏览器版本
+       *       browserVersion: string
+       *       // 浏览器主版本号
+       *       browserMajor: string
+       *       // 浏览器类型
+       *       browserType: string
+       *       // CPU 架构
+       *       cpuArchitecture: string
+       *       // 设备类型
+       *       deviceType: string
+       *       // 设备型号
+       *       deviceModel: string
+       *       // 设备供应商
+       *       deviceVendor: string
+       *       // 浏览器引擎名称
+       *       engineName: string
+       *       // 浏览器引擎版本
+       *       engineVersion: string
+       *       // 操作系统名称
+       *       osName: string
+       *       // 操作系统版本
+       *       osVersion: string
+       *     }
        *     // 登录时间
        *     loginTime: string
        *     // 用户代理
@@ -3097,6 +3132,33 @@ declare global {
        *     ip: string
        *     // 位置
        *     location: string
+       *     // 用户代理解析
+       *     userAgentParsed: {
+       *       // 浏览器名称
+       *       browserName: string
+       *       // 浏览器版本
+       *       browserVersion: string
+       *       // 浏览器主版本号
+       *       browserMajor: string
+       *       // 浏览器类型
+       *       browserType: string
+       *       // CPU 架构
+       *       cpuArchitecture: string
+       *       // 设备类型
+       *       deviceType: string
+       *       // 设备型号
+       *       deviceModel: string
+       *       // 设备供应商
+       *       deviceVendor: string
+       *       // 浏览器引擎名称
+       *       engineName: string
+       *       // 浏览器引擎版本
+       *       engineVersion: string
+       *       // 操作系统名称
+       *       osName: string
+       *       // 操作系统版本
+       *       osVersion: string
+       *     }
        *     // 请求状态
        *     status: number
        *     // 错误信息

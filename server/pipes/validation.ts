@@ -27,7 +27,7 @@ export class ValidationPipe implements PipeTransform<any> {
       const errorMsg = Object.values(errors[0]!.constraints!)[0]
       throw new UnprocessableEntityException(errorMsg)
     }
-    return value
+    return object
   }
 
   private toValidate(metatype: any): boolean {

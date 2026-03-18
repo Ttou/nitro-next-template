@@ -55,7 +55,7 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '浏览器',
-    prop: 'userAgent.browserName',
+    prop: 'userAgentParsed.browserName',
     minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
@@ -64,7 +64,7 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '操作系统',
-    prop: 'userAgent.osName',
+    prop: 'userAgentParsed.osName',
     minWidth: 120,
     hideInSearch: true,
     tableColumnProps: {
