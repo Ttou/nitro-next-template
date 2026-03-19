@@ -1,12 +1,10 @@
 import type { ConfigSchema } from './config-schema'
-import { mkdirSync } from 'node:fs'
 import { basename, extname } from 'node:path'
-import { ExpressAdapter } from '@bull-board/express'
+import { FastifyAdapter } from '@bull-board/fastify'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
-import basicAuth from 'express-basic-auth'
-import { diskStorage } from 'multer'
+import { basicAuth } from '~server/fastify'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
 
 export default registerAs('', (): ConfigSchema => {
@@ -71,34 +69,19 @@ export default registerAs('', (): ConfigSchema => {
     },
     bullBoard: {
       route: '/bull-ui',
-      adapter: ExpressAdapter,
-      middleware: basicAuth({
-        challenge: true,
-        users: {
-          bull: '123456',
-        },
-      }),
+      adapter: FastifyAdapter,
     },
-    multer: {
-      storage: diskStorage({
-        destination: (req, file, cb) => {
-          const uploadDir = './uploads'
-          mkdirSync(uploadDir, { recursive: true })
-          cb(null, uploadDir)
-        },
-        filename: (req, file, cb) => {
-          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
-          const ext = extname(file.originalname)
-          const nameWithoutExt = basename(file.originalname, ext)
-          cb(null, `${nameWithoutExt}-${uniqueSuffix}${ext}`)
-        },
-      }),
-    },
-    healthBasicAuth: basicAuth({
-      challenge: true,
-      users: {
-        health: '123456',
+    upload: {
+      dest: './uploads',
+      fileName: (file) => {
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
+        const ext = extname(file.filename)
+        const nameWithoutExt = basename(file.filename, ext)
+        return `${nameWithoutExt}-${uniqueSuffix}${ext}`
       },
-    }),
+    },
+    excel: {
+      cleanTempFile: true,
+    },
   }
 })

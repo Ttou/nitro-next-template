@@ -1,9 +1,8 @@
-import type { IFile } from '~server/interfaces'
-import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
+import type { UploadFileResult } from '~server/extends'
+import { Body, Controller, Delete, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, ApiFile, ExcelService, RemoveReqDto } from '~server/extends'
+import { ApiExcelResponse, ApiFile, ExcelService, FileInterceptor, RemoveReqDto, UploadedFile } from '~server/extends'
 import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
@@ -73,7 +72,7 @@ export class SystemUserController {
   @UseInterceptors(FileInterceptor('file'))
   @Operate({ ignoreRequest: true })
   @Post('importTemplate')
-  async importTemplate(@UploadedFile() file: IFile) {
+  async importTemplate(@UploadedFile() file: UploadFileResult) {
     const data = await this.excelService.importFile(ImportSystemUserSerializeDto, file)
     return await this.systemUserService.importTemplate(data)
   }

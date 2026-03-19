@@ -12,7 +12,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -71,8 +71,12 @@ import { colorGray } from './utils'
       },
       inject: [ConfigService],
     }),
-    ExcelModule.register({
+    ExcelModule.registerAsync({
       isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['excel']>('excel')!
+      },
+      inject: [ConfigService],
     }),
     HashModule.registerAsync({
       isGlobal: true,
@@ -120,6 +124,13 @@ import { colorGray } from './utils'
         }
       },
       inject: [ConfigService, LoggerService],
+    }),
+    UploadModule.registerAsync({
+      isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['upload']>('upload')!
+      },
+      inject: [ConfigService],
     }),
     QueuesModule,
     SharedModule,

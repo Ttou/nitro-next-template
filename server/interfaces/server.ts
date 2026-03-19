@@ -1,7 +1,7 @@
-import type { Express, Request, Response } from 'express'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
-export interface IRequest extends Request {}
+export interface IRequest extends FastifyRequest {}
 
-export interface IResponse extends Response {}
+export interface IResponse extends FastifyReply {}
 
-export interface IServer extends Express {}
+export interface IServer extends FastifyInstance {}

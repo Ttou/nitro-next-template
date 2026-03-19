@@ -58,6 +58,7 @@ export class SystemUserService {
           { email: rest.email ? { $like: `%${rest.email}%` } : {} },
           { sex: rest.sex ? { $eq: rest.sex } : {} },
           { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
+          { isDelete: YesOrNoEnum.NO },
         ],
       },
       { limit: pageSize, offset: page - 1, exclude: ['password'] },

@@ -14,7 +14,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest<IRequest>()
-    const message = `${req.method} - ${req.path}`
+    const message = `${req.method} - ${req.url}`
 
     this.loggerService.log(`Request [${message}]`)
 
