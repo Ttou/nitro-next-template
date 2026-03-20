@@ -59,6 +59,7 @@
     "plus-pro-components": "0.1.30",
     "rxjs": "7.8.2",
     "ts-pattern": "5.9.0",
+    "type-fest": "^5.5.0",
     "ua-parser-js": "2.0.9",
     "ufo": "1.6.3",
     "uuid": "13.0.0",

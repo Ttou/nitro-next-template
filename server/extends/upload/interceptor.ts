@@ -1,12 +1,13 @@
 import type { CallHandler, ExecutionContext, NestInterceptor, Type } from '@nestjs/common'
-import type { UploadModuleOptions, UploadOptions } from './interface'
+import type { UploadModuleOptions } from './interface'
 import { BadRequestException, Inject, Injectable, mixin } from '@nestjs/common'
+import { defaultOptions } from './constant'
 import { UPLOAD_MODULE_OPTIONS } from './module-define'
 import { uploadMultiple, uploadSingle } from './util'
 
 export function FileInterceptor(
   fieldName: string,
-  options?: UploadOptions,
+  options?: UploadModuleOptions,
 ): Type<NestInterceptor> {
   @Injectable()
   class MixinFileInterceptor implements NestInterceptor {
@@ -14,8 +15,8 @@ export function FileInterceptor(
       @Inject(UPLOAD_MODULE_OPTIONS) private moduleOptions: UploadModuleOptions,
     ) {}
 
-    get mergedOptions() {
-      return Object.assign({}, this.moduleOptions, options)
+    private get mergedOptions() {
+      return Object.assign({}, defaultOptions, this.moduleOptions, options)
     }
 
     async intercept(
@@ -40,7 +41,7 @@ export function FileInterceptor(
 
 export function FilesInterceptor(
   fieldName: string,
-  options?: UploadOptions,
+  options?: UploadModuleOptions,
 ): Type<NestInterceptor> {
   @Injectable()
   class MixinFilesInterceptor implements NestInterceptor {
@@ -48,8 +49,8 @@ export function FilesInterceptor(
       @Inject(UPLOAD_MODULE_OPTIONS) private moduleOptions: UploadModuleOptions,
     ) {}
 
-    get mergedOptions() {
-      return Object.assign({}, this.moduleOptions, options)
+    private get mergedOptions() {
+      return Object.assign({}, defaultOptions, this.moduleOptions, options)
     }
 
     async intercept(
@@ -73,7 +74,7 @@ export function FilesInterceptor(
 }
 
 export function AnyFilesInterceptor(
-  options?: UploadOptions,
+  options?: UploadModuleOptions,
 ): Type<NestInterceptor> {
   @Injectable()
   class MixinAnyFilesInterceptor implements NestInterceptor {
@@ -81,8 +82,8 @@ export function AnyFilesInterceptor(
       @Inject(UPLOAD_MODULE_OPTIONS) private moduleOptions: UploadModuleOptions,
     ) {}
 
-    get mergedOptions() {
-      return Object.assign({}, this.moduleOptions, options)
+    private get mergedOptions() {
+      return Object.assign({}, defaultOptions, this.moduleOptions, options)
     }
 
     async intercept(

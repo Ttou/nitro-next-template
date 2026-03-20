@@ -1,7 +1,7 @@
 import type { MultipartFile } from '@fastify/multipart'
 import type { FastifyRequest } from 'fastify'
-import type { UploadFileResult, UploadOptions } from './interface'
-import { createHash, randomUUID } from 'node:crypto'
+import type { MergedUploadOptions, UploadFileResult } from './interface'
+import { createHash } from 'node:crypto'
 import { createWriteStream } from 'node:fs'
 import { mkdir, unlink } from 'node:fs/promises'
 import { extname, join } from 'node:path'
@@ -9,14 +9,11 @@ import { PassThrough } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { UploadErrors } from './error'
 
-const DEFAULT_MAX_SIZE = 5 * 1024 * 1024 // 5MB
-const MB_DIVISOR = 1024 * 1024
-
 async function processFile(
   data: MultipartFile,
-  options: UploadOptions,
+  options: MergedUploadOptions,
 ): Promise<UploadFileResult> {
-  const { dest, fileName, maxFileSize = DEFAULT_MAX_SIZE, allowedExtensions, allowedMimeTypes } = options
+  const { dest, fileName, maxFileSize, mbDivisor, allowedExtensions, allowedMimeTypes } = options
   const ext = extname(data.filename).toLowerCase()
   const mime = data.mimetype
 
@@ -30,7 +27,7 @@ async function processFile(
 
   await mkdir(dest, { recursive: true })
 
-  const finalName = fileName ? fileName(data) : `${randomUUID()}${ext}`
+  const finalName = fileName(data)
   const filePath = join(dest, finalName)
 
   let finalSize = 0
@@ -45,7 +42,7 @@ async function processFile(
     passThrough.on('data', (chunk) => {
       finalSize += chunk.length
       if (finalSize > maxFileSize) {
-        passThrough.destroy(UploadErrors.tooLarge(maxFileSize / MB_DIVISOR))
+        passThrough.destroy(UploadErrors.tooLarge(maxFileSize / mbDivisor))
       }
       else {
         hashStream.update(chunk)
@@ -56,7 +53,7 @@ async function processFile(
 
     // Verify multipart payload size constraint reached via truncation limits or chunk measurement
     if (data.file.truncated || finalSize > maxFileSize) {
-      throw UploadErrors.tooLarge(maxFileSize / MB_DIVISOR)
+      throw UploadErrors.tooLarge(maxFileSize / mbDivisor)
     }
 
     finalChecksum = hashStream.digest('hex')
@@ -78,11 +75,11 @@ async function processFile(
 
 export async function uploadSingle(
   req: FastifyRequest,
-  expectedField?: string,
-  options?: UploadOptions,
+  expectedField: string,
+  options: MergedUploadOptions,
 ): Promise<UploadFileResult> {
   const data = await req.file({
-    limits: { fileSize: options?.maxFileSize ?? DEFAULT_MAX_SIZE },
+    limits: { fileSize: options.maxFileSize },
   })
 
   if (!data)
@@ -95,14 +92,14 @@ export async function uploadSingle(
 
 export async function uploadMultiple(
   req: FastifyRequest,
-  expectedField?: string,
-  options?: UploadOptions,
+  expectedField: string | undefined,
+  options: MergedUploadOptions,
 ): Promise<UploadFileResult[]> {
   const max = options?.maxFiles ?? 10
   const results: UploadFileResult[] = []
 
   const files = req.files({
-    limits: { fileSize: options?.maxFileSize ?? DEFAULT_MAX_SIZE },
+    limits: { fileSize: options.maxFileSize },
   })
 
   for await (const data of files) {
