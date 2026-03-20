@@ -2,10 +2,25 @@ import type { MultipartFile } from '@fastify/multipart'
 import type { SetRequired } from 'type-fest'
 
 export interface UploadFileResult {
+  /**
+   * 文件名
+   */
   name: string
+  /**
+   * 文件路径
+   */
   path: string
+  /**
+   * 文件扩展名
+   */
   ext: string
+  /**
+   * 文件大小
+   */
   size: number
+  /**
+   * 文件校验和
+   */
   checksum: string
 }
 

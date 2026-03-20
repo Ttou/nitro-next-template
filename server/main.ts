@@ -5,10 +5,8 @@ import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
-import { match } from 'ts-pattern'
 import { AppModule } from './app'
 import { LoggerService } from './extends'
-import { basicAuth } from './fastify'
 import { AllSeeders } from './seeders'
 import { IsDev } from './utils'
 
@@ -30,17 +28,6 @@ async function bootstrap() {
   nestApp.useLogger(logger)
   nestApp.flushLogs()
   // #endregion
-
-  serverApp.addHook('onRequest', (req, res, next) => {
-    match(req.url)
-      .when(url => url.startsWith('/health'), () => {
-        basicAuth({ username: 'health', password: '123456' })(req.raw, res.raw, next)
-      })
-      .when(url => url.startsWith('/bull-ui'), () => {
-        basicAuth({ username: 'bull', password: '123456' })(req.raw, res.raw, next)
-      })
-      .otherwise(() => next())
-  })
 
   if (IsDev) {
     // #region Swagger 接口文档配置

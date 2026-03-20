@@ -7,6 +7,7 @@ import { SysOnlineEntity, SysUserEntity } from '~server/entities'
 import { CaptchaService, HashService, LogoutService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
+import { YesOrNoEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
 import { LoginReqDto } from './dto'
 
@@ -34,6 +35,8 @@ export class AuthService {
 
     const oldRecord = await this.em.findOne(SysUserEntity, {
       userName: { $eq: userName },
+      isAvailable: { $eq: YesOrNoEnum.YES },
+      isDelete: { $eq: YesOrNoEnum.NO },
     })
 
     if (!oldRecord) {

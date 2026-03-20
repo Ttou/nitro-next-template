@@ -70,6 +70,10 @@ export default registerAs('', (): ConfigSchema => {
     bullBoard: {
       route: '/bull-ui',
       adapter: FastifyAdapter,
+      middleware: basicAuth({
+        username: 'bull',
+        password: '123456',
+      }),
     },
     upload: {
       dest: './uploads',
@@ -83,5 +87,9 @@ export default registerAs('', (): ConfigSchema => {
     excel: {
       cleanTempFile: true,
     },
+    healthBasicAuth: basicAuth({
+      username: 'health',
+      password: '123456',
+    }),
   }
 })

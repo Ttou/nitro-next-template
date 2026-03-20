@@ -28,4 +28,6 @@ export class ConfigSchema {
   upload?: UploadModuleOptions
 
   excel?: ExcelModuleOptions
+
+  healthBasicAuth?: any
 }
