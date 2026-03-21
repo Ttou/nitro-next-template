@@ -29,5 +29,7 @@ export class ConfigSchema {
 
   excel?: ExcelModuleOptions
 
-  healthBasicAuth?: any
+  health: {
+    middleware?: any
+  }
 }

@@ -22,7 +22,7 @@ export class HealthModule implements NestModule {
   constructor(private configService: ConfigService) {}
 
   configure(consumer: MiddlewareConsumer) {
-    const middleware = this.configService.get<ConfigSchema['healthBasicAuth']>('healthBasicAuth')
-    consumer.apply(middleware).forRoutes(HealthController)
+    const healthConfig = this.configService.get<ConfigSchema['health']>('health')!
+    consumer.apply(healthConfig.middleware).forRoutes(HealthController)
   }
 }

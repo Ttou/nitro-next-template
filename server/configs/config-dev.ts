@@ -87,9 +87,11 @@ export default registerAs('', (): ConfigSchema => {
     excel: {
       cleanTempFile: true,
     },
-    healthBasicAuth: basicAuth({
-      username: 'health',
-      password: '123456',
-    }),
+    health: {
+      middleware: basicAuth({
+        username: 'health',
+        password: '123456',
+      }),
+    },
   }
 })
