@@ -4,8 +4,8 @@ import { FastifyAdapter } from '@bull-board/fastify'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
+import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
 import { basicAuth } from '~server/fastify'
-import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '../entities'
 
 export default registerAs('', (): ConfigSchema => {
   const appName = 'nitro_template'

@@ -3,8 +3,8 @@ import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '~server/database'
 import { YesOrNoEnum } from '~shared/enums'
-import { BaseEntity, SysConfigEntity, SysUserEntity } from '../entities'
 
 @Injectable()
 export class ContextService {

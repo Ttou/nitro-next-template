@@ -1,6 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { SysConfigEntity } from '~server/entities'
+import { SysConfigEntity } from '~server/database'
 import { RemoveReqDto } from '~server/extends'
 import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'

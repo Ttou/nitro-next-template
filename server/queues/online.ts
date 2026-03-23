@@ -1,8 +1,8 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Job } from 'bullmq'
+import { SysOnlineEntity } from '~server/database'
 import { LoggerService } from '~server/extends'
-import { SysOnlineEntity } from '../entities'
 import { IpService } from '../shared'
 import { QueueNameEnum } from './constant'
 

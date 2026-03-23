@@ -1,7 +1,7 @@
 import type { FindMonitorOperatePageReqDto } from './dto'
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { SysOperateEntity } from '~server/entities'
+import { SysOperateEntity } from '~server/database'
 
 @Injectable()
 export class MonitorOperateService {

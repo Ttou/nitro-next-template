@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysRoleEntityNoRelations, SysUserEntityNoRelations } from '~server/entities'
+import { SysRoleEntityNoRelations, SysUserEntityNoRelations } from '~server/database'
 import { PageReqDto, PageResDto } from '~server/extends'
 
 export class FindAllocatedUserPageForRoleReqDto extends PageReqDto {

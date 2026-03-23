@@ -1,7 +1,7 @@
 import type { RemoveReqDto } from '~server/extends'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { SysMenuEntity } from '~server/entities'
+import { SysMenuEntity } from '~server/database'
 import { ContextService } from '~server/shared'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 

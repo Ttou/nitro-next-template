@@ -1,6 +1,6 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import type { Queue } from 'bullmq'
-import type { SysOperateEntity } from '~server/entities'
+import type { SysOperateEntity } from '~server/database'
 import type { IRequest } from '../interfaces'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'

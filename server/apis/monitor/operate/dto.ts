@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
-import { SysOperateEntityNoRelations, SysUserEntityNoRelations } from '~server/entities'
+import { SysOperateEntityNoRelations, SysUserEntityNoRelations } from '~server/database'
 import { PageReqDto, PageResDto, UserAgentSerializeDto } from '~server/extends'
 
 /**

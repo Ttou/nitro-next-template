@@ -6,8 +6,8 @@ import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import { AppModule } from './app'
+import { AllSeeders } from './database'
 import { LoggerService } from './extends'
-import { AllSeeders } from './seeders'
 import { IsDev } from './utils'
 
 async function bootstrap() {
