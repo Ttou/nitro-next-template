@@ -15,7 +15,7 @@
     "@bull-board/fastify": "6.20.6",
     "@bull-board/nestjs": "6.20.6",
     "@cj-tech-master/excelts": "6.1.1",
-    "@fastify/multipart": "^9.4.0",
+    "@fastify/multipart": "9.4.0",
     "@iconify-json/ep": "1.2.4",
     "@iconify/vue": "5.0.0",
     "@mikro-orm/core": "7.0.4",
