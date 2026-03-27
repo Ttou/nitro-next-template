@@ -6,33 +6,38 @@ import { LOGGER } from './constant'
 export class LoggerService extends ConsoleLogger {
   @Inject(LOGGER) private logger: Logger
 
-  override log(message: any, optionalParams?: any) {
+  override log(message: any, ...optionalParams: any[]) {
     this.logger.info(message, this.getRestData(optionalParams))
   }
 
-  override error(message: any, optionalParams?: any) {
+  override error(message: any, ...optionalParams: any[]) {
     this.logger.error(message, this.getRestData(optionalParams))
   }
 
-  override warn(message: any, optionalParams?: any) {
+  override warn(message: any, ...optionalParams: any[]) {
     this.logger.warn(message, this.getRestData(optionalParams))
   }
 
-  override debug(message: any, optionalParams?: any) {
+  override debug(message: any, ...optionalParams: any[]) {
     this.logger.debug(message, this.getRestData(optionalParams))
   }
 
-  override verbose(message: any, optionalParams?: any) {
+  override verbose(message: any, ...optionalParams: any[]) {
     this.logger.trace(message, this.getRestData(optionalParams))
   }
 
-  override fatal(message: any, optionalParams?: any) {
+  override fatal(message: any, ...optionalParams: any[]) {
     this.logger.fatal(message, this.getRestData(optionalParams))
   }
 
-  private getRestData(optionalParams?: any) {
+  private getRestData(optionalParams: any[]) {
+    const [firstParam, ...restParams] = optionalParams
+
     return this.context
-      ? { context: this.context, ...(typeof optionalParams === 'string' ? { optionalParams } : optionalParams) }
-      : { context: optionalParams }
+      ? {
+          context: this.context,
+          restParams: optionalParams,
+        }
+      : { context: firstParam, restParams }
   }
 }

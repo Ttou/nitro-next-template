@@ -1,14 +1,13 @@
 import type { FactoryProvider } from '@nestjs/common'
-import type { LogEvent } from '@tsed/logger'
 import type { LoggerModuleOptions } from './interface'
-import { Logger } from '@tsed/logger'
-import { PatternLayout } from '@tsed/logger-pattern-layout'
-import { StdoutAppender } from '@tsed/logger-std'
-import { ClsServiceManager } from 'nestjs-cls'
-import { colorGray, colorYellow } from '~server/utils'
-import { formatTime } from '~shared/utils'
+import { ConsoleAppender, layout, Logger } from '@tsed/logger'
+import { ColoredLayout } from '@tsed/logger/layouts/ColoredLayout'
 import { LOGGER } from './constant'
+import { CustomConsoleLayout } from './custom-console'
 import { LOGGER_MODULE_OPTIONS } from './module-define'
+
+layout('colored', ColoredLayout)
+layout('customConsole', CustomConsoleLayout)
 
 export const LoggerProvider: FactoryProvider = {
   provide: LOGGER,
@@ -16,30 +15,9 @@ export const LoggerProvider: FactoryProvider = {
     const logger = new Logger()
 
     logger.appenders.set('console', {
-      type: StdoutAppender,
-      level: ['debug', 'info', 'trace', 'fatal', 'error', 'warn'],
+      type: ConsoleAppender,
       layout: {
-        type: PatternLayout,
-        pattern: '%x{time} [%z] %[[%p]%] %x{message}',
-        tokens: {
-          time: (logEvent: LogEvent) => {
-            return `[${formatTime(logEvent.startTime, 'YYYY-MM-DD HH:mm:ss.SSS')}]`
-          },
-          message: (logEvent: LogEvent) => {
-            const [message, rest] = logEvent.data
-            const cls = ClsServiceManager.getClsService()
-            const requestId = cls.getId()
-
-            return [
-              rest?.context ? colorYellow(`[${rest.context}]`) : undefined,
-              requestId ? colorGray(`[${requestId}]`) : undefined,
-              `${message}`,
-              rest?.optionalParams ? colorGray(`[${rest.optionalParams}]`) : undefined,
-            ]
-              .filter(v => v !== undefined)
-              .join(' ')
-          },
-        },
+        type: CustomConsoleLayout,
       },
     })
 

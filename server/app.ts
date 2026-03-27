@@ -8,6 +8,7 @@ import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
+import { colorize, LOG_COLORS } from '@tsed/logger'
 import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
@@ -19,7 +20,6 @@ import { HealthModule } from './health'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
-import { colorGray } from './utils'
 
 @Module({
   imports: [
@@ -113,7 +113,7 @@ import { colorGray } from './utils'
           }
 
           private getMessage(namespace: LoggerNamespace, message: string) {
-            return [colorGray(`[${namespace}]`), message].join(' ')
+            return [colorize(`[${namespace}]`, LOG_COLORS.DEBUG), message].join(' ')
           }
         }
 
