@@ -1,7 +1,7 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysLangEntity } from '~server/database'
-import { RemoveReqDto } from '~server/extends'
+import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
 

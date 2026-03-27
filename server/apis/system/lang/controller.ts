@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Public } from '~server/decorators'
-import { RemoveReqDto } from '~server/extends'
+import { RemoveReqDto } from '~server/openapi'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
 

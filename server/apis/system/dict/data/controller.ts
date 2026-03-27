@@ -1,7 +1,9 @@
+import type { RemoveReqDto } from '~server/openapi'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, ExcelService, RemoveReqDto } from '~server/extends'
+import { ExcelService } from '~server/extends'
+import { ApiExcelResponse } from '~server/openapi'
 import { CreateSystemDictDataReqDto, ExportSystemDictDataSerializeDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
 import { SystemDictDataService } from './service'
 

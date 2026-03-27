@@ -38,15 +38,14 @@ async function bootstrap() {
       .addBearerAuth()
       .build()
     const document = SwaggerModule.createDocument(nestApp, config)
+    SwaggerModule.setup('openapi', nestApp, document, { swaggerUiEnabled: false })
 
     nestApp.use('/openapi-ui', apiReference({
-      content: document,
       withFastify: true,
+      withDefaultFonts: false,
+      url: '/openapi-json',
+      cdn: 'https://registry.npmmirror.com/@scalar/api-reference/1.49.5/files/dist/browser/standalone.js',
     }))
-
-    serverApp.get('/openapi-json', (req, res) => {
-      res.send(document)
-    })
     // #endregion
 
     // #region 数据库初始化

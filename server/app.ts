@@ -4,7 +4,7 @@ import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { HttpModule } from '@nestjs/axios'
-import { Module } from '@nestjs/common'
+import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
@@ -17,7 +17,6 @@ import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
-import { ValidationPipe } from './pipes'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 import { colorGray } from './utils'
@@ -156,7 +155,15 @@ import { colorGray } from './utils'
     },
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
+      useFactory: () => new ValidationPipe({
+        whitelist: true,
+        stopAtFirstError: true,
+        transform: true,
+        exceptionFactory(errors) {
+          const firstErrorMessage = Object.values(errors[0]!.constraints!)[0]
+          return new BadRequestException(firstErrorMessage)
+        },
+      }),
     },
     {
       provide: APP_FILTER,

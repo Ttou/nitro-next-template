@@ -1,7 +1,7 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysRoleEntity } from '~server/database'
-import { RemoveReqDto } from '~server/extends'
+import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 

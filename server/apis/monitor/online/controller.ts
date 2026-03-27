@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/decorators'
-import { RemoveReqDto } from '~server/extends'
+import { RemoveReqDto } from '~server/openapi'
 import { FindMonitorOnlinePageReqDto, FindMonitorOnlinePageResDto } from './dto'
 import { MonitorOnlineService } from './service'
 

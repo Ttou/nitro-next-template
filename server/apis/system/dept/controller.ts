@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { RemoveReqDto } from '~server/extends'
+import { RemoveReqDto } from '~server/openapi'
 import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, FindSystemDeptListResDto, UpdateSystemDeptReqDto } from './dto'
 import { SystemDeptService } from './service'
 

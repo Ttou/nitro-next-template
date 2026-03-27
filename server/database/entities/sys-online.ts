@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
-import { UserAgentSerializeDto } from '~server/extends'
+import { UserAgentSerializeDto } from '~server/openapi'
 import { generateId } from '~shared/utils'
 import { SysUserEntity } from './sys-user'
 

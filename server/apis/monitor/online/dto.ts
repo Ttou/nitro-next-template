@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
 import { SysOnlineEntityNoRelations, SysUserEntityNoRelations } from '~server/database'
-import { PageReqDto, PageResDto, UserAgentSerializeDto } from '~server/extends'
+import { PageReqDto, PageResDto, UserAgentSerializeDto } from '~server/openapi'
 
 /**
  * 分页查询在线用户请求

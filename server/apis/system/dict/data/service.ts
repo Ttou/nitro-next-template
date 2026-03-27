@@ -1,4 +1,4 @@
-import type { RemoveReqDto } from '~server/extends'
+import type { RemoveReqDto } from '~server/openapi'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity } from '~server/database'
