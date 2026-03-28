@@ -1,4 +1,4 @@
-import type { Logger } from '@tsed/logger'
+import type { Logger } from './interface'
 import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common'
 import { LOGGER } from './constant'
 

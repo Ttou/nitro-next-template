@@ -6,9 +6,6 @@ import { Public } from '~server/decorators'
 import { LogoutService } from '~server/extends'
 import { ContextService } from '~server/shared'
 
-/**
- * 登录守卫
- */
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
   constructor(

@@ -38,9 +38,6 @@ import { SharedModule } from './shared'
           idGenerator: (req: IRequest) =>
             (req.headers['X-Request-Id'] as string) ?? generateId(),
         },
-        guard: {
-          mount: true,
-        },
       }),
     }),
     LoggerModule.register({

@@ -4,9 +4,6 @@ import { Reflector } from '@nestjs/core'
 import { Permission } from '~server/decorators'
 import { ContextService } from '~server/shared'
 
-/**
- * 鉴权守卫
- */
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
   constructor(
