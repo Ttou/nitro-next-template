@@ -1,5 +1,6 @@
 import type { ConfigSchema } from './config-schema'
-import { basename, extname } from 'node:path'
+import { basename, dirname, extname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { FastifyAdapter } from '@bull-board/fastify'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
@@ -10,6 +11,8 @@ import { basicAuth } from '~server/fastify'
 export default registerAs('', (): ConfigSchema => {
   const appName = 'nitro_template'
   const redisKeyPrefixSeparator = ':'
+  const __filename = fileURLToPath(import.meta.url)
+  const __dirname = dirname(__filename)
 
   return {
     appName,
@@ -74,6 +77,9 @@ export default registerAs('', (): ConfigSchema => {
         username: 'bull',
         password: '123456',
       }),
+      boardOptions: {
+        uiBasePath: dirname(resolve(__dirname, '../../node_modules/@bull-board/ui/package.json')),
+      },
     },
     upload: {
       dest: './uploads',
