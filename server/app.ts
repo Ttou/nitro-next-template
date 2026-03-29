@@ -1,4 +1,5 @@
 import type { LogContext, LoggerNamespace } from '@mikro-orm/core'
+import type { Logger } from './extends'
 import type { IRequest } from './interfaces'
 import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
@@ -13,7 +14,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LOGGER, LoggerModule, LogoutModule, RedisModule, UploadModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -93,24 +94,32 @@ import { SharedModule } from './shared'
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
-      useFactory: (configService: ConfigService, loggerService: LoggerService) => {
-        loggerService.setContext(MikroOrmModule.name)
-
+      useFactory: (configService: ConfigService, logger: Logger) => {
         class OrmLogger extends DefaultLogger {
+          override logQuery(context: { query: string } & LogContext): void {
+            logger.debug(this.getMessage('query', context.query), this.getRestData(context))
+          }
+
           override log(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.log(this.getMessage(namespace, message), context)
+            logger.info(this.getMessage(namespace, message), this.getRestData(context))
           }
 
           override error(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.error(this.getMessage(namespace, message), context)
+            logger.error(this.getMessage(namespace, message), this.getRestData(context))
           }
 
           override warn(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.warn(this.getMessage(namespace, message), context)
+            logger.warn(this.getMessage(namespace, message), this.getRestData(context))
           }
 
           private getMessage(namespace: LoggerNamespace, message: string) {
             return [colorize(`[${namespace}]`, LOG_COLORS.DEBUG), message].join(' ')
+          }
+
+          private getRestData(context?: LogContext) {
+            return {
+              context: MikroOrmModule.name,
+            }
           }
         }
 
@@ -119,7 +128,7 @@ import { SharedModule } from './shared'
           loggerFactory: options => new OrmLogger(options),
         }
       },
-      inject: [ConfigService, LoggerService],
+      inject: [ConfigService, LOGGER],
     }),
     UploadModule.registerAsync({
       isGlobal: true,

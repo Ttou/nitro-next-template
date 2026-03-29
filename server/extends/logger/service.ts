@@ -36,8 +36,8 @@ export class LoggerService extends ConsoleLogger {
     return this.context
       ? {
           context: this.context,
-          restParams: optionalParams,
+          restParams: optionalParams.filter(Boolean),
         }
-      : { context: firstParam, restParams }
+      : { context: firstParam, restParams: restParams.filter(Boolean) }
   }
 }

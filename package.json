@@ -6,15 +6,16 @@
   "scripts": {
     "dev": "cross-env APP_ENV=dev vite",
     "build": "vite build",
-    "preview": "nitro preview",
+    "start": "cross-env APP_ENV=dev node .output/server/index.mjs",
     "gen:apis": "alova gen -f"
   },
   "dependencies": {
-    "@alova/adapter-axios": "^2.0.18",
+    "@alova/adapter-axios": "2.0.18",
     "@bull-board/api": "6.20.6",
     "@bull-board/fastify": "6.20.6",
     "@bull-board/nestjs": "6.20.6",
-    "@cj-tech-master/excelts": "6.2.0",
+    "@bull-board/ui": "6.20.6",
+    "@cj-tech-master/excelts": "7.0.0",
     "@fastify/multipart": "9.4.0",
     "@iconify-json/ep": "1.2.4",
     "@iconify/vue": "5.0.0",
@@ -81,7 +82,7 @@
     "stylelint": "^17.6.0",
     "stylelint-config-clean-order": "^8.0.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript": "~6.0.2",
+    "typescript": "~5.9.3",
     "vite": "^8.0.3"
   }
 }
