@@ -19,8 +19,10 @@ async function bootstrap() {
       bufferLogs: true,
     },
   )
-  const serverApp = nestApp.getHttpAdapter().getInstance()
 
+  nestApp.enableShutdownHooks()
+
+  const serverApp = nestApp.getHttpAdapter().getInstance()
   await serverApp.register(multipart)
 
   // #region 日志配置

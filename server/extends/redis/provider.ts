@@ -18,6 +18,18 @@ export const RedisProvider: FactoryProvider = {
 
     await redisClient.connect()
 
+    redisClient.on('close', () => {
+      loggerService.log('Redis client closed')
+    })
+
+    redisClient.on('end', () => {
+      loggerService.log('Redis client connection ended')
+    })
+
+    redisClient.on('error', (err) => {
+      loggerService.error('Redis client error:', err)
+    })
+
     const redisUrl = colorize(`redis://${options.host}:${options.port}/${options.db ?? 0}`, LOG_COLORS.DEBUG)
     loggerService.log(`Redis client connected to ${redisUrl}`)
 
