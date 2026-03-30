@@ -49,10 +49,8 @@ export default registerAs('', (): ConfigSchema => {
       debug: true,
     },
     jwt: {
-      secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
-      signOptions: {
-        expiresIn: '7d',
-      },
+      secretKey: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
+      expiresIn: '7d',
     },
     hash: {
       salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',

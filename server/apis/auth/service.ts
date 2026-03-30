@@ -2,9 +2,8 @@ import type { Queue } from 'bullmq'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { SysOnlineEntity, SysUserEntity } from '~server/database'
-import { CaptchaService, HashService, LogoutService } from '~server/extends'
+import { CaptchaService, HashService, JwtService, LogoutService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'
@@ -49,7 +48,7 @@ export class AuthService {
       throw new BadRequestException('账号或密码错误')
     }
 
-    const { token, tokenId } = this.createSign({ sub: oldRecord.id.toString() })
+    const { token, tokenId } = await this.createSign({ sub: oldRecord.id.toString() })
 
     const isSingleOnline = await this.contextService.isUserSingleOnline()
 
@@ -90,13 +89,13 @@ export class AuthService {
     await this.logoutService.add(token)
   }
 
-  private createSign(payload: any) {
+  private async createSign(payload: any) {
     const jti = generateId()
     const claims = {
       ...payload,
       jti,
     }
-    const token = this.jwtService.sign(claims)
+    const token = await this.jwtService.sign(claims)
 
     return {
       token,

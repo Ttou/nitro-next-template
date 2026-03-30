@@ -1,11 +1,13 @@
 import type { FactoryProvider } from '@nestjs/common'
 import type { LoggerModuleOptions } from './interface'
 import { ConsoleAppender, layout, Logger } from '@tsed/logger'
+import { BasicLayout } from '@tsed/logger/layouts/BasicLayout'
 import { ColoredLayout } from '@tsed/logger/layouts/ColoredLayout'
 import { LOGGER } from './constant'
 import { CustomConsoleLayout } from './custom-console'
 import { LOGGER_MODULE_OPTIONS } from './module-define'
 
+layout('basic', BasicLayout)
 layout('colored', ColoredLayout)
 layout('customConsole', CustomConsoleLayout)
 
