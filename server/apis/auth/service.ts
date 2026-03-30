@@ -48,7 +48,7 @@ export class AuthService {
       throw new BadRequestException('账号或密码错误')
     }
 
-    const { token, tokenId } = await this.createSign({ sub: oldRecord.id.toString() })
+    const { token, tokenId } = await this.createSign({ sub: oldRecord.id })
 
     const isSingleOnline = await this.contextService.isUserSingleOnline()
 

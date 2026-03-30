@@ -1,18 +1,18 @@
 import type { JwtModuleOptions } from './interface'
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import jwt from '@node-rs/jsonwebtoken'
 import { getUnixTimestamp, parseMs } from '~shared/utils'
-import { JwtErrors } from './error'
+import { JwtErrorEnum } from './constant'
 import { JWT_MODULE_OPTIONS } from './module-define'
 
 @Injectable()
 export class JwtService {
   constructor(
-    @Inject(JWT_MODULE_OPTIONS) private readonly options: JwtModuleOptions,
+    @Inject(JWT_MODULE_OPTIONS) private options: JwtModuleOptions,
   ) {}
 
-  sign(payload: any) {
-    return jwt.sign(this.createClaims(payload), this.options.secretKey, this.options.header)
+  async sign(payload: any) {
+    return await jwt.sign(this.createClaims(payload), this.options.secretKey, this.options.header)
   }
 
   signSync(payload: any) {
@@ -24,7 +24,7 @@ export class JwtService {
       return await jwt.verify(token, this.options.secretKey, this.options.validation)
     }
     catch (error) {
-      throw JwtErrors[error.message]?.()
+      throw new UnauthorizedException(JwtErrorEnum.label(error.message))
     }
   }
 
@@ -33,7 +33,7 @@ export class JwtService {
       return jwt.verifySync(token, this.options.secretKey, this.options.validation)
     }
     catch (error) {
-      throw JwtErrors[error.message]?.()
+      throw new UnauthorizedException(JwtErrorEnum.label(error.message))
     }
   }
 
