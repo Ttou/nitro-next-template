@@ -51,7 +51,7 @@ export default registerAs('', (): ConfigSchema => {
     },
     jwt: {
       secretKey: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
-      expiresIn: '7s',
+      expiresIn: '15d',
       header: {
         algorithm: Algorithm.HS256,
       },
