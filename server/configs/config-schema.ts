@@ -1,7 +1,8 @@
 import type { BullBoardModuleOptions } from '@bull-board/nestjs'
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { BullRootModuleOptions } from '@nestjs/bullmq'
-import type { CacheModuleOptions, CaptchaModuleOptions, ExcelModuleOptions, HashModuleOptions, JwtModuleOptions, LogoutModuleOptions, RedisModuleOptions, UploadModuleOptions } from '../extends'
+import type { JwtModuleOptions } from '@nestjs/jwt'
+import type { CacheModuleOptions, CaptchaModuleOptions, ExcelModuleOptions, HashModuleOptions, LogoutModuleOptions, RedisModuleOptions, UploadModuleOptions } from '../extends'
 
 export class ConfigSchema {
   appName: string

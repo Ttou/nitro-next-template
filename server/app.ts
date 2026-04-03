@@ -7,12 +7,13 @@ import { HttpModule } from '@nestjs/axios'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { JwtModule } from '@nestjs/jwt'
 import { colorize, LOG_COLORS } from '@tsed/logger'
 import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, JwtModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -84,7 +85,7 @@ import { SharedModule } from './shared'
       global: true,
     }),
     JwtModule.registerAsync({
-      isGlobal: true,
+      global: true,
       useFactory: async (configService: ConfigService) => {
         return configService.get<ConfigSchema['jwt']>('jwt')!
       },

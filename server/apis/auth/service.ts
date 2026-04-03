@@ -2,8 +2,9 @@ import type { Queue } from 'bullmq'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 import { SysOnlineEntity, SysUserEntity } from '~server/database'
-import { CaptchaService, HashService, JwtService, LogoutService } from '~server/extends'
+import { CaptchaService, HashService, LogoutService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'
@@ -13,7 +14,7 @@ import { LoginReqDto } from './dto'
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectQueue(QueueNameEnum.ONLINE) private onlineUserQueue: Queue,
+    @InjectQueue(QueueNameEnum.ONLINE) private onlineQueue: Queue,
     private captchaService: CaptchaService,
     private jwtService: JwtService,
     private hashService: HashService,
@@ -69,7 +70,7 @@ export class AuthService {
     const request = this.contextService.getRequest()
     const userAgent = request.headers['user-agent']!
     const ip = request.ip!
-    await this.onlineUserQueue.add(
+    await this.onlineQueue.add(
       '',
       {
         tokenId,
@@ -95,7 +96,7 @@ export class AuthService {
       ...payload,
       jti,
     }
-    const token = await this.jwtService.sign(claims)
+    const token = await this.jwtService.signAsync(claims)
 
     return {
       token,

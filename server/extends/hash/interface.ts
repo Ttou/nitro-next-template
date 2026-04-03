@@ -1,4 +1,3 @@
 export interface HashModuleOptions {
-  cost?: number
-  salt?: string | Uint8Array
+  salt: string | number
 }

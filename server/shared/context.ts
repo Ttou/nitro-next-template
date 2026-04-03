@@ -3,7 +3,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
-import { BaseEntity, SysConfigEntity, SysOnlineEntity, SysUserEntity } from '~server/database'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '~server/database'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()
@@ -61,19 +61,6 @@ export class ContextService {
    */
   getCurrentUser() {
     return this.clsService.get('user')
-  }
-
-  /**
-   * 移除在线用户
-   */
-  async removeOnlineUser(token: string) {
-    const oldOnlineRecord = await this.em.findOne(SysOnlineEntity, {
-      token,
-    })
-
-    if (oldOnlineRecord) {
-      await this.em.remove(oldOnlineRecord).flush()
-    }
   }
 
   /**

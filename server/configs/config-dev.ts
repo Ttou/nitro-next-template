@@ -6,7 +6,6 @@ import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
-import { Algorithm } from '~server/extends'
 import { basicAuth } from '~server/fastify'
 
 export default registerAs('', (): ConfigSchema => {
@@ -50,19 +49,14 @@ export default registerAs('', (): ConfigSchema => {
       debug: true,
     },
     jwt: {
-      secretKey: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
-      expiresIn: '15d',
-      header: {
-        algorithm: Algorithm.HS256,
-      },
-      validation: {
-        leeway: 0,
-        algorithms: [Algorithm.HS256],
+      secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
+      signOptions: {
+        expiresIn: '15d',
+        algorithm: 'HS256',
       },
     },
     hash: {
       salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
-      cost: 10,
     },
     cache: {
       keyPrefix: [appName, 'cache'].join(redisKeyPrefixSeparator),

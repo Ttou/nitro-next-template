@@ -15,7 +15,7 @@ import { ContextService } from '~server/shared'
 @Injectable()
 export class OperateInterceptor implements NestInterceptor {
   constructor(
-    @InjectQueue(QueueNameEnum.OPERATE) private operateLogQueue: Queue,
+    @InjectQueue(QueueNameEnum.OPERATE) private operateQueue: Queue,
     private contextService: ContextService,
     private reflector: Reflector,
   ) {}
@@ -54,7 +54,7 @@ export class OperateInterceptor implements NestInterceptor {
         const { operateTime, ...rest } = operateData
         const costTime = Date.now() - operateTime!.getTime()
 
-        this.operateLogQueue.add(
+        this.operateQueue.add(
           '',
           {
             ...rest,
@@ -72,7 +72,7 @@ export class OperateInterceptor implements NestInterceptor {
         const { operateTime, ...rest } = operateData
         const costTime = Date.now() - operateTime!.getTime()
 
-        this.operateLogQueue.add(
+        this.operateQueue.add(
           '',
           {
             ...rest,

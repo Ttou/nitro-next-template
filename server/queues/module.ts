@@ -8,6 +8,7 @@ import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { HttpAdapterHost } from '@nestjs/core'
 import { QueueNameEnum } from './constant'
+import { OfflineQueue } from './offline'
 import { OnlineQueue } from './online'
 import { OperateQueue } from './operate'
 
@@ -23,6 +24,7 @@ import { OperateQueue } from './operate'
     BullModule.registerQueue(
       { name: QueueNameEnum.ONLINE },
       { name: QueueNameEnum.OPERATE },
+      { name: QueueNameEnum.OFFLINE },
     ),
     BullBoardModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
@@ -39,9 +41,13 @@ import { OperateQueue } from './operate'
         name: QueueNameEnum.OPERATE,
         adapter: BullMQAdapter,
       },
+      {
+        name: QueueNameEnum.OFFLINE,
+        adapter: BullMQAdapter,
+      },
     ),
   ],
-  providers: [OnlineQueue, OperateQueue],
+  providers: [OnlineQueue, OperateQueue, OfflineQueue],
   exports: [BullModule],
 })
 export class QueuesModule implements OnModuleInit {
