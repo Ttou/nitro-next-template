@@ -39,6 +39,7 @@
     "@tsed/logger": "8.0.5",
     "@vueuse/core": "14.2.1",
     "alova": "3.5.1",
+    "await-to-js": "3.0.0",
     "axios": "1.14.0",
     "bullmq": "5.71.1",
     "class-transformer": "0.5.1",

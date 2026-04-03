@@ -1,4 +1,4 @@
-import { cp } from 'node:fs/promises'
+import { cp, mkdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { defineConfig } from 'nitro'
 
@@ -23,7 +23,10 @@ export default defineConfig({
         writeBundle: async () => {
           try {
             const sourcePath = resolve(__dirname, 'node_modules/@bull-board/ui')
-            const targetPath = resolve(__dirname, '.output/server/node_modules/@bull-board/ui')
+            const targetDir = resolve(__dirname, '.output/server/node_modules/@bull-board')
+            const targetPath = resolve(targetDir, 'ui')
+
+            await mkdir(targetDir, { recursive: true })
             await cp(sourcePath, targetPath, { recursive: true, force: true })
           }
           catch (error) {
