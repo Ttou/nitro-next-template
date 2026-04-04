@@ -1,7 +1,8 @@
 import type { CallHandler, ExecutionContext, NestInterceptor, Type } from '@nestjs/common'
 import type { UploadModuleOptions } from './interface'
-import { BadRequestException, Inject, Injectable, mixin } from '@nestjs/common'
+import { Inject, Injectable, mixin } from '@nestjs/common'
 import { defaultOptions } from './constant'
+import { UploadErrors } from './error'
 import { UPLOAD_MODULE_OPTIONS } from './module-define'
 import { uploadMultiple, uploadSingle } from './util'
 
@@ -26,7 +27,7 @@ export function FileInterceptor(
       const req = context.switchToHttp().getRequest()
 
       if (!req.isMultipart || !req.isMultipart()) {
-        throw new BadRequestException('Request must be multipart/form-data')
+        throw UploadErrors.notMultipart()
       }
 
       const file = await uploadSingle(req, fieldName, this.mergedOptions)
@@ -60,7 +61,7 @@ export function FilesInterceptor(
       const req = context.switchToHttp().getRequest()
 
       if (!req.isMultipart || !req.isMultipart()) {
-        throw new BadRequestException('Request must be multipart/form-data')
+        throw UploadErrors.notMultipart()
       }
 
       const files = await uploadMultiple(req, fieldName, this.mergedOptions)
@@ -93,7 +94,7 @@ export function AnyFilesInterceptor(
       const req = context.switchToHttp().getRequest()
 
       if (!req.isMultipart || !req.isMultipart()) {
-        throw new BadRequestException('Request must be multipart/form-data')
+        throw UploadErrors.notMultipart()
       }
 
       const files = await uploadMultiple(req, undefined, this.mergedOptions)

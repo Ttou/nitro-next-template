@@ -1,6 +1,7 @@
 import type { RemoveReqDto } from '~server/openapi'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysDictDataEntity } from '~server/database'
 import { ContextService } from '~server/shared'
 import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
@@ -23,7 +24,7 @@ export class SystemDictDataService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`字典值 ${dto.dictValue} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_VALUE_EXIST_ERROR))
     }
 
     const config = this.em.create(SysDictDataEntity, dto)
@@ -67,7 +68,7 @@ export class SystemDictDataService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`字典值 ${dto.dictValue} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_VALUE_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

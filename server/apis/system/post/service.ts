@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysPostEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -20,7 +21,7 @@ export class SystemPostService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`岗位标识 ${postKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.POST_EXIST_ERROR))
     }
 
     const newRecord = this.em.create(SysPostEntity, dto)
@@ -65,7 +66,7 @@ export class SystemPostService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`岗位标识 ${postKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.POST_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

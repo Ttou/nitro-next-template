@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysConfigEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -21,7 +22,7 @@ export class SystemConfigService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`配置标识 ${configKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_EXIST_ERROR))
     }
 
     const config = this.em.create(SysConfigEntity, dto)
@@ -38,7 +39,7 @@ export class SystemConfigService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`配置标识 ${configKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_NOT_FOUND_ERROR))
     }
 
     return oldRecord
@@ -81,7 +82,7 @@ export class SystemConfigService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`配置标识 ${configKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysDictDataEntity, SysDictTypeEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -21,7 +22,7 @@ export class SystemDictTypeService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`字典类型 ${dictType} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_TYPE_EXIST_ERROR))
     }
 
     const config = this.em.create(SysDictTypeEntity, dto)
@@ -81,7 +82,7 @@ export class SystemDictTypeService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`字典类型 ${dto.dictType} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_TYPE_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

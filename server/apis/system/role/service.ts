@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysRoleEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -20,7 +21,7 @@ export class SystemRoleService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`角色标识 ${roleKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.ROLE_EXIST_ERROR))
     }
 
     const config = this.em.create(SysRoleEntity, dto)
@@ -65,7 +66,7 @@ export class SystemRoleService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`角色标识 ${roleKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.ROLE_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

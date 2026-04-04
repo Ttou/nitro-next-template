@@ -3,6 +3,7 @@ import type { Queue } from 'bullmq'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Catch, HttpException, HttpStatus } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import { match } from 'ts-pattern'
 import { ErrorEnum } from '~server/constants'
 import { LoggerService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
@@ -26,16 +27,24 @@ export class DefaultFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp()
     const status = this.getStatus(exception)
-    const message = this.getMessage(exception)
+    let message = this.getMessage(exception)
+
+    match(exception?.response?.name)
+      .with(ErrorEnum.TOKEN_EXPIRED_ERROR, async () => {
+        message = ErrorEnum.label(ErrorEnum.TOKEN_EXPIRED_ERROR)
+        const token = this.contextService.getToken()
+        await this.offlineQueue.add('', { token })
+      })
+      .with(ErrorEnum.JSON_WEB_TOKEN_ERROR, async () => {
+        message = ErrorEnum.label(ErrorEnum.JSON_WEB_TOKEN_ERROR)
+      })
+      .with(ErrorEnum.NOT_BEFORE_ERROR, async () => {
+        message = ErrorEnum.label(ErrorEnum.NOT_BEFORE_ERROR)
+      })
+      .exhaustive()
 
     // @ts-ignore
     this.loggerService.error(message, exception.stack)
-
-    // @ts-ignore
-    if (exception?.response?.name === ErrorEnum.TOKEN_EXPIRED_ERROR) {
-      const token = this.contextService.getToken()
-      await this.offlineQueue.add('', { token })
-    }
 
     httpAdapter.reply(
       ctx.getResponse(),

@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysDeptEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -20,7 +21,7 @@ export class SystemDeptService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`部门标识 ${deptKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DEPT_EXIST_ERROR))
     }
 
     const newRecord = this.em.create(SysDeptEntity, dto)
@@ -64,7 +65,7 @@ export class SystemDeptService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`部门标识 ${deptKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.DEPT_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

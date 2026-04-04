@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysLangEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
@@ -18,7 +19,7 @@ export class SystemLangService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`语言键 ${dto.langKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.LANG_EXIST_ERROR))
     }
 
     const lang = this.em.create(SysLangEntity, dto)
@@ -85,7 +86,7 @@ export class SystemLangService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`语言键 ${langKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.LANG_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)

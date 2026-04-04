@@ -1,6 +1,7 @@
 import type { RemoveReqDto } from '~server/openapi'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysMenuEntity } from '~server/database'
 import { ContextService } from '~server/shared'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
@@ -20,7 +21,7 @@ export class SystemMenuService {
     })
 
     if (oldRecord) {
-      throw new BadRequestException(`菜单标识 ${menuKey} 已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.MENU_EXIST_ERROR))
     }
 
     const newRecord = this.em.create(SysMenuEntity, dto)
@@ -64,7 +65,7 @@ export class SystemMenuService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException(`菜单标识 ${menuKey} 不存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.MENU_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)
