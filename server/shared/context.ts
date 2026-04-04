@@ -3,6 +3,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
+import { ErrorEnum } from '~server/constants'
 import { BaseEntity, SysConfigEntity, SysUserEntity } from '~server/database'
 import { YesOrNoEnum } from '~shared/enums'
 
@@ -28,13 +29,13 @@ export class ContextService {
     const { authorization } = this.request.headers
 
     if (!authorization) {
-      throw new UnauthorizedException('authorization 不存在')
+      throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.AUTHORIZATION_NOT_EXIST_ERROR))
     }
 
     const token = authorization.match(/Bearer (.+)/)?.[1]
 
     if (!token) {
-      throw new UnauthorizedException('authorization 格式错误')
+      throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.AUTHORIZATION_FORMAT_ERROR))
     }
 
     return token
@@ -50,7 +51,7 @@ export class ContextService {
     })
 
     if (!user) {
-      throw new UnauthorizedException('用户不存在')
+      throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
     this.clsService.set('user', user)

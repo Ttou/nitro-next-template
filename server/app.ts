@@ -5,7 +5,7 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { HttpModule } from '@nestjs/axios'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { colorize, LOG_COLORS } from '@tsed/logger'
@@ -13,6 +13,7 @@ import { ClsModule } from 'nestjs-cls'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
+import { DatabaseModule } from './database'
 import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
@@ -20,6 +21,7 @@ import { HealthModule } from './health'
 import { LoggingInterceptor, OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
+import { IsDev } from './utils'
 
 @Module({
   imports: [
@@ -132,6 +134,7 @@ import { SharedModule } from './shared'
     SharedModule,
     ApisModule,
     HealthModule,
+    ConditionalModule.registerWhen(DatabaseModule, () => IsDev),
   ],
   providers: [
     {

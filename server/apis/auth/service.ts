@@ -3,6 +3,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { ErrorEnum } from '~server/constants'
 import { SysOnlineEntity, SysUserEntity } from '~server/database'
 import { CaptchaService, HashService, LogoutService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
@@ -30,7 +31,7 @@ export class AuthService {
     const isVerify = await this.captchaService.verify(captchaId, captchaValue, isCaseSensitive)
 
     if (!isVerify) {
-      throw new BadRequestException('验证码错误')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CAPTCHA_ERROR))
     }
 
     const oldRecord = await this.em.findOne(SysUserEntity, {
@@ -40,13 +41,13 @@ export class AuthService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException('用户不存在')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
     const isMatch = await this.hashService.compare(password, oldRecord.password)
 
     if (!isMatch) {
-      throw new BadRequestException('账号或密码错误')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_PASSWORD_ERROR))
     }
 
     const { token, tokenId } = await this.createSign({ sub: oldRecord.id })

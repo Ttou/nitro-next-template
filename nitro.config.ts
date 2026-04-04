@@ -7,7 +7,7 @@ export default defineConfig({
   serverEntry: false,
   imports: false,
   routes: {
-    '/:path(api|bull-ui|dev|health|openapi-(ui|json))/**': {
+    '/:path(api|bull-ui|database|health|openapi-(ui|json))/**': {
       handler: './server/main.ts',
       format: 'node',
     },

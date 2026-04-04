@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysUserEntity } from '~server/database'
 import { HashService } from '~server/extends'
 import { ContextService } from '~server/shared'
@@ -46,7 +47,7 @@ export class CurrentUserService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException('用户不存在')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign({ ...data })
@@ -59,7 +60,7 @@ export class CurrentUserService {
     const isMatch = await this.hashService.compare(oldPassword, currentUser.password)
 
     if (!isMatch) {
-      throw new BadRequestException('旧密码错误')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.PASSWORD_NOT_MATCH_ERROR))
     }
 
     const oldRecord = await this.em.findOne(SysUserEntity, {
@@ -70,7 +71,7 @@ export class CurrentUserService {
     })
 
     if (!oldRecord) {
-      throw new BadRequestException('用户不存在')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
     const password = await this.hashService.hash(newPassword)

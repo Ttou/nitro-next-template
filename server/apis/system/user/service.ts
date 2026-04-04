@@ -1,5 +1,6 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ErrorEnum } from '~server/constants'
 import { SysDictDataEntity, SysUserEntity } from '~server/database'
 import { HashService } from '~server/extends'
 import { RemoveReqDto } from '~server/openapi'
@@ -29,7 +30,7 @@ export class SystemUserService {
     )
 
     if (oldRecord) {
-      throw new BadRequestException(`用户名或邮箱已存在`)
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_EMAIL_EXIST_ERROR))
     }
 
     const password = await this.hashService.hash(dto.password)
@@ -100,7 +101,7 @@ export class SystemUserService {
     )
 
     if (!oldRecord) {
-      throw new BadRequestException('用户不存在')
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
     wrap(oldRecord).assign(rest)
