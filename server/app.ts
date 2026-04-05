@@ -43,8 +43,12 @@ import { IsDev } from './utils'
         },
       }),
     }),
-    LoggerModule.register({
+    LoggerModule.registerAsync({
       isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['logger']>('logger')!
+      },
+      inject: [ConfigService],
     }),
     RedisModule.registerAsync({
       isGlobal: true,

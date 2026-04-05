@@ -1,4 +1,3 @@
-import { hostname } from 'node:os'
 import { pid } from 'node:process'
 import { BaseLayout, colorize, LOG_COLORS, LogEvent } from '@tsed/logger'
 import { isEmpty } from 'es-toolkit/compat'
@@ -15,7 +14,6 @@ export class CustomConsoleLayout extends BaseLayout {
     return [
       `[${formatTime(startTime, 'YYYY-MM-DD HH:mm:ss.SSS')}]`,
       `[${pid}]`,
-      `[${hostname()}]`,
       colorize(`[${level.levelStr}]`, LOG_COLORS[level.toString()]),
       rest?.context ? colorize(`[${rest.context}]`, LOG_COLORS.WARN) : undefined,
       requestId ? colorize(`[${requestId}]`, LOG_COLORS.DEBUG) : undefined,
