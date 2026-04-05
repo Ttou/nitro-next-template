@@ -10,6 +10,7 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { colorize, LOG_COLORS } from '@tsed/logger'
 import { ClsModule } from 'nestjs-cls'
+import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
 import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
@@ -118,6 +119,19 @@ import { IsDev } from './utils'
 
         return {
           ...configService.get<ConfigSchema['orm']>('orm')!,
+          entities: [
+            SysConfigEntity,
+            SysDeptEntity,
+            SysDictDataEntity,
+            SysDictTypeEntity,
+            SysLangEntity,
+            SysMenuEntity,
+            SysPostEntity,
+            SysRoleEntity,
+            SysUserEntity,
+            SysOnlineEntity,
+            SysOperateEntity,
+          ],
           loggerFactory: options => new OrmLogger(options),
         }
       },
