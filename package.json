@@ -1,7 +1,6 @@
 {
   "name": "nitro-next-template",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "cross-env APP_ENV=dev vite",
@@ -19,11 +18,11 @@
     "@fastify/multipart": "9.4.0",
     "@iconify-json/ep": "1.2.4",
     "@iconify/vue": "5.0.0",
-    "@mikro-orm/core": "7.0.8",
-    "@mikro-orm/decorators": "7.0.8",
-    "@mikro-orm/mysql": "7.0.8",
+    "@mikro-orm/core": "7.0.9",
+    "@mikro-orm/decorators": "7.0.9",
+    "@mikro-orm/mysql": "7.0.9",
     "@mikro-orm/nestjs": "7.0.1",
-    "@mikro-orm/seeder": "7.0.8",
+    "@mikro-orm/seeder": "7.0.9",
     "@napi-rs/canvas": "0.1.97",
     "@nestjs/axios": "4.0.1",
     "@nestjs/bullmq": "11.0.4",
@@ -64,7 +63,7 @@
     "ufo": "1.6.3",
     "uuid": "13.0.0",
     "vue": "3.5.32",
-    "vue-i18n": "11.3.0",
+    "vue-i18n": "11.3.1",
     "vue-router": "5.0.4",
     "vue-ts-types": "1.9.0"
   },
@@ -87,7 +86,7 @@
     "stylelint": "^17.6.0",
     "stylelint-config-clean-order": "^8.0.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript": "~5.9.3",
-    "vite": "^8.0.3"
+    "typescript": "~6.0.2",
+    "vite": "^8.0.5"
   }
 }

@@ -1,4 +1,5 @@
 import type { Queue } from 'bullmq'
+import type { JwtClaims } from '~server/interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -50,7 +51,12 @@ export class AuthService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_PASSWORD_ERROR))
     }
 
-    const { token, tokenId } = await this.createSign({ sub: oldRecord.id })
+    const jti = generateId()
+    const claims: JwtClaims = {
+      jti,
+      sub: oldRecord.id,
+    }
+    const token = await this.jwtService.signAsync(claims)
 
     const isSingleOnline = await this.contextService.isUserSingleOnline()
 
@@ -74,7 +80,7 @@ export class AuthService {
     await this.onlineQueue.add(
       '',
       {
-        tokenId,
+        tokenId: jti,
         token,
         user: oldRecord,
         userAgent,
@@ -89,19 +95,5 @@ export class AuthService {
   async logout() {
     const token = this.contextService.getToken()
     await this.logoutService.add(token)
-  }
-
-  private async createSign(payload: any) {
-    const jti = generateId()
-    const claims = {
-      ...payload,
-      jti,
-    }
-    const token = await this.jwtService.signAsync(claims)
-
-    return {
-      token,
-      tokenId: jti,
-    }
   }
 }

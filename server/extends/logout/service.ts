@@ -1,4 +1,5 @@
 import type { RedisClient } from '~server/extends'
+import type { JwtPayload } from '~server/interfaces'
 import type { LogoutModuleOptions } from './interface'
 import { forwardRef, Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -24,7 +25,7 @@ export class LogoutService {
    * 添加到已登出
    */
   async add(token: string) {
-    const result = await this.jwtService.verify(token)
+    const result = await this.jwtService.verifyAsync<JwtPayload>(token)
     const ttl = (result.exp - result.iat) * 1000
     const parsedExpire = parseMs('seconds', `${ttl}`)
 
@@ -35,7 +36,7 @@ export class LogoutService {
    * 校验是否已登出
    */
   async verify(token: string) {
-    const result = await this.jwtService.verify(token)
+    const result = await this.jwtService.verifyAsync<JwtPayload>(token)
     const isLogout = await this.redisClient.get(this.getLogoutKey(result.jti))
 
     return isLogout === '1'

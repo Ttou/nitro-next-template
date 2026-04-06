@@ -1,4 +1,5 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common'
+import type { JwtPayload } from '~server/interfaces'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
@@ -35,7 +36,7 @@ export class AuthenticationGuard implements CanActivate {
         throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.TOKEN_EXPIRED_ERROR))
       }
 
-      const res = await this.jwtService.verify(token)
+      const res = await this.jwtService.verifyAsync<JwtPayload>(token)
       await this.contextService.setCurrentUser(res)
     }
     catch (error) {

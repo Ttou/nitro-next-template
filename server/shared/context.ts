@@ -1,4 +1,4 @@
-import type { ICtxClsStore, IRequest } from '../interfaces'
+import type { ICtxClsStore, IRequest, JwtPayload } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
@@ -45,7 +45,7 @@ export class ContextService {
    * 设置当前用户
    * @param payload JWT 负载
    */
-  async setCurrentUser(payload: any) {
+  async setCurrentUser(payload: JwtPayload) {
     const user = await this.em.findOne(SysUserEntity, {
       id: { $eq: payload.sub },
     })
