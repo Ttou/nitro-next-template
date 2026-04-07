@@ -46,6 +46,7 @@ const pageProps = computed<PlusPageProps>(() => {
         tableColumnProps: {
           align: 'center',
         },
+        minWidth: 180,
       },
       {
         label: '是否可用',

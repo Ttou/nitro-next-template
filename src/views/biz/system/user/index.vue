@@ -48,6 +48,7 @@ const columns = computed<PlusColumn[]>(() => [
     tableColumnProps: {
       align: 'center',
     },
+    minWidth: 120,
   },
   {
     label: '邮箱',
@@ -55,6 +56,7 @@ const columns = computed<PlusColumn[]>(() => [
     tableColumnProps: {
       align: 'center',
     },
+    minWidth: 180,
   },
   {
     label: '性别',
@@ -82,6 +84,7 @@ const columns = computed<PlusColumn[]>(() => [
     tableColumnProps: {
       align: 'center',
     },
+    minWidth: 100,
   },
   {
     label: '创建时间',
