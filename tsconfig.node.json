@@ -14,10 +14,10 @@
     }
   },
   "include": [
+    "plugins/**/*.ts",
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
-    "vite-plugins/**/*.ts",
     "alova.config.ts",
     "nitro.config.ts",
     "vite.config.ts"

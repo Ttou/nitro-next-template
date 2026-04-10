@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'nitro'
-import { RolldownCopyPlugin } from './rolldown-plugins'
+import { RolldownArchivePlugin, RolldownCopyPlugin } from './plugins'
 
 export default defineConfig({
   serverDir: './server',
@@ -19,10 +19,21 @@ export default defineConfig({
   rolldownConfig: {
     plugins: [
       RolldownCopyPlugin({
+        projectRoot: __dirname,
         copies: [
           {
             source: 'node_modules/@bull-board/ui',
             target: '.output/server/node_modules/@bull-board/ui',
+          },
+        ],
+      }),
+      RolldownArchivePlugin({
+        projectRoot: __dirname,
+        archives: [
+          {
+            sources: ['.output', 'package.json'],
+            target: './dist',
+            format: 'tar.gz',
           },
         ],
       }),
