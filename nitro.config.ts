@@ -33,7 +33,7 @@ export default defineConfig({
           {
             sources: ['.output', 'package.json'],
             target: './dist',
-            format: 'tar.gz',
+            format: 'tgz',
           },
         ],
       }),
