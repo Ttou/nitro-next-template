@@ -31,7 +31,7 @@ export default defineConfig({
         projectRoot: __dirname,
         archives: [
           {
-            sources: ['.output', 'package.json'],
+            sources: ['.output', '.env.deploy', 'package.json'],
             target: './dist',
             format: 'tgz',
           },
