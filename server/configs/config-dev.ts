@@ -6,7 +6,6 @@ import { FastifyAdapter } from '@bull-board/fastify'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
-import { basicAuth } from '~server/fastify'
 
 export default registerAs('', (): ConfigSchema => {
   const appName = 'nitro_template'
@@ -68,10 +67,6 @@ export default registerAs('', (): ConfigSchema => {
     bullBoard: {
       route: '/bull-ui',
       adapter: FastifyAdapter,
-      middleware: basicAuth({
-        username: 'bull',
-        password: '123456',
-      }),
       boardOptions: {
         uiBasePath: dirname(resolve(__dirname, '../../node_modules/@bull-board/ui/package.json')),
       },
@@ -87,12 +82,6 @@ export default registerAs('', (): ConfigSchema => {
     },
     excel: {
       cleanTempFile: true,
-    },
-    health: {
-      middleware: basicAuth({
-        username: 'health',
-        password: '123456',
-      }),
     },
   }
 })

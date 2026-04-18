@@ -12,6 +12,10 @@ export default defineConfig({
       format: 'node',
     },
   },
+  routeRules: {
+    '/bull-ui/**': { basicAuth: { username: 'bull', password: '123456' } },
+    '/health/**': { basicAuth: { username: 'health', password: '123456' } },
+  },
   alias: {
     '~server': resolve(__dirname, 'server'),
     '~shared': resolve(__dirname, 'shared'),

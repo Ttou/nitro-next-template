@@ -30,8 +30,4 @@ export class ConfigSchema {
   upload?: UploadModuleOptions
 
   excel?: ExcelModuleOptions
-
-  health: {
-    middleware?: any
-  }
 }
