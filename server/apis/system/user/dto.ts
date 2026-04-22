@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
-import { SysUserEntityNoRelations } from '~server/database'
+import { SysUserEntityExcludeRelationDto } from '~server/database'
 import { ExcelColumn, ExcelFile } from '~server/extends'
 import { PageReqDto, PageResDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
@@ -87,7 +87,7 @@ export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
   id: string
 }
 
-class SysUserEntityNoRelationsNoPassword extends OmitType(SysUserEntityNoRelations, ['password'] as const) {}
+class SysUserEntityNoRelationsNoPassword extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}
 
 export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelationsNoPassword) {}
 

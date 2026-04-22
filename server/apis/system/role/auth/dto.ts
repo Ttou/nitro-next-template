@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysRoleEntityNoRelations, SysUserEntityNoRelations } from '~server/database'
+import { SysRoleEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/database'
 import { PageReqDto, PageResDto } from '~server/openapi'
 
 export class FindAllocatedUserPageForRoleReqDto extends PageReqDto {
@@ -32,9 +32,9 @@ export class AllocateUserForRoleReqDto {
   ids: Array<string>
 }
 
-class SysUserEntityWithRoles extends SysUserEntityNoRelations {
-  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityNoRelations] })
-  roles: SysRoleEntityNoRelations[]
+class SysUserEntityWithRoles extends SysUserEntityExcludeRelationDto {
+  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityExcludeRelationDto] })
+  roles: SysRoleEntityExcludeRelationDto[]
 }
 
 export class UnallocateUserForRoleReqDto extends AllocateUserForRoleReqDto {}

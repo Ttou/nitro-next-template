@@ -53,4 +53,4 @@ export class SysMenuEntityDto extends BaseEntityDto implements SysMenuEntity {
   roles: Collection<SysRoleEntityDto, SysMenuEntityDto>
 }
 
-export class SysMenuEntityNoRelations extends OmitType(SysMenuEntityDto, ['roles'] as const) {}
+export class SysMenuEntityExcludeRelationDto extends OmitType(SysMenuEntityDto, ['roles'] as const) {}

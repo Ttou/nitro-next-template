@@ -23,4 +23,4 @@ export class SysPostEntityDto extends BaseEntityDto implements SysPostEntity {
   users: Collection<SysUserEntityDto, SysPostEntityDto>
 }
 
-export class SysPostEntityNoRelations extends OmitType(SysPostEntityDto, ['users'] as const) {}
+export class SysPostEntityExcludeRelationDto extends OmitType(SysPostEntityDto, ['users'] as const) {}

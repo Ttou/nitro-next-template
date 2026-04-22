@@ -56,4 +56,4 @@ export class SysOperateEntityDto implements SysOperateEntity {
   user: SysUserEntityDto
 }
 
-export class SysOperateEntityNoRelations extends OmitType(SysOperateEntityDto, ['user'] as const) {}
+export class SysOperateEntityExcludeRelationDto extends OmitType(SysOperateEntityDto, ['user'] as const) {}

@@ -49,4 +49,4 @@ export class SysUserEntityDto extends BaseEntityDto implements SysUserEntity {
   roles: Collection<SysRoleEntityDto, SysUserEntityDto>
 }
 
-export class SysUserEntityNoRelations extends OmitType(SysUserEntityDto, ['depts', 'posts', 'roles'] as const) {}
+export class SysUserEntityExcludeRelationDto extends OmitType(SysUserEntityDto, ['depts', 'posts', 'roles'] as const) {}

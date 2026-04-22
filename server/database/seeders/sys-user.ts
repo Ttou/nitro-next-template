@@ -6,6 +6,15 @@ import { SysUserEntity } from '../entities'
 
 export class SysUserSeeder extends Seeder {
   run(em: EntityManager, context?: Dictionary) {
-    em.create(SysUserEntity, { userName: 'admin', nickName: '若依', password: '$2y$10$HBHgHBCuHEvpTFfUQzjraOR4jdMjXp.yBZ0Tyr29kK/geRT9evpxW', email: '1361572192@qq.com', sex: context.sexMaleDictData.dictValue, isAvailable: YesOrNoEnum.YES, isDelete: YesOrNoEnum.NO, roles: [context.adminRole] })
+    em.create(SysUserEntity, {
+      userName: 'admin',
+      nickName: '若依',
+      password: '$2y$10$HBHgHBCuHEvpTFfUQzjraOR4jdMjXp.yBZ0Tyr29kK/geRT9evpxW',
+      email: '1361572192@qq.com',
+      sex: context.sexMaleDictData.dictValue,
+      isAvailable: YesOrNoEnum.YES,
+      isDelete: YesOrNoEnum.NO,
+      roles: [context.adminRole],
+    })
   }
 }

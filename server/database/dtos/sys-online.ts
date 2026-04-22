@@ -32,4 +32,4 @@ export class SysOnlineEntityDto implements SysOnlineEntity {
   user: SysUserEntityDto
 }
 
-export class SysOnlineEntityNoRelations extends OmitType(SysOnlineEntityDto, ['user'] as const) {}
+export class SysOnlineEntityExcludeRelationDto extends OmitType(SysOnlineEntityDto, ['user'] as const) {}

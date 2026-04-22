@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
-import { SysOnlineEntityNoRelations, SysUserEntityNoRelations } from '~server/database'
+import { SysOnlineEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/database'
 import { PageReqDto, PageResDto, UserAgentSerializeDto } from '~server/openapi'
 
 /**
@@ -26,12 +26,12 @@ export class FindMonitorOnlinePageReqDto extends PageReqDto {
   endTime?: string
 }
 
-class SysOnlineEntityNoToken extends OmitType(SysOnlineEntityNoRelations, ['token', 'userAgent']) {
+class SysOnlineEntityNoToken extends OmitType(SysOnlineEntityExcludeRelationDto, ['token', 'userAgent']) {
   @ApiProperty({ description: '用户代理', type: () => UserAgentSerializeDto })
   userAgent: UserAgentSerializeDto
 
-  @ApiProperty({ description: '用户', type: () => SysUserEntityNoRelations })
-  user: SysUserEntityNoRelations
+  @ApiProperty({ description: '用户', type: () => SysUserEntityExcludeRelationDto })
+  user: SysUserEntityExcludeRelationDto
 }
 
 /**

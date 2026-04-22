@@ -3,7 +3,5 @@ import { EntityManager } from '@mikro-orm/core'
 import { Seeder } from '@mikro-orm/seeder'
 
 export class SysLangSeeder extends Seeder {
-  run(em: EntityManager, context?: Dictionary) {
-
-  }
+  run(em: EntityManager, context?: Dictionary) {}
 }

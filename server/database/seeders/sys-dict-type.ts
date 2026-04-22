@@ -6,6 +6,10 @@ import { SysDictTypeEntity } from '../entities'
 
 export class SysDictTypeSeeder extends Seeder {
   run(em: EntityManager, context?: Dictionary) {
-    context.sexDictType = em.create(SysDictTypeEntity, { dictName: '性别', dictType: 'sys.user.sex', isAvailable: YesOrNoEnum.YES })
+    context.sexDictType = em.create(SysDictTypeEntity, {
+      dictName: '性别',
+      dictType: 'sys.user.sex',
+      isAvailable: YesOrNoEnum.YES,
+    })
   }
 }
