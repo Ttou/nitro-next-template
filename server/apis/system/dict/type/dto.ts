@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysDictDataEntity, SysDictTypeEntity } from '~server/database'
+import { SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/database'
 import { ExcelColumn, ExcelFile } from '~server/extends'
 import { PageReqDto, PageResDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
@@ -65,14 +65,14 @@ export class FindSystemDictDetailByKeyReqDto {
   dictType: string
 }
 
-export class FindSystemDictDetailByKeyResDto extends SysDictDataEntity {}
+export class FindSystemDictDetailByKeyResDto extends SysDictDataEntityDto {}
 
-export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntity) {}
+export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntityDto) {}
 
 @ExcelFile({
   fileName: '系统字典类型.xlsx',
 })
-export class ExportSystemDictTypeSerializeDto implements SysDictTypeEntity {
+export class ExportSystemDictTypeSerializeDto implements SysDictTypeEntityDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

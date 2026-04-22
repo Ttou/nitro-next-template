@@ -1,2 +1,2 @@
-export * from './decorator'
-export * from './dto'
+export * from './decorators'
+export * from './dtos'

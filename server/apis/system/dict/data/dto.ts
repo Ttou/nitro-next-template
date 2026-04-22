@@ -2,7 +2,7 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysDictDataEntity } from '~server/database'
+import { SysDictDataEntityDto } from '~server/database'
 import { ExcelColumn, ExcelFile } from '~server/extends'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
@@ -52,12 +52,12 @@ export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
   id: string
 }
 
-export class FindSystemDictDataListResDto extends SysDictDataEntity {}
+export class FindSystemDictDataListResDto extends SysDictDataEntityDto {}
 
 @ExcelFile({
   fileName: '系统字典数据.xlsx',
 })
-export class ExportSystemDictDataSerializeDto implements SysDictDataEntity {
+export class ExportSystemDictDataSerializeDto implements SysDictDataEntityDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

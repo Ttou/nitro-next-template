@@ -1,7 +1,7 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysLangEntity } from '~server/database'
+import { SysLangEntityDto } from '~server/database'
 import { PageReqDto, PageResDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { LangEnumMap, LangEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
@@ -75,6 +75,6 @@ export class UpdateSystemLangReqDto extends CreateSystemLangReqDto {
   id: string
 }
 
-export class FindSystemLangOneResDto extends SysLangEntity {}
+export class FindSystemLangOneResDto extends SysLangEntityDto {}
 
-export class FindSystemLangPageResDto extends PageResDto(SysLangEntity) {}
+export class FindSystemLangPageResDto extends PageResDto(SysLangEntityDto) {}
