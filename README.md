@@ -7,3 +7,5 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 ## TODO
 
 [ ] 使用 defineEntity 定义实体
+[ ] 使用 nestjs-form-data 重构文件上传
+[ ] 使用 nestjs-pino 重构日志

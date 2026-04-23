@@ -1,24 +1,19 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Entity, Enum, Property } from '@mikro-orm/decorators/legacy'
-import { ApiProperty } from '@nestjs/swagger'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { defineEntity, p } from '@mikro-orm/core'
+import { YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 
-@Entity({ tableName: 'sys_dict_type' })
-export class SysDictTypeEntity extends BaseEntity {
-  @ApiProperty({ description: '字典名称' })
-  @Property()
-  dictName: string
+const SysDictTypeSchema = defineEntity({
+  name: 'SysDictTypeEntity',
+  tableName: 'sys_dict_type',
+  extends: BaseEntity,
+  properties: {
+    dictName: p.string(),
+    dictType: p.string(),
+    isAvailable: p.enum(() => YesOrNoEnumValues),
+    remark: p.string().nullable(),
+  },
+})
 
-  @ApiProperty({ description: '字典类型' })
-  @Property({ unique: true })
-  dictType: string
+export class SysDictTypeEntity extends SysDictTypeSchema.class {}
 
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '备注' })
-  @Property({ nullable: true })
-  remark?: string
-}
+SysDictTypeSchema.setClass(SysDictTypeEntity)

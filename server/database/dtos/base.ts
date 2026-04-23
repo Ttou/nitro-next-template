@@ -1,3 +1,4 @@
+import type { IPropertyNullable } from '~server/interfaces'
 import type { BaseEntity } from '../entities'
 import { ApiProperty } from '@nestjs/swagger'
 
@@ -6,14 +7,14 @@ export class BaseEntityDto implements BaseEntity {
   id: string
 
   @ApiProperty({ description: '创建人' })
-  createBy?: string
+  createBy: IPropertyNullable<string>
 
   @ApiProperty({ description: '创建时间', type: Date })
-  createdAt?: Date
+  createdAt: Date
 
   @ApiProperty({ description: '更新人' })
-  updateBy?: string
+  updateBy: IPropertyNullable<string>
 
   @ApiProperty({ description: '更新时间', type: Date })
-  updatedAt?: Date
+  updatedAt: Date
 }

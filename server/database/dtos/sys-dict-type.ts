@@ -1,3 +1,4 @@
+import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import type { SysDictTypeEntity } from '../entities'
 import { ApiProperty } from '@nestjs/swagger'
@@ -15,5 +16,5 @@ export class SysDictTypeEntityDto extends BaseEntityDto implements SysDictTypeEn
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark?: string
+  remark: IPropertyNullable<string>
 }

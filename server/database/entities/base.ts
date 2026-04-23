@@ -1,26 +1,18 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
-import { ApiProperty } from '@nestjs/swagger'
+import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '~shared/utils'
 
-@Entity({ abstract: true })
-export class BaseEntity {
-  @ApiProperty({ description: '主键', type: String })
-  @PrimaryKey()
-  id = generateId()
+const BaseSchema = defineEntity({
+  name: 'BaseEntity',
+  abstract: true,
+  properties: {
+    id: p.uuid().primary().onCreate(() => generateId()),
+    createBy: p.string().nullable(),
+    createdAt: p.datetime().onCreate(() => new Date()),
+    updateBy: p.string().nullable(),
+    updatedAt: p.datetime().onUpdate(() => new Date()),
+  },
+})
 
-  @ApiProperty({ description: '创建人' })
-  @Property({ nullable: true })
-  createBy?: string
+export class BaseEntity extends BaseSchema.class {}
 
-  @ApiProperty({ description: '创建时间', type: Date })
-  @Property()
-  createdAt? = new Date()
-
-  @ApiProperty({ description: '更新人' })
-  @Property({ nullable: true })
-  updateBy?: string
-
-  @ApiProperty({ description: '更新时间', type: Date })
-  @Property({ onUpdate: () => new Date() })
-  updatedAt? = new Date()
-}
+BaseSchema.setClass(BaseEntity)

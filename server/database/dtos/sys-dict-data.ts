@@ -1,6 +1,7 @@
+import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import type { SysDictDataEntity } from '../entities'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
@@ -17,6 +18,6 @@ export class SysDictDataEntityDto extends BaseEntityDto implements SysDictDataEn
   @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
   isAvailable: IYesOrNoEnum
 
-  @ApiProperty({ description: '备注' })
-  remark?: string
+  @ApiPropertyOptional({ description: '备注' })
+  remark: IPropertyNullable<string>
 }
