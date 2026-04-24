@@ -1,3 +1,4 @@
+import type { IPropertyNullable } from '~server/interfaces'
 import type { SysOperateEntity } from '../entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { UserAgentSerializeDto } from '~server/openapi'
@@ -23,10 +24,10 @@ export class SysOperateEntityDto implements SysOperateEntity {
   requestUrl: string
 
   @ApiProperty({ description: '请求参数' })
-  requestParams?: string
+  requestParams: IPropertyNullable<string>
 
   @ApiProperty({ description: '请求结果' })
-  requestResult?: string
+  requestResult: IPropertyNullable<string>
 
   @ApiProperty({ description: 'IP地址' })
   ip: string
@@ -44,7 +45,7 @@ export class SysOperateEntityDto implements SysOperateEntity {
   status: number
 
   @ApiProperty({ description: '错误信息' })
-  errorMsg?: string
+  errorMsg: IPropertyNullable<string>
 
   @ApiProperty({ description: '操作时间', type: Date })
   operateTime: Date

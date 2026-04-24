@@ -1,39 +1,24 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Collection } from '@mikro-orm/core'
-import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
-import { ApiProperty } from '@nestjs/swagger'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { defineEntity, p } from '@mikro-orm/core'
+import { YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 import { SysRoleEntity } from './sys-role'
 import { SysUserEntity } from './sys-user'
 
-@Entity({ tableName: 'sys_dept' })
-export class SysDeptEntity extends BaseEntity {
-  @ApiProperty({ description: '父部门ID' })
-  @Property({ nullable: true })
-  parentId?: string
+const SysDeptSchema = defineEntity({
+  name: 'SysDeptEntity',
+  tableName: 'sys_dept',
+  extends: BaseEntity,
+  properties: {
+    parentId: p.string().nullable(),
+    deptKey: p.string().unique(),
+    deptName: p.string(),
+    isAvailable: p.enum(() => YesOrNoEnumValues),
+    remark: p.string().nullable(),
+    roles: () => p.manyToMany(SysRoleEntity).mappedBy(role => role.depts),
+    users: () => p.manyToMany(SysUserEntity).mappedBy(user => user.depts),
+  },
+})
 
-  @ApiProperty({ description: '部门键值' })
-  @Property({ unique: true })
-  deptKey: string
+export class SysDeptEntity extends SysDeptSchema.class {}
 
-  @ApiProperty({ description: '部门名称' })
-  @Property()
-  deptName: string
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '备注' })
-  @Property({ nullable: true })
-  remark?: string
-
-  @ApiProperty({ description: '角色', type: () => [SysRoleEntity] })
-  @ManyToMany(() => SysRoleEntity, role => role.depts)
-  roles = new Collection<SysRoleEntity>(this)
-
-  @ApiProperty({ description: '用户', type: () => [SysUserEntity] })
-  @ManyToMany(() => SysUserEntity, user => user.depts)
-  users = new Collection<SysUserEntity>(this)
-}
+SysDeptSchema.setClass(SysDeptEntity)

@@ -1,30 +1,21 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Collection } from '@mikro-orm/core'
-import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
-import { ApiProperty } from '@nestjs/swagger'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { defineEntity, p } from '@mikro-orm/core'
+import { YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 import { SysUserEntity } from './sys-user'
 
-@Entity({ tableName: 'sys_post' })
-export class SysPostEntity extends BaseEntity {
-  @ApiProperty({ description: '岗位键值' })
-  @Property({ unique: true })
-  postKey: string
+const SysPostSchema = defineEntity({
+  name: 'SysPostEntity',
+  tableName: 'sys_post',
+  extends: BaseEntity,
+  properties: {
+    postKey: p.string().unique(),
+    postName: p.string(),
+    isAvailable: p.enum(() => YesOrNoEnumValues),
+    remark: p.string().nullable(),
+    users: () => p.manyToMany(SysUserEntity).mappedBy(user => user.posts),
+  },
+})
 
-  @ApiProperty({ description: '岗位名称' })
-  @Property()
-  postName: string
+export class SysPostEntity extends SysPostSchema.class {}
 
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '备注' })
-  @Property({ nullable: true })
-  remark?: string
-
-  @ApiProperty({ description: '用户列表', type: () => [SysUserEntity] })
-  @ManyToMany(() => SysUserEntity, user => user.posts)
-  users = new Collection<SysUserEntity>(this)
-}
+SysPostSchema.setClass(SysPostEntity)

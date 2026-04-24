@@ -1,70 +1,31 @@
-import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
-import { Collection } from '@mikro-orm/core'
-import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
-import { ApiProperty } from '@nestjs/swagger'
-import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { defineEntity, p } from '@mikro-orm/core'
+import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'
 import { BaseEntity } from './base'
 import { SysRoleEntity } from './sys-role'
 
-@Entity({ tableName: 'sys_menu' })
-export class SysMenuEntity extends BaseEntity {
-  @ApiProperty({ description: '父菜单ID' })
-  @Property({ nullable: true })
-  parentId?: string
+const SysMenuSchema = defineEntity({
+  name: 'SysMenuEntity',
+  tableName: 'sys_menu',
+  extends: BaseEntity,
+  properties: {
+    parentId: p.string().nullable(),
+    menuName: p.string(),
+    menuKey: p.string().unique(),
+    menuType: p.enum(() => MenuTypeEnumValues),
+    orderNum: p.integer(),
+    path: p.string().nullable(),
+    component: p.string().nullable(),
+    redirect: p.string().nullable(),
+    icon: p.string().nullable(),
+    isAvailable: p.enum(() => YesOrNoEnumValues),
+    isCache: p.enum(() => YesOrNoEnumValues).nullable(),
+    isFrame: p.enum(() => YesOrNoEnumValues).nullable(),
+    isVisible: p.enum(() => YesOrNoEnumValues).nullable(),
+    remark: p.string().nullable(),
+    roles: () => p.manyToMany(SysRoleEntity).mappedBy(role => role.menus),
+  },
+})
 
-  @ApiProperty({ description: '菜单名称' })
-  @Property()
-  menuName: string
+export class SysMenuEntity extends SysMenuSchema.class {}
 
-  @ApiProperty({ description: '菜单键值' })
-  @Property({ unique: true })
-  menuKey: string
-
-  @ApiProperty({ description: '菜单类型', enum: MenuTypeEnumMap })
-  @Enum({ items: () => MenuTypeEnumValues })
-  menuType: IMenuTypeEnum
-
-  @ApiProperty({ description: '排序' })
-  @Property()
-  orderNum: number
-
-  @ApiProperty({ description: '路径' })
-  @Property({ nullable: true })
-  path?: string
-
-  @ApiProperty({ description: '组件' })
-  @Property({ nullable: true })
-  component?: string
-
-  @ApiProperty({ description: '重定向' })
-  @Property({ nullable: true })
-  redirect?: string
-
-  @ApiProperty({ description: '图标' })
-  @Property({ nullable: true })
-  icon?: string
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '是否缓存', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues, nullable: true })
-  isCache?: IYesOrNoEnum
-
-  @ApiProperty({ description: '是否内嵌', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues, nullable: true })
-  isFrame?: IYesOrNoEnum
-
-  @ApiProperty({ description: '是否显示', enum: YesOrNoEnumMap })
-  @Enum({ items: () => YesOrNoEnumValues, nullable: true })
-  isVisible?: IYesOrNoEnum
-
-  @ApiProperty({ description: '备注' })
-  @Property({ nullable: true })
-  remark?: string
-
-  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntity] })
-  @ManyToMany(() => SysRoleEntity, role => role.menus)
-  roles = new Collection<SysRoleEntity>(this)
-}
+SysMenuSchema.setClass(SysMenuEntity)

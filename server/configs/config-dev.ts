@@ -3,7 +3,6 @@ import { basename, dirname, extname, resolve } from 'node:path'
 import { cwd } from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { FastifyAdapter } from '@bull-board/fastify'
-import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 
@@ -33,7 +32,6 @@ export default registerAs('', (): ConfigSchema => {
       },
     },
     orm: {
-      metadataProvider: ReflectMetadataProvider,
       driver: MySqlDriver,
       host: '127.0.0.1',
       port: 3306,

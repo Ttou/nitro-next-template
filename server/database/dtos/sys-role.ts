@@ -1,5 +1,6 @@
+import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
-import type { SysRoleEntity } from '../entities'
+import type { SysDeptEntity, SysMenuEntity, SysRoleEntity, SysUserEntity } from '../entities'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { YesOrNoEnumMap } from '~shared/enums'
@@ -19,16 +20,16 @@ export class SysRoleEntityDto extends BaseEntityDto implements SysRoleEntity {
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark?: string
+  remark: IPropertyNullable<string>
 
   @ApiProperty({ description: '部门列表', type: () => [SysDeptEntityDto] })
-  depts: Collection<SysDeptEntityDto, SysRoleEntityDto>
+  depts: Collection<SysDeptEntity, SysRoleEntity>
 
   @ApiProperty({ description: '菜单列表', type: () => [SysMenuEntityDto] })
-  menus: Collection<SysMenuEntityDto, SysRoleEntityDto>
+  menus: Collection<SysMenuEntity, SysRoleEntity>
 
   @ApiProperty({ description: '用户列表', type: () => [SysUserEntityDto] })
-  users: Collection<SysUserEntityDto, SysRoleEntityDto>
+  users: Collection<SysUserEntity, SysRoleEntity>
 }
 
 export class SysRoleEntityExcludeRelationDto extends OmitType(SysRoleEntityDto, ['depts', 'menus', 'users'] as const) {}
