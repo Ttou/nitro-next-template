@@ -1,11 +1,10 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
 import type { Queue } from 'bullmq'
 import { InjectQueue } from '@nestjs/bullmq'
-import { Catch, HttpException, HttpStatus } from '@nestjs/common'
+import { Catch, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
 import { match } from 'ts-pattern'
 import { ErrorEnum } from '~server/constants'
-import { LoggerService } from '~server/extends'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
 
@@ -14,14 +13,13 @@ import { ContextService } from '~server/shared'
  */
 @Catch()
 export class DefaultFilter implements ExceptionFilter {
+  private readonly logger = new Logger(DefaultFilter.name)
+
   constructor(
     @InjectQueue(QueueNameEnum.OFFLINE) private offlineQueue: Queue,
     private httpAdapterHost: HttpAdapterHost,
-    private loggerService: LoggerService,
     private contextService: ContextService,
-  ) {
-    this.loggerService.setContext(DefaultFilter.name)
-  }
+  ) {}
 
   async catch(exception: unknown, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost
@@ -44,7 +42,7 @@ export class DefaultFilter implements ExceptionFilter {
       .exhaustive()
 
     // @ts-ignore
-    this.loggerService.error(message, exception.stack)
+    this.logger.error(message, exception.stack)
 
     httpAdapter.reply(
       ctx.getResponse(),

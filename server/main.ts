@@ -4,9 +4,9 @@ import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
+import { Logger } from 'nestjs-pino'
 import { generateId } from '~shared/utils'
 import { AppModule } from './app'
-import { LoggerService } from './extends'
 import { IsDev } from './utils'
 
 async function bootstrap() {
@@ -29,7 +29,7 @@ async function bootstrap() {
   await serverApp.register(multipart)
 
   // #region 日志配置
-  const logger = await nestApp.resolve(LoggerService)
+  const logger = nestApp.get(Logger)
   nestApp.useLogger(logger)
   nestApp.flushLogs()
   // #endregion

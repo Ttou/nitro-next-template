@@ -3,22 +3,23 @@ import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { HttpModule } from '@nestjs/axios'
-import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
+import { BadRequestException, Logger, Module, ValidationPipe } from '@nestjs/common'
 import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
-import { colorize, LOG_COLORS } from '@tsed/logger'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
+import { LoggerModule } from 'nestjs-pino'
+import pinoPretty from 'pino-pretty'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { DatabaseModule } from './database'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LogoutModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
-import { LoggingInterceptor, OperateInterceptor } from './interceptors'
+import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 import { IsDev } from './utils'
@@ -41,17 +42,22 @@ import { IsDev } from './utils'
         },
       }),
     }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        stream: pinoPretty({
+          singleLine: true,
+          colorize: true,
+          translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
+          messageFormat(log, messageKey, levelLabel, { colors }) {
+            return log[messageKey] as string
+          },
+        }),
+      },
+    }),
     NestjsFormDataModule.configAsync({
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {
         return configService.get<ConfigSchema['formData']>('formData')!
-      },
-      inject: [ConfigService],
-    }),
-    LoggerModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['logger']>('logger')!
       },
       inject: [ConfigService],
     }),
@@ -105,24 +111,24 @@ import { IsDev } from './utils'
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
-      useFactory: (configService: ConfigService, loggerService: LoggerService) => {
-        loggerService.setContext(MikroOrmModule.name)
+      useFactory: (configService: ConfigService) => {
+        const logger = new Logger(MikroOrmModule.name)
 
         class OrmLogger extends DefaultLogger {
           override log(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.log(this.getMessage(namespace, message))
+            logger.log(this.getMessage(namespace, message))
           }
 
           override error(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.error(this.getMessage(namespace, message))
+            logger.error(this.getMessage(namespace, message))
           }
 
           override warn(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            loggerService.warn(this.getMessage(namespace, message))
+            logger.warn(this.getMessage(namespace, message))
           }
 
           private getMessage(namespace: LoggerNamespace, message: string) {
-            return [colorize(`[${namespace}]`, LOG_COLORS.DEBUG), message].join(' ')
+            return [`[${namespace}]`, message].join(' ')
           }
         }
 
@@ -144,7 +150,7 @@ import { IsDev } from './utils'
           loggerFactory: options => new OrmLogger(options),
         }
       },
-      inject: [ConfigService, LoggerService],
+      inject: [ConfigService],
     }),
     QueuesModule,
     SharedModule,
@@ -153,10 +159,6 @@ import { IsDev } from './utils'
     ConditionalModule.registerWhen(DatabaseModule, () => IsDev),
   ],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
-    },
     {
       provide: APP_INTERCEPTOR,
       useClass: OperateInterceptor,

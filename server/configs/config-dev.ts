@@ -1,6 +1,5 @@
 import type { ConfigSchema } from './config-schema'
-import { basename, dirname, extname, resolve } from 'node:path'
-import { cwd } from 'node:process'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { FastifyAdapter } from '@bull-board/fastify'
 import { MySqlDriver } from '@mikro-orm/mysql'
@@ -22,14 +21,6 @@ export default registerAs('', (): ConfigSchema => {
       host: '127.0.0.1',
       port: 6379,
       db: 0,
-    },
-    logger: {
-      dateFile: {
-        filename: resolve(cwd(), './logs/app.log'),
-        pattern: '.yyyy-MM-dd',
-        numBackups: 7,
-        compress: true,
-      },
     },
     orm: {
       driver: MySqlDriver,
@@ -71,12 +62,6 @@ export default registerAs('', (): ConfigSchema => {
     },
     formData: {
       fileSystemStoragePath: './uploads',
-      fileName: (file) => {
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
-        const ext = extname(file.filename)
-        const nameWithoutExt = basename(file.filename, ext)
-        return `${nameWithoutExt}-${uniqueSuffix}${ext}`
-      },
     },
     excel: {
       cleanTempFile: true,

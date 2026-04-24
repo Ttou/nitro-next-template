@@ -1,15 +1,14 @@
 import type { FactoryProvider } from '@nestjs/common'
 import type { RedisModuleOptions } from './interface'
-import { colorize, LOG_COLORS } from '@tsed/logger'
+import { Logger } from '@nestjs/common'
 import { Redis } from 'ioredis'
-import { LoggerService } from '../logger'
 import { REDIS_CLIENT } from './constant'
 import { REDIS_MODULE_OPTIONS } from './module-define'
 
 export const RedisProvider: FactoryProvider = {
   provide: REDIS_CLIENT,
-  useFactory: async (options: RedisModuleOptions, loggerService: LoggerService) => {
-    loggerService.setContext('RedisModule')
+  useFactory: async (options: RedisModuleOptions) => {
+    const logger = new Logger('RedisModule')
 
     const redisClient = new Redis({
       ...options,
@@ -19,21 +18,21 @@ export const RedisProvider: FactoryProvider = {
     await redisClient.connect()
 
     redisClient.on('close', () => {
-      loggerService.log('Redis client closed')
+      logger.log('Redis client closed')
     })
 
     redisClient.on('end', () => {
-      loggerService.log('Redis client connection ended')
+      logger.log('Redis client connection ended')
     })
 
     redisClient.on('error', (err) => {
-      loggerService.error('Redis client error:', err)
+      logger.error('Redis client error:', err)
     })
 
-    const redisUrl = colorize(`redis://${options.host}:${options.port}/${options.db ?? 0}`, LOG_COLORS.DEBUG)
-    loggerService.log(`Redis client connected to ${redisUrl}`)
+    const redisUrl = `redis://${options.host}:${options.port}/${options.db ?? 0}`
+    logger.log(`Redis client connected to ${redisUrl}`)
 
     return redisClient
   },
-  inject: [REDIS_MODULE_OPTIONS, LoggerService],
+  inject: [REDIS_MODULE_OPTIONS],
 }

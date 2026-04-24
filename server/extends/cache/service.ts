@@ -1,23 +1,22 @@
 import type { StringValue } from 'ms'
 import type { RedisClient } from '~server/extends'
 import type { CacheModuleOptions } from './interface'
-import { forwardRef, Inject, Injectable } from '@nestjs/common'
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common'
 import { merge } from 'es-toolkit'
-import { LoggerService, REDIS_CLIENT, RedisService } from '~server/extends'
+import { REDIS_CLIENT, RedisService } from '~server/extends'
 import { parseMs } from '~shared/utils'
 import { defaultOptions } from './constant'
 import { CACHE_MODULE_OPTIONS } from './module-define'
 
 @Injectable()
 export class CacheService {
+  private readonly logger = new Logger(CacheService.name)
+
   constructor(
     @Inject(CACHE_MODULE_OPTIONS) private cacheModuleOptions: CacheModuleOptions,
     @Inject(forwardRef(() => REDIS_CLIENT)) private redisClient: RedisClient,
     @Inject(forwardRef(() => RedisService)) private redisService: RedisService,
-    @Inject(forwardRef(() => LoggerService)) private loggerService: LoggerService,
-  ) {
-    this.loggerService.setContext(CacheService.name)
-  }
+  ) {}
 
   get options() {
     return merge(defaultOptions, this.cacheModuleOptions)
@@ -36,7 +35,7 @@ export class CacheService {
       await this.redisClient.setex(cacheKey, parsedExpire, finalValue)
     }
     catch (error) {
-      this.loggerService.error(`缓存设置失败: ${error}`)
+      this.logger.error(`缓存设置失败: ${error}`)
     }
   }
 
@@ -56,7 +55,7 @@ export class CacheService {
       }
     }
     catch (error) {
-      this.loggerService.error(`缓存缓存失败: ${error}`)
+      this.logger.error(`缓存缓存失败: ${error}`)
     }
   }
 
@@ -66,7 +65,7 @@ export class CacheService {
       await this.redisClient.del(cacheKey)
     }
     catch (error) {
-      this.loggerService.error(`删除缓存失败: ${error}`)
+      this.logger.error(`删除缓存失败: ${error}`)
     }
   }
 
@@ -81,7 +80,7 @@ export class CacheService {
       await this.redisClient.del(...cacheKeys)
     }
     catch (error) {
-      this.loggerService.error(`删除多个缓存失败: ${error}`)
+      this.logger.error(`删除多个缓存失败: ${error}`)
     }
   }
 
@@ -97,7 +96,7 @@ export class CacheService {
       await this.redisClient.del(...keys)
     }
     catch (error) {
-      this.loggerService.error(`清空缓存失败: ${error}`)
+      this.logger.error(`清空缓存失败: ${error}`)
     }
   }
 
