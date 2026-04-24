@@ -32,7 +32,7 @@
     "@nestjs/platform-fastify": "11.1.19",
     "@nestjs/swagger": "11.4.1",
     "@nestjs/terminus": "11.1.1",
-    "@scalar/nestjs-api-reference": "1.1.9",
+    "@scalar/nestjs-api-reference": "1.1.10",
     "@tsed/logger": "8.0.5",
     "@tsed/logger-file": "8.0.5",
     "@vueuse/core": "14.2.1",
@@ -67,7 +67,7 @@
     "ufo": "1.6.3",
     "uuid": "14.0.0",
     "vue": "3.5.33",
-    "vue-i18n": "11.3.2",
+    "vue-i18n": "11.4.0",
     "vue-router": "5.0.6",
     "vue-ts-types": "1.9.0"
   },
