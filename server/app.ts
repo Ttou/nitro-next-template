@@ -1,5 +1,4 @@
 import type { LogContext, LoggerNamespace } from '@mikro-orm/core'
-import type { IRequest } from './interfaces'
 import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
@@ -10,12 +9,12 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { colorize, LOG_COLORS } from '@tsed/logger'
 import { ClsModule } from 'nestjs-cls'
+import { NestjsFormDataModule } from 'nestjs-form-data'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
-import { generateId } from '~shared/utils'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { DatabaseModule } from './database'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule, UploadModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LoggerModule, LoggerService, LogoutModule, RedisModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -38,10 +37,16 @@ import { IsDev } from './utils'
         middleware: {
           mount: true,
           generateId: true,
-          idGenerator: (req: IRequest) =>
-            (req.headers['X-Request-Id'] as string) ?? generateId(),
+          idGenerator: req => req.id,
         },
       }),
+    }),
+    NestjsFormDataModule.configAsync({
+      isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['formData']>('formData')!
+      },
+      inject: [ConfigService],
     }),
     LoggerModule.registerAsync({
       isGlobal: true,
@@ -140,13 +145,6 @@ import { IsDev } from './utils'
         }
       },
       inject: [ConfigService, LoggerService],
-    }),
-    UploadModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['upload']>('upload')!
-      },
-      inject: [ConfigService],
     }),
     QueuesModule,
     SharedModule,

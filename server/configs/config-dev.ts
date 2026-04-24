@@ -69,8 +69,8 @@ export default registerAs('', (): ConfigSchema => {
         uiBasePath: dirname(resolve(__dirname, '../../node_modules/@bull-board/ui/package.json')),
       },
     },
-    upload: {
-      dest: './uploads',
+    formData: {
+      fileSystemStoragePath: './uploads',
       fileName: (file) => {
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`
         const ext = extname(file.filename)

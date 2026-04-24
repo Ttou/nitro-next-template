@@ -1,10 +1,10 @@
-import type { UploadFileResult } from '~server/extends'
-import { Body, Controller, Delete, Post, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { FileSystemStoredFile, FormDataRequest } from 'nestjs-form-data'
 import { Operate, Permission } from '~server/decorators'
-import { ExcelService, FileInterceptor, UploadedFile } from '~server/extends'
+import { ExcelService } from '~server/extends'
 import { ApiExcelResponse, ApiFile, RemoveReqDto } from '~server/openapi'
-import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
+import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, ImportSystemUserResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
 @ApiTags('系统用户接口')
@@ -70,11 +70,11 @@ export class SystemUserController {
   @ApiOperation({ summary: '导入系统用户' })
   @ApiOkResponse({ type: ImportSystemUserResDto })
   @ApiFile()
-  @UseInterceptors(FileInterceptor('file'))
   @Operate({ ignoreRequest: true })
+  @FormDataRequest({ storage: FileSystemStoredFile })
   @Post('importTemplate')
-  async importTemplate(@UploadedFile() file: UploadFileResult) {
-    const data = await this.excelService.importFile(ImportSystemUserSerializeDto, file)
+  async importTemplate(@Body() dto: ImportSystemUserReqDto) {
+    const data = await this.excelService.importFile(ImportSystemUserSerializeDto, dto.file)
     return await this.systemUserService.importTemplate(data)
   }
 }

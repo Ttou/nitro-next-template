@@ -1,7 +1,10 @@
+import type { FileSystemStoredFile } from 'nestjs-form-data'
+import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
+import { HasMimeType, IsFile } from 'nestjs-form-data'
 import { SysUserEntityExcludeRelationDto } from '~server/database'
 import { ExcelColumn, ExcelFile } from '~server/extends'
 import { PageReqDto, PageResDto } from '~server/openapi'
@@ -105,39 +108,39 @@ export class ExportSystemUserSerializeDto implements SysUserEntityNoRelationsNoP
   nickName: string
 
   @ExcelColumn({ header: '手机号码' })
-  phone?: string
+  phone: IPropertyNullable<string>
 
   @ExcelColumn({ header: '邮箱' })
-  email?: string
+  email: IPropertyNullable<string>
 
   @ExcelColumn({ header: '性别' })
-  sex?: string
+  sex: IPropertyNullable<string>
 
   @ExcelColumn({ header: '是否可用' })
   @Transform(({ value }) => YesOrNoEnum.label(value))
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark?: string
+  remark: IPropertyNullable<string>
 
   @ExcelColumn({ header: '是否删除' })
   @Transform(({ value }) => YesOrNoEnum.label(value))
   isDelete: IYesOrNoEnum
 
   @ExcelColumn({ header: '头像' })
-  avatar?: string
+  avatar: IPropertyNullable<string>
 
   @ExcelColumn({ header: '创建人' })
-  createBy?: string
+  createBy: IPropertyNullable<string>
 
   @ExcelColumn({ header: '创建时间' })
-  createdAt?: Date
+  createdAt: Date
 
   @ExcelColumn({ header: '更新人' })
-  updateBy?: string
+  updateBy: IPropertyNullable<string>
 
   @ExcelColumn({ header: '更新时间' })
-  updatedAt?: Date
+  updatedAt: Date
 
   constructor(partial: any) {
     Object.assign(this, partial)
@@ -158,34 +161,40 @@ export class ImportSystemUserSerializeDto implements SysUserEntityNoRelationsNoP
   nickName: string
 
   @ExcelColumn({ header: '手机号码' })
-  phone?: string
+  phone: IPropertyNullable<string>
 
   @ExcelColumn({ header: '邮箱' })
-  email?: string
+  email: IPropertyNullable<string>
 
   @ExcelColumn({ header: '性别' })
-  sex?: string
+  sex: IPropertyNullable<string>
 
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark?: string
+  remark: IPropertyNullable<string>
 
   isDelete: IYesOrNoEnum
 
-  avatar?: string
+  avatar: IPropertyNullable<string>
 
-  createBy?: string
+  createBy: IPropertyNullable<string>
 
-  createdAt?: Date
+  createdAt: Date
 
-  updateBy?: string
+  updateBy: IPropertyNullable<string>
 
-  updatedAt?: Date
+  updatedAt: Date
 
   constructor(partial: any) {
     Object.assign(this, partial)
   }
+}
+
+export class ImportSystemUserReqDto {
+  @IsFile({ message: '文件不能为空' })
+  @HasMimeType(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], { message: '文件类型错误' })
+  file: FileSystemStoredFile
 }
 
 export class ImportSystemUserResDto {

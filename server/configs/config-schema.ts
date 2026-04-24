@@ -2,6 +2,7 @@ import type { BullBoardModuleOptions } from '@bull-board/nestjs'
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { BullRootModuleOptions } from '@nestjs/bullmq'
 import type { JwtModuleOptions } from '@nestjs/jwt'
+import type { FormDataInterceptorConfig } from 'nestjs-form-data'
 import type { CacheModuleOptions, CaptchaModuleOptions, ExcelModuleOptions, HashModuleOptions, LoggerModuleOptions, LogoutModuleOptions, RedisModuleOptions, UploadModuleOptions } from '../extends'
 
 export class ConfigSchema {
@@ -27,7 +28,7 @@ export class ConfigSchema {
 
   bullBoard: BullBoardModuleOptions
 
-  upload?: UploadModuleOptions
+  formData?: FormDataInterceptorConfig
 
   excel?: ExcelModuleOptions
 }

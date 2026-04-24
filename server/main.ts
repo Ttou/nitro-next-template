@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
+import { generateId } from '~shared/utils'
 import { AppModule } from './app'
 import { LoggerService } from './extends'
 import { IsDev } from './utils'
@@ -11,7 +12,11 @@ import { IsDev } from './utils'
 async function bootstrap() {
   const nestApp = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      genReqId(req) {
+        return req.id ?? generateId()
+      },
+    }),
     {
       abortOnError: false,
       bufferLogs: true,
