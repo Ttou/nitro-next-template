@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { FileSystemStoredFile, FormDataRequest } from 'nestjs-form-data'
+import { FormDataRequest } from 'nestjs-form-data'
 import { Operate, Permission } from '~server/decorators'
 import { ExcelService } from '~server/extends'
 import { ApiExcelResponse, ApiFile, RemoveReqDto } from '~server/openapi'
+import { CustomStoredFile } from '~server/storages'
 import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, ImportSystemUserResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
@@ -71,7 +72,7 @@ export class SystemUserController {
   @ApiOkResponse({ type: ImportSystemUserResDto })
   @ApiFile()
   @Operate({ ignoreRequest: true })
-  @FormDataRequest({ storage: FileSystemStoredFile })
+  @FormDataRequest({ storage: CustomStoredFile })
   @Post('importTemplate')
   async importTemplate(@Body() dto: ImportSystemUserReqDto) {
     const data = await this.excelService.importFile(ImportSystemUserSerializeDto, dto.file)

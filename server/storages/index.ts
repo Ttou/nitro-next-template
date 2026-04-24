@@ -1,0 +1,1 @@
+export { CustomStoredFile } from './custom'

@@ -1,6 +1,6 @@
 import type { StreamableFileOptions } from '@nestjs/common/file-stream/interfaces'
 import type { ClassConstructor } from 'class-transformer'
-import type { FileSystemStoredFile } from 'nestjs-form-data'
+import type { CustomStoredFile } from '~server/storages'
 import type { IExcelFileOptions } from './interface'
 import { createReadStream, promises } from 'node:fs'
 import { PassThrough, pipeline } from 'node:stream'
@@ -18,7 +18,7 @@ export class ExcelService {
     this.loggerService.setContext(ExcelService.name)
   }
 
-  async importFile(cls: ClassConstructor<any>, file: FileSystemStoredFile) {
+  async importFile(cls: ClassConstructor<any>, file: CustomStoredFile) {
     const fileStream = createReadStream(file.path)
     const stream = new PassThrough()
 

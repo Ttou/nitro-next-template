@@ -1,5 +1,5 @@
-import type { FileSystemStoredFile } from 'nestjs-form-data'
 import type { IPropertyNullable } from '~server/interfaces'
+import type { CustomStoredFile } from '~server/storages'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
@@ -194,7 +194,7 @@ export class ImportSystemUserSerializeDto implements SysUserEntityNoRelationsNoP
 export class ImportSystemUserReqDto {
   @IsFile({ message: '文件不能为空' })
   @HasMimeType(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], { message: '文件类型错误' })
-  file: FileSystemStoredFile
+  file: CustomStoredFile
 }
 
 export class ImportSystemUserResDto {
