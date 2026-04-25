@@ -39,7 +39,10 @@ export default registerAs('', (): ConfigSchema => {
       },
     },
     hash: {
-      salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
+      bcrypt: {
+        salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
+        costFactor: 10,
+      },
     },
     cache: {
       keyPrefix: [appName, 'cache'].join(redisKeyPrefixSeparator),

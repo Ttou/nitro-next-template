@@ -1,3 +1,5 @@
+import type { BcryptOptions } from 'hash-wasm'
+
 export interface HashModuleOptions {
-  salt: string | number
+  bcrypt?: Omit<BcryptOptions, 'password'>
 }

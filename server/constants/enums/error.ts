@@ -1,6 +1,7 @@
 import { Enum } from 'enum-plus'
 
 export const ErrorEnum = Enum({
+  INTERNAL_SERVER_ERROR: { value: 'InternalServerError', label: '服务器错误' },
   USER_NOT_FOUND_ERROR: { value: 'UserNotFoundError', label: '用户不存在' },
   ACCOUNT_OR_EMAIL_EXIST_ERROR: { value: 'AccountOrEmailExistError', label: '账号或邮箱已存在' },
   ACCOUNT_OR_PASSWORD_ERROR: { value: 'AccountOrPasswordError', label: '账号或密码错误' },

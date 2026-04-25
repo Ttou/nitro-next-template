@@ -45,7 +45,10 @@ export class AuthService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
-    const isMatch = await this.hashService.compare(password, oldRecord.password)
+    const isMatch = await this.hashService.bcryptVerify({
+      password,
+      hash: oldRecord.password,
+    })
 
     if (!isMatch) {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_PASSWORD_ERROR))

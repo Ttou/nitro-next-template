@@ -45,13 +45,24 @@ import { IsDev } from './utils'
     LoggerModule.forRoot({
       pinoHttp: {
         stream: pinoPretty({
-          singleLine: true,
-          colorize: true,
+          hideObject: true,
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
           messageFormat(log, messageKey, levelLabel, { colors }) {
-            return log[messageKey] as string
+            return [
+              log.context ? `[${log.context}]` : undefined,
+              log.req?.id ? `[${log.req.id}]` : undefined,
+              log[messageKey],
+            ]
+              .filter(Boolean)
+              .join(' ')
           },
         }),
+        customSuccessMessage(req, res) {
+          return `${req.method} - ${req.url} - ${res.statusCode}`
+        },
+        customErrorMessage(req, res, err) {
+          return `${req.method} - ${req.url} - ${res.statusCode}`
+        },
       },
     }),
     NestjsFormDataModule.configAsync({

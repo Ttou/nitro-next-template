@@ -33,7 +33,7 @@ export class SystemUserService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_EMAIL_EXIST_ERROR))
     }
 
-    const password = await this.hashService.hash(dto.password)
+    const password = await this.hashService.bcrypt(dto.password)
     const newRecord = this.em.create(
       SysUserEntity,
       {
@@ -114,7 +114,7 @@ export class SystemUserService {
     let fail = 0
     const items: string[] = []
     const initPassword = await this.contextService.getInitPassword()
-    const password = await this.hashService.hash(initPassword)
+    const password = await this.hashService.bcrypt(initPassword)
 
     for (const item of data) {
       const oldRecord = await this.em.findOne(

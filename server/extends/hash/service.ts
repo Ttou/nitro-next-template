@@ -1,6 +1,7 @@
 import type { HashModuleOptions } from './interface'
+import { getRandomValues } from 'node:crypto'
 import { Inject, Injectable } from '@nestjs/common'
-import bcrypt from 'bcryptjs'
+import { bcrypt, bcryptVerify } from 'hash-wasm'
 import { HASH_MODULE_OPTIONS } from './module-define'
 
 @Injectable()
@@ -12,21 +13,25 @@ export class HashService {
   /**
    * 加密
    */
-  async hash(value: string) {
-    return await bcrypt.hash(value, this.options.salt)
+  async bcrypt(value: string) {
+    return await bcrypt({
+      password: value,
+      ...this.options.bcrypt!,
+    })
   }
 
   /**
    * 比较
    */
-  get compare() {
-    return bcrypt.compare
+  get bcryptVerify() {
+    return bcryptVerify
   }
 
   /**
    * 生成盐
    */
-  get genSalt() {
-    return bcrypt.genSalt
+  genSalt() {
+    const str = new Uint8Array(16)
+    return getRandomValues(str)
   }
 }

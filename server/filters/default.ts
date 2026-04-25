@@ -25,7 +25,7 @@ export class DefaultFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp()
     const status = this.getStatus(exception)
-    let message = this.getMessage(exception)
+    let message = ''
 
     match(exception?.response?.name)
       .with(ErrorEnum.TOKEN_EXPIRED_ERROR, async () => {
@@ -39,7 +39,9 @@ export class DefaultFilter implements ExceptionFilter {
       .with(ErrorEnum.NOT_BEFORE_ERROR, async () => {
         message = ErrorEnum.label(ErrorEnum.NOT_BEFORE_ERROR)
       })
-      .exhaustive()
+      .otherwise(() => {
+        message = this.getMessage(exception)
+      })
 
     // @ts-ignore
     this.logger.error(message, exception.stack)
@@ -65,6 +67,6 @@ export class DefaultFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       return exception.message
     }
-    return '服务器错误'
+    return ErrorEnum.label(ErrorEnum.INTERNAL_SERVER_ERROR)
   }
 }
