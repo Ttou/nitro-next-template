@@ -66,7 +66,8 @@
     "vue": "3.5.33",
     "vue-i18n": "11.4.0",
     "vue-router": "5.0.6",
-    "vue-ts-types": "1.9.0"
+    "vue-ts-types": "1.9.0",
+    "xlt-token": "^1.0.0-rc.1"
   },
   "devDependencies": {
     "@alova/wormhole": "^1.5.0",
