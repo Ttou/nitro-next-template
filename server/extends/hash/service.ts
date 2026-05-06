@@ -13,7 +13,7 @@ export class HashService {
   /**
    * 加密
    */
-  async bcrypt(value: string) {
+  async bcryptCrypto(value: string) {
     return await bcrypt({
       password: value,
       ...this.options.bcrypt!,

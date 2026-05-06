@@ -77,7 +77,7 @@ export class CurrentUserService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
-    const password = await this.hashService.bcrypt(newPassword)
+    const password = await this.hashService.bcryptCrypto(newPassword)
 
     wrap(oldRecord).assign({ password })
 
