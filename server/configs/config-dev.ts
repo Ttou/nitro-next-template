@@ -13,14 +13,13 @@ export default registerAs('', (): ConfigSchema => {
 
   return {
     appName,
-    logout: {
-      keyPrefix: [appName, 'logout'].join(redisKeyPrefixSeparator),
-      keyPrefixSeparator: redisKeyPrefixSeparator,
-    },
     redis: {
-      host: '127.0.0.1',
-      port: 6379,
-      db: 0,
+      type: 'single',
+      options: {
+        host: '127.0.0.1',
+        port: 6379,
+        db: 0,
+      },
     },
     orm: {
       driver: MySqlDriver,
@@ -65,9 +64,6 @@ export default registerAs('', (): ConfigSchema => {
     },
     formData: {
       fileSystemStoragePath: './uploads',
-    },
-    excel: {
-      cleanTempFile: true,
     },
   }
 })

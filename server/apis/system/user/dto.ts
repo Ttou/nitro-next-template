@@ -1,5 +1,5 @@
+import type { CustomStoredFile } from '~server/customs'
 import type { IPropertyNullable } from '~server/interfaces'
-import type { CustomStoredFile } from '~server/storages'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'

@@ -1,23 +1,23 @@
-import type { CaptchaModuleOptions } from './interface'
 import { createCanvas } from '@napi-rs/canvas'
-import { Inject, Injectable } from '@nestjs/common'
-import { merge } from 'es-toolkit'
+import { InjectRedis } from '@nestjs-modules/ioredis'
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { toLower } from 'es-toolkit/compat'
-import { CacheService } from '~server/extends'
-import { generateId } from '~shared/utils'
-import { defaultOptions } from './constant'
-import { CAPTCHA_MODULE_OPTIONS } from './module-define'
+import { StringValue } from 'ms'
+import { ConfigSchema } from '~server/configs'
+import { RedisClient } from '~server/interfaces'
+import { generateId, parseMs } from '~shared/utils'
 
 @Injectable()
 export class CaptchaService {
-  constructor(
-    @Inject(CAPTCHA_MODULE_OPTIONS) private captchaModuleOptions: CaptchaModuleOptions,
-    private cacheService: CacheService,
-  ) {}
+  private readonly captchaKeyPrefix = 'captcha'
+  private readonly captchaKeyPrefixSeparator = ':'
+  private readonly captchaKeyExpire: StringValue = '3m'
 
-  get options() {
-    return merge(defaultOptions, this.captchaModuleOptions)
-  }
+  constructor(
+    @InjectRedis() private redis: RedisClient,
+    private configService: ConfigService,
+  ) {}
 
   async image() {
     const canvas = createCanvas(120, 40)
@@ -165,7 +165,7 @@ export class CaptchaService {
 
   async verify(captchaId: string, captchaValue: string | number, caseSensitive = false) {
     const cacheKey = this.getCacheKey(captchaId)
-    const cacheCaptchaValue = await this.cacheService.get(cacheKey)
+    const cacheCaptchaValue = await this.redis.get(cacheKey)
 
     if (!cacheCaptchaValue) {
       return false
@@ -182,16 +182,17 @@ export class CaptchaService {
       }
     }
 
-    await this.cacheService.delete(cacheKey)
+    await this.redis.del(cacheKey)
 
     return true
   }
 
   private async save(captchaId: string, captchaValue: string | number) {
-    await this.cacheService.set(this.getCacheKey(captchaId), captchaValue, '3m')
+    const parsedExpire = parseMs('seconds', this.captchaKeyExpire)
+    await this.redis.setex(this.getCacheKey(captchaId), parsedExpire, captchaValue)
   }
 
   private getCacheKey(captchaId: string) {
-    return [this.options.captchaKey, captchaId].join(this.cacheService.options.keyPrefixSeparator)
+    return [this.configService.get<ConfigSchema['appName']>('appName'), this.captchaKeyPrefix, captchaId].join(this.captchaKeyPrefixSeparator)
   }
 }

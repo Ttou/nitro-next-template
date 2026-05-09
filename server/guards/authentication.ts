@@ -5,8 +5,7 @@ import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { ErrorEnum } from '~server/constants'
 import { Public } from '~server/decorators'
-import { LogoutService } from '~server/extends'
-import { ContextService } from '~server/shared'
+import { ContextService, LogoutService } from '~server/shared'
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {

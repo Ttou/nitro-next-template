@@ -1,6 +1,2 @@
 export * from './cache'
-export * from './captcha'
-export * from './excel'
-export * from './hash'
-export * from './logout'
 export * from './redis'

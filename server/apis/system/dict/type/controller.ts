@@ -1,8 +1,9 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { CacheInterceptor, CacheKey, CacheTTL, ExcelService } from '~server/extends'
+import { CacheInterceptor, CacheKey, CacheTTL } from '~server/extends'
 import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
+import { ExcelService } from '~server/shared'
 import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerializeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 

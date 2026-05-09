@@ -1,9 +1,8 @@
-import type { LogContext, LoggerNamespace } from '@mikro-orm/core'
-import { DefaultLogger } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
+import { RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
-import { BadRequestException, Logger, Module, ValidationPipe } from '@nestjs/common'
+import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
@@ -14,8 +13,9 @@ import pinoPretty from 'pino-pretty'
 import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
+import { CustomOrmLogger } from './customs'
 import { DatabaseModule } from './database'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LogoutModule, RedisModule } from './extends'
+import { CacheModule, CaptchaModule, ExcelModule, HashModule, LogoutModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -65,17 +65,16 @@ import { IsDev } from './utils'
         },
       },
     }),
+    RedisModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => {
+        return configService.get<ConfigSchema['redis']>('redis')!
+      },
+      inject: [ConfigService],
+    }),
     NestjsFormDataModule.configAsync({
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {
         return configService.get<ConfigSchema['formData']>('formData')!
-      },
-      inject: [ConfigService],
-    }),
-    RedisModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['redis']>('redis')!
       },
       inject: [ConfigService],
     }),
@@ -123,26 +122,6 @@ import { IsDev } from './utils'
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
       useFactory: (configService: ConfigService) => {
-        const logger = new Logger(MikroOrmModule.name)
-
-        class OrmLogger extends DefaultLogger {
-          override log(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            logger.log(this.getMessage(namespace, message))
-          }
-
-          override error(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            logger.error(this.getMessage(namespace, message))
-          }
-
-          override warn(namespace: LoggerNamespace, message: string, context?: LogContext) {
-            logger.warn(this.getMessage(namespace, message))
-          }
-
-          private getMessage(namespace: LoggerNamespace, message: string) {
-            return [`[${namespace}]`, message].join(' ')
-          }
-        }
-
         return {
           ...configService.get<ConfigSchema['orm']>('orm')!,
           entities: [
@@ -158,7 +137,7 @@ import { IsDev } from './utils'
             SysOnlineEntity,
             SysOperateEntity,
           ],
-          loggerFactory: options => new OrmLogger(options),
+          loggerFactory: options => new CustomOrmLogger(options),
         }
       },
       inject: [ConfigService],

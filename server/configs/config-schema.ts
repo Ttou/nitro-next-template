@@ -1,20 +1,20 @@
 import type { BullBoardModuleOptions } from '@bull-board/nestjs'
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
+import type { RedisModuleOptions } from '@nestjs-modules/ioredis'
 import type { BullRootModuleOptions } from '@nestjs/bullmq'
 import type { JwtModuleOptions } from '@nestjs/jwt'
+import type { BcryptOptions } from 'hash-wasm'
 import type { FormDataInterceptorConfig } from 'nestjs-form-data'
-import type { CacheModuleOptions, CaptchaModuleOptions, ExcelModuleOptions, HashModuleOptions, LogoutModuleOptions, RedisModuleOptions } from '../extends'
+import type { CacheModuleOptions } from '../extends'
 
 export class ConfigSchema {
   appName: string
 
-  logout: LogoutModuleOptions
-
-  hash: HashModuleOptions
+  hash: {
+    bcrypt?: Omit<BcryptOptions, 'password'>
+  }
 
   cache: CacheModuleOptions
-
-  captcha?: CaptchaModuleOptions
 
   jwt: JwtModuleOptions
 
@@ -27,6 +27,4 @@ export class ConfigSchema {
   bullBoard: BullBoardModuleOptions
 
   formData?: FormDataInterceptorConfig
-
-  excel?: ExcelModuleOptions
 }

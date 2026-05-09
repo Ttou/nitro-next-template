@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/decorators'
-import { CaptchaService } from '~server/extends'
+import { CaptchaService } from '~server/shared'
 import { CaptchaImageResDto } from './dto'
 
 @ApiTags('验证码接口')
