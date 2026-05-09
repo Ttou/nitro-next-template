@@ -1,3 +1,4 @@
+import { RedisHealthModule } from '@nestjs-modules/ioredis'
 import { Module } from '@nestjs/common'
 import { TerminusModule } from '@nestjs/terminus'
 import { HealthController } from './controller'
@@ -10,6 +11,7 @@ import { HealthController } from './controller'
         errorLogStyle: 'pretty',
       }),
     }),
+    RedisHealthModule,
   ],
   controllers: [HealthController],
 })

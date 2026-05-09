@@ -1,3 +1,4 @@
+import { RedisHealthIndicator } from '@nestjs-modules/ioredis'
 import { Controller, Get } from '@nestjs/common'
 import { ApiExcludeController } from '@nestjs/swagger'
 import { HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus'
@@ -10,6 +11,7 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private http: HttpHealthIndicator,
+    private redisHealth: RedisHealthIndicator,
   ) {}
 
   @Public()
@@ -20,6 +22,7 @@ export class HealthController {
       () => this.http.responseCheck(UrlEnum.label(UrlEnum.IP_PARSER), UrlEnum.IP_PARSER, (res) => {
         return res.data?.data?.ISP_CODE === 'local'
       }, { params: { ip: '127.0.0.1' } }),
+      () => this.redisHealth.isHealthy('redis'),
     ])
   }
 }

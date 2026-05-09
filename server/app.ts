@@ -2,6 +2,7 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
@@ -15,7 +16,6 @@ import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'
 import { DatabaseModule } from './database'
-import { CacheModule, CaptchaModule, ExcelModule, HashModule, LogoutModule } from './extends'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
@@ -85,30 +85,6 @@ import { IsDev } from './utils'
       },
       inject: [ConfigService],
     }),
-    CaptchaModule.register({
-      isGlobal: true,
-    }),
-    LogoutModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['logout']>('logout')!
-      },
-      inject: [ConfigService],
-    }),
-    ExcelModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['excel']>('excel')!
-      },
-      inject: [ConfigService],
-    }),
-    HashModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['hash']>('hash')!
-      },
-      inject: [ConfigService],
-    }),
     HttpModule.register({
       global: true,
     }),
@@ -149,6 +125,10 @@ import { IsDev } from './utils'
     ConditionalModule.registerWhen(DatabaseModule, () => IsDev),
   ],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: OperateInterceptor,

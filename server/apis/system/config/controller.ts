@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { CacheInterceptor, CacheKey, CacheTTL } from '~server/extends'
 import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { CreateSystemConfigReqDto, ExportSystemConfigSerializeDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
@@ -26,9 +26,8 @@ export class SystemConfigController {
 
   @ApiOperation({ summary: '根据键名查询系统配置' })
   @ApiOkResponse({ type: FindSystemConfigByKeyResDto })
-  @CacheKey(req => `sys_config:${req.query.configKey}`)
-  @CacheTTL('1d')
-  @UseInterceptors(CacheInterceptor)
+  @CacheKey(ctx => `sys_config:${ctx.switchToHttp().getRequest().query.configKey}`)
+  @CacheTTL(24 * 60 * 60 * 1000)
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemConfigByKeyReqDto) {
     return await this.systemConfigService.findByKey(dto)
