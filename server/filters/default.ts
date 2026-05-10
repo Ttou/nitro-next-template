@@ -27,8 +27,6 @@ export class DefaultFilter implements ExceptionFilter {
     const status = this.getStatus(exception)
     let message = ''
 
-    console.log(exception)
-
     match(exception?.response?.name)
       .with(ErrorEnum.TOKEN_EXPIRED_ERROR, async () => {
         message = ErrorEnum.label(ErrorEnum.TOKEN_EXPIRED_ERROR)

@@ -1,3 +1,4 @@
+import { stdout } from 'node:process'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
@@ -44,6 +45,7 @@ import { IsDev } from './utils'
     LoggerModule.forRoot({
       pinoHttp: {
         stream: pinoPretty({
+          destination: stdout.fd,
           hideObject: true,
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
           messageFormat(log, messageKey, levelLabel, { colors }) {
