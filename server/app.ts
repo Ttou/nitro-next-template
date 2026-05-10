@@ -2,7 +2,6 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
@@ -19,7 +18,7 @@ import { DatabaseModule } from './database'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
-import { OperateInterceptor } from './interceptors'
+import { CacheInterceptor, OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 import { IsDev } from './utils'
@@ -75,13 +74,6 @@ import { IsDev } from './utils'
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {
         return configService.get<ConfigSchema['formData']>('formData')!
-      },
-      inject: [ConfigService],
-    }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['cache']>('cache')!
       },
       inject: [ConfigService],
     }),

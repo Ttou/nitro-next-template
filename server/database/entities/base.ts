@@ -9,7 +9,7 @@ const BaseSchema = defineEntity({
     createBy: p.string().nullable(),
     createdAt: p.datetime().onCreate(() => new Date()),
     updateBy: p.string().nullable(),
-    updatedAt: p.datetime().onUpdate(() => new Date()),
+    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
   },
 })
 

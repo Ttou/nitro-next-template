@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { SysPostEntityExcludeRelationDto } from '~server/database'
-import { ExcelColumn, ExcelFile } from '~server/extends'
+import { ExcelColumn, ExcelFile } from '~server/decorators'
 import { PageReqDto, PageResDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
@@ -79,19 +79,19 @@ export class ExportSystemPostSerializeDto implements SysPostEntityExcludeRelatio
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark?: string
+  remark: string
 
   @ExcelColumn({ header: '创建人' })
-  createBy?: string
+  createBy: string
 
   @ExcelColumn({ header: '创建时间' })
-  createdAt?: Date
+  createdAt: Date
 
   @ExcelColumn({ header: '更新人' })
-  updateBy?: string
+  updateBy: string
 
   @ExcelColumn({ header: '更新时间' })
-  updatedAt?: Date
+  updatedAt: Date
 
   constructor(partial: any) {
     Object.assign(this, partial)

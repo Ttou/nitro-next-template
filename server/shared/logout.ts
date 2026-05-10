@@ -12,7 +12,7 @@ export class LogoutService {
   private readonly logoutKeySeparator = ':'
 
   constructor(
-    @InjectRedis() private redis: RedisClient,
+    @InjectRedis() private redisClient: RedisClient,
     private configService: ConfigService,
     private jwtService: JwtService,
   ) {}
@@ -25,7 +25,7 @@ export class LogoutService {
     const ttl = (result.exp - result.iat) * 1000
     const parsedExpire = parseMs('seconds', `${ttl}`)
 
-    this.redis.setex(this.getLogoutKey(result.jti), parsedExpire, '1')
+    this.redisClient.setex(this.getLogoutKey(result.jti), parsedExpire, '1')
   }
 
   /**
@@ -33,7 +33,7 @@ export class LogoutService {
    */
   async verify(token: string) {
     const result = await this.jwtService.verifyAsync<JwtPayload>(token)
-    const isLogout = await this.redis.get(this.getLogoutKey(result.jti))
+    const isLogout = await this.redisClient.get(this.getLogoutKey(result.jti))
 
     return isLogout === '1'
   }

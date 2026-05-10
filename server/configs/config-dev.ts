@@ -2,7 +2,6 @@ import type { ConfigSchema } from './config-schema'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { FastifyAdapter } from '@bull-board/fastify'
-import { createKeyv } from '@keyv/redis'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 
@@ -43,15 +42,6 @@ export default registerAs('', (): ConfigSchema => {
         salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
         costFactor: 10,
       },
-    },
-    cache: {
-      ttl: 13 * 1000 * 60,
-      stores: [
-        createKeyv('redis://127.0.0.1:6379/0', {
-          namespace: [appName, 'cache'].join(redisKeyPrefixSeparator),
-          keyPrefixSeparator: redisKeyPrefixSeparator,
-        }),
-      ],
     },
     bull: {
       prefix: [appName, 'bull'].join(redisKeyPrefixSeparator),

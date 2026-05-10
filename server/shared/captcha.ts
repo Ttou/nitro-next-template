@@ -1,11 +1,11 @@
+import type { StringValue } from 'ms'
+import type { RedisClient } from '~server/interfaces'
 import { createCanvas } from '@napi-rs/canvas'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { toLower } from 'es-toolkit/compat'
-import { StringValue } from 'ms'
 import { ConfigSchema } from '~server/configs'
-import { RedisClient } from '~server/interfaces'
 import { generateId, parseMs } from '~shared/utils'
 
 @Injectable()
@@ -15,7 +15,7 @@ export class CaptchaService {
   private readonly captchaKeyExpire: StringValue = '3m'
 
   constructor(
-    @InjectRedis() private redis: RedisClient,
+    @InjectRedis() private redisClient: RedisClient,
     private configService: ConfigService,
   ) {}
 
@@ -165,7 +165,7 @@ export class CaptchaService {
 
   async verify(captchaId: string, captchaValue: string | number, caseSensitive = false) {
     const cacheKey = this.getCacheKey(captchaId)
-    const cacheCaptchaValue = await this.redis.get(cacheKey)
+    const cacheCaptchaValue = await this.redisClient.get(cacheKey)
 
     if (!cacheCaptchaValue) {
       return false
@@ -182,14 +182,14 @@ export class CaptchaService {
       }
     }
 
-    await this.redis.del(cacheKey)
+    await this.redisClient.del(cacheKey)
 
     return true
   }
 
   private async save(captchaId: string, captchaValue: string | number) {
     const parsedExpire = parseMs('seconds', this.captchaKeyExpire)
-    await this.redis.setex(this.getCacheKey(captchaId), parsedExpire, captchaValue)
+    await this.redisClient.setex(this.getCacheKey(captchaId), parsedExpire, captchaValue)
   }
 
   private getCacheKey(captchaId: string) {

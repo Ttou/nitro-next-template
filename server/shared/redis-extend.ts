@@ -1,22 +1,51 @@
-import type { IRedisScannerOptions, RedisClient } from './interface'
-import { Inject, Injectable, Logger } from '@nestjs/common'
+import type { RedisClient } from '~server/interfaces'
+import { InjectRedis } from '@nestjs-modules/ioredis'
+import { Injectable, Logger } from '@nestjs/common'
+
 import { delay } from '~shared/utils'
 
-import { REDIS_CLIENT, redisScannerDefaultOptions } from './constant'
+interface IRedisScannerOptions {
+  /**
+   * 每次扫描的键数量
+   * @default 1000
+   */
+  batchSize?: number
+  /**
+   * 最大扫描键数量
+   * @default 10000
+   */
+  maxKeys?: number
+  /**
+   * 最大扫描迭代次数
+   * @default 100
+   */
+  maxIterations?: number
+  /**
+   * 每次扫描之间的延迟时间（毫秒）
+   * @default 0
+   */
+  delayBetweenBatches?: number
+}
 
 @Injectable()
-export class RedisService {
-  private readonly logger = new Logger(RedisService.name)
+export class RedisExtendService {
+  private readonly logger = new Logger(RedisExtendService.name)
+  private readonly redisScannerOptions: IRedisScannerOptions = {
+    batchSize: 1000,
+    maxIterations: 100,
+    maxKeys: 10000,
+    delayBetweenBatches: 0,
+  }
 
   constructor(
-    @Inject(REDIS_CLIENT) private redisClient: RedisClient,
+    @InjectRedis() private redisClient: RedisClient,
   ) {}
 
   /**
    * 扫描返回键名数组
    */
   async scan(pattern = '*', options: IRedisScannerOptions = {}) {
-    const config = { ...redisScannerDefaultOptions, ...options }
+    const config = { ...this.redisScannerOptions, ...options }
     let cursor = '0'
     const allKeys: string[] = []
     let iterations = 0
@@ -73,7 +102,7 @@ export class RedisService {
    * 分页扫描
    */
   async page(pattern = '*', page = 1, pageSize = 50, options: IRedisScannerOptions = {}) {
-    const config = { ...redisScannerDefaultOptions, ...options }
+    const config = { ...this.redisScannerOptions, ...options }
     let cursor = '0'
     const allKeys = []
     let iterations = 0
