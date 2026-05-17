@@ -164,7 +164,7 @@ export class CaptchaService {
   }
 
   async verify(captchaId: string, captchaValue: string | number, caseSensitive = false) {
-    const cacheKey = this.getCacheKey(captchaId)
+    const cacheKey = this.getKey(captchaId)
     const cacheCaptchaValue = await this.redisClient.get(cacheKey)
 
     if (!cacheCaptchaValue) {
@@ -189,10 +189,10 @@ export class CaptchaService {
 
   private async save(captchaId: string, captchaValue: string | number) {
     const parsedExpire = parseMs('seconds', this.captchaKeyExpire)
-    await this.redisClient.setex(this.getCacheKey(captchaId), parsedExpire, captchaValue)
+    await this.redisClient.setex(this.getKey(captchaId), parsedExpire, captchaValue)
   }
 
-  private getCacheKey(captchaId: string) {
+  private getKey(captchaId: string) {
     return [this.configService.get<ConfigSchema['appName']>('appName'), this.captchaKeyPrefix, captchaId].join(this.captchaKeyPrefixSeparator)
   }
 }

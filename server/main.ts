@@ -58,8 +58,6 @@ async function bootstrap() {
 
   await serverApp.ready()
 
-  logger.log('服务启动完成')
-
   return serverApp.routing
 }
 

@@ -2,6 +2,7 @@ import type { ConfigSchema } from './config-schema'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { FastifyAdapter } from '@bull-board/fastify'
+import KeyvRedis from '@keyv/redis'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 
@@ -20,6 +21,12 @@ export default registerAs('', (): ConfigSchema => {
         port: 6379,
         db: 0,
       },
+    },
+    cache: {
+      nonBlocking: true,
+      stores: [
+        new KeyvRedis('redis://127.0.0.1:6379/0'),
+      ],
     },
     orm: {
       driver: MySqlDriver,
