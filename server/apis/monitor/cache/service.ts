@@ -12,7 +12,7 @@ export class MonitorCacheService {
 
   async findPage(dto: FindMonitorCachePageReqDto) {
     const { key, page, pageSize } = dto
-    let pattern = this.cacheService.getCacheKey(key ?? '*')
+    let pattern = this.cacheService.getKey(key ?? '*')
     // 确保模式以 :* 结尾
     if (!pattern.endsWith(':*')) {
       pattern += ':*'
@@ -20,7 +20,7 @@ export class MonitorCacheService {
 
     const { data, ...rest } = await this.redisExtendService.page(pattern, page, pageSize)
 
-    const items = plainToInstance(FindMonitorCachePageItemResDto, data, { cacheKeyPrefix: this.cacheService.getCacheKey('') })
+    const items = plainToInstance(FindMonitorCachePageItemResDto, data, { cacheKeyPrefix: this.cacheService.getKey('') })
 
     return {
       data: items,

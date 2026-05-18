@@ -23,7 +23,7 @@ export class CacheService {
   async set(key: string, value: number | string, expire: StringValue = null) {
     try {
       let finalValue = value
-      const cacheKey = this.getCacheKey(key)
+      const cacheKey = this.getKey(key)
 
       if (typeof value === 'object') {
         finalValue = JSON.stringify(value)
@@ -39,7 +39,7 @@ export class CacheService {
 
   async get(key: string) {
     try {
-      const cacheKey = this.getCacheKey(key)
+      const cacheKey = this.getKey(key)
       const value = await this.redisClient.get(cacheKey)
       if (!value)
         return null
@@ -59,7 +59,7 @@ export class CacheService {
 
   async delete(key: string) {
     try {
-      const cacheKey = this.getCacheKey(key)
+      const cacheKey = this.getKey(key)
       await this.redisClient.del(cacheKey)
     }
     catch (error) {
@@ -73,7 +73,7 @@ export class CacheService {
         return
       }
 
-      const cacheKeys = keys.map(key => this.getCacheKey(key))
+      const cacheKeys = keys.map(key => this.getKey(key))
 
       await this.redisClient.del(...cacheKeys)
     }
@@ -84,7 +84,7 @@ export class CacheService {
 
   async clear() {
     try {
-      const pattern = this.getCacheKey('*')
+      const pattern = this.getKey('*')
       const keys = await this.redisExtendService.scan(pattern)
 
       if (keys.length === 0) {
@@ -98,7 +98,7 @@ export class CacheService {
     }
   }
 
-  getCacheKey(key: string) {
+  getKey(key: string) {
     return [this.configService.get<ConfigSchema['appName']>('appName'), this.cacheKeyPrefix, key].join(this.cacheKeySeparator)
   }
 }
