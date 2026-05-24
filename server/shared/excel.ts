@@ -1,12 +1,13 @@
 import type { StreamableFileOptions } from '@nestjs/common/file-stream/interfaces'
 import type { ClassConstructor } from 'class-transformer'
 import type { CustomStoredFile } from '~server/customs'
+import type { IExcelFileOptions } from '~server/decorators'
 import { createReadStream, promises } from 'node:fs'
 import { PassThrough, pipeline } from 'node:stream'
 import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
 import { Injectable, Logger, StreamableFile } from '@nestjs/common'
 import { instanceToPlain } from 'class-transformer'
-import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA, IExcelFileOptions } from '~server/decorators'
+import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from '~server/decorators'
 
 @Injectable()
 export class ExcelService {

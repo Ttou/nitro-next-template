@@ -20,7 +20,7 @@ import { DatabaseModule } from './database'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
-import { CacheInterceptor, OperateInterceptor } from './interceptors'
+import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 import { IsDev } from './utils'
@@ -127,10 +127,6 @@ import { IsDev } from './utils'
     ConditionalModule.registerWhen(DatabaseModule, () => IsDev),
   ],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
     {
       provide: APP_INTERCEPTOR,
       useClass: OperateInterceptor,

@@ -61,7 +61,8 @@ export class RedisExtendService {
         )
 
         cursor = nextCursor
-        allKeys.push(...keys)
+        // 使用 apply 代替展开运算符，避免 O(n²) 复杂度
+        Array.prototype.push.apply(allKeys, keys)
         iterations++
 
         if (iterations > config.maxIterations!) {
@@ -93,9 +94,51 @@ export class RedisExtendService {
    * @param options
    */
   async scanWithValues(pattern = '*', options: IRedisScannerOptions = {}) {
-    const keys = await this.scan(pattern, options)
+    const config = { ...this.redisScannerOptions, ...options }
+    let cursor = '0'
+    const results: Array<{ key: string, value: unknown, ttl: number }> = []
+    let iterations = 0
 
-    return await this.getValues(keys)
+    try {
+      do {
+        const [nextCursor, keys] = await this.redisClient.scan(
+          cursor,
+          'MATCH',
+          pattern,
+          'COUNT',
+          config.batchSize!,
+        )
+
+        cursor = nextCursor
+        iterations++
+
+        // 边扫描边获取值，避免二次遍历
+        if (keys.length > 0) {
+          const values = await this.getValues(keys)
+          Array.prototype.push.apply(results, values)
+        }
+
+        if (iterations > config.maxIterations!) {
+          this.logger.warn(`SCAN 超过最大迭代次数: ${config.maxIterations}`)
+          break
+        }
+
+        if (results.length >= config.maxKeys!) {
+          this.logger.warn(`达到最大 keys 数量限制: ${config.maxKeys}`)
+          break
+        }
+
+        if (config.delayBetweenBatches! > 0) {
+          await delay(config.delayBetweenBatches!)
+        }
+      } while (cursor !== '0')
+
+      return results
+    }
+    catch (error) {
+      this.logger.error(`SCAN 操作失败: `, error)
+      return []
+    }
   }
 
   /**
@@ -104,7 +147,7 @@ export class RedisExtendService {
   async page(pattern = '*', page = 1, pageSize = 50, options: IRedisScannerOptions = {}) {
     const config = { ...this.redisScannerOptions, ...options }
     let cursor = '0'
-    const allKeys = []
+    const allKeys: string[] = []
     let iterations = 0
     const startIndex = (page - 1) * pageSize
     const endIndex = startIndex + pageSize
@@ -120,7 +163,8 @@ export class RedisExtendService {
       )
 
       cursor = nextCursor
-      allKeys.push(...keys)
+      // 使用 apply 代替展开运算符，避免 O(n²) 复杂度
+      Array.prototype.push.apply(allKeys, keys)
       iterations++
 
       // 安全检查
@@ -182,13 +226,14 @@ export class RedisExtendService {
         return { key, value: null, ttl: -1, error: ttlError.message }
       }
 
-      let parsedValue = value
-      try {
-        if (value) {
+      let parsedValue: unknown = value
+      if (value) {
+        try {
           parsedValue = JSON.parse(value)
         }
-      }
-      catch {
+        catch {
+          // 解析失败，保持原始字符串值
+        }
       }
 
       return { key, value: parsedValue, ttl }

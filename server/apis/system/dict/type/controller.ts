@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
+import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { CacheKey, CacheTTL, Operate, Permission } from '~server/decorators'
+import { CustomCacheInterceptor } from '~server/customs'
+import { Operate, Permission } from '~server/decorators'
 import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
+import { parseMs } from '~shared/utils'
 import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerializeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
@@ -26,7 +29,8 @@ export class SystemDictTypeController {
   @ApiOperation({ summary: '根据字典类型查询字典数据' })
   @ApiOkResponse({ type: [FindSystemDictDetailByKeyResDto] })
   @CacheKey(ctx => `sys_dict:${ctx.switchToHttp().getRequest().query.dictType}`)
-  @CacheTTL('1d')
+  @CacheTTL(parseMs('milliseconds', '1d'))
+  @UseInterceptors(CustomCacheInterceptor)
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemDictDetailByKeyReqDto) {
     return await this.systemDictTypeService.findByKey(dto)

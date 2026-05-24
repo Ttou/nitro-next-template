@@ -1,8 +1,7 @@
 import type { StringValue } from 'ms'
 import type { ConfigSchema } from '~server/configs'
-import type { RedisClient } from '~server/interfaces'
-import { InjectRedis } from '@nestjs-modules/ioredis'
-import { Injectable, Logger } from '@nestjs/common'
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { parseMs } from '~shared/utils'
 import { RedisExtendService } from './redis-extend'
@@ -15,52 +14,37 @@ export class CacheService {
   private readonly cacheTTL = '15m'
 
   constructor(
-    @InjectRedis() private redisClient: RedisClient,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private configService: ConfigService,
     private redisExtendService: RedisExtendService,
   ) {}
 
-  async set(key: string, value: number | string, expire: StringValue = null) {
+  async set(key: string, value: number | string, ttl?: number | StringValue) {
     try {
-      let finalValue = value
-      const cacheKey = this.getKey(key)
-
-      if (typeof value === 'object') {
-        finalValue = JSON.stringify(value)
-      }
-
-      const parsedExpire = parseMs('seconds', expire ?? this.cacheTTL)
-      await this.redisClient.setex(cacheKey, parsedExpire, finalValue)
+      const parsedKey = this.getKey(key)
+      const parsedTTL = typeof ttl === 'number' ? ttl : parseMs('milliseconds', ttl ?? this.cacheTTL)
+      await this.cacheManager.set(parsedKey, value, parsedTTL)
     }
     catch (error) {
       this.logger.error(`缓存设置失败: ${error}`)
     }
   }
 
-  async get(key: string) {
+  async get<T>(key: string) {
     try {
-      const cacheKey = this.getKey(key)
-      const value = await this.redisClient.get(cacheKey)
-      if (!value)
-        return null
-
-      // 尝试解析 JSON
-      try {
-        return JSON.parse(value)
-      }
-      catch {
-        return value
-      }
+      const parsedKey = this.getKey(key)
+      return await this.cacheManager.get<T>(parsedKey)
     }
     catch (error) {
       this.logger.error(`缓存缓存失败: ${error}`)
+      return null
     }
   }
 
   async delete(key: string) {
     try {
-      const cacheKey = this.getKey(key)
-      await this.redisClient.del(cacheKey)
+      const parsedKey = this.getKey(key)
+      await this.cacheManager.del(parsedKey)
     }
     catch (error) {
       this.logger.error(`删除缓存失败: ${error}`)
@@ -73,9 +57,8 @@ export class CacheService {
         return
       }
 
-      const cacheKeys = keys.map(key => this.getKey(key))
-
-      await this.redisClient.del(...cacheKeys)
+      const parsedKeys = keys.map(key => this.getKey(key))
+      await this.cacheManager.mdel(parsedKeys)
     }
     catch (error) {
       this.logger.error(`删除多个缓存失败: ${error}`)
@@ -91,7 +74,7 @@ export class CacheService {
         return
       }
 
-      await this.redisClient.del(...keys)
+      await this.cacheManager.mdel(keys)
     }
     catch (error) {
       this.logger.error(`清空缓存失败: ${error}`)
