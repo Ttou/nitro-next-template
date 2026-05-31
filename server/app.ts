@@ -57,16 +57,25 @@ import { IsDev } from './utils'
           hideObject: true,
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
           messageFormat(log, messageKey, levelLabel, { colors }) {
+            /**
+             * 响应时间
+             * @description 请求会记录响应时间
+             */
+            const responseTime = log.responseTime !== undefined ? colors.yellow(`[${log.responseTime}ms]`) : undefined
+
             return [
-              log.context ? `[${log.context}]` : undefined,
-              log.req?.id ? `[${log.req.id}]` : undefined,
+              responseTime ? colors.gray(`[HttpLogging]`) : undefined,
+              log.context ? colors.gray(`[${log.context}]`) : undefined,
+              log.req?.id ? colors.gray(`[${log.req.id}]`) : undefined,
+              log.namespace ? colors.gray(`[${log.namespace}]`) : undefined, // ORM 日志命名空间
               log[messageKey],
+              responseTime,
             ]
               .filter(Boolean)
               .join(' ')
           },
         }),
-        customSuccessMessage(req, res) {
+        customSuccessMessage(req, res, responseTime) {
           return `${req.method} - ${req.url} - ${res.statusCode}`
         },
         customErrorMessage(req, res, err) {
