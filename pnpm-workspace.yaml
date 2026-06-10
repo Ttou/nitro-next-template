@@ -3,3 +3,10 @@ allowBuilds:
   '@scarf/scarf': true
   esbuild: true
   msgpackr-extract: true
+minimumReleaseAgeExclude:
+  - '@cj-tech-master/excelts@9.6.1'
+  - '@scalar/client-side-rendering@0.2.2'
+  - '@scalar/helpers@0.8.2'
+  - '@scalar/nestjs-api-reference@1.2.2'
+  - '@scalar/schemas@0.4.2'
+  - '@scalar/types@0.13.2'
