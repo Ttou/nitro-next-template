@@ -1,8 +1,8 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
-import { SysUserEntity } from '~server/database'
 import { ContextService, HashService } from '~server/shared'
+import { SysUserEntity } from '~shared/entities'
 import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 
 @Injectable()

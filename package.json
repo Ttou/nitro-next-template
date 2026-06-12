@@ -22,7 +22,6 @@
     "@mikro-orm/core": "7.1.4",
     "@mikro-orm/mysql": "7.1.4",
     "@mikro-orm/nestjs": "7.0.2",
-    "@mikro-orm/seeder": "7.1.4",
     "@napi-rs/canvas": "1.0.0",
     "@nestjs-modules/ioredis": "2.2.1",
     "@nestjs-modules/mailer": "2.3.6",

@@ -1,9 +1,9 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
-import { SysDictDataEntity, SysUserEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService, HashService } from '~server/shared'
+import { SysDictDataEntity, SysUserEntity } from '~shared/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
 

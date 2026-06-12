@@ -1,9 +1,9 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
-import { SysPostEntity } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
+import { SysPostEntity } from '~shared/entities'
 import { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
 
 @Injectable()

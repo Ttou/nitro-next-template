@@ -2,7 +2,7 @@ import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysMenuEntityExcludeRelationDto } from '~server/database'
+import { SysMenuEntityExcludeRelationDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 

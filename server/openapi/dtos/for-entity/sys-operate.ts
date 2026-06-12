@@ -1,0 +1,62 @@
+import type { IPropertyNullable } from '~server/interfaces'
+import type { SysOperateEntity } from '~shared/entities'
+import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { UserAgentSerDto } from '~server/openapi'
+import { SysUserEntityDto } from './sys-user'
+
+export class SysOperateEntityDto implements SysOperateEntity {
+  @ApiProperty({ description: '主键', type: String })
+  id: string
+
+  @ApiProperty({ description: '操作摘要' })
+  summary: string
+
+  @ApiProperty({ description: '控制器名称' })
+  controllerName: string
+
+  @ApiProperty({ description: '处理器名称' })
+  handlerName: string
+
+  @ApiProperty({ description: '请求方法' })
+  requestMethod: string
+
+  @ApiProperty({ description: '请求链接' })
+  requestUrl: string
+
+  @ApiProperty({ description: '请求参数' })
+  requestParams: IPropertyNullable<string>
+
+  @ApiProperty({ description: '请求结果' })
+  requestResult: IPropertyNullable<string>
+
+  @ApiProperty({ description: 'IP地址' })
+  ip: string
+
+  @ApiProperty({ description: '位置' })
+  location: string
+
+  @ApiProperty({ description: '用户代理' })
+  userAgent: string
+
+  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerDto })
+  @Transform(({ obj }) => Reflect.construct(UserAgentSerDto, [obj.userAgent]))
+  userAgentParsed: UserAgentSerDto
+
+  @ApiProperty({ description: '请求状态' })
+  status: number
+
+  @ApiProperty({ description: '错误信息' })
+  errorMsg: IPropertyNullable<string>
+
+  @ApiProperty({ description: '操作时间', type: Date })
+  operateTime: Date
+
+  @ApiProperty({ description: '耗时' })
+  costTime: number
+
+  @ApiProperty({ description: '用户', type: () => SysUserEntityDto })
+  user: SysUserEntityDto
+}
+
+export class SysOperateEntityExcludeRelationDto extends OmitType(SysOperateEntityDto, ['user'] as const) {}

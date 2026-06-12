@@ -4,7 +4,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { ErrorEnum } from '~server/constants'
-import { BaseEntity, SysConfigEntity, SysUserEntity } from '~server/database'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '~shared/entities'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()

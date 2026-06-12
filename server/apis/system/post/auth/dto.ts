@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { ArrayNotEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysPostEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/database'
-import { PageReqDto, PageResDto } from '~server/openapi'
+import { PageReqDto, PageResDto, SysPostEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
 
 export class FindAllocatedUserPageForPostReqDto extends PageReqDto {
   @ApiProperty({ description: '岗位ID' })

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
-import { SysMenuEntityExcludeRelationDto, SysRoleEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/database'
+import { SysMenuEntityExcludeRelationDto, SysRoleEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
 import { IsEqual } from '~server/validators'
 
 /**

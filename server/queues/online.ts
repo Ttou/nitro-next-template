@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
-import { SysOnlineEntity } from '~server/database'
+import { SysOnlineEntity } from '~shared/entities'
 import { IpService } from '../shared'
 import { QueueNameEnum } from './constant'
 

@@ -12,7 +12,19 @@ import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
 import pinoPretty from 'pino-pretty'
-import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, SysLangEntity, SysMenuEntity, SysOnlineEntity, SysOperateEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~server/database'
+import {
+  SysConfigEntity,
+  SysDeptEntity,
+  SysDictDataEntity,
+  SysDictTypeEntity,
+  SysLangEntity,
+  SysMenuEntity,
+  SysOnlineEntity,
+  SysOperateEntity,
+  SysPostEntity,
+  SysRoleEntity,
+  SysUserEntity,
+} from '~shared/entities'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'

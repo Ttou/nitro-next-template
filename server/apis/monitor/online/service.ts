@@ -1,9 +1,9 @@
 import { EntityManager, serialize } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { instanceToPlain, plainToInstance } from 'class-transformer'
-import { SysOnlineEntity, SysOnlineEntityDto } from '~server/database'
-import { RemoveReqDto } from '~server/openapi'
+import { plainToInstance } from 'class-transformer'
+import { RemoveReqDto, SysOnlineEntityDto } from '~server/openapi'
 import { LogoutService } from '~server/shared'
+import { SysOnlineEntity } from '~shared/entities'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
 @Injectable()

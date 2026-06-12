@@ -2,7 +2,8 @@ import type { FindMonitorOperatePageReqDto } from './dto'
 import { EntityManager, serialize } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
-import { SysOperateEntity, SysOperateEntityDto } from '~server/database'
+import { SysOperateEntityDto } from '~server/openapi'
+import { SysOperateEntity } from '~shared/entities'
 
 @Injectable()
 export class MonitorOperateService {

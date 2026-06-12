@@ -1,6 +1,5 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import type { Queue } from 'bullmq'
-import type { SysOperateEntity } from '~server/database'
 import type { IRequest } from '../interfaces'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
@@ -11,6 +10,7 @@ import { catchError, tap } from 'rxjs/operators'
 import { Operate } from '~server/decorators'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
+import { SysOperateEntity } from '~shared/entities'
 
 @Injectable()
 export class OperateInterceptor implements NestInterceptor {

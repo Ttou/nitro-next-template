@@ -1,8 +1,7 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysLangEntityDto } from '~server/database'
-import { PageReqDto, PageResDto } from '~server/openapi'
+import { PageReqDto, PageResDto, SysLangEntityDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { LangEnumMap, LangEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
