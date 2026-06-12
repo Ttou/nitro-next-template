@@ -10,3 +10,9 @@ minimumReleaseAgeExclude:
   - '@scalar/nestjs-api-reference@1.2.2'
   - '@scalar/schemas@0.4.2'
   - '@scalar/types@0.13.2'
+  - '@scalar/client-side-rendering@0.2.3'
+  - '@scalar/nestjs-api-reference@1.2.3'
+  - '@scalar/schemas@0.4.3'
+  - '@scalar/types@0.13.3'
+  - element-plus@2.14.2
+  - es-toolkit@1.47.1

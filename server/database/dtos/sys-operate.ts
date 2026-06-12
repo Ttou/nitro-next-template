@@ -1,7 +1,8 @@
 import type { IPropertyNullable } from '~server/interfaces'
 import type { SysOperateEntity } from '../entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
-import { UserAgentSerializeDto } from '~server/openapi'
+import { Transform } from 'class-transformer'
+import { UserAgentSerDto } from '~server/openapi'
 import { SysUserEntityDto } from './sys-user'
 
 export class SysOperateEntityDto implements SysOperateEntity {
@@ -38,8 +39,9 @@ export class SysOperateEntityDto implements SysOperateEntity {
   @ApiProperty({ description: '用户代理' })
   userAgent: string
 
-  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerializeDto })
-  userAgentParsed: UserAgentSerializeDto
+  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerDto })
+  @Transform(({ obj }) => Reflect.construct(UserAgentSerDto, [obj.userAgent]))
+  userAgentParsed: UserAgentSerDto
 
   @ApiProperty({ description: '请求状态' })
   status: number

@@ -1,6 +1,7 @@
 import type { SysOnlineEntity } from '../entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
-import { UserAgentSerializeDto } from '~server/openapi'
+import { Transform } from 'class-transformer'
+import { UserAgentSerDto } from '~server/openapi'
 import { SysUserEntityDto } from './sys-user'
 
 export class SysOnlineEntityDto implements SysOnlineEntity {
@@ -22,8 +23,9 @@ export class SysOnlineEntityDto implements SysOnlineEntity {
   @ApiProperty({ description: '用户代理' })
   userAgent: string
 
-  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerializeDto })
-  userAgentParsed: UserAgentSerializeDto
+  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerDto })
+  @Transform(({ obj }) => Reflect.construct(UserAgentSerDto, [obj.userAgent]))
+  userAgentParsed: UserAgentSerDto
 
   @ApiProperty({ description: '登录时间' })
   loginTime: Date

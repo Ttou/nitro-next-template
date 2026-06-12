@@ -7,6 +7,7 @@ export default antfu(
     rules: {
       'antfu/no-top-level-await': 'off',
       'ts/consistent-type-imports': 'off',
+      'ts/ban-ts-comment': 'off',
     },
   },
 )

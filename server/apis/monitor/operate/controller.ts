@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, ClassSerializerInterceptor, Controller, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/decorators'
 import { FindMonitorOperatePageReqDto, FindMonitorOperatePageResDto } from './dto'
@@ -14,6 +14,7 @@ export class MonitorOperateController {
 
   @ApiOperation({ summary: '分页查询在线用户' })
   @ApiOkResponse({ type: FindMonitorOperatePageResDto })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Permission('sys.menu.monitor.operate.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorOperatePageReqDto) {

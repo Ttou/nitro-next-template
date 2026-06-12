@@ -1,7 +1,8 @@
 import type { FindMonitorOperatePageReqDto } from './dto'
-import { EntityManager } from '@mikro-orm/core'
+import { EntityManager, serialize } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { SysOperateEntity } from '~server/database'
+import { plainToInstance } from 'class-transformer'
+import { SysOperateEntity, SysOperateEntityDto } from '~server/database'
 
 @Injectable()
 export class MonitorOperateService {
@@ -24,6 +25,9 @@ export class MonitorOperateService {
       ],
     }, { limit: pageSize, offset: page - 1, populate: ['user'] })
 
-    return { page, pageSize, data, total }
+    // 必须先转换为普通对象，再转换为 dto，否则会报错
+    const serializedData = data.map(item => plainToInstance(SysOperateEntityDto, serialize(item, { populate: ['user'] })))
+
+    return { page, pageSize, data: serializedData, total }
   }
 }

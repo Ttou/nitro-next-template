@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common'
+import { Body, ClassSerializerInterceptor, Controller, Delete, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Permission } from '~server/decorators'
 import { RemoveReqDto } from '~server/openapi'
@@ -13,16 +13,17 @@ export class MonitorOnlineController {
 
   @ApiOperation({ summary: '分页查询在线用户' })
   @ApiOkResponse({ type: FindMonitorOnlinePageResDto })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Permission('sys.menu.monitor.online.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorOnlinePageReqDto) {
-    return this.monitorOnlineService.findPage(dto)
+    return await this.monitorOnlineService.findPage(dto)
   }
 
   @ApiOperation({ summary: '删除在线用户' })
   @Permission('sys.menu.monitor.online.remove')
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
-    return this.monitorOnlineService.remove(dto)
+    return await this.monitorOnlineService.remove(dto)
   }
 }

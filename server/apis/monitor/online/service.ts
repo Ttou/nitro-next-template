@@ -1,6 +1,7 @@
-import { EntityManager } from '@mikro-orm/core'
+import { EntityManager, serialize } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { SysOnlineEntity } from '~server/database'
+import { instanceToPlain, plainToInstance } from 'class-transformer'
+import { SysOnlineEntity, SysOnlineEntityDto } from '~server/database'
 import { RemoveReqDto } from '~server/openapi'
 import { LogoutService } from '~server/shared'
 import { FindMonitorOnlinePageReqDto } from './dto'
@@ -27,7 +28,10 @@ export class MonitorOnlineService {
       ],
     }, { limit: pageSize, offset: page - 1, populate: ['user'], exclude: ['token'] })
 
-    return { page, pageSize, data, total }
+    // 必须先转换为普通对象，再转换为 dto，否则会报错
+    const serializedData = data.map(item => plainToInstance(SysOnlineEntityDto, serialize(item, { populate: ['user'] })))
+
+    return { page, pageSize, data: serializedData, total }
   }
 
   async remove(dto: RemoveReqDto) {

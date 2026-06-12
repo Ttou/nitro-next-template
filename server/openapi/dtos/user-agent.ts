@@ -3,7 +3,7 @@ import { flattenObject, mapValues, toCamelCaseKeys } from 'es-toolkit'
 import { isObject } from 'es-toolkit/compat'
 import { UAParser } from 'ua-parser-js'
 
-export class UserAgentSerializeDto {
+export class UserAgentSerDto {
   @ApiProperty({ description: '浏览器名称' })
   browserName?: string
 
@@ -42,6 +42,7 @@ export class UserAgentSerializeDto {
 
   constructor(userAgent: string) {
     const { ua, ...rest } = UAParser(userAgent)
+    // @ts-ignore
     const obj = toCamelCaseKeys(flattenObject(mapValues(rest, value => isObject(value) ? { ...value } : value)))
     Object.assign(this, obj)
   }

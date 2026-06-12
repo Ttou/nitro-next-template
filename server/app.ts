@@ -5,7 +5,7 @@ import { RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
 import { CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
-import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
 import { ClsModule } from 'nestjs-cls'
@@ -16,14 +16,12 @@ import { SysConfigEntity, SysDeptEntity, SysDictDataEntity, SysDictTypeEntity, S
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'
-import { DatabaseModule } from './database'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
 import { HealthModule } from './health'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
-import { IsDev } from './utils'
 
 @Module({
   imports: [
@@ -133,7 +131,6 @@ import { IsDev } from './utils'
     SharedModule,
     ApisModule,
     HealthModule,
-    ConditionalModule.registerWhen(DatabaseModule, () => IsDev),
   ],
   providers: [
     {
