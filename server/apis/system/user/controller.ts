@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { XltCheckPermission } from '@xlt-token/nestjs'
 import { FormDataRequest } from 'nestjs-form-data'
 import { CustomStoredFile } from '~server/customs'
-import { Operate, Permission } from '~server/decorators'
-import { ApiDoc, ApiFile, RemoveReqDto } from '~server/openapi'
+import { Operate } from '~server/decorators'
+import { ApiDoc, RemoveReqDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { CreateSystemUserReqDto, ExportSystemUserSerDto, FindSystemUserPageReqDto, ImportSystemUserReqDto, ImportSystemUserResDto, ImportSystemUserSerDto, SysUserEntityNoRelationsNoPasswordDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
@@ -18,7 +19,7 @@ export class SystemUserController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建系统用户' })
-  @Permission('sys.menu.system.user.create')
+  @XltCheckPermission('sys.menu.system.user.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemUserReqDto) {
@@ -26,7 +27,7 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '查询系统用户分页列表', responseDto: SysUserEntityNoRelationsNoPasswordDto, isPage: true })
-  @Permission('sys.menu.system.user.findPage')
+  @XltCheckPermission('sys.menu.system.user.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemUserPageReqDto) {
@@ -34,7 +35,7 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '删除系统用户' })
-  @Permission('sys.menu.system.user.remove')
+  @XltCheckPermission('sys.menu.system.user.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -42,7 +43,7 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '更新系统用户' })
-  @Permission('sys.menu.system.user.update')
+  @XltCheckPermission('sys.menu.system.user.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemUserReqDto) {
@@ -50,7 +51,7 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '导出系统用户', isExcel: true })
-  @Permission('sys.menu.system.user.export')
+  @XltCheckPermission('sys.menu.system.user.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemUserPageReqDto) {
@@ -65,8 +66,7 @@ export class SystemUserController {
     return this.excelService.exportFile(ImportSystemUserSerDto, [])
   }
 
-  @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto })
-  @ApiFile()
+  @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto, isUpload: true })
   @Operate({ ignoreRequest: true })
   @FormDataRequest({ storage: CustomStoredFile })
   @Post('importTemplate')

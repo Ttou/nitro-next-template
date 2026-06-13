@@ -1,6 +1,6 @@
 import { Body, ClassSerializerInterceptor, Controller, Delete, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ApiDoc, RemoveReqDto } from '~server/openapi'
 import { FindMonitorOnlinePageReqDto, SysOnlineEntityExcludeTokenDto } from './dto'
 import { MonitorOnlineService } from './service'
@@ -13,14 +13,14 @@ export class MonitorOnlineController {
 
   @ApiDoc({ endpointSummary: '分页查询在线用户', responseDto: SysOnlineEntityExcludeTokenDto, isPage: true })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Permission('sys.menu.monitor.online.findPage')
+  @XltCheckPermission('sys.menu.monitor.online.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorOnlinePageReqDto) {
     return await this.monitorOnlineService.findPage(dto)
   }
 
   @ApiDoc({ endpointSummary: '删除在线用户' })
-  @Permission('sys.menu.monitor.online.remove')
+  @XltCheckPermission('sys.menu.monitor.online.remove')
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.monitorOnlineService.remove(dto)

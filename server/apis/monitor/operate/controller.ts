@@ -1,6 +1,6 @@
 import { Body, ClassSerializerInterceptor, Controller, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ApiDoc } from '~server/openapi'
 import { FindMonitorOperatePageReqDto, SysOperateLogEntityWithUserDto } from './dto'
 import { MonitorOperateService } from './service'
@@ -15,7 +15,7 @@ export class MonitorOperateController {
 
   @ApiDoc({ endpointSummary: '分页查询操作日志', responseDto: SysOperateLogEntityWithUserDto, isPage: true })
   @UseInterceptors(ClassSerializerInterceptor)
-  @Permission('sys.menu.monitor.operate.findPage')
+  @XltCheckPermission('sys.menu.monitor.operate.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorOperatePageReqDto) {
     return this.monitorOperateService.findPage(dto)

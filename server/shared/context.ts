@@ -1,9 +1,9 @@
-import type { ICtxClsStore, IRequest, JwtPayload } from '../interfaces'
+import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
-import { ErrorEnum } from '~server/constants'
+import { ClsKeyEnum, ErrorEnum } from '~server/constants'
 import { BaseEntity, SysConfigEntity, SysUserEntity } from '~shared/database/entities'
 import { YesOrNoEnum } from '~shared/enums'
 
@@ -23,62 +23,27 @@ export class ContextService {
   }
 
   /**
-   * 获取当前请求的 JWT 令牌
-   */
-  getToken() {
-    const { authorization } = this.request.headers
-
-    if (!authorization) {
-      throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.AUTHORIZATION_NOT_EXIST_ERROR))
-    }
-
-    const token = authorization.match(/Bearer (.+)/)?.[1]
-
-    if (!token) {
-      throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.AUTHORIZATION_FORMAT_ERROR))
-    }
-
-    return token
-  }
-
-  /**
    * 设置当前用户
-   * @param payload JWT 负载
    */
-  async setCurrentUser(payload: JwtPayload) {
+  async setCurrentUser(loginId: string) {
     const user = await this.em.findOne(SysUserEntity, {
-      id: { $eq: payload.sub },
+      id: { $eq: loginId },
+    }, {
+      populate: ['roles.menus'],
     })
 
     if (!user) {
       throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
-    this.clsService.set('user', user)
+    this.clsService.set(ClsKeyEnum.CURRENT_USER, user)
   }
 
   /**
    * 获取当前用户
    */
   getCurrentUser() {
-    return this.clsService.get('user')
-  }
-
-  /**
-   * 判断当前用户是否有指定权限
-   * @param permission
-   */
-  async isCurrentUserHasPermission(permission: string) {
-    const currentUser = this.getCurrentUser()
-
-    const user = await this.em.findOne(SysUserEntity, {
-      $and: [
-        { id: { $eq: currentUser.id } },
-        { roles: { menus: { menuKey: { $eq: permission } } } },
-      ],
-    })
-
-    return !!user
+    return this.clsService.get(ClsKeyEnum.CURRENT_USER)
   }
 
   /**
@@ -90,17 +55,6 @@ export class ContextService {
     })
 
     return captchaCaseSensitiveConfig!.configValue === YesOrNoEnum.YES
-  }
-
-  /**
-   * 用户单机登录
-   */
-  async isUserSingleOnline() {
-    const userSingleOnlineConfig = await this.em.findOne(SysConfigEntity, {
-      configKey: { $eq: 'sys.user.singleOnline' },
-    })
-
-    return userSingleOnlineConfig!.configValue === YesOrNoEnum.YES
   }
 
   /**

@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysPostEntityExcludeRelationDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { CreateSystemPostReqDto, ExportSystemPostSerDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
@@ -16,7 +17,7 @@ export class SystemPostController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建岗位' })
-  @Permission('sys.menu.system.post.create')
+  @XltCheckPermission('sys.menu.system.post.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemPostReqDto) {
@@ -24,7 +25,7 @@ export class SystemPostController {
   }
 
   @ApiDoc({ endpointSummary: '查询岗位分页列表', responseDto: SysPostEntityExcludeRelationDto, isPage: true })
-  @Permission('sys.menu.system.post.findPage')
+  @XltCheckPermission('sys.menu.system.post.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemPostPageReqDto) {
@@ -32,7 +33,7 @@ export class SystemPostController {
   }
 
   @ApiDoc({ endpointSummary: '删除岗位' })
-  @Permission('sys.menu.system.post.remove')
+  @XltCheckPermission('sys.menu.system.post.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -40,7 +41,7 @@ export class SystemPostController {
   }
 
   @ApiDoc({ endpointSummary: '更新岗位' })
-  @Permission('sys.menu.system.post.update')
+  @XltCheckPermission('sys.menu.system.post.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemPostReqDto) {
@@ -48,7 +49,7 @@ export class SystemPostController {
   }
 
   @ApiDoc({ endpointSummary: '导出岗位', isExcel: true })
-  @Permission('sys.menu.system.post.export')
+  @XltCheckPermission('sys.menu.system.post.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemPostPageReqDto) {

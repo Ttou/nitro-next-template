@@ -1,8 +1,9 @@
 import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { XltCheckPermission } from '@xlt-token/nestjs'
 import { CustomCacheInterceptor } from '~server/customs'
-import { Operate, Permission } from '~server/decorators'
+import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { parseMs } from '~shared/utils'
@@ -19,7 +20,7 @@ export class SystemDictTypeController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建字典类型' })
-  @Permission('sys.menu.system.dictType.create')
+  @XltCheckPermission('sys.menu.system.dictType.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemDictTypeReqDto) {
@@ -36,7 +37,7 @@ export class SystemDictTypeController {
   }
 
   @ApiDoc({ endpointSummary: '查询字典类型分页列表', responseDto: SysDictTypeEntityDto, isPage: true })
-  @Permission('sys.menu.system.dictType.findPage')
+  @XltCheckPermission('sys.menu.system.dictType.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemDictTypePageReqDto) {
@@ -44,7 +45,7 @@ export class SystemDictTypeController {
   }
 
   @ApiDoc({ endpointSummary: '删除字典类型' })
-  @Permission('sys.menu.system.dictType.remove')
+  @XltCheckPermission('sys.menu.system.dictType.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -52,7 +53,7 @@ export class SystemDictTypeController {
   }
 
   @ApiDoc({ endpointSummary: '更新字典类型' })
-  @Permission('sys.menu.system.dictType.update')
+  @XltCheckPermission('sys.menu.system.dictType.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemDictTypeReqDto) {
@@ -60,7 +61,7 @@ export class SystemDictTypeController {
   }
 
   @ApiDoc({ endpointSummary: '导出字典类型', isExcel: true })
-  @Permission('sys.menu.system.dictType.export')
+  @XltCheckPermission('sys.menu.system.dictType.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {

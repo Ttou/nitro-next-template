@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Public } from '~server/decorators'
+import { XltIgnore } from '@xlt-token/nestjs'
 import { ApiDoc } from '~server/openapi'
 import { LoginReqDto } from './dto'
 import { AuthService } from './service'
@@ -13,7 +13,7 @@ export class AuthController {
   ) {}
 
   @ApiDoc({ endpointSummary: '登录', responseDto: String })
-  @Public()
+  @XltIgnore()
   @Post('login')
   async login(@Body() dto: LoginReqDto) {
     return await this.authService.login(dto)

@@ -1,4 +1,5 @@
 import { stdout } from 'node:process'
+import { createClient } from '@keyv/redis'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
@@ -8,6 +9,7 @@ import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
+import { JwtStrategy, RedisStore, XLT_REDIS_CLIENT, XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
@@ -15,12 +17,13 @@ import pinoPretty from 'pino-pretty'
 import * as entities from '~shared/database/entities'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
-import { CustomOrmLogger } from './customs'
+import { CustomOrmLogger, CustomStp } from './customs'
 import { DefaultFilter } from './filters'
-import { AuthenticationGuard, AuthorizationGuard } from './guards'
+import { AuthGuard } from './guards'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
+import { getRedisUrl } from './utils'
 
 @Module({
   imports: [
@@ -114,6 +117,35 @@ import { SharedModule } from './shared'
       },
       inject: [ConfigService],
     }),
+    XltTokenModule.forRootAsync({
+      isGlobal: true,
+      useFactory: (configService: ConfigService) => {
+        return {
+          config: configService.get<ConfigSchema['xltToken']>('xltToken')!,
+          stpInterface: CustomStp,
+        }
+      },
+      inject: [ConfigService],
+
+      strategy: {
+        useClass: JwtStrategy,
+      },
+      store: {
+        useClass: RedisStore,
+      },
+      providers: [
+        {
+          provide: XLT_REDIS_CLIENT,
+          useFactory: async (configService: ConfigService) => {
+            const config = configService.get<ConfigSchema['redisShared']>('redisShared')!
+            const client = createClient({ url: getRedisUrl(config) })
+            await client.connect()
+            return client
+          },
+          inject: [ConfigService],
+        },
+      ],
+    }),
     QueuesModule,
     SharedModule,
     ApisModule,
@@ -125,11 +157,7 @@ import { SharedModule } from './shared'
     },
     {
       provide: APP_GUARD,
-      useClass: AuthenticationGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AuthorizationGuard,
+      useClass: AuthGuard,
     },
     {
       provide: APP_PIPE,

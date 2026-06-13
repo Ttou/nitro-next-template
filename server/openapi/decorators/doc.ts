@@ -1,5 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import {
+  ApiBody,
+  ApiConsumes,
   ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
@@ -14,6 +16,7 @@ interface ApiDocOptions {
   isArray?: boolean
   isPage?: boolean
   isExcel?: boolean
+  isUpload?: boolean
   deprecated?: boolean
   responseDescription?: string
 }
@@ -32,6 +35,23 @@ export function ApiDoc(options: ApiDocOptions) {
       deprecated: options.deprecated,
     }),
   ]
+
+  if (options.isUpload) {
+    decorators.push(
+      ApiConsumes('multipart/form-data'),
+      ApiBody({
+        schema: {
+          type: 'object',
+          properties: {
+            file: {
+              type: 'string',
+              format: 'binary',
+            },
+          },
+        },
+      }),
+    )
+  }
 
   if (options.isExcel) {
     decorators.push(

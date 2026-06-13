@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc } from '~server/openapi'
 import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, SysUserEntityWithRolesDto, UnallocateUserForRoleReqDto } from './dto'
 import { SystemRoleAuthService } from './service'
@@ -14,7 +15,7 @@ export class SystemRoleAuthController {
   ) {}
 
   @ApiDoc({ endpointSummary: '为角色分配用户' })
-  @Permission('sys.menu.system.roleAuth.allocateUser')
+  @XltCheckPermission('sys.menu.system.roleAuth.allocateUser')
   @Operate()
   @Post('allocateUser')
   async allocateUser(@Body() dto: AllocateUserForRoleReqDto) {
@@ -22,7 +23,7 @@ export class SystemRoleAuthController {
   }
 
   @ApiDoc({ endpointSummary: '查询角色已分配用户分页', responseDto: SysUserEntityWithRolesDto, isPage: true })
-  @Permission('sys.menu.system.roleAuth.findAllocatedUserPage')
+  @XltCheckPermission('sys.menu.system.roleAuth.findAllocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findAllocatedUserPage')
   async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForRoleReqDto) {
@@ -30,7 +31,7 @@ export class SystemRoleAuthController {
   }
 
   @ApiDoc({ endpointSummary: '查询角色未分配用户分页', responseDto: SysUserEntityWithRolesDto, isPage: true })
-  @Permission('sys.menu.system.roleAuth.findUnallocatedUserPage')
+  @XltCheckPermission('sys.menu.system.roleAuth.findUnallocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findUnallocatedUserPage')
   async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForRoleReqDto) {
@@ -38,7 +39,7 @@ export class SystemRoleAuthController {
   }
 
   @ApiDoc({ endpointSummary: '为角色取消分配用户' })
-  @Permission('sys.menu.system.roleAuth.unallocateUser')
+  @XltCheckPermission('sys.menu.system.roleAuth.unallocateUser')
   @Operate()
   @Post('unallocateUser')
   async unallocateUser(@Body() dto: UnallocateUserForRoleReqDto) {

@@ -1,7 +1,8 @@
 import type { RemoveReqDto } from '~server/openapi'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc, SysDictDataEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { CreateSystemDictDataReqDto, ExportSystemDictDataSerDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
@@ -17,7 +18,7 @@ export class SystemDictDataController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建字典数据' })
-  @Permission('sys.menu.system.dictData.create')
+  @XltCheckPermission('sys.menu.system.dictData.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemDictDataReqDto) {
@@ -25,7 +26,7 @@ export class SystemDictDataController {
   }
 
   @ApiDoc({ endpointSummary: '查询字典数据列表', responseDto: SysDictDataEntityDto, isArray: true })
-  @Permission('sys.menu.system.dictData.findList')
+  @XltCheckPermission('sys.menu.system.dictData.findList')
   @Operate({ ignoreResponse: true })
   @Post('findList')
   async findList(@Body() dto: FindSystemDictDataListReqDto) {
@@ -33,7 +34,7 @@ export class SystemDictDataController {
   }
 
   @ApiDoc({ endpointSummary: '删除字典数据' })
-  @Permission('sys.menu.system.dictData.remove')
+  @XltCheckPermission('sys.menu.system.dictData.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -41,7 +42,7 @@ export class SystemDictDataController {
   }
 
   @ApiDoc({ endpointSummary: '更新字典数据' })
-  @Permission('sys.menu.system.dictData.update')
+  @XltCheckPermission('sys.menu.system.dictData.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemDictDataReqDto) {
@@ -49,7 +50,7 @@ export class SystemDictDataController {
   }
 
   @ApiDoc({ endpointSummary: '导出字典数据', isExcel: true })
-  @Permission('sys.menu.system.dictData.export')
+  @XltCheckPermission('sys.menu.system.dictData.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictDataListReqDto) {

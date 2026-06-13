@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Public } from '~server/decorators'
+import { XltIgnore } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysLangEntityDto } from '~server/openapi'
 import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
@@ -21,7 +22,7 @@ export class SystemLangController {
   }
 
   @ApiDoc({ endpointSummary: '查询系统语言', responseDto: Object })
-  @Public()
+  @XltIgnore()
   @Get('findAll')
   async findAll(@Query() dto: FindSystemLangAllReqDto) {
     return await this.systemLangService.findAll(dto)

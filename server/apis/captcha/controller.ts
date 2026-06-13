@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { Public } from '~server/decorators'
+import { XltIgnore } from '@xlt-token/nestjs'
 import { ApiDoc } from '~server/openapi'
 import { CaptchaService } from '~server/shared'
 import { CaptchaImageResDto } from './dto'
@@ -13,7 +13,7 @@ export class CaptchaController {
   ) {}
 
   @ApiDoc({ endpointSummary: '图形验证码', responseDto: CaptchaImageResDto })
-  @Public()
+  @XltIgnore()
   @Get('image')
   async image() {
     return await this.captchaService.image()

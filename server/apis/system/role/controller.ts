@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysRoleEntityExcludeRelationDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { CreateSystemRoleReqDto, ExportSystemRoleSerDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
@@ -16,7 +17,7 @@ export class SystemRoleController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建系统角色' })
-  @Permission('sys.menu.system.role.create')
+  @XltCheckPermission('sys.menu.system.role.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemRoleReqDto) {
@@ -24,7 +25,7 @@ export class SystemRoleController {
   }
 
   @ApiDoc({ endpointSummary: '查询系统角色分页列表', responseDto: SysRoleEntityExcludeRelationDto, isPage: true })
-  @Permission('sys.menu.system.role.findPage')
+  @XltCheckPermission('sys.menu.system.role.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemRolePageReqDto) {
@@ -32,7 +33,7 @@ export class SystemRoleController {
   }
 
   @ApiDoc({ endpointSummary: '删除系统角色' })
-  @Permission('sys.menu.system.role.remove')
+  @XltCheckPermission('sys.menu.system.role.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -40,7 +41,7 @@ export class SystemRoleController {
   }
 
   @ApiDoc({ endpointSummary: '更新系统角色' })
-  @Permission('sys.menu.system.role.update')
+  @XltCheckPermission('sys.menu.system.role.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemRoleReqDto) {
@@ -48,7 +49,7 @@ export class SystemRoleController {
   }
 
   @ApiDoc({ endpointSummary: '导出系统角色', isExcel: true })
-  @Permission('sys.menu.system.role.export')
+  @XltCheckPermission('sys.menu.system.role.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemRolePageReqDto) {

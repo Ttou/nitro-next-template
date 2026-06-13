@@ -1,3 +1,4 @@
+import type { RedisModuleOptions } from '@nestjs-modules/ioredis'
 import type { ConfigSchema } from './config-schema'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -5,27 +6,32 @@ import { FastifyAdapter } from '@bull-board/fastify'
 import KeyvRedis from '@keyv/redis'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
+import { getRedisUrl } from '~server/utils'
 
 export default registerAs('', (): ConfigSchema => {
   const appName = 'nitro_template'
   const redisKeyPrefixSeparator = ':'
   const __filename = fileURLToPath(import.meta.url)
   const __dirname = dirname(__filename)
+  const redisShared: ConfigSchema['redisShared'] = {
+    host: '127.0.0.1',
+    port: 6379,
+    db: 0,
+  }
 
   return {
     appName,
+    redisShared,
     redis: {
       type: 'single',
       options: {
-        host: '127.0.0.1',
-        port: 6379,
-        db: 0,
+        ...redisShared,
       },
     },
     cache: {
       nonBlocking: true,
       stores: [
-        new KeyvRedis('redis://127.0.0.1:6379/0'),
+        new KeyvRedis(getRedisUrl(redisShared)),
       ],
     },
     orm: {
@@ -53,9 +59,7 @@ export default registerAs('', (): ConfigSchema => {
     bull: {
       prefix: [appName, 'bull'].join(redisKeyPrefixSeparator),
       connection: {
-        host: '127.0.0.1',
-        port: 6379,
-        db: 0,
+        ...redisShared,
       },
     },
     bullBoard: {
@@ -67,6 +71,17 @@ export default registerAs('', (): ConfigSchema => {
     },
     formData: {
       fileSystemStoragePath: './uploads',
+    },
+    xltToken: {
+      defaultCheck: true,
+      isReadHeader: true,
+      timeout: '7d',
+      jwt: {
+        secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
+        algorithm: 'HS256',
+        issuer: 'xlt-token',
+        audience: appName,
+      },
     },
   }
 })

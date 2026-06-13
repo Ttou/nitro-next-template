@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { Operate, Permission } from '~server/decorators'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysMenuEntityExcludeRelationDto } from '~server/openapi'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 import { SystemMenuService } from './service'
@@ -14,7 +15,7 @@ export class SystemMenuController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建菜单' })
-  @Permission('sys.menu.system.menu.create')
+  @XltCheckPermission('sys.menu.system.menu.create')
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemMenuReqDto) {
@@ -22,7 +23,7 @@ export class SystemMenuController {
   }
 
   @ApiDoc({ endpointSummary: '查询菜单列表', responseDto: SysMenuEntityExcludeRelationDto, isArray: true })
-  @Permission('sys.menu.system.menu.findList')
+  @XltCheckPermission('sys.menu.system.menu.findList')
   @Operate({ ignoreResponse: true })
   @Post('findList')
   async findList(@Body() dto: FindSystemMenuListReqDto) {
@@ -30,7 +31,7 @@ export class SystemMenuController {
   }
 
   @ApiDoc({ endpointSummary: '删除菜单' })
-  @Permission('sys.menu.system.menu.remove')
+  @XltCheckPermission('sys.menu.system.menu.remove')
   @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
@@ -38,7 +39,7 @@ export class SystemMenuController {
   }
 
   @ApiDoc({ endpointSummary: '更新菜单' })
-  @Permission('sys.menu.system.menu.update')
+  @XltCheckPermission('sys.menu.system.menu.update')
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemMenuReqDto) {

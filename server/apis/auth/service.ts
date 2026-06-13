@@ -1,15 +1,16 @@
+import type { HttpContext } from '@xlt-token/core'
 import type { Queue } from 'bullmq'
-import type { JwtClaims } from '~server/interfaces'
+import type { ICtxClsStore } from '~server/interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
+import { StpLogic } from '@xlt-token/core'
+import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { ErrorEnum } from '~server/constants'
 import { QueueNameEnum } from '~server/queues'
-import { CaptchaService, ContextService, HashService, LogoutService } from '~server/shared'
-import { SysOnlineEntity, SysUserEntity } from '~shared/database/entities'
+import { CaptchaService, ContextService, HashService } from '~server/shared'
+import { SysUserEntity } from '~shared/database/entities'
 import { YesOrNoEnum } from '~shared/enums'
-import { generateId } from '~shared/utils'
 import { LoginReqDto } from './dto'
 
 @Injectable()
@@ -17,11 +18,11 @@ export class AuthService {
   constructor(
     @InjectQueue(QueueNameEnum.ONLINE) private onlineQueue: Queue,
     private captchaService: CaptchaService,
-    private jwtService: JwtService,
     private hashService: HashService,
-    private logoutService: LogoutService,
     private contextService: ContextService,
     private em: EntityManager,
+    private clsService: ClsService<ICtxClsStore>,
+    private stp: StpLogic,
   ) {}
 
   async login(dto: LoginReqDto) {
@@ -53,49 +54,14 @@ export class AuthService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_PASSWORD_ERROR))
     }
 
-    const jti = generateId()
-    const claims: JwtClaims = {
-      jti,
-      sub: oldRecord.id,
-    }
-    const token = await this.jwtService.signAsync(claims)
-
-    const isSingleOnline = await this.contextService.isUserSingleOnline()
-
-    if (isSingleOnline) {
-      const oldOnlineRecord = await this.em.findOne(SysOnlineEntity, {
-        user: {
-          id: { $eq: oldRecord.id },
-        },
-      })
-
-      if (oldOnlineRecord) {
-        await this.em.remove(oldOnlineRecord).flush()
-        await this.logoutService.add(oldOnlineRecord.token)
-      }
-    }
-
-    // #region 执行添加在线记录
-    const request = this.contextService.getRequest()
-    const userAgent = request.headers['user-agent']!
-    const ip = request.ip!
-    await this.onlineQueue.add(
-      '',
-      {
-        tokenId: jti,
-        token,
-        user: oldRecord,
-        userAgent,
-        ip,
-      },
-    )
-    // #endregion
+    const token = await this.stp.login(oldRecord.id)
 
     return token
   }
 
   async logout() {
-    const token = this.contextService.getToken()
-    await this.logoutService.add(token)
+    const request = this.clsService.get<HttpContext>(CLS_REQ)
+    const token = await this.stp.getTokenValue(request)
+    await this.stp.logout(token!)
   }
 }
