@@ -11,17 +11,8 @@ const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '会话编号',
-    prop: 'tokenId',
-    minWidth: 350,
-    hideInSearch: true,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
     label: '登录名称',
-    prop: 'user.userName',
+    prop: 'userName',
     minWidth: 120,
     tableColumnProps: {
       align: 'center',
@@ -29,56 +20,8 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '登录昵称',
-    prop: 'user.nickName',
+    prop: 'nickName',
     minWidth: 120,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '登录IP',
-    prop: 'ip',
-    minWidth: 120,
-    hideInSearch: true,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '登录地点',
-    prop: 'location',
-    minWidth: 120,
-    hideInSearch: true,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '浏览器',
-    prop: 'userAgentParsed.browserName',
-    minWidth: 120,
-    hideInSearch: true,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '操作系统',
-    prop: 'userAgentParsed.osName',
-    minWidth: 120,
-    hideInSearch: true,
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '登录时间',
-    prop: 'loginTime',
-    width: 200,
-    valueType: 'date-picker',
-    fieldProps: {
-      type: 'datetimerange',
-    },
     tableColumnProps: {
       align: 'center',
     },
@@ -120,7 +63,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.isBuiltin === YesOrNoEnum.YES,
             }),
             confirm: {
-              message: ({ row }) => `确定下线【${row.user.userName}】吗？`,
+              message: ({ row }) => `确定下线【${row.userName}】吗？`,
               options: {
                 type: 'warning',
               },
@@ -137,19 +80,6 @@ const pageProps = computed<PlusPageProps>(() => {
     },
     request: async (params) => {
       const _params = cloneDeep(params)
-
-      if (_params.user?.userName) {
-        Reflect.set(_params, 'userName', _params.user.userName)
-      }
-
-      if (_params.user?.nickName) {
-        Reflect.set(_params, 'nickName', _params.user.nickName)
-      }
-
-      if (_params.loginTime) {
-        Reflect.set(_params, 'beginTime', _params.loginTime[0])
-        Reflect.set(_params, 'endTime', _params.loginTime[1])
-      }
 
       return await Apis.MonitorOnline.findPage({ data: _params })
     },

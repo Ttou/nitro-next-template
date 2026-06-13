@@ -2,12 +2,12 @@ import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 
-interface UseCreateParams {
+interface UseRemoveParams {
   pageInstance: Ref<PlusPageInstance>
   selectedIds: Ref<string[]>
 }
 
-export function useRemove({ pageInstance, selectedIds }: UseCreateParams) {
+export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   function handleRemove(ids: string[]) {
     Apis.MonitorOnline.remove({ data: { ids } })
       .then(() => {

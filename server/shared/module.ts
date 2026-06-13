@@ -5,7 +5,6 @@ import { ContextService } from './context'
 import { ExcelService } from './excel'
 import { HashService } from './hash'
 import { IpService } from './ip'
-import { LogoutService } from './logout'
 import { RedisExtendService } from './redis-extend'
 
 @Global()
@@ -13,7 +12,6 @@ import { RedisExtendService } from './redis-extend'
   providers: [
     ContextService,
     IpService,
-    LogoutService,
     CaptchaService,
     HashService,
     ExcelService,
@@ -23,7 +21,6 @@ import { RedisExtendService } from './redis-extend'
   exports: [
     ContextService,
     IpService,
-    LogoutService,
     CaptchaService,
     HashService,
     ExcelService,
