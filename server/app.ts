@@ -24,7 +24,7 @@ import {
   SysPostEntity,
   SysRoleEntity,
   SysUserEntity,
-} from '~shared/entities'
+} from '~shared/database/entities'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'

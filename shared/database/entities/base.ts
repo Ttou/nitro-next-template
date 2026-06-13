@@ -1,5 +1,5 @@
 import { defineEntity, p } from '@mikro-orm/core'
-import { generateId } from '../utils'
+import { generateId } from '../../utils'
 
 const BaseSchema = defineEntity({
   name: 'BaseEntity',

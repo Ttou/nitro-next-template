@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { RemoveReqDto, SysOnlineEntityDto } from '~server/openapi'
 import { LogoutService } from '~server/shared'
-import { SysOnlineEntity } from '~shared/entities'
+import { SysOnlineEntity } from '~shared/database/entities'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
 @Injectable()

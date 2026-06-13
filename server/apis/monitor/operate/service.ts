@@ -3,7 +3,7 @@ import { EntityManager, serialize } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { SysOperateEntityDto } from '~server/openapi'
-import { SysOperateEntity } from '~shared/entities'
+import { SysOperateEntity } from '~shared/database/entities'
 
 @Injectable()
 export class MonitorOperateService {

@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
-import { SysDictDataEntity, SysDictTypeEntity } from '~shared/entities'
+import { SysDictDataEntity, SysDictTypeEntity } from '~shared/database/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
 

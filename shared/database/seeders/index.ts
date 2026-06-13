@@ -1,0 +1,1 @@
+export { AllSeeders } from './all'

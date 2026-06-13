@@ -10,7 +10,7 @@ import { catchError, tap } from 'rxjs/operators'
 import { Operate } from '~server/decorators'
 import { QueueNameEnum } from '~server/queues'
 import { ContextService } from '~server/shared'
-import { SysOperateEntity } from '~shared/entities'
+import { SysOperateEntity } from '~shared/database/entities'
 
 @Injectable()
 export class OperateInterceptor implements NestInterceptor {

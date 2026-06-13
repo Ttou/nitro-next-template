@@ -1,5 +1,5 @@
 import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../enums'
+import { YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 
 const SysDictDataSchema = defineEntity({

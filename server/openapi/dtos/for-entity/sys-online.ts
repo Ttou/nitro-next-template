@@ -1,4 +1,4 @@
-import type { SysOnlineEntity } from '~shared/entities'
+import type { SysOnlineEntity } from '~shared/database/entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { UserAgentSerDto } from '~server/openapi'

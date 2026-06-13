@@ -1,5 +1,5 @@
 import { defineEntity, p } from '@mikro-orm/core'
-import { generateId } from '../utils'
+import { generateId } from '../../utils'
 import { SysUserEntity } from './sys-user'
 
 const SysOnlineSchema = defineEntity({

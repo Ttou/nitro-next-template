@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { SysMenuEntity, SysRoleEntity } from '~shared/entities'
+import { SysMenuEntity, SysRoleEntity } from '~shared/database/entities'
 import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './dto'
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
-import { SysPostEntity, SysUserEntity } from '~shared/entities'
+import { SysPostEntity, SysUserEntity } from '~shared/database/entities'
 import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostReqDto, UnallocateUserForPostReqDto } from './dto'
 
 @Injectable()

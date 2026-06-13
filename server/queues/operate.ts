@@ -3,7 +3,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
 import { IpService } from '~server/shared'
-import { SysOperateEntity } from '~shared/entities'
+import { SysOperateEntity } from '~shared/database/entities'
 import { QueueNameEnum } from './constant'
 
 @Processor(
