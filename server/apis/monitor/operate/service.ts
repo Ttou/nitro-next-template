@@ -24,7 +24,7 @@ export class MonitorOperateService {
           operateTime: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {},
         },
       ],
-    }, { limit: pageSize, offset: page - 1, populate: ['user'] })
+    }, { limit: pageSize, offset: page - 1, orderBy: { operateTime: 'desc' }, populate: ['user'] })
 
     // 必须先转换为普通对象，再转换为 dto，否则会报错
     const serializedData = data.map(item => plainToInstance(SysOperateEntityDto, serialize(item, { populate: ['user'] })))

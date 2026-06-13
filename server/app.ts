@@ -18,7 +18,6 @@ import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
-import { HealthModule } from './health'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
@@ -118,7 +117,6 @@ import { SharedModule } from './shared'
     QueuesModule,
     SharedModule,
     ApisModule,
-    HealthModule,
   ],
   providers: [
     {

@@ -116,6 +116,10 @@ const plusPageProps = computed<PlusPageProps>(() => {
     search: {
       showNumber: 3,
     },
+    defaultPageInfo: {
+      page: 1,
+      pageSize: 20,
+    },
     table: {
       width: '100%',
       adaptive: true,

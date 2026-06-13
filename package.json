@@ -36,7 +36,6 @@
     "@nestjs/jwt": "11.0.2",
     "@nestjs/platform-fastify": "11.1.26",
     "@nestjs/swagger": "11.4.4",
-    "@nestjs/terminus": "11.1.1",
     "@scalar/nestjs-api-reference": "1.2.3",
     "@vueuse/core": "14.3.0",
     "@xlt-token/nestjs": "1.1.0",

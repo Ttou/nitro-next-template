@@ -9,6 +9,19 @@ const pageInstance = useTemplateRef('pageInstance')
 
 const columns = computed<PlusColumn[]>(() => [
   {
+    label: '请求概述',
+    prop: 'summary',
+    minWidth: 300,
+    valueType: 'text',
+    fieldProps: {
+      type: 'info',
+    },
+    tableColumnProps: {
+      align: 'center',
+    },
+    hideInSearch: true,
+  },
+  {
     label: '请求链接',
     prop: 'requestUrl',
     minWidth: 300,
@@ -188,6 +201,10 @@ const pageProps = computed<PlusPageProps>(() => {
       showNumber: 3,
       labelWidth: 100,
     },
+    defaultPageInfo: {
+      page: 1,
+      pageSize: 20,
+    },
     table: {
       adaptive: true,
       hasIndexColumn: true,
@@ -224,7 +241,7 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'nickName', _params.user.nickName)
       }
 
-      if (_params.operateTime) {
+      if (_params?.operateTime) {
         Reflect.set(_params, 'beginTime', _params.operateTime[0])
         Reflect.set(_params, 'endTime', _params.operateTime[1])
       }

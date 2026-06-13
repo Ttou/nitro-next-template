@@ -41,9 +41,6 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       if (column.prop === 'operateTime') {
         return {
           ...omit(column, ['valueType', 'fieldProps']),
-          colProps: {
-            span: 24,
-          },
           renderField(value, onChange, props) {
             return h(ElText, { type: 'primary' }, { default: () => formatTime(value) })
           },
