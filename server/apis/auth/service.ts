@@ -1,13 +1,10 @@
 import type { HttpContext } from '@xlt-token/core'
-import type { Queue } from 'bullmq'
 import type { ICtxClsStore } from '~server/interfaces'
 import { EntityManager } from '@mikro-orm/core'
-import { InjectQueue } from '@nestjs/bullmq'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { ErrorEnum } from '~server/constants'
-import { QueueNameEnum } from '~server/queues'
 import { CaptchaService, ContextService, HashService } from '~server/shared'
 import { SysUserEntity } from '~shared/database/entities'
 import { YesOrNoEnum } from '~shared/enums'
@@ -16,7 +13,6 @@ import { LoginReqDto } from './dto'
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectQueue(QueueNameEnum.ONLINE) private onlineQueue: Queue,
     private captchaService: CaptchaService,
     private hashService: HashService,
     private contextService: ContextService,

@@ -14,7 +14,7 @@ export class MonitorOnlineService {
 
   async findPage(dto: FindMonitorOnlinePageReqDto) {
     const { page, pageSize, ...rest } = dto
-    const ids = await this.stp.getOnlineLoginIds({ page, pageSize })
+    const ids = await this.stp.getOnlineLoginIds({ page: page - 1, pageSize })
 
     const result = await this.em.findAll(SysUserEntity, {
       where: {

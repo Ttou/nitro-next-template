@@ -1,4 +1,3 @@
-import type { RedisModuleOptions } from '@nestjs-modules/ioredis'
 import type { ConfigSchema } from './config-schema'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -43,13 +42,6 @@ export default registerAs('', (): ConfigSchema => {
       dbName: 'nitro_template',
       debug: true,
     },
-    jwt: {
-      secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
-      signOptions: {
-        expiresIn: '15d',
-        algorithm: 'HS256',
-      },
-    },
     hash: {
       bcrypt: {
         salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
@@ -80,7 +72,6 @@ export default registerAs('', (): ConfigSchema => {
         secret: '$2b$10$nxi79AIrqNBKgNVTcBnvQu==',
         algorithm: 'HS256',
         issuer: 'xlt-token',
-        audience: appName,
       },
     },
   }

@@ -18,3 +18,5 @@ minimumReleaseAgeExclude:
   - es-toolkit@1.47.1
   - '@cj-tech-master/excelts@10.2.0'
   - eslint@10.5.0
+patchedDependencies:
+  '@xlt-token/nestjs@1.1.0': patches/@xlt-token__nestjs@1.1.0.patch

@@ -5,8 +5,6 @@ import { BullModule } from '@nestjs/bullmq'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { QueueNameEnum } from './constant'
-import { OfflineQueue } from './offline'
-import { OnlineQueue } from './online'
 import { OperateQueue } from './operate'
 
 @Global()
@@ -19,9 +17,7 @@ import { OperateQueue } from './operate'
       inject: [ConfigService],
     }),
     BullModule.registerQueue(
-      { name: QueueNameEnum.ONLINE },
       { name: QueueNameEnum.OPERATE },
-      { name: QueueNameEnum.OFFLINE },
     ),
     BullBoardModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
@@ -31,20 +27,14 @@ import { OperateQueue } from './operate'
     }),
     BullBoardModule.forFeature(
       {
-        name: QueueNameEnum.ONLINE,
-        adapter: BullMQAdapter,
-      },
-      {
         name: QueueNameEnum.OPERATE,
-        adapter: BullMQAdapter,
-      },
-      {
-        name: QueueNameEnum.OFFLINE,
         adapter: BullMQAdapter,
       },
     ),
   ],
-  providers: [OnlineQueue, OperateQueue, OfflineQueue],
+  providers: [
+    OperateQueue,
+  ],
   exports: [BullModule],
 })
 export class QueuesModule {}

@@ -8,7 +8,6 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy, RedisStore, XLT_REDIS_CLIENT, XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
@@ -99,13 +98,6 @@ import { getRedisUrl } from './utils'
     HttpModule.register({
       global: true,
     }),
-    JwtModule.registerAsync({
-      global: true,
-      useFactory: async (configService: ConfigService) => {
-        return configService.get<ConfigSchema['jwt']>('jwt')!
-      },
-      inject: [ConfigService],
-    }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
       useFactory: (configService: ConfigService) => {
@@ -126,7 +118,6 @@ import { getRedisUrl } from './utils'
         }
       },
       inject: [ConfigService],
-
       strategy: {
         useClass: JwtStrategy,
       },

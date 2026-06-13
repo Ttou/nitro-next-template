@@ -1,0 +1,22 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 9268e0c8f41ed27ad9747a2bf9de476318d701ae..f09c3e034b106dc12220ec0615346632e6e353f1 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -209,7 +209,7 @@ let RedisStore = class RedisStore {
+ 	}
+ 	async keys(pattern) {
+ 		const result = [];
+-		let cursor = 0;
++		let cursor = "0";
+ 		do {
+ 			const reply = await this.redisClient.scan(cursor, {
+ 				MATCH: pattern,
+@@ -217,7 +217,7 @@ let RedisStore = class RedisStore {
+ 			});
+ 			cursor = reply.cursor;
+ 			result.push(...reply.keys);
+-		} while (cursor !== 0);
++		} while (cursor !== "0");
+ 		return result;
+ 	}
+ };
