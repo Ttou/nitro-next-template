@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
-import { IsDateString, IsOptional } from 'class-validator'
-import { PageReqDto, SysOnlineEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
+import { ApiPropertyOptional, OmitType } from '@nestjs/swagger'
+import { IsOptional } from 'class-validator'
+import { PageReqDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
 
 /**
  * 分页查询在线用户请求
@@ -13,19 +13,6 @@ export class FindMonitorOnlinePageReqDto extends PageReqDto {
   @ApiPropertyOptional({ description: '昵称' })
   @IsOptional()
   nickName?: string
-
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({ }, { message: '开始时间格式不正确' })
-  beginTime?: string
-
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({ }, { message: '结束时间格式不正确' })
-  endTime?: string
 }
 
-export class SysOnlineEntityExcludeTokenDto extends OmitType(SysOnlineEntityExcludeRelationDto, ['token'] as const) {
-  @ApiProperty({ description: '用户', type: () => SysUserEntityExcludeRelationDto })
-  user: SysUserEntityExcludeRelationDto
-}
+export class FindMonitorOnlinePageResDto extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}

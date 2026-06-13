@@ -1,8 +1,8 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Post, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ApiDoc, RemoveReqDto } from '~server/openapi'
-import { FindMonitorOnlinePageReqDto, SysOnlineEntityExcludeTokenDto } from './dto'
+import { FindMonitorOnlinePageReqDto, FindMonitorOnlinePageResDto } from './dto'
 import { MonitorOnlineService } from './service'
 
 @ApiTags('在线用户接口')
@@ -11,8 +11,7 @@ import { MonitorOnlineService } from './service'
 export class MonitorOnlineController {
   constructor(private monitorOnlineService: MonitorOnlineService) {}
 
-  @ApiDoc({ endpointSummary: '分页查询在线用户', responseDto: SysOnlineEntityExcludeTokenDto, isPage: true })
-  @UseInterceptors(ClassSerializerInterceptor)
+  @ApiDoc({ endpointSummary: '分页查询在线用户', responseDto: FindMonitorOnlinePageResDto, isPage: true })
   @XltCheckPermission('sys.menu.monitor.online.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorOnlinePageReqDto) {
