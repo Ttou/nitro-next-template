@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { ExcelColumn, ExcelFile } from '~server/decorators'
-import { PageReqDto, PageResDto, SysPostEntityExcludeRelationDto } from '~server/openapi'
+import { PageReqDto, SysPostEntityExcludeRelationDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -58,12 +58,10 @@ export class UpdateSystemPostReqDto extends CreateSystemPostReqDto {
   id: string
 }
 
-export class FindSystemPostPageResDto extends PageResDto(SysPostEntityExcludeRelationDto) {}
-
 @ExcelFile({
   fileName: '系统岗位.xlsx',
 })
-export class ExportSystemPostSerializeDto implements SysPostEntityExcludeRelationDto {
+export class ExportSystemPostSerDto implements SysPostEntityExcludeRelationDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

@@ -9,7 +9,7 @@ export async function getOrm() {
     port: 3306,
     user: 'root',
     password: 'root',
-    dbName: 'nitro_template2',
+    dbName: 'nitro_template',
     debug: true,
     entities: Object.values(entities),
   })

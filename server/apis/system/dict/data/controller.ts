@@ -1,10 +1,10 @@
 import type { RemoveReqDto } from '~server/openapi'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse } from '~server/openapi'
+import { ApiDoc, SysDictDataEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
-import { CreateSystemDictDataReqDto, ExportSystemDictDataSerializeDto, FindSystemDictDataListReqDto, FindSystemDictDataListResDto, UpdateSystemDictDataReqDto } from './dto'
+import { CreateSystemDictDataReqDto, ExportSystemDictDataSerDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
 import { SystemDictDataService } from './service'
 
 @ApiTags('字典数据接口')
@@ -16,7 +16,7 @@ export class SystemDictDataController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiOperation({ summary: '创建字典数据' })
+  @ApiDoc({ endpointSummary: '创建字典数据' })
   @Permission('sys.menu.system.dictData.create')
   @Operate()
   @Post('create')
@@ -24,8 +24,7 @@ export class SystemDictDataController {
     await this.systemDictDataService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询字典数据列表' })
-  @ApiOkResponse({ type: [FindSystemDictDataListResDto] })
+  @ApiDoc({ endpointSummary: '查询字典数据列表', responseDto: SysDictDataEntityDto, isArray: true })
   @Permission('sys.menu.system.dictData.findList')
   @Operate({ ignoreResponse: true })
   @Post('findList')
@@ -33,7 +32,7 @@ export class SystemDictDataController {
     return await this.systemDictDataService.findList(dto)
   }
 
-  @ApiOperation({ summary: '删除字典数据' })
+  @ApiDoc({ endpointSummary: '删除字典数据' })
   @Permission('sys.menu.system.dictData.remove')
   @Operate()
   @Delete('remove')
@@ -41,7 +40,7 @@ export class SystemDictDataController {
     return await this.systemDictDataService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新字典数据' })
+  @ApiDoc({ endpointSummary: '更新字典数据' })
   @Permission('sys.menu.system.dictData.update')
   @Operate()
   @Post('update')
@@ -49,13 +48,12 @@ export class SystemDictDataController {
     return await this.systemDictDataService.update(dto)
   }
 
-  @ApiOperation({ summary: '导出字典数据' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出字典数据', isExcel: true })
   @Permission('sys.menu.system.dictData.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictDataListReqDto) {
     const data = await this.systemDictDataService.findList(dto)
-    return this.excelService.exportFile(ExportSystemDictDataSerializeDto, data)
+    return this.excelService.exportFile(ExportSystemDictDataSerDto, data)
   }
 }

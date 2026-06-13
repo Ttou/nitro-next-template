@@ -1,2 +1,2 @@
-export * from './excel'
+export * from './doc'
 export * from './file'

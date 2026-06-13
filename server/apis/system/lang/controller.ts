@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Public } from '~server/decorators'
-import { RemoveReqDto } from '~server/openapi'
-import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangOneResDto, FindSystemLangPageReqDto, FindSystemLangPageResDto, UpdateSystemLangReqDto } from './dto'
+import { ApiDoc, RemoveReqDto, SysLangEntityDto } from '~server/openapi'
+import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
 
 @ApiTags('系统语言接口')
@@ -13,44 +13,41 @@ export class SystemLangController {
     private systemLangService: SystemLangService,
   ) {}
 
-  @ApiOperation({ summary: '创建系统语言' })
+  @ApiDoc({ endpointSummary: '创建系统语言' })
   @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemLangReqDto) {
     await this.systemLangService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言' })
-  @ApiOkResponse({ type: Object })
+  @ApiDoc({ endpointSummary: '查询系统语言', responseDto: Object })
   @Public()
   @Get('findAll')
   async findAll(@Query() dto: FindSystemLangAllReqDto) {
     return await this.systemLangService.findAll(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言词条' })
-  @ApiOkResponse({ type: [FindSystemLangOneResDto] })
+  @ApiDoc({ endpointSummary: '查询系统语言词条', responseDto: SysLangEntityDto })
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemLangOneReqDto) {
     return await this.systemLangService.findByKey(dto)
   }
 
-  @ApiOperation({ summary: '查询系统语言词条分页' })
-  @ApiOkResponse({ type: FindSystemLangPageResDto })
+  @ApiDoc({ endpointSummary: '查询系统语言词条分页', responseDto: SysLangEntityDto, isPage: true })
   @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemLangPageReqDto) {
     return await this.systemLangService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除系统语言词条' })
+  @ApiDoc({ endpointSummary: '删除系统语言词条' })
   @Operate()
   @Post('remove')
   async remove(@Body() dto: RemoveReqDto) {
     await this.systemLangService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新系统语言词条' })
+  @ApiDoc({ endpointSummary: '更新系统语言词条' })
   @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemLangReqDto) {

@@ -6,7 +6,7 @@ import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
 import { HasMimeType, IsFile } from 'nestjs-form-data'
 import { ExcelColumn, ExcelFile } from '~server/decorators'
-import { PageReqDto, PageResDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
+import { PageReqDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -89,14 +89,12 @@ export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
   id: string
 }
 
-class SysUserEntityNoRelationsNoPassword extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}
-
-export class FindSystemUserPageResDto extends PageResDto(SysUserEntityNoRelationsNoPassword) {}
+export class SysUserEntityNoRelationsNoPasswordDto extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}
 
 @ExcelFile({
   fileName: '系统用户.xlsx',
 })
-export class ExportSystemUserSerializeDto implements SysUserEntityNoRelationsNoPassword {
+export class ExportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswordDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 
@@ -150,7 +148,7 @@ export class ExportSystemUserSerializeDto implements SysUserEntityNoRelationsNoP
   fileName: '系统用户导入模板.xlsx',
   sheetName: '系统用户',
 })
-export class ImportSystemUserSerializeDto implements SysUserEntityNoRelationsNoPassword {
+export class ImportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswordDto {
   id: string
 
   @ExcelColumn({ header: '账号' })

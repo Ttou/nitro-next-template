@@ -1,7 +1,6 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysDeptEntityExcludeRelationDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -50,5 +49,3 @@ export class UpdateSystemDeptReqDto extends CreateSystemDeptReqDto {
   @IsUUID('7', { message: 'ID格式不正确' })
   id: string
 }
-
-export class FindSystemDeptListResDto extends SysDeptEntityExcludeRelationDto {}

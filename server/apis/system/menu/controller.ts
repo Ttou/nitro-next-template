@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { RemoveReqDto } from '~server/openapi'
-import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, FindSystemMenuListResDto, UpdateSystemMenuReqDto } from './dto'
+import { ApiDoc, RemoveReqDto, SysMenuEntityExcludeRelationDto } from '~server/openapi'
+import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 import { SystemMenuService } from './service'
 
 @ApiTags('系统菜单接口')
@@ -13,7 +13,7 @@ export class SystemMenuController {
     private systemMenuService: SystemMenuService,
   ) {}
 
-  @ApiOperation({ summary: '创建菜单' })
+  @ApiDoc({ endpointSummary: '创建菜单' })
   @Permission('sys.menu.system.menu.create')
   @Operate()
   @Post('create')
@@ -21,8 +21,7 @@ export class SystemMenuController {
     return await this.systemMenuService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询菜单列表' })
-  @ApiOkResponse({ type: [FindSystemMenuListResDto] })
+  @ApiDoc({ endpointSummary: '查询菜单列表', responseDto: SysMenuEntityExcludeRelationDto, isArray: true })
   @Permission('sys.menu.system.menu.findList')
   @Operate({ ignoreResponse: true })
   @Post('findList')
@@ -30,7 +29,7 @@ export class SystemMenuController {
     return await this.systemMenuService.findList(dto)
   }
 
-  @ApiOperation({ summary: '删除菜单' })
+  @ApiDoc({ endpointSummary: '删除菜单' })
   @Permission('sys.menu.system.menu.remove')
   @Operate()
   @Delete('remove')
@@ -38,7 +37,7 @@ export class SystemMenuController {
     return await this.systemMenuService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新菜单' })
+  @ApiDoc({ endpointSummary: '更新菜单' })
   @Permission('sys.menu.system.menu.update')
   @Operate()
   @Post('update')

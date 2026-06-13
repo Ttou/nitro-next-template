@@ -1,7 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindAllocatedUserPageForPostResDto, FindUnallocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostResDto, UnallocateUserForPostReqDto } from './dto'
+import { ApiDoc } from '~server/openapi'
+import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostReqDto, SysUserEntityWithPostsDto, UnallocateUserForPostReqDto } from './dto'
 import { SystemPostAuthService } from './service'
 
 @ApiTags('系统岗位权限接口')
@@ -12,7 +13,7 @@ export class SystemPostAuthController {
     private systemPostAuthService: SystemPostAuthService,
   ) {}
 
-  @ApiOperation({ summary: '为岗位分配用户' })
+  @ApiDoc({ endpointSummary: '为岗位分配用户' })
   @Permission('sys.menu.system.postAuth.allocateUser')
   @Operate()
   @Post('allocateUser')
@@ -20,8 +21,7 @@ export class SystemPostAuthController {
     return await this.systemPostAuthService.allocateUser(dto)
   }
 
-  @ApiOperation({ summary: '查询岗位已分配用户分页' })
-  @ApiOkResponse({ type: FindAllocatedUserPageForPostResDto })
+  @ApiDoc({ endpointSummary: '查询岗位已分配用户分页', responseDto: SysUserEntityWithPostsDto, isPage: true })
   @Permission('sys.menu.system.postAuth.findAllocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findAllocatedUserPage')
@@ -29,8 +29,7 @@ export class SystemPostAuthController {
     return await this.systemPostAuthService.findAllocatedUserPage(dto)
   }
 
-  @ApiOperation({ summary: '查询岗位未分配用户分页' })
-  @ApiOkResponse({ type: FindUnallocatedUserPageForPostResDto })
+  @ApiDoc({ endpointSummary: '查询岗位未分配用户分页', responseDto: SysUserEntityWithPostsDto, isPage: true })
   @Permission('sys.menu.system.postAuth.findUnallocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findUnallocatedUserPage')
@@ -38,7 +37,7 @@ export class SystemPostAuthController {
     return await this.systemPostAuthService.findUnallocatedUserPage(dto)
   }
 
-  @ApiOperation({ summary: '为岗位取消分配用户' })
+  @ApiDoc({ endpointSummary: '为岗位取消分配用户' })
   @Permission('sys.menu.system.postAuth.unallocateUser')
   @Operate()
   @Post('unallocateUser')

@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
+import { ApiDoc, RemoveReqDto, SysPostEntityExcludeRelationDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
-import { CreateSystemPostReqDto, ExportSystemPostSerializeDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './dto'
+import { CreateSystemPostReqDto, ExportSystemPostSerDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
 import { SystemPostService } from './service'
 
 @ApiTags('系统岗位接口')
@@ -15,7 +15,7 @@ export class SystemPostController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiOperation({ summary: '创建岗位' })
+  @ApiDoc({ endpointSummary: '创建岗位' })
   @Permission('sys.menu.system.post.create')
   @Operate()
   @Post('create')
@@ -23,8 +23,7 @@ export class SystemPostController {
     return await this.systemPostService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询岗位分页列表' })
-  @ApiOkResponse({ type: FindSystemPostPageResDto })
+  @ApiDoc({ endpointSummary: '查询岗位分页列表', responseDto: SysPostEntityExcludeRelationDto, isPage: true })
   @Permission('sys.menu.system.post.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
@@ -32,7 +31,7 @@ export class SystemPostController {
     return await this.systemPostService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除岗位' })
+  @ApiDoc({ endpointSummary: '删除岗位' })
   @Permission('sys.menu.system.post.remove')
   @Operate()
   @Delete('remove')
@@ -40,7 +39,7 @@ export class SystemPostController {
     return await this.systemPostService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新岗位' })
+  @ApiDoc({ endpointSummary: '更新岗位' })
   @Permission('sys.menu.system.post.update')
   @Operate()
   @Post('update')
@@ -48,13 +47,12 @@ export class SystemPostController {
     return await this.systemPostService.update(dto)
   }
 
-  @ApiOperation({ summary: '导出岗位' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出岗位', isExcel: true })
   @Permission('sys.menu.system.post.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemPostPageReqDto) {
     const { data } = await this.systemPostService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemPostSerializeDto, data)
+    return this.excelService.exportFile(ExportSystemPostSerDto, data)
   }
 }

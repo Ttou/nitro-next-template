@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Public } from '~server/decorators'
+import { ApiDoc } from '~server/openapi'
 import { LoginReqDto } from './dto'
 import { AuthService } from './service'
 
@@ -11,8 +12,7 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
-  @ApiOperation({ summary: '登录' })
-  @ApiOkResponse({ type: String })
+  @ApiDoc({ endpointSummary: '登录', responseDto: String })
   @Public()
   @Post('login')
   async login(@Body() dto: LoginReqDto) {
@@ -20,7 +20,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @ApiOperation({ summary: '退出' })
+  @ApiDoc({ endpointSummary: '退出' })
   @Post('logout')
   async logout() {
     return await this.authService.logout()

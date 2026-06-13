@@ -1117,7 +1117,7 @@ export interface CaptchaImageResDto {
    */
   captchaImage: string;
 }
-export interface SysMenuEntityNoRelations {
+export interface SysMenuEntityExcludeRelationDto {
   /**
    * 主键
    */
@@ -1125,7 +1125,7 @@ export interface SysMenuEntityNoRelations {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1133,7 +1133,7 @@ export interface SysMenuEntityNoRelations {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1141,7 +1141,7 @@ export interface SysMenuEntityNoRelations {
   /**
    * 父菜单ID
    */
-  parentId: string;
+  parentId: object;
   /**
    * 菜单名称
    */
@@ -1161,19 +1161,19 @@ export interface SysMenuEntityNoRelations {
   /**
    * 路径
    */
-  path: string;
+  path: object;
   /**
    * 组件
    */
-  component: string;
+  component: object;
   /**
    * 重定向
    */
-  redirect: string;
+  redirect: object;
   /**
    * 图标
    */
-  icon: string;
+  icon: object;
   /**
    * 是否可用
    */
@@ -1193,7 +1193,7 @@ export interface SysMenuEntityNoRelations {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
 export interface SysRoleEntityWithMenusRelation {
   /**
@@ -1203,7 +1203,7 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1211,7 +1211,7 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1231,11 +1231,11 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
   /**
    * 菜单列表
    */
-  menus: SysMenuEntityNoRelations[];
+  menus: SysMenuEntityExcludeRelationDto[];
 }
 export interface CurrentUserGetInfoResDto {
   /**
@@ -1245,7 +1245,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1253,7 +1253,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1269,19 +1269,19 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -1293,7 +1293,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
   /**
    * 角色列表
    */
@@ -1307,7 +1307,7 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1315,7 +1315,7 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1331,19 +1331,19 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -1355,9 +1355,33 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface UserAgentSerializeDto {
+export interface PageResDto {
+  /**
+   * 页码
+   */
+  page: number;
+  /**
+   * 页长
+   */
+  pageSize: number;
+  /**
+   * 总数
+   */
+  total: number;
+}
+export interface FindMonitorCachePageItemResDto {
+  /**
+   * 缓存键
+   */
+  key: string;
+  /**
+   * 缓存过期时间
+   */
+  ttl: number;
+}
+export interface UserAgentSerDto {
   /**
    * 浏览器名称
    */
@@ -1407,7 +1431,7 @@ export interface UserAgentSerializeDto {
    */
   osVersion: string;
 }
-export interface SysUserEntityNoRelations {
+export interface SysUserEntityExcludeRelationDto {
   /**
    * 主键
    */
@@ -1415,7 +1439,7 @@ export interface SysUserEntityNoRelations {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1423,7 +1447,7 @@ export interface SysUserEntityNoRelations {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1443,19 +1467,19 @@ export interface SysUserEntityNoRelations {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -1467,9 +1491,9 @@ export interface SysUserEntityNoRelations {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface SysOnlineEntityNoToken {
+export interface SysOnlineEntityExcludeTokenDto {
   /**
    * 主键
    */
@@ -1487,41 +1511,23 @@ export interface SysOnlineEntityNoToken {
    */
   location: string;
   /**
+   * 用户代理
+   */
+  userAgent: string;
+  /**
    * 用户代理解析
    */
-  userAgentParsed: UserAgentSerializeDto;
+  userAgentParsed: UserAgentSerDto;
   /**
    * 登录时间
    */
   loginTime: string;
   /**
-   * 用户代理
-   */
-  userAgent: UserAgentSerializeDto;
-  /**
    * 用户
    */
-  user: SysUserEntityNoRelations;
+  user: SysUserEntityExcludeRelationDto;
 }
-export interface FindMonitorOnlinePageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysOnlineEntityNoToken[];
-}
-export interface SysOperateLogEntityWithUser {
+export interface SysOperateLogEntityWithUserDto {
   /**
    * 主键
    */
@@ -1549,11 +1555,11 @@ export interface SysOperateLogEntityWithUser {
   /**
    * 请求参数
    */
-  requestParams: string;
+  requestParams: object;
   /**
    * 请求结果
    */
-  requestResult: string;
+  requestResult: object;
   /**
    * IP地址
    */
@@ -1565,7 +1571,7 @@ export interface SysOperateLogEntityWithUser {
   /**
    * 用户代理解析
    */
-  userAgentParsed: UserAgentSerializeDto;
+  userAgentParsed: UserAgentSerDto;
   /**
    * 请求状态
    */
@@ -1573,7 +1579,7 @@ export interface SysOperateLogEntityWithUser {
   /**
    * 错误信息
    */
-  errorMsg: string;
+  errorMsg: object;
   /**
    * 操作时间
    */
@@ -1585,31 +1591,13 @@ export interface SysOperateLogEntityWithUser {
   /**
    * 用户代理
    */
-  userAgent: UserAgentSerializeDto;
+  userAgent: UserAgentSerDto;
   /**
    * 用户
    */
-  user: SysUserEntityNoRelations;
+  user: SysUserEntityExcludeRelationDto;
 }
-export interface FindMonitorOperatePageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysOperateLogEntityWithUser[];
-}
-export interface FindSystemConfigByKeyResDto {
+export interface SysConfigEntityDto {
   /**
    * 主键
    */
@@ -1617,7 +1605,7 @@ export interface FindSystemConfigByKeyResDto {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1625,7 +1613,7 @@ export interface FindSystemConfigByKeyResDto {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1653,9 +1641,9 @@ export interface FindSystemConfigByKeyResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark?: object;
 }
-export interface SysConfigEntity {
+export interface SysDeptEntityExcludeRelationDto {
   /**
    * 主键
    */
@@ -1663,7 +1651,7 @@ export interface SysConfigEntity {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1671,71 +1659,7 @@ export interface SysConfigEntity {
   /**
    * 更新人
    */
-  updateBy: string;
-  /**
-   * 更新时间
-   */
-  updatedAt: string;
-  /**
-   * 配置键值
-   */
-  configKey: string;
-  /**
-   * 配置名称
-   */
-  configName: string;
-  /**
-   * 配置值
-   */
-  configValue: string;
-  /**
-   * 是否内置
-   */
-  isBuiltin: '0' | '1';
-  /**
-   * 是否可用
-   */
-  isAvailable: '0' | '1';
-  /**
-   * 备注
-   */
-  remark: string;
-}
-export interface FindSystemConfigPageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysConfigEntity[];
-}
-export interface FindSystemDeptListResDto {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 创建人
-   */
-  createBy: string;
-  /**
-   * 创建时间
-   */
-  createdAt: string;
-  /**
-   * 更新人
-   */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1743,7 +1667,7 @@ export interface FindSystemDeptListResDto {
   /**
    * 父部门ID
    */
-  parentId: string;
+  parentId: object;
   /**
    * 部门键值
    */
@@ -1759,9 +1683,9 @@ export interface FindSystemDeptListResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface FindSystemDictDetailByKeyResDto {
+export interface SysDictDataEntityDto {
   /**
    * 主键
    */
@@ -1769,7 +1693,7 @@ export interface FindSystemDictDetailByKeyResDto {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1777,7 +1701,7 @@ export interface FindSystemDictDetailByKeyResDto {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1801,9 +1725,9 @@ export interface FindSystemDictDetailByKeyResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark?: object;
 }
-export interface SysDictTypeEntity {
+export interface SysDictTypeEntityDto {
   /**
    * 主键
    */
@@ -1811,7 +1735,7 @@ export interface SysDictTypeEntity {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1819,7 +1743,7 @@ export interface SysDictTypeEntity {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1839,27 +1763,10 @@ export interface SysDictTypeEntity {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface FindSystemDictTypePageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysDictTypeEntity[];
-}
-export interface FindSystemDictDataListResDto {
+export type Object = object;
+export interface SysLangEntityDto {
   /**
    * 主键
    */
@@ -1867,7 +1774,7 @@ export interface FindSystemDictDataListResDto {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1875,49 +1782,7 @@ export interface FindSystemDictDataListResDto {
   /**
    * 更新人
    */
-  updateBy: string;
-  /**
-   * 更新时间
-   */
-  updatedAt: string;
-  /**
-   * 字典标签
-   */
-  dictLabel: string;
-  /**
-   * 字典值
-   */
-  dictValue: string;
-  /**
-   * 字典类型
-   */
-  dictType: string;
-  /**
-   * 是否可用
-   */
-  isAvailable: '0' | '1';
-  /**
-   * 备注
-   */
-  remark: string;
-}
-export interface FindSystemLangOneResDto {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 创建人
-   */
-  createBy: string;
-  /**
-   * 创建时间
-   */
-  createdAt: string;
-  /**
-   * 更新人
-   */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -1929,7 +1794,7 @@ export interface FindSystemLangOneResDto {
   /**
    * 语言值
    */
-  langValue: string;
+  langValue: object;
   /**
    * 是否内置
    */
@@ -1941,9 +1806,9 @@ export interface FindSystemLangOneResDto {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface SysLangEntity {
+export interface SysPostEntityExcludeRelationDto {
   /**
    * 主键
    */
@@ -1951,7 +1816,7 @@ export interface SysLangEntity {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -1959,145 +1824,7 @@ export interface SysLangEntity {
   /**
    * 更新人
    */
-  updateBy: string;
-  /**
-   * 更新时间
-   */
-  updatedAt: string;
-  /**
-   * 语言键值
-   */
-  langKey: string;
-  /**
-   * 语言值
-   */
-  langValue: string;
-  /**
-   * 是否内置
-   */
-  isBuiltin: '0' | '1';
-  /**
-   * 是否可用
-   */
-  isAvailable: '0' | '1';
-  /**
-   * 备注
-   */
-  remark: string;
-}
-export interface FindSystemLangPageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysLangEntity[];
-}
-export interface FindSystemMenuListResDto {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 创建人
-   */
-  createBy: string;
-  /**
-   * 创建时间
-   */
-  createdAt: string;
-  /**
-   * 更新人
-   */
-  updateBy: string;
-  /**
-   * 更新时间
-   */
-  updatedAt: string;
-  /**
-   * 父菜单ID
-   */
-  parentId: string;
-  /**
-   * 菜单名称
-   */
-  menuName: string;
-  /**
-   * 菜单键值
-   */
-  menuKey: string;
-  /**
-   * 菜单类型
-   */
-  menuType: 'C' | 'F' | 'M';
-  /**
-   * 排序
-   */
-  orderNum: number;
-  /**
-   * 路径
-   */
-  path: string;
-  /**
-   * 组件
-   */
-  component: string;
-  /**
-   * 重定向
-   */
-  redirect: string;
-  /**
-   * 图标
-   */
-  icon: string;
-  /**
-   * 是否可用
-   */
-  isAvailable: '0' | '1';
-  /**
-   * 是否缓存
-   */
-  isCache: '0' | '1';
-  /**
-   * 是否内嵌
-   */
-  isFrame: '0' | '1';
-  /**
-   * 是否显示
-   */
-  isVisible: '0' | '1';
-  /**
-   * 备注
-   */
-  remark: string;
-}
-export interface SysPostEntityNoRelations {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 创建人
-   */
-  createBy: string;
-  /**
-   * 创建时间
-   */
-  createdAt: string;
-  /**
-   * 更新人
-   */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -2117,27 +1844,9 @@ export interface SysPostEntityNoRelations {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface FindSystemPostPageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysPostEntityNoRelations[];
-}
-export interface SysUserEntityWithPosts {
+export interface SysUserEntityWithPostsDto {
   /**
    * 主键
    */
@@ -2145,7 +1854,7 @@ export interface SysUserEntityWithPosts {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -2153,7 +1862,7 @@ export interface SysUserEntityWithPosts {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -2173,19 +1882,19 @@ export interface SysUserEntityWithPosts {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -2197,49 +1906,13 @@ export interface SysUserEntityWithPosts {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
   /**
    * 岗位列表
    */
-  posts: SysPostEntityNoRelations[];
+  posts: SysPostEntityExcludeRelationDto[];
 }
-export interface FindAllocatedUserPageForPostResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysUserEntityWithPosts[];
-}
-export interface FindUnallocatedUserPageForPostResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysUserEntityWithPosts[];
-}
-export interface SysRoleEntityNoRelations {
+export interface SysRoleEntityExcludeRelationDto {
   /**
    * 主键
    */
@@ -2247,7 +1920,7 @@ export interface SysRoleEntityNoRelations {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -2255,7 +1928,7 @@ export interface SysRoleEntityNoRelations {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -2275,27 +1948,9 @@ export interface SysRoleEntityNoRelations {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
 }
-export interface FindSystemRolePageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysRoleEntityNoRelations[];
-}
-export interface SysUserEntityWithRoles {
+export interface SysUserEntityWithRolesDto {
   /**
    * 主键
    */
@@ -2303,7 +1958,7 @@ export interface SysUserEntityWithRoles {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -2311,7 +1966,7 @@ export interface SysUserEntityWithRoles {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -2331,19 +1986,19 @@ export interface SysUserEntityWithRoles {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -2355,49 +2010,13 @@ export interface SysUserEntityWithRoles {
   /**
    * 备注
    */
-  remark: string;
+  remark: object;
   /**
    * 角色列表
    */
-  roles: SysRoleEntityNoRelations[];
+  roles: SysRoleEntityExcludeRelationDto[];
 }
-export interface FindAllocatedUserPageForRoleResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysUserEntityWithRoles[];
-}
-export interface FindUnallocatedUserPageForRoleResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysUserEntityWithRoles[];
-}
-export interface SysUserEntityNoRelationsNoPassword {
+export interface SysUserEntityNoRelationsNoPasswordDto {
   /**
    * 主键
    */
@@ -2405,7 +2024,7 @@ export interface SysUserEntityNoRelationsNoPassword {
   /**
    * 创建人
    */
-  createBy: string;
+  createBy: object;
   /**
    * 创建时间
    */
@@ -2413,7 +2032,7 @@ export interface SysUserEntityNoRelationsNoPassword {
   /**
    * 更新人
    */
-  updateBy: string;
+  updateBy: object;
   /**
    * 更新时间
    */
@@ -2429,19 +2048,19 @@ export interface SysUserEntityNoRelationsNoPassword {
   /**
    * 邮箱
    */
-  email: string;
+  email: object;
   /**
    * 手机号码
    */
-  phone: string;
+  phone: object;
   /**
    * 性别
    */
-  sex: string;
+  sex: object;
   /**
    * 头像
    */
-  avatar: string;
+  avatar: object;
   /**
    * 是否可用
    */
@@ -2453,25 +2072,7 @@ export interface SysUserEntityNoRelationsNoPassword {
   /**
    * 备注
    */
-  remark: string;
-}
-export interface FindSystemUserPageResDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 总数
-   */
-  total: number;
-  /**
-   * 列表
-   */
-  data: SysUserEntityNoRelationsNoPassword[];
+  remark: object;
 }
 export interface ImportSystemUserResDto {
   /**
@@ -2583,11 +2184,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 账号
@@ -2595,19 +2196,19 @@ declare global {
        *   // 昵称
        *   nickName: string
        *   // 邮箱
-       *   email: string
+       *   email: object
        *   // 手机号码
-       *   phone: string
+       *   phone: object
        *   // 性别
-       *   sex: string
+       *   sex: object
        *   // 头像
-       *   avatar: string
+       *   avatar: object
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否删除
        *   isDelete: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark: object
        *   // 角色列表
        *   // [items] start
        *   // [items] end
@@ -2615,11 +2216,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 角色键值
@@ -2629,7 +2230,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *     // 菜单列表
        *     // [items] start
        *     // [items] end
@@ -2637,15 +2238,15 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 父菜单ID
-       *       parentId: string
+       *       parentId: object
        *       // 菜单名称
        *       menuName: string
        *       // 菜单键值
@@ -2655,13 +2256,13 @@ declare global {
        *       // 排序
        *       orderNum: number
        *       // 路径
-       *       path: string
+       *       path: object
        *       // 组件
-       *       component: string
+       *       component: object
        *       // 重定向
-       *       redirect: string
+       *       redirect: object
        *       // 图标
-       *       icon: string
+       *       icon: object
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 是否缓存
@@ -2671,7 +2272,7 @@ declare global {
        *       // 是否显示
        *       isVisible: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }>
        *   }>
        * }
@@ -2695,11 +2296,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 账号
@@ -2707,19 +2308,19 @@ declare global {
        *   // 昵称
        *   nickName: string
        *   // 邮箱
-       *   email: string
+       *   email: object
        *   // 手机号码
-       *   phone: string
+       *   phone: object
        *   // 性别
-       *   sex: string
+       *   sex: object
        *   // 头像
-       *   avatar: string
+       *   avatar: object
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否删除
        *   isDelete: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark: object
        * }
        * ```
        */
@@ -2825,16 +2426,42 @@ declare global {
        *
        * **Response**
        * ```ts
-       * type Response = null
+       * type Response = {
+       *   // 页码
+       *   page: number
+       *   // 页长
+       *   pageSize: number
+       *   // 总数
+       *   total: number
+       * } & {
+       *   // [items] start
+       *   // [items] end
+       *   data?: Array<{
+       *     // 缓存键
+       *     key: string
+       *     // 缓存过期时间
+       *     ttl: number
+       *   }>
+       * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<null> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: FindMonitorCachePageItemResDto[];
+          }
+        > & {
           data: FindMonitorCachePageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<null, 'MonitorCache.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: FindMonitorCachePageItemResDto[];
+        },
+        'MonitorCache.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -2923,10 +2550,10 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 会话ID
@@ -2935,6 +2562,8 @@ declare global {
        *     ip: string
        *     // 位置
        *     location: string
+       *     // 用户代理
+       *     userAgent: string
        *     // 用户代理解析
        *     userAgentParsed: {
        *       // 浏览器名称
@@ -2964,43 +2593,16 @@ declare global {
        *     }
        *     // 登录时间
        *     loginTime: string
-       *     // 用户代理
-       *     userAgent: {
-       *       // 浏览器名称
-       *       browserName: string
-       *       // 浏览器版本
-       *       browserVersion: string
-       *       // 浏览器主版本号
-       *       browserMajor: string
-       *       // 浏览器类型
-       *       browserType: string
-       *       // CPU 架构
-       *       cpuArchitecture: string
-       *       // 设备类型
-       *       deviceType: string
-       *       // 设备型号
-       *       deviceModel: string
-       *       // 设备供应商
-       *       deviceVendor: string
-       *       // 浏览器引擎名称
-       *       engineName: string
-       *       // 浏览器引擎版本
-       *       engineVersion: string
-       *       // 操作系统名称
-       *       osName: string
-       *       // 操作系统版本
-       *       osVersion: string
-       *     }
        *     // 用户
        *     user: {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 账号
@@ -3010,31 +2612,41 @@ declare global {
        *       // 密码
        *       password: string
        *       // 邮箱
-       *       email: string
+       *       email: object
        *       // 手机号码
-       *       phone: string
+       *       phone: object
        *       // 性别
-       *       sex: string
+       *       sex: object
        *       // 头像
-       *       avatar: string
+       *       avatar: object
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 是否删除
        *       isDelete: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindMonitorOnlinePageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysOnlineEntityExcludeTokenDto[];
+          }
+        > & {
           data: FindMonitorOnlinePageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindMonitorOnlinePageResDto, 'MonitorOnline.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysOnlineEntityExcludeTokenDto[];
+        },
+        'MonitorOnline.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -3073,7 +2685,7 @@ declare global {
       /**
        * ---
        *
-       * [POST] 分页查询在线用户
+       * [POST] 分页查询操作日志
        *
        * **path:** /api/monitor/operate/findPage
        *
@@ -3108,10 +2720,10 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 操作摘要
@@ -3125,9 +2737,9 @@ declare global {
        *     // 请求链接
        *     requestUrl: string
        *     // 请求参数
-       *     requestParams: string
+       *     requestParams: object
        *     // 请求结果
-       *     requestResult: string
+       *     requestResult: object
        *     // IP地址
        *     ip: string
        *     // 位置
@@ -3162,7 +2774,7 @@ declare global {
        *     // 请求状态
        *     status: number
        *     // 错误信息
-       *     errorMsg: string
+       *     errorMsg: object
        *     // 操作时间
        *     operateTime: string
        *     // 耗时
@@ -3199,11 +2811,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 账号
@@ -3213,31 +2825,41 @@ declare global {
        *       // 密码
        *       password: string
        *       // 邮箱
-       *       email: string
+       *       email: object
        *       // 手机号码
-       *       phone: string
+       *       phone: object
        *       // 性别
-       *       sex: string
+       *       sex: object
        *       // 头像
-       *       avatar: string
+       *       avatar: object
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 是否删除
        *       isDelete: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindMonitorOperatePageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysOperateLogEntityWithUserDto[];
+          }
+        > & {
           data: FindMonitorOperatePageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindMonitorOperatePageResDto, 'MonitorOperate.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysOperateLogEntityWithUserDto[];
+        },
+        'MonitorOperate.findPage',
+        Config
+      >;
     };
     SystemConfig: {
       /**
@@ -3306,11 +2928,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 配置键值
@@ -3324,12 +2946,12 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark?: object
        * }
        * ```
        */
       findByKey<
-        Config extends Alova2MethodConfig<FindSystemConfigByKeyResDto> & {
+        Config extends Alova2MethodConfig<SysConfigEntityDto> & {
           params: {
             /**
              * 参数键名
@@ -3339,7 +2961,7 @@ declare global {
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemConfigByKeyResDto, 'SystemConfig.findByKey', Config>;
+      ): Alova2Method<SysConfigEntityDto, 'SystemConfig.findByKey', Config>;
       /**
        * ---
        *
@@ -3382,18 +3004,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 配置键值
@@ -3407,18 +3029,28 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark?: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemConfigPageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysConfigEntityDto[];
+          }
+        > & {
           data: FindSystemConfigPageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemConfigPageResDto, 'SystemConfig.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysConfigEntityDto[];
+        },
+        'SystemConfig.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -3610,15 +3242,15 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 父部门ID
-       *   parentId: string
+       *   parentId: object
        *   // 部门键值
        *   deptKey: string
        *   // 部门名称
@@ -3626,17 +3258,17 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark: object
        * }>
        * ```
        */
       findList<
-        Config extends Alova2MethodConfig<FindSystemDeptListResDto[]> & {
+        Config extends Alova2MethodConfig<SysDeptEntityExcludeRelationDto[]> & {
           data: FindSystemDeptListReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemDeptListResDto[], 'SystemDept.findList', Config>;
+      ): Alova2Method<SysDeptEntityExcludeRelationDto[], 'SystemDept.findList', Config>;
       /**
        * ---
        *
@@ -3775,11 +3407,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 字典标签
@@ -3791,12 +3423,12 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark?: object
        * }>
        * ```
        */
       findByKey<
-        Config extends Alova2MethodConfig<FindSystemDictDetailByKeyResDto[]> & {
+        Config extends Alova2MethodConfig<SysDictDataEntityDto[]> & {
           params: {
             /**
              * 字典类型
@@ -3806,7 +3438,7 @@ declare global {
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemDictDetailByKeyResDto[], 'SystemDictType.findByKey', Config>;
+      ): Alova2Method<SysDictDataEntityDto[], 'SystemDictType.findByKey', Config>;
       /**
        * ---
        *
@@ -3847,18 +3479,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 字典名称
@@ -3868,18 +3500,28 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemDictTypePageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysDictTypeEntityDto[];
+          }
+        > & {
           data: FindSystemDictTypePageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemDictTypePageResDto, 'SystemDictType.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysDictTypeEntityDto[];
+        },
+        'SystemDictType.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -4065,11 +3707,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 字典标签
@@ -4081,17 +3723,17 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark?: object
        * }>
        * ```
        */
       findList<
-        Config extends Alova2MethodConfig<FindSystemDictDataListResDto[]> & {
+        Config extends Alova2MethodConfig<SysDictDataEntityDto[]> & {
           data: FindSystemDictDataListReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemDictDataListResDto[], 'SystemDictData.findList', Config>;
+      ): Alova2Method<SysDictDataEntityDto[], 'SystemDictData.findList', Config>;
       /**
        * ---
        *
@@ -4101,29 +3743,13 @@ declare global {
        *
        * ---
        *
-       * **RequestBody**
-       * ```ts
-       * type RequestBody = {
-       *   // 主键数组
-       *   // [items] start
-       *   // [items] end
-       *   ids: string[]
-       * }
-       * ```
-       *
-       * ---
-       *
        * **Response**
        * ```ts
        * type Response = null
        * ```
        */
-      remove<
-        Config extends Alova2MethodConfig<null> & {
-          data: RemoveReqDto;
-        }
-      >(
-        config: Config
+      remove<Config extends Alova2MethodConfig<null>>(
+        config?: Config
       ): Alova2Method<null, 'SystemDictData.remove', Config>;
       /**
        * ---
@@ -4265,7 +3891,7 @@ declare global {
        * ```
        */
       findAll<
-        Config extends Alova2MethodConfig<object> & {
+        Config extends Alova2MethodConfig<Object> & {
           params: {
             /**
              * 词条编码
@@ -4275,7 +3901,7 @@ declare global {
         }
       >(
         config: Config
-      ): Alova2Method<object, 'SystemLang.findAll', Config>;
+      ): Alova2Method<Object, 'SystemLang.findAll', Config>;
       /**
        * ---
        *
@@ -4297,32 +3923,32 @@ declare global {
        *
        * **Response**
        * ```ts
-       * type Response = Array<{
+       * type Response = {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 语言键值
        *   langKey: string
        *   // 语言值
-       *   langValue: string
+       *   langValue: object
        *   // 是否内置
        *   isBuiltin: '0' | '1'
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: string
-       * }>
+       *   remark: object
+       * }
        * ```
        */
       findByKey<
-        Config extends Alova2MethodConfig<FindSystemLangOneResDto[]> & {
+        Config extends Alova2MethodConfig<SysLangEntityDto> & {
           params: {
             /**
              * 词条标识
@@ -4332,7 +3958,7 @@ declare global {
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemLangOneResDto[], 'SystemLang.findByKey', Config>;
+      ): Alova2Method<SysLangEntityDto, 'SystemLang.findByKey', Config>;
       /**
        * ---
        *
@@ -4375,41 +4001,51 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 语言键值
        *     langKey: string
        *     // 语言值
-       *     langValue: string
+       *     langValue: object
        *     // 是否内置
        *     isBuiltin: '0' | '1'
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemLangPageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysLangEntityDto[];
+          }
+        > & {
           data: FindSystemLangPageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemLangPageResDto, 'SystemLang.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysLangEntityDto[];
+        },
+        'SystemLang.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -4570,15 +4206,15 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: string
+       *   createBy: object
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: string
+       *   updateBy: object
        *   // 更新时间
        *   updatedAt: string
        *   // 父菜单ID
-       *   parentId: string
+       *   parentId: object
        *   // 菜单名称
        *   menuName: string
        *   // 菜单键值
@@ -4588,13 +4224,13 @@ declare global {
        *   // 排序
        *   orderNum: number
        *   // 路径
-       *   path: string
+       *   path: object
        *   // 组件
-       *   component: string
+       *   component: object
        *   // 重定向
-       *   redirect: string
+       *   redirect: object
        *   // 图标
-       *   icon: string
+       *   icon: object
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否缓存
@@ -4604,17 +4240,17 @@ declare global {
        *   // 是否显示
        *   isVisible: '0' | '1'
        *   // 备注
-       *   remark: string
+       *   remark: object
        * }>
        * ```
        */
       findList<
-        Config extends Alova2MethodConfig<FindSystemMenuListResDto[]> & {
+        Config extends Alova2MethodConfig<SysMenuEntityExcludeRelationDto[]> & {
           data: FindSystemMenuListReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemMenuListResDto[], 'SystemMenu.findList', Config>;
+      ): Alova2Method<SysMenuEntityExcludeRelationDto[], 'SystemMenu.findList', Config>;
       /**
        * ---
        *
@@ -4786,18 +4422,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 岗位键值
@@ -4807,18 +4443,28 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemPostPageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysPostEntityExcludeRelationDto[];
+          }
+        > & {
           data: FindSystemPostPageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemPostPageResDto, 'SystemPost.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysPostEntityExcludeRelationDto[];
+        },
+        'SystemPost.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5007,18 +4653,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5028,19 +4674,19 @@ declare global {
        *     // 密码
        *     password: string
        *     // 邮箱
-       *     email: string
+       *     email: object
        *     // 手机号码
-       *     phone: string
+       *     phone: object
        *     // 性别
-       *     sex: string
+       *     sex: object
        *     // 头像
-       *     avatar: string
+       *     avatar: object
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *     // 岗位列表
        *     // [items] start
        *     // [items] end
@@ -5048,11 +4694,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 岗位键值
@@ -5062,19 +4708,29 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }>
        *   }>
        * }
        * ```
        */
       findAllocatedUserPage<
-        Config extends Alova2MethodConfig<FindAllocatedUserPageForPostResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysUserEntityWithPostsDto[];
+          }
+        > & {
           data: FindAllocatedUserPageForPostReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindAllocatedUserPageForPostResDto, 'SystemPostAuth.findAllocatedUserPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysUserEntityWithPostsDto[];
+        },
+        'SystemPostAuth.findAllocatedUserPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5111,18 +4767,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5132,19 +4788,19 @@ declare global {
        *     // 密码
        *     password: string
        *     // 邮箱
-       *     email: string
+       *     email: object
        *     // 手机号码
-       *     phone: string
+       *     phone: object
        *     // 性别
-       *     sex: string
+       *     sex: object
        *     // 头像
-       *     avatar: string
+       *     avatar: object
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *     // 岗位列表
        *     // [items] start
        *     // [items] end
@@ -5152,11 +4808,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 岗位键值
@@ -5166,19 +4822,29 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }>
        *   }>
        * }
        * ```
        */
       findUnallocatedUserPage<
-        Config extends Alova2MethodConfig<FindUnallocatedUserPageForPostResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysUserEntityWithPostsDto[];
+          }
+        > & {
           data: FindUnallocatedUserPageForPostReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindUnallocatedUserPageForPostResDto, 'SystemPostAuth.findUnallocatedUserPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysUserEntityWithPostsDto[];
+        },
+        'SystemPostAuth.findUnallocatedUserPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5293,18 +4959,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 角色键值
@@ -5314,18 +4980,28 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemRolePageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysRoleEntityExcludeRelationDto[];
+          }
+        > & {
           data: FindSystemRolePageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemRolePageResDto, 'SystemRole.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysRoleEntityExcludeRelationDto[];
+        },
+        'SystemRole.findPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5514,18 +5190,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5535,19 +5211,19 @@ declare global {
        *     // 密码
        *     password: string
        *     // 邮箱
-       *     email: string
+       *     email: object
        *     // 手机号码
-       *     phone: string
+       *     phone: object
        *     // 性别
-       *     sex: string
+       *     sex: object
        *     // 头像
-       *     avatar: string
+       *     avatar: object
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *     // 角色列表
        *     // [items] start
        *     // [items] end
@@ -5555,11 +5231,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 角色键值
@@ -5569,19 +5245,29 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }>
        *   }>
        * }
        * ```
        */
       findAllocatedUserPage<
-        Config extends Alova2MethodConfig<FindAllocatedUserPageForRoleResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysUserEntityWithRolesDto[];
+          }
+        > & {
           data: FindAllocatedUserPageForRoleReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindAllocatedUserPageForRoleResDto, 'SystemRoleAuth.findAllocatedUserPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysUserEntityWithRolesDto[];
+        },
+        'SystemRoleAuth.findAllocatedUserPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5618,18 +5304,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5639,19 +5325,19 @@ declare global {
        *     // 密码
        *     password: string
        *     // 邮箱
-       *     email: string
+       *     email: object
        *     // 手机号码
-       *     phone: string
+       *     phone: object
        *     // 性别
-       *     sex: string
+       *     sex: object
        *     // 头像
-       *     avatar: string
+       *     avatar: object
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *     // 角色列表
        *     // [items] start
        *     // [items] end
@@ -5659,11 +5345,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: string
+       *       createBy: object
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: string
+       *       updateBy: object
        *       // 更新时间
        *       updatedAt: string
        *       // 角色键值
@@ -5673,19 +5359,29 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: string
+       *       remark: object
        *     }>
        *   }>
        * }
        * ```
        */
       findUnallocatedUserPage<
-        Config extends Alova2MethodConfig<FindUnallocatedUserPageForRoleResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysUserEntityWithRolesDto[];
+          }
+        > & {
           data: FindUnallocatedUserPageForRoleReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindUnallocatedUserPageForRoleResDto, 'SystemRoleAuth.findUnallocatedUserPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysUserEntityWithRolesDto[];
+        },
+        'SystemRoleAuth.findUnallocatedUserPage',
+        Config
+      >;
       /**
        * ---
        *
@@ -5880,18 +5576,18 @@ declare global {
        *   pageSize: number
        *   // 总数
        *   total: number
-       *   // 列表
+       * } & {
        *   // [items] start
        *   // [items] end
-       *   data: Array<{
+       *   data?: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: string
+       *     createBy: object
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: string
+       *     updateBy: object
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5899,30 +5595,40 @@ declare global {
        *     // 昵称
        *     nickName: string
        *     // 邮箱
-       *     email: string
+       *     email: object
        *     // 手机号码
-       *     phone: string
+       *     phone: object
        *     // 性别
-       *     sex: string
+       *     sex: object
        *     // 头像
-       *     avatar: string
+       *     avatar: object
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: string
+       *     remark: object
        *   }>
        * }
        * ```
        */
       findPage<
-        Config extends Alova2MethodConfig<FindSystemUserPageResDto> & {
+        Config extends Alova2MethodConfig<
+          PageResDto & {
+            data?: SysUserEntityNoRelationsNoPasswordDto[];
+          }
+        > & {
           data: FindSystemUserPageReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<FindSystemUserPageResDto, 'SystemUser.findPage', Config>;
+      ): Alova2Method<
+        PageResDto & {
+          data?: SysUserEntityNoRelationsNoPasswordDto[];
+        },
+        'SystemUser.findPage',
+        Config
+      >;
       /**
        * ---
        *

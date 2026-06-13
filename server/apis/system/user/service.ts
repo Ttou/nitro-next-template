@@ -5,7 +5,7 @@ import { RemoveReqDto } from '~server/openapi'
 import { ContextService, HashService } from '~server/shared'
 import { SysDictDataEntity, SysUserEntity } from '~shared/database/entities'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
+import { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerDto, UpdateSystemUserReqDto } from './dto'
 
 @Injectable()
 export class SystemUserService {
@@ -109,7 +109,7 @@ export class SystemUserService {
     await this.em.persist(oldRecord).flush()
   }
 
-  async importTemplate(data: ImportSystemUserSerializeDto[]) {
+  async importTemplate(data: ImportSystemUserSerDto[]) {
     let fail = 0
     const items: string[] = []
     const initPassword = await this.contextService.getInitPassword()

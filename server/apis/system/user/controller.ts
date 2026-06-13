@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { FormDataRequest } from 'nestjs-form-data'
 import { CustomStoredFile } from '~server/customs'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, ApiFile, RemoveReqDto } from '~server/openapi'
+import { ApiDoc, ApiFile, RemoveReqDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
-import { CreateSystemUserReqDto, ExportSystemUserSerializeDto, FindSystemUserPageReqDto, FindSystemUserPageResDto, ImportSystemUserReqDto, ImportSystemUserResDto, ImportSystemUserSerializeDto, UpdateSystemUserReqDto } from './dto'
+import { CreateSystemUserReqDto, ExportSystemUserSerDto, FindSystemUserPageReqDto, ImportSystemUserReqDto, ImportSystemUserResDto, ImportSystemUserSerDto, SysUserEntityNoRelationsNoPasswordDto, UpdateSystemUserReqDto } from './dto'
 import { SystemUserService } from './service'
 
 @ApiTags('系统用户接口')
@@ -17,7 +17,7 @@ export class SystemUserController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiOperation({ summary: '创建系统用户' })
+  @ApiDoc({ endpointSummary: '创建系统用户' })
   @Permission('sys.menu.system.user.create')
   @Operate()
   @Post('create')
@@ -25,8 +25,7 @@ export class SystemUserController {
     return await this.systemUserService.create(dto)
   }
 
-  @ApiOperation({ summary: '查询系统用户分页列表' })
-  @ApiOkResponse({ type: FindSystemUserPageResDto })
+  @ApiDoc({ endpointSummary: '查询系统用户分页列表', responseDto: SysUserEntityNoRelationsNoPasswordDto, isPage: true })
   @Permission('sys.menu.system.user.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
@@ -34,7 +33,7 @@ export class SystemUserController {
     return await this.systemUserService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除系统用户' })
+  @ApiDoc({ endpointSummary: '删除系统用户' })
   @Permission('sys.menu.system.user.remove')
   @Operate()
   @Delete('remove')
@@ -42,7 +41,7 @@ export class SystemUserController {
     return await this.systemUserService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新系统用户' })
+  @ApiDoc({ endpointSummary: '更新系统用户' })
   @Permission('sys.menu.system.user.update')
   @Operate()
   @Post('update')
@@ -50,32 +49,29 @@ export class SystemUserController {
     return await this.systemUserService.update(dto)
   }
 
-  @ApiOperation({ summary: '导出系统用户' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出系统用户', isExcel: true })
   @Permission('sys.menu.system.user.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemUserSerializeDto, data)
+    return this.excelService.exportFile(ExportSystemUserSerDto, data)
   }
 
-  @ApiOperation({ summary: '导出系统用户导入模板' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出系统用户导入模板', isExcel: true })
   @Operate({ ignoreResponse: true })
   @Post('exportTemplate')
   async exportTemplate() {
-    return this.excelService.exportFile(ImportSystemUserSerializeDto, [])
+    return this.excelService.exportFile(ImportSystemUserSerDto, [])
   }
 
-  @ApiOperation({ summary: '导入系统用户' })
-  @ApiOkResponse({ type: ImportSystemUserResDto })
+  @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto })
   @ApiFile()
   @Operate({ ignoreRequest: true })
   @FormDataRequest({ storage: CustomStoredFile })
   @Post('importTemplate')
   async importTemplate(@Body() dto: ImportSystemUserReqDto) {
-    const data = await this.excelService.importFile(ImportSystemUserSerializeDto, dto.file)
+    const data = await this.excelService.importFile(ImportSystemUserSerDto, dto.file)
     return await this.systemUserService.importTemplate(data)
   }
 }

@@ -1,12 +1,12 @@
 import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CustomCacheInterceptor } from '~server/customs'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
+import { ApiDoc, RemoveReqDto, SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { parseMs } from '~shared/utils'
-import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerializeDto, FindSystemDictDetailByKeyReqDto, FindSystemDictDetailByKeyResDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './dto'
+import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
 @ApiTags('字典类型接口')
@@ -18,7 +18,7 @@ export class SystemDictTypeController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiOperation({ summary: '创建字典类型' })
+  @ApiDoc({ endpointSummary: '创建字典类型' })
   @Permission('sys.menu.system.dictType.create')
   @Operate()
   @Post('create')
@@ -26,8 +26,7 @@ export class SystemDictTypeController {
     await this.systemDictTypeService.create(dto)
   }
 
-  @ApiOperation({ summary: '根据字典类型查询字典数据' })
-  @ApiOkResponse({ type: [FindSystemDictDetailByKeyResDto] })
+  @ApiDoc({ endpointSummary: '根据字典类型查询字典数据', responseDto: SysDictDataEntityDto, isArray: true })
   @CacheKey(ctx => `sys_dict:${ctx.switchToHttp().getRequest().query.dictType}`)
   @CacheTTL(parseMs('milliseconds', '1d'))
   @UseInterceptors(CustomCacheInterceptor)
@@ -36,8 +35,7 @@ export class SystemDictTypeController {
     return await this.systemDictTypeService.findByKey(dto)
   }
 
-  @ApiOperation({ summary: '查询字典类型分页列表' })
-  @ApiOkResponse({ type: FindSystemDictTypePageResDto })
+  @ApiDoc({ endpointSummary: '查询字典类型分页列表', responseDto: SysDictTypeEntityDto, isPage: true })
   @Permission('sys.menu.system.dictType.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
@@ -45,7 +43,7 @@ export class SystemDictTypeController {
     return await this.systemDictTypeService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除字典类型' })
+  @ApiDoc({ endpointSummary: '删除字典类型' })
   @Permission('sys.menu.system.dictType.remove')
   @Operate()
   @Delete('remove')
@@ -53,7 +51,7 @@ export class SystemDictTypeController {
     return await this.systemDictTypeService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新字典类型' })
+  @ApiDoc({ endpointSummary: '更新字典类型' })
   @Permission('sys.menu.system.dictType.update')
   @Operate()
   @Post('update')
@@ -61,13 +59,12 @@ export class SystemDictTypeController {
     return await this.systemDictTypeService.update(dto)
   }
 
-  @ApiOperation({ summary: '导出字典类型' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出字典类型', isExcel: true })
   @Permission('sys.menu.system.dictType.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemDictTypeSerializeDto, data)
+    return this.excelService.exportFile(ExportSystemDictTypeSerDto, data)
   }
 }

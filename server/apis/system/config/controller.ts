@@ -1,12 +1,12 @@
 import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { CustomCacheInterceptor } from '~server/customs'
 import { Operate, Permission } from '~server/decorators'
-import { ApiExcelResponse, RemoveReqDto } from '~server/openapi'
+import { ApiDoc, RemoveReqDto, SysConfigEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
 import { parseMs } from '~shared/utils'
-import { CreateSystemConfigReqDto, ExportSystemConfigSerializeDto, FindSystemConfigByKeyReqDto, FindSystemConfigByKeyResDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './dto'
+import { CreateSystemConfigReqDto, ExportSystemConfigSerDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 
 @ApiTags('系统配置接口')
@@ -18,7 +18,7 @@ export class SystemConfigController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiOperation({ summary: '创建系统配置' })
+  @ApiDoc({ endpointSummary: '创建系统配置' })
   @Operate()
   @Permission('sys.menu.system.config.create')
   @Post('create')
@@ -26,8 +26,7 @@ export class SystemConfigController {
     return await this.systemConfigService.create(dto)
   }
 
-  @ApiOperation({ summary: '根据键名查询系统配置' })
-  @ApiOkResponse({ type: FindSystemConfigByKeyResDto })
+  @ApiDoc({ endpointSummary: '根据键名查询系统配置', responseDto: SysConfigEntityDto })
   @CacheKey(ctx => `sys_config:${ctx.switchToHttp().getRequest().query.configKey}`)
   @CacheTTL(parseMs('milliseconds', '1d'))
   @UseInterceptors(CustomCacheInterceptor)
@@ -36,8 +35,7 @@ export class SystemConfigController {
     return await this.systemConfigService.findByKey(dto)
   }
 
-  @ApiOperation({ summary: '查询系统配置分页列表' })
-  @ApiOkResponse({ type: FindSystemConfigPageResDto })
+  @ApiDoc({ endpointSummary: '查询系统配置分页列表', responseDto: SysConfigEntityDto, isPage: true })
   @Permission('sys.menu.system.config.findPage')
   @Operate({ ignoreResponse: true })
   @Post('findPage')
@@ -45,7 +43,7 @@ export class SystemConfigController {
     return await this.systemConfigService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除系统配置' })
+  @ApiDoc({ endpointSummary: '删除系统配置' })
   @Permission('sys.menu.system.config.remove')
   @Operate()
   @Delete('remove')
@@ -53,7 +51,7 @@ export class SystemConfigController {
     return await this.systemConfigService.remove(dto)
   }
 
-  @ApiOperation({ summary: '更新系统配置' })
+  @ApiDoc({ endpointSummary: '更新系统配置' })
   @Permission('sys.menu.system.config.update')
   @Operate()
   @Post('update')
@@ -61,13 +59,12 @@ export class SystemConfigController {
     return await this.systemConfigService.update(dto)
   }
 
-  @ApiOperation({ summary: '导出系统配置' })
-  @ApiExcelResponse()
+  @ApiDoc({ endpointSummary: '导出系统配置', isExcel: true })
   @Permission('sys.menu.system.config.export')
   @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemConfigSerializeDto, data)
+    return this.excelService.exportFile(ExportSystemConfigSerDto, data)
   }
 }

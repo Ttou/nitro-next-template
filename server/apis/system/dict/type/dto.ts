@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { ExcelColumn, ExcelFile } from '~server/decorators'
-import { PageReqDto, PageResDto, SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/openapi'
+import { PageReqDto, SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -66,12 +66,10 @@ export class FindSystemDictDetailByKeyReqDto {
 
 export class FindSystemDictDetailByKeyResDto extends SysDictDataEntityDto {}
 
-export class FindSystemDictTypePageResDto extends PageResDto(SysDictTypeEntityDto) {}
-
 @ExcelFile({
   fileName: '系统字典类型.xlsx',
 })
-export class ExportSystemDictTypeSerializeDto implements SysDictTypeEntityDto {
+export class ExportSystemDictTypeSerDto implements SysDictTypeEntityDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 
@@ -86,19 +84,19 @@ export class ExportSystemDictTypeSerializeDto implements SysDictTypeEntityDto {
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark?: string
+  remark: string
 
   @ExcelColumn({ header: '创建人' })
-  createBy?: string
+  createBy: string
 
   @ExcelColumn({ header: '创建时间' })
-  createdAt?: Date
+  createdAt: Date
 
   @ExcelColumn({ header: '更新人' })
-  updateBy?: string
+  updateBy: string
 
   @ExcelColumn({ header: '更新时间' })
-  updatedAt?: Date
+  updatedAt: Date
 
   constructor(partial: any) {
     Object.assign(this, partial)

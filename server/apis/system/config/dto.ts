@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { ExcelColumn, ExcelFile } from '~server/decorators'
-import { PageReqDto, PageResDto, SysConfigEntityDto } from '~server/openapi'
+import { PageReqDto, SysConfigEntityDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -78,14 +78,10 @@ export class UpdateSystemConfigReqDto extends CreateSystemConfigReqDto {
   id: string
 }
 
-export class FindSystemConfigByKeyResDto extends SysConfigEntityDto {}
-
-export class FindSystemConfigPageResDto extends PageResDto(SysConfigEntityDto) {}
-
 @ExcelFile({
   fileName: '系统配置.xlsx',
 })
-export class ExportSystemConfigSerializeDto implements SysConfigEntityDto {
+export class ExportSystemConfigSerDto implements SysConfigEntityDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

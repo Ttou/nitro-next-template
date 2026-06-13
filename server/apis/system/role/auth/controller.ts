@@ -1,7 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindAllocatedUserPageForRoleResDto, FindUnallocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleResDto, UnallocateUserForRoleReqDto } from './dto'
+import { ApiDoc } from '~server/openapi'
+import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, SysUserEntityWithRolesDto, UnallocateUserForRoleReqDto } from './dto'
 import { SystemRoleAuthService } from './service'
 
 @ApiTags('系统角色权限接口')
@@ -12,7 +13,7 @@ export class SystemRoleAuthController {
     private systemRoleAuthService: SystemRoleAuthService,
   ) {}
 
-  @ApiOperation({ summary: '为角色分配用户' })
+  @ApiDoc({ endpointSummary: '为角色分配用户' })
   @Permission('sys.menu.system.roleAuth.allocateUser')
   @Operate()
   @Post('allocateUser')
@@ -20,8 +21,7 @@ export class SystemRoleAuthController {
     await this.systemRoleAuthService.allocateUser(dto)
   }
 
-  @ApiOperation({ summary: '查询角色已分配用户分页' })
-  @ApiOkResponse({ type: FindAllocatedUserPageForRoleResDto })
+  @ApiDoc({ endpointSummary: '查询角色已分配用户分页', responseDto: SysUserEntityWithRolesDto, isPage: true })
   @Permission('sys.menu.system.roleAuth.findAllocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findAllocatedUserPage')
@@ -29,8 +29,7 @@ export class SystemRoleAuthController {
     return await this.systemRoleAuthService.findAllocatedUserPage(dto)
   }
 
-  @ApiOperation({ summary: '查询角色未分配用户分页' })
-  @ApiOkResponse({ type: FindUnallocatedUserPageForRoleResDto })
+  @ApiDoc({ endpointSummary: '查询角色未分配用户分页', responseDto: SysUserEntityWithRolesDto, isPage: true })
   @Permission('sys.menu.system.roleAuth.findUnallocatedUserPage')
   @Operate({ ignoreResponse: true })
   @Post('findUnallocatedUserPage')
@@ -38,7 +37,7 @@ export class SystemRoleAuthController {
     return await this.systemRoleAuthService.findUnallocatedUserPage(dto)
   }
 
-  @ApiOperation({ summary: '为角色取消分配用户' })
+  @ApiDoc({ endpointSummary: '为角色取消分配用户' })
   @Permission('sys.menu.system.roleAuth.unallocateUser')
   @Operate()
   @Post('unallocateUser')

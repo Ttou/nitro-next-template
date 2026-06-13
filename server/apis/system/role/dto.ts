@@ -58,12 +58,10 @@ export class UpdateSystemRoleReqDto extends CreateSystemRoleReqDto {
   id: string
 }
 
-export class FindSystemRolePageResDto extends PageResDto(SysRoleEntityExcludeRelationDto) {}
-
 @ExcelFile({
   fileName: '系统角色.xlsx',
 })
-export class ExportSystemRoleSerializeDto implements SysRoleEntityExcludeRelationDto {
+export class ExportSystemRoleSerDto implements SysRoleEntityExcludeRelationDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

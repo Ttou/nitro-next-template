@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Operate, Permission } from '~server/decorators'
-import { FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
+import { ApiDoc } from '~server/openapi'
+import { FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
 import { MonitorCacheService } from './service'
 
 @ApiTags('缓存监控接口')
@@ -12,7 +13,7 @@ export class MonitorCacheController {
     private monitorCacheService: MonitorCacheService,
   ) {}
 
-  @ApiOperation({ summary: '查询缓存列表' })
+  @ApiDoc({ endpointSummary: '查询缓存列表', responseDto: FindMonitorCachePageItemResDto, isPage: true })
   @Operate({ ignoreResponse: true })
   @Permission('sys.menu.monitor.cache.findPage')
   @Post('findPage')
@@ -20,7 +21,7 @@ export class MonitorCacheController {
     return await this.monitorCacheService.findPage(dto)
   }
 
-  @ApiOperation({ summary: '删除缓存' })
+  @ApiDoc({ endpointSummary: '删除缓存' })
   @Operate()
   @Permission('sys.menu.monitor.cache.remove')
   @Delete('remove')
@@ -28,7 +29,7 @@ export class MonitorCacheController {
     return await this.monitorCacheService.remove(dto)
   }
 
-  @ApiOperation({ summary: '清空缓存' })
+  @ApiDoc({ endpointSummary: '清空缓存' })
   @Operate()
   @Permission('sys.menu.monitor.cache.clear')
   @Delete('clear')

@@ -1,65 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { LoginReqDto } from '~web/apis/globals'
-import { Icon } from '@iconify/vue'
-import { pascalCase, uniqBy } from 'es-toolkit'
+import { uniqBy } from 'es-toolkit'
 import { defineStore } from 'pinia'
-import { h, ref } from 'vue'
-import { MenuTypeEnum, YesOrNoEnum } from '~shared/enums'
-import { DefaultLayout } from '~web/layouts'
-import { listToTree } from '~web/utils'
+import { ref } from 'vue'
+import { MenuTypeEnum } from '~shared/enums'
 
-const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
-function loadComponent(component: string) {
-  return ['vue']
-    .map(v => routeComponents[`../views/biz/${component}/index.${v}`])
-    .find(v => !!v)
-}
-
-async function createMenus(menus: any[]) {
-  const res: any[] = []
-
-  for (const menu of menus) {
-    const temp = { ...menu }
-
-    temp.meta = {
-      hideInSidebar: temp.isVisible === YesOrNoEnum.NO,
-      title: temp.menuName,
-      icon: temp.icon ? () => h(Icon, { icon: temp.icon }) : null,
-    }
-    temp.name = pascalCase(menu.menuKey)
-
-    if (menu.parentId === null) {
-      temp.component = DefaultLayout
-    }
-    else if (menu.component === null) {
-      // 新的 vue-router 已经不需要设置二级菜单的组件了
-    }
-    else {
-      const component = loadComponent(menu.component)!
-
-      if (component) {
-        const module: any = await component()
-
-        temp.component = component
-        temp.meta.noCache = temp.isCache === YesOrNoEnum.YES
-
-        // 设置异步组件名称以支持缓存
-        module.default.name = temp.name
-      }
-      else {
-        console.warn('配置的页面不存在：', menu.component)
-      }
-    }
-
-    if (temp.children) {
-      temp.children = await createMenus(temp.children)
-    }
-
-    res.push(temp)
-  }
-
-  return res
-}
+import { createMenus, listToTree } from '~web/utils'
 
 export const useUserStore = defineStore(
   'user',

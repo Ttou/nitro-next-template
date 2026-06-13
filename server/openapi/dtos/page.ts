@@ -16,23 +16,15 @@ export class PageReqDto {
   pageSize: number
 }
 
-/**
- * 分页响应传输对象
- * @param {T} classRef 列表类
- */
-export function PageResDto<T>(classRef: T) {
-  class Page {
-    @ApiProperty({ description: '页码' })
-    page: number
+export class PageResDto<T = any> {
+  @ApiProperty({ description: '页码' })
+  page: number
 
-    @ApiProperty({ description: '页长' })
-    pageSize: number
+  @ApiProperty({ description: '页长' })
+  pageSize: number
 
-    @ApiProperty({ description: '总数' })
-    total: number
+  @ApiProperty({ description: '总数' })
+  total: number
 
-    @ApiProperty({ description: '列表', type: [classRef] })
-    data: T[]
-  }
-  return Page
+  data: T[]
 }

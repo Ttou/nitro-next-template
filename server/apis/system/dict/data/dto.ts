@@ -52,12 +52,10 @@ export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
   id: string
 }
 
-export class FindSystemDictDataListResDto extends SysDictDataEntityDto {}
-
 @ExcelFile({
   fileName: '系统字典数据.xlsx',
 })
-export class ExportSystemDictDataSerializeDto implements SysDictDataEntityDto {
+export class ExportSystemDictDataSerDto implements SysDictDataEntityDto {
   @ExcelColumn({ header: 'ID' })
   id: string
 

@@ -1,7 +1,7 @@
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { PageReqDto, PageResDto, SysLangEntityDto } from '~server/openapi'
+import { PageReqDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
 import { LangEnumMap, LangEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -73,7 +73,3 @@ export class UpdateSystemLangReqDto extends CreateSystemLangReqDto {
   @IsUUID('7', { message: 'ID格式不正确' })
   id: string
 }
-
-export class FindSystemLangOneResDto extends SysLangEntityDto {}
-
-export class FindSystemLangPageResDto extends PageResDto(SysLangEntityDto) {}
