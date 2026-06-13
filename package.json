@@ -6,7 +6,9 @@
     "dev": "jiti scripts/dev",
     "build": "cross-env APP_ENV=prod vite build",
     "start": "node --env-file .env.deploy .output/server/index.mjs",
-    "gen:apis": "alova gen -f"
+    "gen:apis": "alova gen -f",
+    "db:init": "jiti scripts/db-init",
+    "db:seed": "jiti scripts/db-seed"
   },
   "dependencies": {
     "@alova/adapter-axios": "2.0.18",

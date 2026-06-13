@@ -1,7 +1,7 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core'
 
 import { Seeder } from '@mikro-orm/seeder'
-import { YesOrNoEnum } from '~shared/enums'
+import { YesOrNoEnum } from '../../enums'
 import { SysPostEntity } from '../entities'
 
 export class SysPostSeeder extends Seeder {

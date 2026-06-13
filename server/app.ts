@@ -12,19 +12,7 @@ import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
 import pinoPretty from 'pino-pretty'
-import {
-  SysConfigEntity,
-  SysDeptEntity,
-  SysDictDataEntity,
-  SysDictTypeEntity,
-  SysLangEntity,
-  SysMenuEntity,
-  SysOnlineEntity,
-  SysOperateEntity,
-  SysPostEntity,
-  SysRoleEntity,
-  SysUserEntity,
-} from '~shared/database/entities'
+import * as entities from '~shared/database/entities'
 import { ApisModule } from './apis'
 import { ConfigSchema, configuration } from './configs'
 import { CustomOrmLogger } from './customs'
@@ -121,19 +109,7 @@ import { SharedModule } from './shared'
       useFactory: (configService: ConfigService) => {
         return {
           ...configService.get<ConfigSchema['orm']>('orm')!,
-          entities: [
-            SysConfigEntity,
-            SysDeptEntity,
-            SysDictDataEntity,
-            SysDictTypeEntity,
-            SysLangEntity,
-            SysMenuEntity,
-            SysPostEntity,
-            SysRoleEntity,
-            SysUserEntity,
-            SysOnlineEntity,
-            SysOperateEntity,
-          ],
+          entities: Object.values(entities),
           loggerFactory: options => new CustomOrmLogger(options),
         }
       },
