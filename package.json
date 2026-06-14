@@ -33,7 +33,6 @@
     "@nestjs/common": "11.1.26",
     "@nestjs/config": "4.0.4",
     "@nestjs/core": "11.1.26",
-    "@nestjs/jwt": "11.0.2",
     "@nestjs/platform-fastify": "11.1.26",
     "@nestjs/swagger": "11.4.4",
     "@scalar/nestjs-api-reference": "1.2.3",
