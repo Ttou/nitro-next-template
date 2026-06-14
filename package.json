@@ -41,7 +41,7 @@
     "@xlt-token/nestjs": "1.2.0",
     "alova": "3.5.1",
     "axios": "1.17.0",
-    "bullmq": "5.78.0",
+    "bullmq": "5.78.1",
     "cache-manager": "7.2.8",
     "class-transformer": "0.5.1",
     "class-validator": "0.15.1",
