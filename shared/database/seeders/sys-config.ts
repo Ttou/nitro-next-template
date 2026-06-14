@@ -1,5 +1,4 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core'
-
 import { Seeder } from '@mikro-orm/seeder'
 import { YesOrNoEnum } from '../../enums'
 import { SysConfigEntity } from '../entities'
@@ -20,14 +19,6 @@ export class SysConfigSeeder extends Seeder {
       configValue: '123456',
       isBuiltin: YesOrNoEnum.YES,
       isAvailable: YesOrNoEnum.YES,
-    })
-    em.create(SysConfigEntity, {
-      configName: '账号单机在线',
-      configKey: 'sys.user.singleOnline',
-      configValue: '1',
-      isBuiltin: YesOrNoEnum.YES,
-      isAvailable: YesOrNoEnum.YES,
-      remark: '0-多机在线，1-单机在线',
     })
   }
 }
