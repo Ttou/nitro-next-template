@@ -18,14 +18,14 @@
 
     "baseUrl": ".",
     "paths": {
-      "~web/*": ["src/*"],
+      "~web/*": ["web/*"],
       "~shared/*": ["shared/*"],
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
+    "web/**/*.ts",
+    "web/**/*.tsx",
+    "web/**/*.vue",
     "shared/**/*.ts",
     "types/**/*.d.ts",
   ]

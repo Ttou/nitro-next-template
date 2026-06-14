@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       alias: [
         {
           find: '~web/',
-          replacement: `${resolve(__dirname, 'src')}/`,
+          replacement: `${resolve(__dirname, 'web')}/`,
         },
         {
           find: '~shared/',

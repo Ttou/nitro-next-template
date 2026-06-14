@@ -4,7 +4,7 @@ export default defineConfig({
   generator: [
     {
       input: 'http://localhost:3000/openapi-json',
-      output: 'src/apis',
+      output: 'web/apis',
       global: 'Apis',
       globalHost: 'globalThis',
       handleApi: (apiDescriptor) => {
