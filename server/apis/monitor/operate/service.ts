@@ -21,6 +21,7 @@ export class MonitorOperateService {
             userName: rest.userName ? { $like: `%${rest.userName}%` } : {},
             nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {},
           },
+          summary: rest.summary ? { $like: `%${rest.summary}%` } : {},
           operateTime: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {},
         },
       ],

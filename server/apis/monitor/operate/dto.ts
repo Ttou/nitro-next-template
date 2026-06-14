@@ -6,6 +6,10 @@ import { PageReqDto, SysOperateEntityExcludeRelationDto, SysUserEntityExcludeRel
  * 分页查询操作日志请求
  */
 export class FindMonitorOperatePageReqDto extends PageReqDto {
+  @ApiPropertyOptional({ description: '操作摘要' })
+  @IsOptional()
+  summary?: string
+
   @ApiPropertyOptional({ description: '用户名' })
   @IsOptional()
   userName?: string

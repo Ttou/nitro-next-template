@@ -9,17 +9,15 @@ const pageInstance = useTemplateRef('pageInstance')
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '请求概述',
+    label: '操作摘要',
     prop: 'summary',
     minWidth: 300,
-    valueType: 'text',
     fieldProps: {
       type: 'info',
     },
     tableColumnProps: {
       align: 'center',
     },
-    hideInSearch: true,
   },
   {
     label: '请求链接',

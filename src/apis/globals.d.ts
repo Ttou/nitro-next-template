@@ -176,14 +176,6 @@ export interface FindMonitorOnlinePageReqDto {
    * 昵称
    */
   nickName?: string;
-  /**
-   * 开始时间
-   */
-  beginTime?: string;
-  /**
-   * 结束时间
-   */
-  endTime?: string;
 }
 export interface RemoveReqDto {
   /**
@@ -200,6 +192,10 @@ export interface FindMonitorOperatePageReqDto {
    * 页长
    */
   pageSize: number;
+  /**
+   * 操作摘要
+   */
+  summary?: string;
   /**
    * 用户名
    */
@@ -1381,6 +1377,64 @@ export interface FindMonitorCachePageItemResDto {
    */
   ttl: number;
 }
+export interface FindMonitorOnlinePageResDto {
+  /**
+   * 主键
+   */
+  id: string;
+  /**
+   * 创建人
+   */
+  createBy: object;
+  /**
+   * 创建时间
+   */
+  createdAt: string;
+  /**
+   * 更新人
+   */
+  updateBy: object;
+  /**
+   * 更新时间
+   */
+  updatedAt: string;
+  /**
+   * 账号
+   */
+  userName: string;
+  /**
+   * 昵称
+   */
+  nickName: string;
+  /**
+   * 邮箱
+   */
+  email: object;
+  /**
+   * 手机号码
+   */
+  phone: object;
+  /**
+   * 性别
+   */
+  sex: object;
+  /**
+   * 头像
+   */
+  avatar: object;
+  /**
+   * 是否可用
+   */
+  isAvailable: '0' | '1';
+  /**
+   * 是否删除
+   */
+  isDelete: '0' | '1';
+  /**
+   * 备注
+   */
+  remark: object;
+}
 export interface UserAgentSerDto {
   /**
    * 浏览器名称
@@ -1492,40 +1546,6 @@ export interface SysUserEntityExcludeRelationDto {
    * 备注
    */
   remark: object;
-}
-export interface SysOnlineEntityExcludeTokenDto {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 会话ID
-   */
-  tokenId: string;
-  /**
-   * IP地址
-   */
-  ip: string;
-  /**
-   * 位置
-   */
-  location: string;
-  /**
-   * 用户代理
-   */
-  userAgent: string;
-  /**
-   * 用户代理解析
-   */
-  userAgentParsed: UserAgentSerDto;
-  /**
-   * 登录时间
-   */
-  loginTime: string;
-  /**
-   * 用户
-   */
-  user: SysUserEntityExcludeRelationDto;
 }
 export interface SysOperateLogEntityWithUserDto {
   /**
@@ -2532,10 +2552,6 @@ declare global {
        *   userName?: string
        *   // 昵称
        *   nickName?: string
-       *   // 开始时间
-       *   beginTime?: string
-       *   // 结束时间
-       *   endTime?: string
        * }
        * ```
        *
@@ -2556,76 +2572,32 @@ declare global {
        *   data?: Array<{
        *     // 主键
        *     id: string
-       *     // 会话ID
-       *     tokenId: string
-       *     // IP地址
-       *     ip: string
-       *     // 位置
-       *     location: string
-       *     // 用户代理
-       *     userAgent: string
-       *     // 用户代理解析
-       *     userAgentParsed: {
-       *       // 浏览器名称
-       *       browserName: string
-       *       // 浏览器版本
-       *       browserVersion: string
-       *       // 浏览器主版本号
-       *       browserMajor: string
-       *       // 浏览器类型
-       *       browserType: string
-       *       // CPU 架构
-       *       cpuArchitecture: string
-       *       // 设备类型
-       *       deviceType: string
-       *       // 设备型号
-       *       deviceModel: string
-       *       // 设备供应商
-       *       deviceVendor: string
-       *       // 浏览器引擎名称
-       *       engineName: string
-       *       // 浏览器引擎版本
-       *       engineVersion: string
-       *       // 操作系统名称
-       *       osName: string
-       *       // 操作系统版本
-       *       osVersion: string
-       *     }
-       *     // 登录时间
-       *     loginTime: string
-       *     // 用户
-       *     user: {
-       *       // 主键
-       *       id: string
-       *       // 创建人
-       *       createBy: object
-       *       // 创建时间
-       *       createdAt: string
-       *       // 更新人
-       *       updateBy: object
-       *       // 更新时间
-       *       updatedAt: string
-       *       // 账号
-       *       userName: string
-       *       // 昵称
-       *       nickName: string
-       *       // 密码
-       *       password: string
-       *       // 邮箱
-       *       email: object
-       *       // 手机号码
-       *       phone: object
-       *       // 性别
-       *       sex: object
-       *       // 头像
-       *       avatar: object
-       *       // 是否可用
-       *       isAvailable: '0' | '1'
-       *       // 是否删除
-       *       isDelete: '0' | '1'
-       *       // 备注
-       *       remark: object
-       *     }
+       *     // 创建人
+       *     createBy: object
+       *     // 创建时间
+       *     createdAt: string
+       *     // 更新人
+       *     updateBy: object
+       *     // 更新时间
+       *     updatedAt: string
+       *     // 账号
+       *     userName: string
+       *     // 昵称
+       *     nickName: string
+       *     // 邮箱
+       *     email: object
+       *     // 手机号码
+       *     phone: object
+       *     // 性别
+       *     sex: object
+       *     // 头像
+       *     avatar: object
+       *     // 是否可用
+       *     isAvailable: '0' | '1'
+       *     // 是否删除
+       *     isDelete: '0' | '1'
+       *     // 备注
+       *     remark: object
        *   }>
        * }
        * ```
@@ -2633,7 +2605,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysOnlineEntityExcludeTokenDto[];
+            data?: FindMonitorOnlinePageResDto[];
           }
         > & {
           data: FindMonitorOnlinePageReqDto;
@@ -2642,7 +2614,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysOnlineEntityExcludeTokenDto[];
+          data?: FindMonitorOnlinePageResDto[];
         },
         'MonitorOnline.findPage',
         Config
@@ -2698,6 +2670,8 @@ declare global {
        *   page: number
        *   // 页长
        *   pageSize: number
+       *   // 操作摘要
+       *   summary?: string
        *   // 用户名
        *   userName?: string
        *   // 昵称
