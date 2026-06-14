@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysPostEntity, SysUserEntity } from '~shared/database/entities'
+import type { SysPostEntity, SysUserEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'

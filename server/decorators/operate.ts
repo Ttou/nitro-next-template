@@ -1,5 +1,5 @@
 import type { IRequest } from '~server/interfaces'
-import type { SysUserEntity } from '~shared/database/entities'
+import type { SysUserEntity } from '~shared/db/entities'
 import { Reflector } from '@nestjs/core'
 
 interface OperateOptions {

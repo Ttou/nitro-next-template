@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'
 import { RemoveReqDto } from '~server/openapi'
-import { SysUserEntity } from '~shared/database/entities'
+import { SysUserEntity } from '~shared/db/entities'
 import { FindMonitorOnlinePageReqDto } from './dto'
 
 @Injectable()

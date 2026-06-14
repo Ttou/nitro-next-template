@@ -3,7 +3,7 @@ import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/shared'
-import { SysMenuEntity } from '~shared/database/entities'
+import { SysMenuEntity } from '~shared/db/entities'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 
 @Injectable()

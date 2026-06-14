@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/core'
 import { MySqlDriver } from '@mikro-orm/mysql'
-import * as entities from '../shared/database/entities'
+import * as entities from '../shared/db/entities'
 
 export async function getOrm() {
   return await MikroORM.init({

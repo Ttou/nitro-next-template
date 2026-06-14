@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysLangEntity } from '~shared/database/entities'
+import type { SysLangEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty } from '@nestjs/swagger'
 import { YesOrNoEnumMap } from '~shared/enums'

@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
-import { SysRoleEntity } from '~shared/database/entities'
+import { SysRoleEntity } from '~shared/db/entities'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 
 @Injectable()

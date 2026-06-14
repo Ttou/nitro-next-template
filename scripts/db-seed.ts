@@ -1,5 +1,5 @@
 import { exit } from 'node:process'
-import { DatabaseSeeders } from '../shared/database/seeders'
+import { DatabaseSeeders } from '../shared/db/seeders'
 import { getOrm } from './db-util'
 
 async function run() {

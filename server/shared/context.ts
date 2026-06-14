@@ -8,7 +8,7 @@ import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
 import { QueueNameEnum } from '~server/queues'
-import { BaseEntity, SysConfigEntity, SysUserEntity } from '~shared/database/entities'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()

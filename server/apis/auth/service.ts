@@ -6,7 +6,7 @@ import { StpLogic } from '@xlt-token/core'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { ErrorEnum } from '~server/constants'
 import { CaptchaService, ContextService, HashService } from '~server/shared'
-import { SysUserEntity } from '~shared/database/entities'
+import { SysUserEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { LoginReqDto } from './dto'
 
