@@ -1,22 +1,20 @@
 allowBuilds:
-  '@nestjs/core': true
-  '@scarf/scarf': true
+  "@nestjs/core": true
+  "@scarf/scarf": true
   esbuild: true
   msgpackr-extract: true
 minimumReleaseAgeExclude:
-  - '@cj-tech-master/excelts@9.6.1'
-  - '@scalar/client-side-rendering@0.2.2'
-  - '@scalar/helpers@0.8.2'
-  - '@scalar/nestjs-api-reference@1.2.2'
-  - '@scalar/schemas@0.4.2'
-  - '@scalar/types@0.13.2'
-  - '@scalar/client-side-rendering@0.2.3'
-  - '@scalar/nestjs-api-reference@1.2.3'
-  - '@scalar/schemas@0.4.3'
-  - '@scalar/types@0.13.3'
+  - "@cj-tech-master/excelts@9.6.1"
+  - "@scalar/client-side-rendering@0.2.2"
+  - "@scalar/helpers@0.8.2"
+  - "@scalar/nestjs-api-reference@1.2.2"
+  - "@scalar/schemas@0.4.2"
+  - "@scalar/types@0.13.2"
+  - "@scalar/client-side-rendering@0.2.3"
+  - "@scalar/nestjs-api-reference@1.2.3"
+  - "@scalar/schemas@0.4.3"
+  - "@scalar/types@0.13.3"
   - element-plus@2.14.2
   - es-toolkit@1.47.1
-  - '@cj-tech-master/excelts@10.2.0'
+  - "@cj-tech-master/excelts@10.2.0"
   - eslint@10.5.0
-patchedDependencies:
-  '@xlt-token/nestjs@1.1.0': patches/@xlt-token__nestjs@1.1.0.patch
