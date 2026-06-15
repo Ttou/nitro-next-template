@@ -75,6 +75,7 @@ export function ApiDoc(options: ApiDocOptions) {
           allOf: [
             { $ref: getSchemaPath(PageResDto) },
             {
+              required: ['data'],
               properties: {
                 data: {
                   type: 'array',

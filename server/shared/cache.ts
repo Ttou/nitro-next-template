@@ -1,8 +1,7 @@
 import type { StringValue } from 'ms'
-import type { ConfigSchema } from '~server/configs'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { SharedConfig } from '~server/configs'
 import { parseMs } from '~shared/utils'
 import { RedisExtendService } from './redis-extend'
 
@@ -10,12 +9,10 @@ import { RedisExtendService } from './redis-extend'
 export class CacheService {
   private readonly logger = new Logger(CacheService.name)
   private readonly cacheKeyPrefix = 'cache'
-  private readonly cacheKeySeparator = ':'
   private readonly cacheTTL = '15m'
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private configService: ConfigService,
     private redisExtendService: RedisExtendService,
   ) {}
 
@@ -82,6 +79,6 @@ export class CacheService {
   }
 
   getKey(key: string) {
-    return [this.configService.get<ConfigSchema['appName']>('appName'), this.cacheKeyPrefix, key].join(this.cacheKeySeparator)
+    return [SharedConfig.appName, this.cacheKeyPrefix, key].join(SharedConfig.redisKeySeparator)
   }
 }

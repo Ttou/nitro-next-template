@@ -3,20 +3,17 @@ import type { RedisClient } from '~server/interfaces'
 import { createCanvas } from '@napi-rs/canvas'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { toLower } from 'es-toolkit/compat'
-import { ConfigSchema } from '~server/configs'
+import { SharedConfig } from '~server/configs'
 import { generateId, parseMs } from '~shared/utils'
 
 @Injectable()
 export class CaptchaService {
   private readonly captchaKeyPrefix = 'captcha'
-  private readonly captchaKeyPrefixSeparator = ':'
   private readonly captchaKeyExpire: StringValue = '3m'
 
   constructor(
     @InjectRedis() private redisClient: RedisClient,
-    private configService: ConfigService,
   ) {}
 
   async image() {
@@ -193,6 +190,6 @@ export class CaptchaService {
   }
 
   private getKey(captchaId: string) {
-    return [this.configService.get<ConfigSchema['appName']>('appName'), this.captchaKeyPrefix, captchaId].join(this.captchaKeyPrefixSeparator)
+    return [SharedConfig.appName, this.captchaKeyPrefix, captchaId].join(SharedConfig.redisKeySeparator)
   }
 }
