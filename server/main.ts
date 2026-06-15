@@ -7,7 +7,7 @@ import { apiReference } from '@scalar/nestjs-api-reference'
 import { Logger } from 'nestjs-pino'
 import { generateId } from '~shared/utils'
 import { AppModule } from './app'
-import { IsDev } from './utils'
+import { APP_ENV, AppEnvEnum } from './constants'
 
 async function bootstrap() {
   const nestApp = await NestFactory.create<NestFastifyApplication>(
@@ -34,7 +34,7 @@ async function bootstrap() {
   nestApp.flushLogs()
   // #endregion
 
-  if (IsDev) {
+  if (APP_ENV === AppEnvEnum.DEV) {
     // #region Swagger 接口文档配置
     const config = new DocumentBuilder()
       .setTitle('Nitro Template')

@@ -1,30 +1,19 @@
-import type { ConfigSchema } from '../configs'
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter'
 import { BullBoardModule } from '@bull-board/nestjs'
 import { BullModule } from '@nestjs/bullmq'
 import { Global, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { BullBoardConfig, BullConfig } from '../configs'
 import { QueueNameEnum } from './constant'
 import { OperateQueue } from './operate'
 
 @Global()
 @Module({
   imports: [
-    BullModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        return configService.get<ConfigSchema['bull']>('bull')!
-      },
-      inject: [ConfigService],
-    }),
+    BullModule.forRootAsync(BullConfig.asProvider()),
     BullModule.registerQueue(
       { name: QueueNameEnum.OPERATE },
     ),
-    BullBoardModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        return configService.get<ConfigSchema['bullBoard']>('bullBoard')!
-      },
-      inject: [ConfigService],
-    }),
+    BullBoardModule.forRootAsync(BullBoardConfig.asProvider()),
     BullBoardModule.forFeature(
       {
         name: QueueNameEnum.OPERATE,

@@ -1,18 +1,14 @@
+import type { IHashConfig } from '~server/configs'
 import { getRandomValues } from 'node:crypto'
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Inject, Injectable } from '@nestjs/common'
 import { bcrypt, bcryptVerify } from 'hash-wasm'
-import { ConfigSchema } from '~server/configs'
+import { HashConfig } from '~server/configs'
 
 @Injectable()
 export class HashService {
   constructor(
-    private configService: ConfigService,
+    @Inject(HashConfig.KEY) private hashConfig: IHashConfig,
   ) {}
-
-  get options() {
-    return this.configService.get<ConfigSchema['hash']>('hash')
-  }
 
   /**
    * 加密
@@ -20,7 +16,7 @@ export class HashService {
   async bcryptCrypto(value: string) {
     return await bcrypt({
       password: value,
-      ...this.options.bcrypt!,
+      ...this.hashConfig.bcrypt!,
     })
   }
 
