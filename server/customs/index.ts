@@ -1,4 +1,5 @@
 export * from './cache-interceptor'
 export * from './orm-logger'
 export * from './stored-file'
-export * from './stp'
+export * from './xlt-redis'
+export * from './xlt-stp'

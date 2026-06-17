@@ -1,4 +1,4 @@
-import { createClient } from '@keyv/redis'
+import type { OnApplicationShutdown } from '@nestjs/common'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
@@ -7,7 +7,7 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { JwtStrategy, RedisStore, XLT_REDIS_CLIENT, XltTokenModule } from '@xlt-token/nestjs'
+import { JwtStrategy, XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
@@ -22,15 +22,17 @@ import {
   LoggerConfig,
   MikroOrmConfig,
   RedisConfig,
-  SharedConfig,
   XltTokenConfig,
 } from './configs'
+import { CustomXltRedis } from './customs'
 import { DefaultFilter } from './filters'
 import { AuthGuard } from './guards'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
-import { getRedisUrl } from './utils'
+
+const customXltRedis = new CustomXltRedis()
+await customXltRedis.init()
 
 @Module({
   imports: [
@@ -77,18 +79,8 @@ import { getRedisUrl } from './utils'
         useClass: JwtStrategy,
       },
       store: {
-        useClass: RedisStore,
+        useValue: customXltRedis.getStore(),
       },
-      providers: [
-        {
-          provide: XLT_REDIS_CLIENT,
-          useFactory: async () => {
-            const client = createClient({ url: getRedisUrl(SharedConfig.redis) })
-            await client.connect()
-            return client
-          },
-        },
-      ],
       ...XltTokenConfig.asProvider(),
     }),
     QueuesModule,
@@ -122,4 +114,8 @@ import { getRedisUrl } from './utils'
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationShutdown {
+  async onApplicationShutdown(signal?: string) {
+    await customXltRedis.close()
+  }
+}

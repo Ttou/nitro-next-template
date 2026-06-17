@@ -3,7 +3,7 @@ import type { XltTokenModuleOptions } from '@xlt-token/nestjs'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
-import { CustomStp } from '~server/customs'
+import { CustomXltStp } from '~server/customs'
 
 export const XltTokenConfig = registerAs('xlt-token', () => {
   return match(APP_ENV)
@@ -19,7 +19,7 @@ export const XltTokenConfig = registerAs('xlt-token', () => {
           issuer: 'xlt-token',
         },
       },
-      stpInterface: CustomStp,
+      stpInterface: CustomXltStp,
     }))
     .with(AppEnvEnum.PROD, () => ({}))
     .run()
