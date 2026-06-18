@@ -4,6 +4,7 @@ import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { omit } from 'es-toolkit'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
@@ -77,6 +78,8 @@ export class ContextService {
    * 添加操作日志
    */
   async addOperate(data: SysOperateEntityDto) {
+    // 移除用户关联表属性
+    data.user = omit(data.user, ['roles', 'posts', 'depts'])
     await this.operateQueue.add('', data)
   }
 

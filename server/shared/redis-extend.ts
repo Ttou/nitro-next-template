@@ -2,27 +2,9 @@ import type { RedisClient } from '~server/interfaces'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import { Injectable, Logger } from '@nestjs/common'
 
-import { delay } from '~shared/utils'
-
 @Injectable()
 export class RedisExtendService {
   private readonly logger = new Logger(RedisExtendService.name)
-  /**
-   * 每次扫描的键数量
-   */
-  private readonly batchSize = 1000
-  /**
-   * 最大扫描键数量
-   */
-  private readonly maxKeys = 10000
-  /**
-   * 最大扫描迭代次
-   */
-  private readonly maxIterations = 100
-  /**
-   * 每次扫描之间的延迟时间（毫秒）
-   */
-  private readonly delayBetweenBatches = 0
 
   constructor(
     @InjectRedis() private redisClient: RedisClient,
@@ -60,34 +42,16 @@ export class RedisExtendService {
   private async scanKeys(pattern: string): Promise<string[]> {
     let cursor = '0'
     const allKeys: string[] = []
-    let iterations = 0
 
     do {
       const [nextCursor, keys] = await this.redisClient.scan(
         cursor,
         'MATCH',
         pattern,
-        'COUNT',
-        this.batchSize,
       )
 
       cursor = nextCursor
-      Array.prototype.push.apply(allKeys, keys)
-      iterations++
-
-      if (iterations > this.maxIterations) {
-        this.logger.warn(`SCAN 超过最大迭代次数: ${this.maxIterations}`)
-        break
-      }
-
-      if (allKeys.length >= this.maxKeys) {
-        this.logger.warn(`达到最大 keys 数量限制: ${this.maxKeys}`)
-        break
-      }
-
-      if (this.delayBetweenBatches > 0) {
-        await delay(this.delayBetweenBatches)
-      }
+      allKeys.push(...keys)
     } while (cursor !== '0')
 
     return allKeys
@@ -110,21 +74,8 @@ export class RedisExtendService {
     const results = await pipeline.exec()
 
     return keys.map((key, index) => {
-      const valueResult = results![index * 2]!
-      const ttlResult = results![index * 2 + 1]!
-
-      const [valueError, value] = valueResult
-      const [ttlError, ttl] = ttlResult
-
-      if (valueError) {
-        this.logger.error(`获取键 ${key} 的值失败: ${valueError.message}`)
-        return { key, value: null, ttl: -1, error: valueError.message }
-      }
-
-      if (ttlError) {
-        this.logger.error(`获取键 ${key} 的 TTL 失败: ${ttlError.message}`)
-        return { key, value: null, ttl: -1, error: ttlError.message }
-      }
+      const [, value] = results![index * 2]!
+      const [, ttl] = results![index * 2 + 1]!
 
       let parsedValue: unknown = value
       if (value) {

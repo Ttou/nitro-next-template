@@ -1,4 +1,3 @@
-import type { OnApplicationShutdown } from '@nestjs/common'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
@@ -30,9 +29,6 @@ import { AuthGuard } from './guards'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
-
-const customXltRedis = new CustomXltRedis()
-await customXltRedis.init()
 
 @Module({
   imports: [
@@ -79,7 +75,7 @@ await customXltRedis.init()
         useClass: JwtStrategy,
       },
       store: {
-        useValue: customXltRedis.getStore(),
+        useClass: CustomXltRedis,
       },
       ...XltTokenConfig.asProvider(),
     }),
@@ -114,8 +110,4 @@ await customXltRedis.init()
     },
   ],
 })
-export class AppModule implements OnApplicationShutdown {
-  async onApplicationShutdown(signal?: string) {
-    await customXltRedis.close()
-  }
-}
+export class AppModule {}

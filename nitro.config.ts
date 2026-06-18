@@ -7,14 +7,13 @@ export default defineConfig({
   serverEntry: false,
   imports: false,
   routes: {
-    '/:path(api|bull-ui|health|openapi-(ui|json))/**': {
+    '/:path(api|bull-ui|openapi-(ui|json))/**': {
       handler: './server/main.ts',
       format: 'node',
     },
   },
   routeRules: {
     '/bull-ui/**': { basicAuth: { username: 'bull', password: '123456' } },
-    '/health/**': { basicAuth: { username: 'health', password: '123456' } },
   },
   alias: {
     '~server': resolve(__dirname, 'server'),

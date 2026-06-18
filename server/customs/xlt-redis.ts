@@ -1,24 +1,13 @@
+import type { RedisClient } from '~server/interfaces'
+import { InjectRedis } from '@nestjs-modules/ioredis'
+import { Injectable } from '@nestjs/common'
 import { IORedisStore } from '@xlt-token/store-redis'
-import { Redis } from 'ioredis'
-import { SharedConfig } from '~server/configs'
 
-export class CustomXltRedis {
-  private readonly client = new Redis({ ...SharedConfig.redis, lazyConnect: true })
-
-  async init() {
-    try {
-      await this.client.connect()
-    }
-    catch (error) {
-      console.error(error)
-    }
-  }
-
-  async close() {
-    await this.client?.quit()
-  }
-
-  getStore() {
-    return new IORedisStore(this.client)
+@Injectable()
+export class CustomXltRedis extends IORedisStore {
+  constructor(
+    @InjectRedis() redisClient: RedisClient,
+  ) {
+    super(redisClient)
   }
 }
