@@ -23,7 +23,7 @@ import {
   RedisConfig,
   XltTokenConfig,
 } from './configs'
-import { CustomXltRedis } from './customs'
+import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
 import { AuthGuard } from './guards'
 import { OperateInterceptor } from './interceptors'
@@ -71,6 +71,7 @@ import { SharedModule } from './shared'
     }),
     XltTokenModule.forRootAsync({
       isGlobal: true,
+      stpInterface: CustomXltStp,
       strategy: {
         useClass: JwtStrategy,
       },

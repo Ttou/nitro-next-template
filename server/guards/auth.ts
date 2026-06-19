@@ -20,6 +20,6 @@ export class AuthGuard extends XltAbstractLoginGuard {
   }
 
   protected override async onAuthFail(result, request) {
-
+    console.error(result)
   }
 }

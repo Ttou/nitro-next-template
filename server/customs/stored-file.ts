@@ -1,4 +1,5 @@
 import type { ParticleStoredFile } from 'nestjs-form-data/dist/interfaces/ParticleStoredFile'
+import { Buffer } from 'node:buffer'
 import { Readable } from 'node:stream'
 import { FileSystemStoredFile } from 'nestjs-form-data'
 

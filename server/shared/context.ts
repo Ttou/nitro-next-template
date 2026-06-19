@@ -1,9 +1,10 @@
 import type { Queue } from 'bullmq'
-import type { SysOperateEntityDto } from '~server/openapi'
+import type { SysOperateEntityDto, SysUserEntityDto } from '~server/openapi'
 import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { omitBy, uniqBy } from 'es-toolkit'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
@@ -35,13 +36,20 @@ export class ContextService {
       id: { $eq: loginId },
     }, {
       populate: ['roles.menus'],
+      exclude: ['password'],
     })
 
     if (!user) {
       throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
-    this.clsService.set(ClsKeyEnum.CURRENT_USER, user)
+    const { roles, posts, depts, ...rest } = user as unknown as SysUserEntityDto
+    const roleList = [...roles]
+    const permissions = uniqBy(roleList.map(role => [...role.menus]).flat(1), menu => menu.id).map(menu => menu.menuKey) || []
+    const _roles = roleList.map(role => role.roleKey) || []
+    const currentUser = { ...rest, permissions, roles: _roles }
+
+    this.clsService.set(ClsKeyEnum.CURRENT_USER, currentUser)
   }
 
   /**
@@ -78,8 +86,8 @@ export class ContextService {
    */
   async addOperate(data: SysOperateEntityDto) {
     // 移除用户关联表属性
-    const { roles, posts, depts, ...rest } = data.user
-    await this.operateQueue.add('', rest)
+    const user = omitBy(data.user, val => Array.isArray(val))
+    await this.operateQueue.add('', { ...data, user })
   }
 
   bindCurrentUserToEntity<T extends BaseEntity>(entity: T, bindType: 'create' | 'update') {
