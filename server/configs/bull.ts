@@ -6,11 +6,11 @@ import { APP_ENV, AppEnvEnum } from '~server/constants'
 import { SharedConfig } from './shared'
 
 export const BullConfig = registerAs('bull', () => {
-  const { appName, redis, redisKeySeparator } = SharedConfig
+  const { appName, redis } = SharedConfig
   return match(APP_ENV)
     .returnType<BullRootModuleOptions>()
     .with(AppEnvEnum.DEV, () => ({
-      prefix: [appName, 'bull'].join(redisKeySeparator),
+      prefix: [appName, 'bull'].join(':'),
       connection: {
         ...redis,
       },

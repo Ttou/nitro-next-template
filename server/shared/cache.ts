@@ -9,7 +9,7 @@ import { RedisExtendService } from './redis-extend'
 export class CacheService {
   private readonly logger = new Logger(CacheService.name)
   private readonly cacheKeyPrefix = 'cache'
-  private readonly cacheTTL = '15m'
+  private readonly cacheTTL: StringValue = '15m'
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -79,6 +79,6 @@ export class CacheService {
   }
 
   getKey(key: string) {
-    return [SharedConfig.appName, this.cacheKeyPrefix, key].join(SharedConfig.redisKeySeparator)
+    return [SharedConfig.appName, this.cacheKeyPrefix, key].join(':')
   }
 }

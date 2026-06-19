@@ -190,6 +190,6 @@ export class CaptchaService {
   }
 
   private getKey(captchaId: string) {
-    return [SharedConfig.appName, this.captchaKeyPrefix, captchaId].join(SharedConfig.redisKeySeparator)
+    return [SharedConfig.appName, this.captchaKeyPrefix, captchaId].join(':')
   }
 }

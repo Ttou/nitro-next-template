@@ -27,7 +27,7 @@ export class UpdateCurrentUserPasswordReqDto {
 export class UpdateCurrentUserProfileReqDto {
   @ApiPropertyOptional({ description: '昵称', example: '' })
   @IsOptional()
-  nickname?: string
+  nickName?: string
 
   @ApiPropertyOptional({ description: '手机号码', example: '' })
   @IsOptional()

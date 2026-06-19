@@ -111,7 +111,7 @@ export interface UpdateCurrentUserProfileReqDto {
   /**
    * 昵称
    */
-  nickname?: string;
+  nickName?: string;
   /**
    * 手机号码
    */
@@ -2360,7 +2360,7 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 昵称
-       *   nickname?: string
+       *   nickName?: string
        *   // 手机号码
        *   phone?: string
        *   // 邮箱
@@ -2456,7 +2456,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 缓存键
        *     key: string
        *     // 缓存过期时间
@@ -2468,7 +2468,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: FindMonitorCachePageItemResDto[];
+            data: FindMonitorCachePageItemResDto[];
           }
         > & {
           data: FindMonitorCachePageReqDto;
@@ -2477,7 +2477,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: FindMonitorCachePageItemResDto[];
+          data: FindMonitorCachePageItemResDto[];
         },
         'MonitorCache.findPage',
         Config
@@ -2569,7 +2569,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -2605,7 +2605,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: FindMonitorOnlinePageResDto[];
+            data: FindMonitorOnlinePageResDto[];
           }
         > & {
           data: FindMonitorOnlinePageReqDto;
@@ -2614,7 +2614,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: FindMonitorOnlinePageResDto[];
+          data: FindMonitorOnlinePageResDto[];
         },
         'MonitorOnline.findPage',
         Config
@@ -2697,7 +2697,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 操作摘要
@@ -2820,7 +2820,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysOperateLogEntityWithUserDto[];
+            data: SysOperateLogEntityWithUserDto[];
           }
         > & {
           data: FindMonitorOperatePageReqDto;
@@ -2829,7 +2829,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysOperateLogEntityWithUserDto[];
+          data: SysOperateLogEntityWithUserDto[];
         },
         'MonitorOperate.findPage',
         Config
@@ -2981,7 +2981,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -3011,7 +3011,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysConfigEntityDto[];
+            data: SysConfigEntityDto[];
           }
         > & {
           data: FindSystemConfigPageReqDto;
@@ -3020,7 +3020,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysConfigEntityDto[];
+          data: SysConfigEntityDto[];
         },
         'SystemConfig.findPage',
         Config
@@ -3456,7 +3456,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -3482,7 +3482,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysDictTypeEntityDto[];
+            data: SysDictTypeEntityDto[];
           }
         > & {
           data: FindSystemDictTypePageReqDto;
@@ -3491,7 +3491,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysDictTypeEntityDto[];
+          data: SysDictTypeEntityDto[];
         },
         'SystemDictType.findPage',
         Config
@@ -3978,7 +3978,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -4006,7 +4006,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysLangEntityDto[];
+            data: SysLangEntityDto[];
           }
         > & {
           data: FindSystemLangPageReqDto;
@@ -4015,7 +4015,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysLangEntityDto[];
+          data: SysLangEntityDto[];
         },
         'SystemLang.findPage',
         Config
@@ -4399,7 +4399,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -4425,7 +4425,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysPostEntityExcludeRelationDto[];
+            data: SysPostEntityExcludeRelationDto[];
           }
         > & {
           data: FindSystemPostPageReqDto;
@@ -4434,7 +4434,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysPostEntityExcludeRelationDto[];
+          data: SysPostEntityExcludeRelationDto[];
         },
         'SystemPost.findPage',
         Config
@@ -4630,7 +4630,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -4691,7 +4691,7 @@ declare global {
       findAllocatedUserPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysUserEntityWithPostsDto[];
+            data: SysUserEntityWithPostsDto[];
           }
         > & {
           data: FindAllocatedUserPageForPostReqDto;
@@ -4700,7 +4700,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysUserEntityWithPostsDto[];
+          data: SysUserEntityWithPostsDto[];
         },
         'SystemPostAuth.findAllocatedUserPage',
         Config
@@ -4744,7 +4744,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -4805,7 +4805,7 @@ declare global {
       findUnallocatedUserPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysUserEntityWithPostsDto[];
+            data: SysUserEntityWithPostsDto[];
           }
         > & {
           data: FindUnallocatedUserPageForPostReqDto;
@@ -4814,7 +4814,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysUserEntityWithPostsDto[];
+          data: SysUserEntityWithPostsDto[];
         },
         'SystemPostAuth.findUnallocatedUserPage',
         Config
@@ -4936,7 +4936,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -4962,7 +4962,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysRoleEntityExcludeRelationDto[];
+            data: SysRoleEntityExcludeRelationDto[];
           }
         > & {
           data: FindSystemRolePageReqDto;
@@ -4971,7 +4971,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysRoleEntityExcludeRelationDto[];
+          data: SysRoleEntityExcludeRelationDto[];
         },
         'SystemRole.findPage',
         Config
@@ -5167,7 +5167,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -5228,7 +5228,7 @@ declare global {
       findAllocatedUserPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysUserEntityWithRolesDto[];
+            data: SysUserEntityWithRolesDto[];
           }
         > & {
           data: FindAllocatedUserPageForRoleReqDto;
@@ -5237,7 +5237,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysUserEntityWithRolesDto[];
+          data: SysUserEntityWithRolesDto[];
         },
         'SystemRoleAuth.findAllocatedUserPage',
         Config
@@ -5281,7 +5281,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -5342,7 +5342,7 @@ declare global {
       findUnallocatedUserPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysUserEntityWithRolesDto[];
+            data: SysUserEntityWithRolesDto[];
           }
         > & {
           data: FindUnallocatedUserPageForRoleReqDto;
@@ -5351,7 +5351,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysUserEntityWithRolesDto[];
+          data: SysUserEntityWithRolesDto[];
         },
         'SystemRoleAuth.findUnallocatedUserPage',
         Config
@@ -5553,7 +5553,7 @@ declare global {
        * } & {
        *   // [items] start
        *   // [items] end
-       *   data?: Array<{
+       *   data: Array<{
        *     // 主键
        *     id: string
        *     // 创建人
@@ -5589,7 +5589,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data?: SysUserEntityNoRelationsNoPasswordDto[];
+            data: SysUserEntityNoRelationsNoPasswordDto[];
           }
         > & {
           data: FindSystemUserPageReqDto;
@@ -5598,7 +5598,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data?: SysUserEntityNoRelationsNoPasswordDto[];
+          data: SysUserEntityNoRelationsNoPasswordDto[];
         },
         'SystemUser.findPage',
         Config
