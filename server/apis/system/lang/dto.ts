@@ -57,6 +57,11 @@ export class CreateSystemLangReqDto {
   @IsNotEmpty({ message: '词条值不能为空' })
   langValue: string
 
+  @ApiProperty({ description: '是否内置', enum: YesOrNoEnumMap })
+  @IsNotEmpty({ message: '是否内置不能为空' })
+  @IsEnumValues(YesOrNoEnumValues, { message: '是否内置枚举值不正确' })
+  isBuiltin: IYesOrNoEnum
+
   @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
   @IsNotEmpty({ message: '是否可用不能为空' })
   @IsEnumValues(YesOrNoEnumValues, { message: '是否可用枚举值不正确' })

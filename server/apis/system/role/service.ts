@@ -4,6 +4,7 @@ import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysRoleEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 
 @Injectable()
@@ -24,7 +25,10 @@ export class SystemRoleService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.ROLE_EXIST_ERROR))
     }
 
-    const config = this.em.create(SysRoleEntity, dto)
+    const config = this.em.create(SysRoleEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()

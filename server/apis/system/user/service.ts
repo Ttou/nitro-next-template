@@ -5,7 +5,12 @@ import { RemoveReqDto } from '~server/openapi'
 import { ContextService, HashService } from '~server/shared'
 import { SysDictDataEntity, SysUserEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerDto, UpdateSystemUserReqDto } from './dto'
+import {
+  CreateSystemUserReqDto,
+  FindSystemUserPageReqDto,
+  ImportSystemUserSerDto,
+  UpdateSystemUserReqDto,
+} from './dto'
 
 @Injectable()
 export class SystemUserService {
@@ -37,7 +42,7 @@ export class SystemUserService {
       SysUserEntity,
       {
         ...dto,
-        isAvailable: YesOrNoEnum.YES,
+        isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
         isDelete: YesOrNoEnum.NO,
         password,
       },

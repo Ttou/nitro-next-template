@@ -40,7 +40,7 @@ export class OperateInterceptor implements NestInterceptor {
         ? JSON.stringify({})
         : JSON.stringify(pick(req, ['params', 'query', 'body'])),
       ip: req.ip,
-      userAgent: req.headers['user-agent'],
+      userAgent: req.headers['user-agent']!,
       operateTime: new Date(),
     }
 

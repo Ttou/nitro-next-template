@@ -4,6 +4,7 @@ import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysPostEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
 
 @Injectable()
@@ -24,7 +25,10 @@ export class SystemPostService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.POST_EXIST_ERROR))
     }
 
-    const newRecord = this.em.create(SysPostEntity, dto)
+    const newRecord = this.em.create(SysPostEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(newRecord, 'create')
 
     await this.em.persist(newRecord).flush()

@@ -507,6 +507,10 @@ export interface CreateSystemLangReqDto {
    */
   langValue: string;
   /**
+   * 是否内置
+   */
+  isBuiltin: '0' | '1';
+  /**
    * 是否可用
    */
   isAvailable: '0' | '1';
@@ -558,6 +562,10 @@ export interface UpdateSystemLangReqDto {
    * 词条值
    */
   langValue: string;
+  /**
+   * 是否内置
+   */
+  isBuiltin: '0' | '1';
   /**
    * 是否可用
    */
@@ -1019,10 +1027,6 @@ export interface CreateSystemUserReqDto {
    */
   remark?: string;
   /**
-   * 是否删除
-   */
-  isDelete?: '0' | '1';
-  /**
    * 是否可用
    */
   isAvailable?: '0' | '1';
@@ -1090,10 +1094,6 @@ export interface UpdateSystemUserReqDto {
    * 备注
    */
   remark?: string;
-  /**
-   * 是否删除
-   */
-  isDelete?: '0' | '1';
   /**
    * 是否可用
    */
@@ -3819,6 +3819,8 @@ declare global {
        *   langKey: string
        *   // 词条值
        *   langValue: string
+       *   // 是否内置
+       *   isBuiltin: '0' | '1'
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
@@ -4069,6 +4071,8 @@ declare global {
        *   langKey: string
        *   // 词条值
        *   langValue: string
+       *   // 是否内置
+       *   isBuiltin: '0' | '1'
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
@@ -5487,8 +5491,6 @@ declare global {
        *   email?: string
        *   // 备注
        *   remark?: string
-       *   // 是否删除
-       *   isDelete?: '0' | '1'
        *   // 是否可用
        *   isAvailable?: '0' | '1'
        * }
@@ -5662,8 +5664,6 @@ declare global {
        *   email?: string
        *   // 备注
        *   remark?: string
-       *   // 是否删除
-       *   isDelete?: '0' | '1'
        *   // 是否可用
        *   isAvailable?: '0' | '1'
        *   // ID

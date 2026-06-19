@@ -4,6 +4,7 @@ import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysLangEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemLangReqDto,
   FindSystemLangAllReqDto,
@@ -28,7 +29,11 @@ export class SystemLangService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.LANG_EXIST_ERROR))
     }
 
-    const lang = this.em.create(SysLangEntity, dto)
+    const lang = this.em.create(SysLangEntity, {
+      ...dto,
+      isBuiltin: dto.isBuiltin ?? YesOrNoEnum.NO,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(lang, 'create')
 
     await this.em.persist(lang).flush()

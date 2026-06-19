@@ -4,6 +4,7 @@ import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysDeptEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dto'
 
 @Injectable()
@@ -24,7 +25,10 @@ export class SystemDeptService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.DEPT_EXIST_ERROR))
     }
 
-    const newRecord = this.em.create(SysDeptEntity, dto)
+    const newRecord = this.em.create(SysDeptEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(newRecord, 'create')
 
     await this.em.persist(newRecord).flush()

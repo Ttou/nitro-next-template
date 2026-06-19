@@ -71,11 +71,6 @@ export class CreateSystemUserReqDto {
   @IsOptional()
   remark?: string
 
-  @ApiPropertyOptional({ description: '是否删除', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '删除状态枚举值值不正确' })
-  isDelete?: IYesOrNoEnum
-
   @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
   @IsOptional()
   @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })

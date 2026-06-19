@@ -4,6 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/shared'
 import { SysDictDataEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
 
 @Injectable()
@@ -27,7 +28,10 @@ export class SystemDictDataService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_VALUE_EXIST_ERROR))
     }
 
-    const config = this.em.create(SysDictDataEntity, dto)
+    const config = this.em.create(SysDictDataEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()

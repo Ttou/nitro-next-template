@@ -30,7 +30,10 @@ export class SystemDictTypeService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.DICT_TYPE_EXIST_ERROR))
     }
 
-    const config = this.em.create(SysDictTypeEntity, dto)
+    const config = this.em.create(SysDictTypeEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()

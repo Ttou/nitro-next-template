@@ -30,7 +30,11 @@ export class SystemConfigService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_EXIST_ERROR))
     }
 
-    const config = this.em.create(SysConfigEntity, dto)
+    const config = this.em.create(SysConfigEntity, {
+      ...dto,
+      isBuiltin: dto.isBuiltin ?? YesOrNoEnum.NO,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(config, 'create')
 
     await this.em.persist(config).flush()

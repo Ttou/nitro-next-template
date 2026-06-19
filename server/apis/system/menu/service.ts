@@ -4,6 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/shared'
 import { SysMenuEntity } from '~shared/db/entities'
+import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './dto'
 
 @Injectable()
@@ -24,7 +25,10 @@ export class SystemMenuService {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.MENU_EXIST_ERROR))
     }
 
-    const newRecord = this.em.create(SysMenuEntity, dto)
+    const newRecord = this.em.create(SysMenuEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
     this.contextService.bindCurrentUserToEntity(newRecord, 'create')
 
     await this.em.persist(newRecord).flush()
