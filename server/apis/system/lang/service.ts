@@ -4,7 +4,13 @@ import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysLangEntity } from '~shared/db/entities'
-import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
+import {
+  CreateSystemLangReqDto,
+  FindSystemLangAllReqDto,
+  FindSystemLangOneReqDto,
+  FindSystemLangPageReqDto,
+  UpdateSystemLangReqDto,
+} from './dto'
 
 @Injectable()
 export class SystemLangService {

@@ -5,7 +5,12 @@ import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysConfigEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './dto'
+import {
+  CreateSystemConfigReqDto,
+  FindSystemConfigByKeyReqDto,
+  FindSystemConfigPageReqDto,
+  UpdateSystemConfigReqDto,
+} from './dto'
 
 @Injectable()
 export class SystemConfigService {
@@ -18,7 +23,7 @@ export class SystemConfigService {
     const { configKey } = dto
 
     const oldRecord = await this.em.findOne(SysConfigEntity, {
-      configKey: { $eq: dto.configKey },
+      configKey: { $eq: configKey },
     })
 
     if (oldRecord) {

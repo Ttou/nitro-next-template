@@ -5,7 +5,12 @@ import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysDictDataEntity, SysDictTypeEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
+import {
+  CreateSystemDictTypeReqDto,
+  FindSystemDictDetailByKeyReqDto,
+  FindSystemDictTypePageReqDto,
+  UpdateSystemDictTypeReqDto,
+} from './dto'
 
 @Injectable()
 export class SystemDictTypeService {
