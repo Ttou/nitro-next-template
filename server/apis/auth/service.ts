@@ -1,9 +1,7 @@
 import type { HttpContext } from '@xlt-token/core'
-import type { ICtxClsStore } from '~server/interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'
-import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { ErrorEnum } from '~server/constants'
 import { CaptchaService, ContextService, HashService } from '~server/shared'
 import { SysUserEntity } from '~shared/db/entities'
@@ -17,7 +15,6 @@ export class AuthService {
     private hashService: HashService,
     private contextService: ContextService,
     private em: EntityManager,
-    private clsService: ClsService<ICtxClsStore>,
     private stp: StpLogic,
   ) {}
 
@@ -56,7 +53,7 @@ export class AuthService {
   }
 
   async logout() {
-    const request = this.clsService.get<HttpContext>(CLS_REQ)
+    const request = this.contextService.getRequest() as unknown as HttpContext
     const token = await this.stp.getTokenValue(request)
     await this.stp.logout(token!)
   }

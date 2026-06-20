@@ -25,7 +25,7 @@ import {
 } from './configs'
 import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
-import { AuthGuard } from './guards'
+import { LoginGuard, PermissionGuard } from './guards'
 import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
@@ -91,7 +91,11 @@ import { SharedModule } from './shared'
     },
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: LoginGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
     {
       provide: APP_PIPE,

@@ -1,22 +1,20 @@
 import type { StpInterface } from '@xlt-token/core'
-import type { ICtxClsStore } from '~server/interfaces'
 import { forwardRef, Inject, Injectable } from '@nestjs/common'
-import { ClsService } from 'nestjs-cls'
-import { ClsKeyEnum } from '~server/constants'
+import { ContextService } from '~server/shared'
 
 @Injectable()
 export class CustomXltStp implements StpInterface {
   constructor(
-    @Inject(forwardRef(() => ClsService)) private clsService: ClsService<ICtxClsStore>,
+    @Inject(forwardRef(() => ContextService)) private contextService: ContextService,
   ) {}
 
   async getPermissionList(loginId: string) {
-    const user = this.clsService.get(ClsKeyEnum.CURRENT_USER)
+    const user = this.contextService.getCurrentUser()
     return user.permissions
   }
 
   async getRoleList(loginId: string) {
-    const user = this.clsService.get(ClsKeyEnum.CURRENT_USER)
+    const user = this.contextService.getCurrentUser()
     return user.roles
   }
 }

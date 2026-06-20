@@ -1,6 +1,7 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
 import { Catch, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
+import { NotPermissionException } from '@xlt-token/nestjs'
 import { ErrorEnum } from '~server/constants'
 
 /**
@@ -37,13 +38,13 @@ export class DefaultFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       return exception.getStatus()
     }
-    return HttpStatus.INTERNAL_SERVER_ERROR
+    return exception?.status || HttpStatus.INTERNAL_SERVER_ERROR
   }
 
   private getMessage(exception: unknown) {
     if (exception instanceof HttpException) {
       return exception.message
     }
-    return ErrorEnum.label(ErrorEnum.INTERNAL_SERVER_ERROR)
+    return exception?.message || ErrorEnum.label(ErrorEnum.INTERNAL_SERVER_ERROR)
   }
 }
