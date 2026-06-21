@@ -39,3 +39,4 @@ minimumReleaseAgeExclude:
   - '@oxc-project/runtime@0.137.0'
   - bullmq@5.79.0
   - vue-i18n@11.4.6
+  - uuid@14.0.1
