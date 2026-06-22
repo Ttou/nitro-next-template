@@ -38,7 +38,9 @@ export const LoggerConfig = registerAs('logger', () => {
         customErrorMessage(req, res, err) {
           return `${req.method} - ${req.url} - ${res.statusCode}`
         },
+
       },
+      exclude: ['/bull-ui/*splat', '/openapi-*splat'],
     }))
     .with(AppEnvEnum.PROD, () => ({
 
