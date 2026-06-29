@@ -5,7 +5,7 @@ import { StpLogic, XLT_TOKEN_CONFIG, XltAbstractLoginGuard } from '@xlt-token/ne
 import { ContextService } from '~server/shared'
 
 @Injectable()
-export class LoginGuard extends XltAbstractLoginGuard {
+export class AuthenticationGuard extends XltAbstractLoginGuard {
   constructor(
     reflector: Reflector,
     @Inject(XLT_TOKEN_CONFIG) config: XltTokenConfig,

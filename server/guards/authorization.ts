@@ -6,7 +6,7 @@ import { NotPermissionException, NotRoleException, StpPermLogic } from '@xlt-tok
 import { ContextService } from '~server/shared'
 
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export class AuthorizationGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private stpPermLogic: StpPermLogic,

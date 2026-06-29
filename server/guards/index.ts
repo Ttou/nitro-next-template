@@ -1,2 +1,2 @@
-export * from './login'
-export * from './permission'
+export * from './authentication'
+export * from './authorization'
