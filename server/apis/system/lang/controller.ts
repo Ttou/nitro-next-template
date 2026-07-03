@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { Operate } from '~server/decorators'
 import { ApiDoc, RemoveReqDto, SysLangEntityDto } from '~server/openapi'
-import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, UpdateSystemLangReqDto } from './dto'
+import { CreateSystemLangReqDto, FindSystemLangAllReqDto, FindSystemLangOneReqDto, FindSystemLangPageReqDto, TranslateSystemLangReqDto, UpdateSystemLangReqDto } from './dto'
 import { SystemLangService } from './service'
 
 @ApiTags('系统语言接口')
@@ -53,5 +53,12 @@ export class SystemLangController {
   @Post('update')
   async update(@Body() dto: UpdateSystemLangReqDto) {
     await this.systemLangService.update(dto)
+  }
+
+  @ApiDoc({ endpointSummary: '翻译系统语言词条', responseDto: Object })
+  @Operate()
+  @Post('translate')
+  async translate(@Body() dto: TranslateSystemLangReqDto) {
+    return await this.systemLangService.translate(dto)
   }
 }

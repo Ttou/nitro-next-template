@@ -1,9 +1,9 @@
 import type { PlusColumn, PlusDrawerFormProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemLangReqDto } from '~web/apis/globals'
-import { ElNotification } from 'element-plus'
+import { ElButton, ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
-import { computed, ref, unref } from 'vue'
+import { computed, h, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
 
 interface UseCreateParams {
@@ -26,10 +26,28 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [...[], ...unref(columns), ...LangEnum.items.map(v => ({
-      label: v.label,
-      prop: v.value,
-    }))],
+    columns: [...[], ...unref(columns), ...LangEnum.items.map((v) => {
+      const column: PlusColumn = {
+        label: v.label,
+        prop: v.value,
+      }
+
+      if (v.value === 'zh_CN') {
+        column.fieldSlots = {
+          append: () => h(
+            ElButton,
+            {
+              onClick: () => {
+                Apis.SystemLang.translate({ data: { text: '测试' } })
+              },
+            },
+            () => '翻译 ',
+          ),
+        }
+      }
+
+      return column
+    })],
     rules: {
       langKey: [{ required: true, message: '请输入词条标识', trigger: 'blur' }],
       isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],

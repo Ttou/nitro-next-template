@@ -579,6 +579,12 @@ export interface UpdateSystemLangReqDto {
    */
   id: string;
 }
+export interface TranslateSystemLangReqDto {
+  /**
+   * 词条文本
+   */
+  text: string;
+}
 export interface CreateSystemMenuReqDto {
   /**
    * 父菜单ID
@@ -4096,6 +4102,37 @@ declare global {
       >(
         config: Config
       ): Alova2Method<null, 'SystemLang.update', Config>;
+      /**
+       * ---
+       *
+       * [POST] 翻译系统语言词条
+       *
+       * **path:** /api/system/lang/translate
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // 词条文本
+       *   text: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = null
+       * ```
+       */
+      translate<
+        Config extends Alova2MethodConfig<null> & {
+          data: TranslateSystemLangReqDto;
+        }
+      >(
+        config: Config
+      ): Alova2Method<null, 'SystemLang.translate', Config>;
     };
     SystemMenu: {
       /**

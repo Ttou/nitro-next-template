@@ -1,15 +1,17 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { translate } from 'google-translate-api-x'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
 import { SysLangEntity } from '~shared/db/entities'
-import { YesOrNoEnum } from '~shared/enums'
+import { LangEnum, YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemLangReqDto,
   FindSystemLangAllReqDto,
   FindSystemLangOneReqDto,
   FindSystemLangPageReqDto,
+  TranslateSystemLangReqDto,
   UpdateSystemLangReqDto,
 } from './dto'
 
@@ -104,5 +106,17 @@ export class SystemLangService {
     this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
 
     await this.em.persist(oldRecord).flush()
+  }
+
+  async translate(dto: TranslateSystemLangReqDto) {
+    const inputArray = LangEnum.items.filter(item => item.value !== LangEnum.ZH_CN).map(item => ({
+      text: dto.text,
+      // from: LangEnum.item(LangEnum.ZH_CN).code,
+      to: item.code,
+    }))
+
+    const result = await translate(inputArray)
+
+    return result
   }
 }

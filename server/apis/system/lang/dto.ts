@@ -78,3 +78,9 @@ export class UpdateSystemLangReqDto extends CreateSystemLangReqDto {
   @IsUUID('7', { message: 'ID格式不正确' })
   id: string
 }
+
+export class TranslateSystemLangReqDto {
+  @ApiProperty({ description: '词条文本' })
+  @IsNotEmpty({ message: '词条文本不能为空' })
+  text: string
+}

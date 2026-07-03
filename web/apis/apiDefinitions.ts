@@ -57,6 +57,7 @@ export default {
   'SystemLang.findPage': ['POST', '/api/system/lang/findPage'],
   'SystemLang.remove': ['POST', '/api/system/lang/remove'],
   'SystemLang.update': ['POST', '/api/system/lang/update'],
+  'SystemLang.translate': ['POST', '/api/system/lang/translate'],
   'SystemMenu.create': ['POST', '/api/system/menu/create'],
   'SystemMenu.findList': ['POST', '/api/system/menu/findList'],
   'SystemMenu.remove': ['DELETE', '/api/system/menu/remove'],
