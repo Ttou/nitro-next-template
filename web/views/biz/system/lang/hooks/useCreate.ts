@@ -38,7 +38,9 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
             ElButton,
             {
               onClick: () => {
-                Apis.SystemLang.translate({ data: { text: '测试' } })
+                Apis.SystemLang.translate({ data: { text: createValues.value[v.value] } }).then((res) => {
+                  console.log(res)
+                })
               },
             },
             () => '翻译 ',

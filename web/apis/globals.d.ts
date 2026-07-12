@@ -4123,16 +4123,16 @@ declare global {
        *
        * **Response**
        * ```ts
-       * type Response = null
+       * type Response = object
        * ```
        */
       translate<
-        Config extends Alova2MethodConfig<null> & {
+        Config extends Alova2MethodConfig<Object> & {
           data: TranslateSystemLangReqDto;
         }
       >(
         config: Config
-      ): Alova2Method<null, 'SystemLang.translate', Config>;
+      ): Alova2Method<Object, 'SystemLang.translate', Config>;
     };
     SystemMenu: {
       /**
