@@ -39,7 +39,9 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
             {
               onClick: () => {
                 Apis.SystemLang.translate({ data: { text: createValues.value[v.value] } }).then((res) => {
-                  console.log(res)
+                  Object.keys(res).forEach((key) => {
+                    createValues.value[key] = res[key]
+                  })
                 })
               },
             },
@@ -89,6 +91,11 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     }
   }
 
+  function cancelCreate() {
+    createValues.value = Object.create({})
+    createConfirmLoading.value = false
+  }
+
   return {
     createVisible,
     createValues,
@@ -96,5 +103,6 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     createFormProps,
     showCreate,
     confirmCreate,
+    cancelCreate,
   }
 }

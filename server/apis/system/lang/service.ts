@@ -1,9 +1,8 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { translate } from 'google-translate-api-x'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
-import { ContextService } from '~server/shared'
+import { ContextService, TranslateService } from '~server/shared'
 import { SysLangEntity } from '~shared/db/entities'
 import { LangEnum, YesOrNoEnum } from '~shared/enums'
 import {
@@ -20,6 +19,7 @@ export class SystemLangService {
   constructor(
     private em: EntityManager,
     private contextService: ContextService,
+    private translateService: TranslateService,
   ) {}
 
   async create(dto: CreateSystemLangReqDto) {
@@ -109,14 +109,20 @@ export class SystemLangService {
   }
 
   async translate(dto: TranslateSystemLangReqDto) {
-    const inputArray = LangEnum.items.filter(item => item.value !== LangEnum.ZH_CN).map(item => ({
-      text: dto.text,
-      // from: LangEnum.item(LangEnum.ZH_CN).code,
-      to: item.code,
-    }))
+    const inputArray = LangEnum.items
+      .filter(item => item.value !== LangEnum.ZH_CN)
+      .map(item => ({
+        text: dto.text,
+        source: LangEnum.item(LangEnum.ZH_CN).code,
+        target: item.code,
+        targetKey: item.value,
+      }))
 
-    const result = await translate(inputArray)
+    const result = await Promise.all(inputArray.map(item => this.translateService.trans(item)))
 
-    return result
+    return result.reduce((acc, cur) => {
+      Object.assign(acc, cur)
+      return acc
+    }, {})
   }
 }

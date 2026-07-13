@@ -159,8 +159,8 @@ const pageProps = computed<PlusPageProps>(() => {
   }
 })
 
-const { createVisible, createValues, createDrawerProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns })
-const { updateVisible, updateValues, updateDrawerProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
+const { createVisible, createValues, createDrawerProps, createFormProps, showCreate, confirmCreate, cancelCreate } = useCreate({ pageInstance, columns })
+const { updateVisible, updateValues, updateDrawerProps, updateFormProps, showUpdate, confirmUpdate, cancelUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
 </script>
 
@@ -191,6 +191,7 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
       v-bind="createDrawerProps"
       :form="createFormProps"
       @confirm="confirmCreate"
+      @cancel="cancelCreate"
     />
     <!-- 更新 -->
     <plus-drawer-form
@@ -199,6 +200,7 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
       v-bind="updateDrawerProps"
       :form="updateFormProps"
       @confirm="confirmUpdate"
+      @cancel="cancelUpdate"
     />
   </div>
 </template>

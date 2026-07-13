@@ -6,6 +6,7 @@ import { ExcelService } from './excel'
 import { HashService } from './hash'
 import { IpService } from './ip'
 import { RedisExtendService } from './redis-extend'
+import { TranslateService } from './translate'
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { RedisExtendService } from './redis-extend'
     ExcelService,
     RedisExtendService,
     CacheService,
+    TranslateService,
   ],
   exports: [
     ContextService,
@@ -26,6 +28,7 @@ import { RedisExtendService } from './redis-extend'
     ExcelService,
     RedisExtendService,
     CacheService,
+    TranslateService,
   ],
 })
 export class SharedModule {}

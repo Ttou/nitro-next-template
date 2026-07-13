@@ -1,9 +1,9 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemLangReqDto } from '~web/apis/globals'
-import { ElNotification } from 'element-plus'
+import { ElButton, ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
-import { computed, ref, unref } from 'vue'
+import { computed, h, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
 
 interface UseUpdateParams {
@@ -26,10 +26,32 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [...[], ...unref(columns), ...LangEnum.items.map(v => ({
-      label: v.label,
-      prop: v.value,
-    }))],
+    columns: [...[], ...unref(columns), ...LangEnum.items.map((v) => {
+      const column: PlusColumn = {
+        label: v.label,
+        prop: v.value,
+      }
+
+      if (v.value === 'zh_CN') {
+        column.fieldSlots = {
+          append: () => h(
+            ElButton,
+            {
+              onClick: () => {
+                Apis.SystemLang.translate({ data: { text: updateValues.value[v.value] } }).then((res) => {
+                  Object.keys(res).forEach((key) => {
+                    updateValues.value[key] = res[key]
+                  })
+                })
+              },
+            },
+            () => '翻译 ',
+          ),
+        }
+      }
+
+      return column
+    })],
     rules: {
       isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
       isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
@@ -69,6 +91,11 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     }
   }
 
+  function cancelUpdate() {
+    updateValues.value = Object.create({})
+    updateConfirmLoading.value = false
+  }
+
   return {
     updateVisible,
     updateValues,
@@ -76,5 +103,6 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     updateFormProps,
     showUpdate,
     confirmUpdate,
+    cancelUpdate,
   }
 }
