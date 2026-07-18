@@ -43,3 +43,9 @@ minimumReleaseAgeExclude:
   - bullmq@5.79.1
   - enum-plus@3.2.0
   - bullmq@5.80.2
+  - '@mikro-orm/core@7.1.7'
+  - '@mikro-orm/mysql@7.1.7'
+  - '@mikro-orm/seeder@7.1.7'
+  - '@mikro-orm/sql@7.1.7'
+  - '@nestjs/swagger@11.4.6'
+  - bullmq@5.80.7
