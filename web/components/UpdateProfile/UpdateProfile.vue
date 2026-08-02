@@ -16,6 +16,8 @@ const confirmLoading = ref(false)
 
 const dict = useDict(['sys.user.sex'])
 
+const sexDictOptions = computed(() => dictToOptions(dict.value.get('sys.user.sex')))
+
 const drawerProps = computed<PlusDrawerFormProps>(() => {
   return {
     title: '更新个人信息',
@@ -40,7 +42,7 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
           label: '性别',
           prop: 'sex',
           valueType: 'select',
-          options: dictToOptions(dict.value.get('sys.user.sex')),
+          options: sexDictOptions,
         },
       ],
       rules: {

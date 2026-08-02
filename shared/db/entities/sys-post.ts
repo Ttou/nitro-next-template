@@ -1,9 +1,10 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 import { SysUserEntity } from './sys-user'
 
-const SysPostSchema = defineEntity({
+export const SysPostEntity = defineEntity({
   name: 'SysPostEntity',
   tableName: 'sys_post',
   extends: BaseEntity,
@@ -12,10 +13,10 @@ const SysPostSchema = defineEntity({
     postName: p.string(),
     isAvailable: p.enum(() => YesOrNoEnumValues),
     remark: p.string().nullable(),
-    users: () => p.manyToMany(SysUserEntity).mappedBy(user => user.posts),
+    users: () => p
+      .manyToMany(SysUserEntity)
+      .mappedBy(user => user.posts),
   },
 })
 
-export class SysPostEntity extends SysPostSchema.class {}
-
-SysPostSchema.setClass(SysPostEntity)
+export type ISysPostEntity = InferEntity<typeof SysPostEntity>

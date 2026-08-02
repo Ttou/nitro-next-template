@@ -1,8 +1,9 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 
-const SysDictDataSchema = defineEntity({
+export const SysDictDataEntity = defineEntity({
   name: 'SysDictDataEntity',
   tableName: 'sys_dict_data',
   indexes: [{ properties: ['dictType', 'dictValue'] }],
@@ -15,6 +16,5 @@ const SysDictDataSchema = defineEntity({
     remark: p.string().nullable(),
   },
 })
-export class SysDictDataEntity extends SysDictDataSchema.class {}
 
-SysDictDataSchema.setClass(SysDictDataEntity)
+export type ISysDictDataEntity = InferEntity<typeof SysDictDataEntity>

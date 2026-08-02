@@ -1,8 +1,9 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '../../utils'
 import { SysUserEntity } from './sys-user'
 
-const SysOperateSchema = defineEntity({
+export const SysOperateEntity = defineEntity({
   name: 'SysOperateEntity',
   tableName: 'sys_operate',
   properties: {
@@ -21,10 +22,10 @@ const SysOperateSchema = defineEntity({
     errorMsg: p.type('text').nullable(),
     operateTime: p.datetime(),
     costTime: p.integer(),
-    user: () => p.manyToOne(SysUserEntity).joinColumn('user_id'),
+    user: () => p
+      .manyToOne(SysUserEntity)
+      .joinColumn('user_id'),
   },
 })
 
-export class SysOperateEntity extends SysOperateSchema.class {}
-
-SysOperateSchema.setClass(SysOperateEntity)
+export type ISysOperateEntity = InferEntity<typeof SysOperateEntity>

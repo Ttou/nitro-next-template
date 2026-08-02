@@ -11,6 +11,8 @@ const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
 const dict = useDict(['sys.user.sex'])
 
+const sexDictOptions = computed(() => dictToOptions(dict.value.get('sys.user.sex')))
+
 const columns = computed<PlusColumn[]>(() => [
   {
     label: '账号',
@@ -62,7 +64,7 @@ const columns = computed<PlusColumn[]>(() => [
     label: '性别',
     prop: 'sex',
     valueType: 'select',
-    options: dictToOptions(dict.value.get('sys.user.sex')),
+    options: sexDictOptions,
     tableColumnProps: {
       align: 'center',
     },

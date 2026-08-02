@@ -1,8 +1,9 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 
-const SysLangSchema = defineEntity({
+export const SysLangEntity = defineEntity({
   name: 'SysLangEntity',
   tableName: 'sys_lang',
   extends: BaseEntity,
@@ -14,6 +15,5 @@ const SysLangSchema = defineEntity({
     remark: p.string().nullable(),
   },
 })
-export class SysLangEntity extends SysLangSchema.class {}
 
-SysLangSchema.setClass(SysLangEntity)
+export type ISysLangEntity = InferEntity<typeof SysLangEntity>

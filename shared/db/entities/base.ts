@@ -1,7 +1,8 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '../../utils'
 
-const BaseSchema = defineEntity({
+export const BaseEntity = defineEntity({
   name: 'BaseEntity',
   abstract: true,
   properties: {
@@ -13,6 +14,4 @@ const BaseSchema = defineEntity({
   },
 })
 
-export class BaseEntity extends BaseSchema.class {}
-
-BaseSchema.setClass(BaseEntity)
+export type IBaseEntity = InferEntity<typeof BaseEntity>

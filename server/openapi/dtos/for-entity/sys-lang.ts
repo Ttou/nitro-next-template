@@ -1,11 +1,11 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysLangEntity } from '~shared/db/entities'
+import type { ISysLangEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty } from '@nestjs/swagger'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
-export class SysLangEntityDto extends BaseEntityDto implements SysLangEntity {
+export class SysLangEntityDto extends BaseEntityDto implements ISysLangEntity {
   @ApiProperty({ description: '语言键值' })
   langKey: string
 

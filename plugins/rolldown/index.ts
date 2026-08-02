@@ -1,2 +1,2 @@
-export * from './archive'
-export * from './copy'
+export * from './archive.ts'
+export * from './copy.ts'

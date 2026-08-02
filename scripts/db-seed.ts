@@ -1,6 +1,6 @@
 import { exit } from 'node:process'
-import { DatabaseSeeders } from '../shared/db/seeders'
-import { getOrm } from './db-util'
+import { DatabaseSeeders } from '../shared/db/seeders/index.ts'
+import { getOrm } from './db-util.ts'
 
 async function run() {
   const orm = await getOrm()

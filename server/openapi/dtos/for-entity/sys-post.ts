@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysPostEntity, SysUserEntity } from '~shared/db/entities'
+import type { ISysPostEntity, ISysUserEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
@@ -7,7 +7,7 @@ import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 import { SysUserEntityDto } from './sys-user'
 
-export class SysPostEntityDto extends BaseEntityDto implements SysPostEntity {
+export class SysPostEntityDto extends BaseEntityDto implements ISysPostEntity {
   @ApiProperty({ description: '岗位键值' })
   postKey: string
 
@@ -21,7 +21,7 @@ export class SysPostEntityDto extends BaseEntityDto implements SysPostEntity {
   remark: IPropertyNullable<string>
 
   @ApiProperty({ description: '用户列表', type: () => [SysUserEntityDto] })
-  users: Collection<SysUserEntity, SysPostEntity>
+  users: Collection<ISysUserEntity, ISysPostEntity>
 }
 
 export class SysPostEntityExcludeRelationDto extends OmitType(SysPostEntityDto, ['users'] as const) {}

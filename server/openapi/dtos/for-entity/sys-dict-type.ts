@@ -1,11 +1,11 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysDictTypeEntity } from '~shared/db/entities'
+import type { ISysDictTypeEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty } from '@nestjs/swagger'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
-export class SysDictTypeEntityDto extends BaseEntityDto implements SysDictTypeEntity {
+export class SysDictTypeEntityDto extends BaseEntityDto implements ISysDictTypeEntity {
   @ApiProperty({ description: '字典名称' })
   dictName: string
 

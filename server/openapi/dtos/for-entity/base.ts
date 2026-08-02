@@ -1,8 +1,8 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { BaseEntity } from '~shared/db/entities'
+import type { IBaseEntity } from '~shared/db/entities'
 import { ApiProperty } from '@nestjs/swagger'
 
-export class BaseEntityDto implements BaseEntity {
+export class BaseEntityDto implements IBaseEntity {
   @ApiProperty({ description: '主键', type: String })
   id: string
 

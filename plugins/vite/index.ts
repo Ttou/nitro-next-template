@@ -1,1 +1,1 @@
-export * from './ejs-html'
+export * from './ejs-html.ts'

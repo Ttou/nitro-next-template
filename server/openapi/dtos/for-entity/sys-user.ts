@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysDeptEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~shared/db/entities'
+import type { ISysDeptEntity, ISysPostEntity, ISysRoleEntity, ISysUserEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
@@ -9,7 +9,7 @@ import { SysDeptEntityDto } from './sys-dept'
 import { SysPostEntityDto } from './sys-post'
 import { SysRoleEntityDto } from './sys-role'
 
-export class SysUserEntityDto extends BaseEntityDto implements SysUserEntity {
+export class SysUserEntityDto extends BaseEntityDto implements ISysUserEntity {
   @ApiProperty({ description: '账号' })
   userName: string
 
@@ -41,13 +41,13 @@ export class SysUserEntityDto extends BaseEntityDto implements SysUserEntity {
   remark: IPropertyNullable<string>
 
   @ApiProperty({ description: '部门列表', type: () => [SysDeptEntityDto] })
-  depts: Collection<SysDeptEntity, SysUserEntity>
+  depts: Collection<ISysDeptEntity, ISysUserEntity>
 
   @ApiProperty({ description: '岗位列表', type: () => [SysPostEntityDto] })
-  posts: Collection<SysPostEntity, SysUserEntity>
+  posts: Collection<ISysPostEntity, ISysUserEntity>
 
   @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityDto] })
-  roles: Collection<SysRoleEntity, SysUserEntity>
+  roles: Collection<ISysRoleEntity, ISysUserEntity>
 }
 
 export class SysUserEntityExcludeRelationDto extends OmitType(SysUserEntityDto, ['depts', 'posts', 'roles'] as const) {}

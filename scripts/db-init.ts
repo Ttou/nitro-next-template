@@ -1,5 +1,5 @@
 import { exit } from 'node:process'
-import { getOrm } from './db-util'
+import { getOrm } from './db-util.ts'
 
 async function run() {
   const orm = await getOrm()

@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'nitro'
-import { RolldownArchivePlugin, RolldownCopyPlugin } from './plugins'
+import { RolldownArchivePlugin, RolldownCopyPlugin } from './plugins/index.ts'
 
 export default defineConfig({
   serverDir: './server',

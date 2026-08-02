@@ -1,8 +1,9 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 
-const SysConfigSchema = defineEntity({
+export const SysConfigEntity = defineEntity({
   name: 'SysConfigEntity',
   tableName: 'sys_config',
   extends: BaseEntity,
@@ -16,6 +17,4 @@ const SysConfigSchema = defineEntity({
   },
 })
 
-export class SysConfigEntity extends SysConfigSchema.class {}
-
-SysConfigSchema.setClass(SysConfigEntity)
+export type ISysConfigEntity = InferEntity<typeof SysConfigEntity>

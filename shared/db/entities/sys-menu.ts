@@ -1,9 +1,10 @@
+import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { MenuTypeEnumValues, YesOrNoEnumValues } from '../../enums'
 import { BaseEntity } from './base'
 import { SysRoleEntity } from './sys-role'
 
-const SysMenuSchema = defineEntity({
+export const SysMenuEntity = defineEntity({
   name: 'SysMenuEntity',
   tableName: 'sys_menu',
   extends: BaseEntity,
@@ -22,10 +23,10 @@ const SysMenuSchema = defineEntity({
     isFrame: p.enum(() => YesOrNoEnumValues).nullable(),
     isVisible: p.enum(() => YesOrNoEnumValues).nullable(),
     remark: p.string().nullable(),
-    roles: () => p.manyToMany(SysRoleEntity).mappedBy(role => role.menus),
+    roles: () => p
+      .manyToMany(SysRoleEntity)
+      .mappedBy(role => role.menus),
   },
 })
 
-export class SysMenuEntity extends SysMenuSchema.class {}
-
-SysMenuSchema.setClass(SysMenuEntity)
+export type ISysMenuEntity = InferEntity<typeof SysMenuEntity>

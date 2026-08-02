@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysMenuEntity, SysRoleEntity } from '~shared/db/entities'
+import type { ISysMenuEntity, ISysRoleEntity } from '~shared/db/entities'
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
@@ -7,7 +7,7 @@ import { MenuTypeEnumMap, YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 import { SysRoleEntityDto } from './sys-role'
 
-export class SysMenuEntityDto extends BaseEntityDto implements SysMenuEntity {
+export class SysMenuEntityDto extends BaseEntityDto implements ISysMenuEntity {
   @ApiProperty({ description: '父菜单ID' })
   parentId: IPropertyNullable<string>
 
@@ -51,7 +51,7 @@ export class SysMenuEntityDto extends BaseEntityDto implements SysMenuEntity {
   remark: IPropertyNullable<string>
 
   @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityDto] })
-  roles: Collection<SysRoleEntity, SysMenuEntity>
+  roles: Collection<ISysRoleEntity, ISysMenuEntity>
 }
 
 export class SysMenuEntityExcludeRelationDto extends OmitType(SysMenuEntityDto, ['roles'] as const) {}

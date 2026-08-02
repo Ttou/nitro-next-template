@@ -1,11 +1,11 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysOperateEntity } from '~shared/db/entities'
+import type { ISysOperateEntity } from '~shared/db/entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { UserAgentSerDto } from '~server/openapi'
 import { SysUserEntityDto } from './sys-user'
 
-export class SysOperateEntityDto implements SysOperateEntity {
+export class SysOperateEntityDto implements ISysOperateEntity {
   @ApiProperty({ description: '主键', type: String })
   id: string
 

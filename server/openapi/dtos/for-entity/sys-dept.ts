@@ -1,5 +1,5 @@
 import type { IPropertyNullable } from '~server/interfaces'
-import type { SysDeptEntity, SysRoleEntity, SysUserEntity } from '~shared/db/entities'
+import type { ISysDeptEntity, ISysRoleEntity, ISysUserEntity } from '~shared/db/entities'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
@@ -8,7 +8,7 @@ import { BaseEntityDto } from './base'
 import { SysRoleEntityDto } from './sys-role'
 import { SysUserEntityDto } from './sys-user'
 
-export class SysDeptEntityDto extends BaseEntityDto implements SysDeptEntity {
+export class SysDeptEntityDto extends BaseEntityDto implements ISysDeptEntity {
   @ApiProperty({ description: '父部门ID' })
   parentId: IPropertyNullable<string>
 
@@ -25,10 +25,10 @@ export class SysDeptEntityDto extends BaseEntityDto implements SysDeptEntity {
   remark: IPropertyNullable<string>
 
   @ApiProperty({ description: '角色', type: () => [SysRoleEntityDto] })
-  roles: Collection<SysRoleEntity, SysDeptEntity>
+  roles: Collection<ISysRoleEntity, ISysDeptEntity>
 
   @ApiProperty({ description: '用户', type: () => [SysUserEntityDto] })
-  users: Collection<SysUserEntity, SysDeptEntity>
+  users: Collection<ISysUserEntity, ISysDeptEntity>
 }
 
 export class SysDeptEntityExcludeRelationDto extends OmitType(SysDeptEntityDto, ['roles', 'users'] as const) {}
