@@ -5,14 +5,14 @@ allowBuilds:
   msgpackr-extract: true
 minimumReleaseAgeExclude:
   - '@cj-tech-master/excelts@9.6.1 || 10.2.0'
-  - '@scalar/client-side-rendering@0.2.2 || 0.2.3 || 0.2.4'
-  - "@scalar/helpers@0.8.2"
-  - '@scalar/nestjs-api-reference@1.2.2 || 1.2.3 || 1.2.4'
-  - '@scalar/schemas@0.4.2 || 0.4.3 || 0.5.0'
-  - '@scalar/types@0.13.2 || 0.13.3 || 0.14.0'
-  - element-plus@2.14.2
+  - '@scalar/client-side-rendering@0.2.2 || 0.2.3 || 0.2.4 || 0.3.6'
+  - '@scalar/helpers@0.8.2 || 0.10.0'
+  - '@scalar/nestjs-api-reference@1.2.2 || 1.2.3 || 1.2.4 || 1.2.13'
+  - '@scalar/schemas@0.4.2 || 0.4.3 || 0.5.0 || 0.8.1'
+  - '@scalar/types@0.13.2 || 0.13.3 || 0.14.0 || 0.17.1'
+  - element-plus@2.14.2 || 2.14.4
   - es-toolkit@1.47.1
-  - eslint@10.5.0
+  - eslint@10.5.0 || 10.8.1
   - '@nestjs/common@11.1.27'
   - '@nestjs/core@11.1.27'
   - '@nestjs/platform-fastify@11.1.27'
@@ -61,3 +61,4 @@ minimumReleaseAgeExclude:
   - '@vue/shared@3.5.41'
   - rolldown@1.2.3
   - vue@3.5.41
+  - fastify@5.11.3
