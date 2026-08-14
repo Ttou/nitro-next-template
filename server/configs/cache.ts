@@ -4,8 +4,7 @@ import KeyvRedis from '@keyv/redis'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
-import { getRedisUrl } from '~server/utils'
-import { SharedConfig } from './shared'
+import { getRedisUrl, SharedConfig } from './shared'
 
 export const CacheConfig = registerAs('cache', () => {
   return match(APP_ENV)

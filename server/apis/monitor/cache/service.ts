@@ -13,6 +13,7 @@ export class MonitorCacheService {
   async findPage(dto: FindMonitorCachePageReqDto) {
     const { key, page, pageSize } = dto
     let pattern = this.cacheService.getKey(key ?? '*')
+
     // 确保模式以 :* 结尾
     if (!pattern.endsWith(':*')) {
       pattern += ':*'

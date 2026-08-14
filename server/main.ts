@@ -3,7 +3,6 @@ import multipart from '@fastify/multipart'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { apiReference } from '@scalar/nestjs-api-reference'
 import { Logger } from 'nestjs-pino'
 import { generateId } from '~shared/utils'
 import { AppModule } from './app'
@@ -13,9 +12,7 @@ async function bootstrap() {
   const nestApp = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({
-      genReqId(req) {
-        return req.id ?? generateId()
-      },
+      genReqId: (req: any) => req.id ?? generateId(),
     }),
     {
       abortOnError: false,
@@ -44,13 +41,6 @@ async function bootstrap() {
       .build()
     const document = SwaggerModule.createDocument(nestApp, config)
     SwaggerModule.setup('openapi', nestApp, document, { swaggerUiEnabled: false })
-
-    nestApp.use('/openapi-ui', apiReference({
-      withFastify: true,
-      withDefaultFonts: false,
-      url: '/openapi-json',
-      cdn: 'https://registry.npmmirror.com/@scalar/api-reference/1.49.5/files/dist/browser/standalone.js',
-    }))
     // #endregion
   }
 

@@ -1,5 +1,6 @@
 import type { Queue } from 'bullmq'
 import type { SysOperateEntityDto, SysUserEntityDto } from '~server/openapi'
+import type { IBaseEntity } from '~shared/db/entities'
 import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
@@ -9,7 +10,7 @@ import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
 import { QueueNameEnum } from '~server/queues'
-import { BaseEntity, SysConfigEntity, SysUserEntity } from '~shared/db/entities'
+import { SysConfigEntity, SysUserEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()
@@ -90,7 +91,7 @@ export class ContextService {
     await this.operateQueue.add('', { ...data, user })
   }
 
-  bindCurrentUserToEntity<T extends BaseEntity>(entity: T, bindType: 'create' | 'update') {
+  bindCurrentUserToEntity<T extends IBaseEntity>(entity: T, bindType: 'create' | 'update') {
     match(bindType).with('create', () => {
       entity.createBy = this.getCurrentUser().userName
     }).with('update', () => {

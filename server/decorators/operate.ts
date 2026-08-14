@@ -1,5 +1,5 @@
 import type { IRequest } from '~server/interfaces'
-import type { SysUserEntity } from '~shared/db/entities'
+import type { ISysUserEntity } from '~shared/db/entities'
 import { Reflector } from '@nestjs/core'
 
 interface OperateOptions {
@@ -8,7 +8,7 @@ interface OperateOptions {
   /**
    * 特殊场景下获取用户信息
    */
-  getUser?: (req: IRequest) => SysUserEntity
+  getUser?: (req: IRequest) => ISysUserEntity
 }
 
 /**

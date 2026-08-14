@@ -62,3 +62,20 @@ minimumReleaseAgeExclude:
   - rolldown@1.2.3
   - vue@3.5.41
   - fastify@5.11.3
+  - '@napi-rs/canvas-android-arm64@1.0.6'
+  - '@napi-rs/canvas-darwin-arm64@1.0.6'
+  - '@napi-rs/canvas-darwin-x64@1.0.6'
+  - '@napi-rs/canvas-linux-arm-gnueabihf@1.0.6'
+  - '@napi-rs/canvas-linux-arm64-gnu@1.0.6'
+  - '@napi-rs/canvas-linux-arm64-musl@1.0.6'
+  - '@napi-rs/canvas-linux-riscv64-gnu@1.0.6'
+  - '@napi-rs/canvas-linux-x64-gnu@1.0.6'
+  - '@napi-rs/canvas-linux-x64-musl@1.0.6'
+  - '@napi-rs/canvas-win32-arm64-msvc@1.0.6'
+  - '@napi-rs/canvas-win32-x64-msvc@1.0.6'
+  - '@napi-rs/canvas@1.0.6'
+  - bullmq@6.1.1
+  - enum-plus@3.3.0
+  - fastify@5.12.0
+patchedDependencies:
+  '@xlt-token/jwt@2.1.0': patches/@xlt-token__jwt@2.1.0.patch

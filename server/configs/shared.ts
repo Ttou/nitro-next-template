@@ -22,3 +22,7 @@ export const SharedConfig = match(APP_ENV)
   }))
   .with(AppEnvEnum.PROD, () => ({}))
   .run()
+
+export function getRedisUrl(options: ISharedConfig['redis']) {
+  return `redis://${options.host}:${options.port}/${options.db}`
+}

@@ -6,7 +6,7 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { JwtStrategy, XltTokenModule } from '@xlt-token/nestjs'
+import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
@@ -72,9 +72,6 @@ import { SharedModule } from './shared'
     XltTokenModule.forRootAsync({
       isGlobal: true,
       stpInterface: CustomXltStp,
-      strategy: {
-        useClass: JwtStrategy,
-      },
       store: {
         useClass: CustomXltRedis,
       },

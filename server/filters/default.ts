@@ -1,7 +1,6 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
 import { Catch, HttpException, HttpStatus, Logger } from '@nestjs/common'
 import { HttpAdapterHost } from '@nestjs/core'
-import { NotPermissionException } from '@xlt-token/nestjs'
 import { ErrorEnum } from '~server/constants'
 
 /**
