@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
+import { VxeUI } from 'vxe-pc-ui'
 
 defineOptions({
   name: 'DarkToggle',
@@ -15,28 +16,8 @@ const isDark = useDark({
 const toggleDark = useToggle(isDark)
 
 function handleToggle(e: MouseEvent) {
-  const transition = document.startViewTransition(() => {
-    toggleDark()
-  })
-
-  transition.ready.then(() => {
-    const { clientX, clientY } = e
-
-    const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY))
-
-    const clipPath = [`circle(0px at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`]
-
-    document.documentElement.animate(
-      {
-        clipPath: isDark.value ? clipPath.reverse() : clipPath,
-      },
-      {
-        duration: 450,
-        easing: 'ease-in',
-        pseudoElement: isDark.value ? '::view-transition-old(root)' : '::view-transition-new(root)',
-      },
-    )
-  })
+  toggleDark()
+  VxeUI.setTheme(isDark.value ? 'dark' : 'light')
 }
 </script>
 

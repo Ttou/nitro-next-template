@@ -1,113 +1,182 @@
 <script setup lang="ts">
-import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
+import type { InputProps } from 'element-plus'
+import type { VxeGridProps } from 'vxe-table'
+import type { FindMonitorOnlinePageResDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
-import { cloneDeep } from 'es-toolkit/compat'
-import { computed, ref, unref, useTemplateRef } from 'vue'
-import { YesOrNoEnum } from '~shared/enums'
-import { useRemove } from './hooks'
+import { ElButton, ElMessage, ElMessageBox, ElNotification, ElSpace } from 'element-plus'
+import { h, reactive, useTemplateRef } from 'vue'
 
-const pageInstance = useTemplateRef('pageInstance')
-const selectedIds = ref<string[]>([])
-
-const columns = computed<PlusColumn[]>(() => [
-  {
-    label: '登录名称',
-    prop: 'userName',
-    minWidth: 120,
-    tableColumnProps: {
-      align: 'center',
+const gridRef = useTemplateRef('gridRef')
+const gridOptions = reactive<VxeGridProps>({
+  border: true,
+  showHeader: true,
+  showOverflow: true,
+  height: 'auto',
+  align: 'center',
+  toolbarConfig: {
+    custom: true,
+    refresh: true,
+    zoom: true,
+    slots: {
+      buttons: 'toolbar_buttons',
     },
   },
-  {
-    label: '登录昵称',
-    prop: 'nickName',
-    minWidth: 120,
-    tableColumnProps: {
-      align: 'center',
-    },
+  formConfig: {
+    items: [
+      {
+        title: '登录名称',
+        field: 'userName',
+        span: 6,
+        itemRender: {
+          name: 'ElInput',
+          props: {
+            placeholder: '请输入',
+          } as InputProps,
+        },
+      },
+      {
+        title: '登录昵称',
+        field: 'nickName',
+        span: 6,
+        itemRender: {
+          name: 'ElInput',
+          props: {
+            placeholder: '请输入',
+          } as InputProps,
+        },
+      },
+      {
+        span: 6,
+        slots: {
+          default: () => h(
+            ElSpace,
+            {
+              class: 'search-area-space',
+            },
+            () => [
+              h(ElButton, { type: 'primary', nativeType: 'submit' }, () => '搜索'),
+              h(ElButton, { nativeType: 'reset' }, () => '重置'),
+            ],
+          ),
+        },
+      },
+    ],
   },
-])
-
-const pageProps = computed<PlusPageProps>(() => {
-  return {
-    columns: unref(columns),
-    search: {
-      showNumber: 3,
+  columns: [
+    {
+      title: '登录名称',
+      field: 'userName',
+      minWidth: 120,
     },
-    defaultPageInfo: {
-      page: 1,
-      pageSize: 20,
+    {
+      title: '登录昵称',
+      field: 'nickName',
+      minWidth: 120,
     },
-    table: {
-      adaptive: true,
-      hasIndexColumn: true,
-      isSelection: true,
-      indexTableColumnProps: {
-        label: '序号',
+    {
+      title: '操作',
+      fixed: 'right',
+      width: 120,
+      slots: {
+        default: 'columns_operation',
       },
-      selectionTableColumnProps: {
-        selectable(row, index) {
-          return row.isBuiltin !== YesOrNoEnum.YES
-        },
-      },
-      actionBar: {
-        actionBarTableColumnProps: {
-          align: 'center',
-        },
-        buttons: [
-          {
-            text: '下线',
-            code: 'delete',
-            props: (row, index, button) => ({
-              type: 'warning',
-              disabled: row.isBuiltin === YesOrNoEnum.YES,
-            }),
-            confirm: {
-              message: ({ row }) => `确定下线【${row.userName}】吗？`,
-              options: {
-                type: 'warning',
-              },
-            },
-            onConfirm({ row }) {
-              confirmRemove([row.id])
-            },
+    },
+  ],
+  pagerConfig: {
+    background: true,
+    layouts: [
+      'PrevJump',
+      'PrevPage',
+      'JumpNumber',
+      'NextPage',
+      'NextJump',
+      'Sizes',
+      'FullJump',
+      'Total',
+    ],
+    pageSize: 20,
+  },
+  proxyConfig: {
+    seq: true,
+    form: true,
+    response: {
+      result: 'data',
+      total: 'total',
+    },
+    ajax: {
+      query: async ({ page, form }) => {
+        const result = await Apis.MonitorOnline.findPage({
+          data: {
+            ...form,
+            page: page.currentPage,
+            pageSize: page.pageSize,
           },
-        ],
-      },
-      onSelectionChange: (data: any[]) => {
-        selectedIds.value = Array.from(data, item => item.id)
-      },
-    },
-    request: async (params) => {
-      const _params = cloneDeep(params)
+        })
 
-      return await Apis.MonitorOnline.findPage({ data: _params })
+        return result
+      },
     },
-    searchCardProps: {
-      shadow: 'never',
-    },
-    tableCardProps: {
-      shadow: 'never',
-    },
-  }
+  },
 })
 
-const { confirmRemove } = useRemove({ pageInstance, selectedIds })
+function handleRemove(ids: string[]) {
+  Apis.MonitorOnline.remove({ data: { ids } })
+    .then(() => {
+      ElNotification.success({ title: '通知', message: '删除成功' })
+      gridRef.value?.commitProxy('query')
+    })
+}
+
+function handleConfirmRemoveOne(row: FindMonitorOnlinePageResDto) {
+  ElMessageBox.confirm(`确定下线【${row.userName}】吗？`, {
+    type: 'warning',
+    title: '提示',
+  })
+    .then(() => {
+      handleRemove([row.id])
+    })
+    .catch(() => {})
+}
+
+function handleConfirmRemoveMany() {
+  const selectedIds = gridRef.value?.getCheckboxRecords().map(v => v.id)
+
+  if (!selectedIds?.length) {
+    ElMessage.warning('请选择要删除的数据')
+    return
+  }
+
+  ElMessageBox.confirm('确定删除选中的数据吗？', {
+    type: 'warning',
+    title: '提示',
+  })
+    .then(() => {
+      handleRemove(selectedIds)
+    })
+    .catch(() => {})
+}
 </script>
 
 <template>
   <div class="auto-page">
-    <plus-page ref="pageInstance" v-bind="pageProps">
-      <template #table-title>
-        <el-space>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+    <vxe-grid ref="gridRef" v-bind="gridOptions">
+      <template #toolbar_buttons>
+        <ElSpace>
+          <ElButton type="danger" @click="handleConfirmRemoveMany">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             批量下线
-          </el-button>
-        </el-space>
+          </ElButton>
+        </ElSpace>
       </template>
-    </plus-page>
+      <template #columns_operation="{ row }">
+        <ElSpace>
+          <ElButton type="danger" link @click="handleConfirmRemoveOne(row)">
+            下线
+          </ElButton>
+        </ElSpace>
+      </template>
+    </vxe-grid>
   </div>
 </template>

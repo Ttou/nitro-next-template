@@ -78,6 +78,7 @@ const gridOptions = reactive<VxeGridProps<FindMonitorCachePageItemResDto>>({
     },
     {
       title: '操作',
+      fixed: 'right',
       width: 120,
       slots: {
         default: 'columns_operation',
