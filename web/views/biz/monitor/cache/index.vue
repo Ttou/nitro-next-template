@@ -1,206 +1,118 @@
 <script setup lang="ts">
-import type { InputProps } from 'element-plus'
-import type { VxeGridProps } from 'vxe-table'
-import type { FindMonitorCachePageItemResDto } from '~web/apis/globals'
+import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-import { ElButton, ElMessage, ElMessageBox, ElNotification, ElSpace } from 'element-plus'
-import { h, reactive, useTemplateRef } from 'vue'
-import { formatTime } from '~shared/utils'
+import { cloneDeep } from 'es-toolkit/compat'
+import { computed, ref, unref, useTemplateRef } from 'vue'
+import { useRemove } from './hooks'
 
-const gridRef = useTemplateRef('gridRef')
-const gridOptions = reactive<VxeGridProps<FindMonitorCachePageItemResDto>>({
-  border: true,
-  showHeader: true,
-  showOverflow: true,
-  height: 'auto',
-  align: 'center',
-  toolbarConfig: {
-    custom: true,
-    refresh: true,
-    zoom: true,
-    slots: {
-      buttons: 'toolbar_buttons',
+const pageInstance = useTemplateRef('pageInstance')
+const selectedIds = ref<string[]>([])
+
+const columns = computed<PlusColumn[]>(() => [
+  {
+    label: '缓存键',
+    prop: 'key',
+    minWidth: 350,
+    tableColumnProps: {
+      align: 'center',
     },
   },
-  formConfig: {
-    items: [
-      {
-        title: '缓存键',
-        field: 'key',
-        span: 6,
-        itemRender: {
-          name: 'ElInput',
-          props: {
-            placeholder: '请输入',
-          } as InputProps,
-        },
+  {
+    label: '过期时间',
+    prop: 'ttl',
+    width: 200,
+    valueType: 'date-picker',
+    fieldProps: {
+      type: 'datetimerange',
+    },
+    hideInSearch: true,
+    tableColumnProps: {
+      align: 'center',
+    },
+  },
+])
+
+const pageProps = computed<PlusPageProps>(() => {
+  return {
+    columns: unref(columns),
+    search: {
+      showNumber: 3,
+    },
+    defaultPageInfo: {
+      page: 1,
+      pageSize: 20,
+    },
+    table: {
+      adaptive: true,
+      hasIndexColumn: true,
+      isSelection: true,
+      rowKey: 'key',
+      indexTableColumnProps: {
+        label: '序号',
       },
-      {
-        span: 6,
-        collapseNode: true,
-        slots: {
-          default: () => h(
-            ElSpace,
-            {
-              class: 'search-area-space',
+      actionBar: {
+        actionBarTableColumnProps: {
+          align: 'center',
+        },
+        buttons: [
+          {
+            text: '删除',
+            code: 'delete',
+            props: (row, index, button) => ({
+              type: 'warning',
+            }),
+            confirm: {
+              message: ({ row }) => `确定删除【${row.key}】吗？`,
+              options: {
+                type: 'warning',
+              },
             },
-            () => [
-              h(ElButton, { type: 'primary', nativeType: 'submit' }, () => '搜索'),
-              h(ElButton, { nativeType: 'reset' }, () => '重置'),
-            ],
-          ),
-        },
-      },
-    ],
-  },
-  columns: [
-    {
-      type: 'checkbox',
-      fixed: 'left',
-      width: 50,
-    },
-    {
-      title: '序号',
-      type: 'seq',
-      fixed: 'left',
-      width: 50,
-    },
-    {
-      title: '缓存键',
-      field: 'key',
-      minWidth: 350,
-    },
-    {
-      title: '过期时间',
-      field: 'ttl',
-      width: 200,
-      formatter: ({ cellValue }) => formatTime(cellValue),
-    },
-    {
-      title: '操作',
-      fixed: 'right',
-      width: 120,
-      slots: {
-        default: 'columns_operation',
-      },
-    },
-  ],
-  pagerConfig: {
-    background: true,
-    layouts: [
-      'PrevJump',
-      'PrevPage',
-      'JumpNumber',
-      'NextPage',
-      'NextJump',
-      'Sizes',
-      'FullJump',
-      'Total',
-    ],
-    pageSize: 20,
-  },
-  proxyConfig: {
-    seq: true,
-    form: true,
-    response: {
-      result: 'data',
-      total: 'total',
-    },
-    ajax: {
-      query: async ({ page, form }) => {
-        const result = await Apis.MonitorCache.findPage({
-          data: {
-            ...form,
-            page: page.currentPage,
-            pageSize: page.pageSize,
+            onConfirm({ row }) {
+              confirmRemove([row.key])
+            },
           },
-        })
-
-        return result
+        ],
+      },
+      onSelectionChange: (data: any[]) => {
+        selectedIds.value = Array.from(data, item => item.key)
       },
     },
-  },
+    request: async (params) => {
+      const _params = cloneDeep(params)
+
+      return await Apis.MonitorCache.findPage({ data: _params })
+    },
+    searchCardProps: {
+      shadow: 'never',
+    },
+    tableCardProps: {
+      shadow: 'never',
+    },
+  }
 })
 
-function handleRemove(keys: string[]) {
-  Apis.MonitorCache.remove({ data: { keys } })
-    .then(() => {
-      ElNotification.success({ title: '通知', message: '删除成功' })
-      gridRef.value?.commitProxy('query')
-    })
-}
-
-function handleConfirmRemoveOne(row: FindMonitorCachePageItemResDto) {
-  ElMessageBox.confirm(`确定删除【${row.key}】吗？`, {
-    type: 'warning',
-    title: '提示',
-  })
-    .then(() => {
-      handleRemove([row.key])
-    })
-    .catch(() => {})
-}
-
-function handleConfirmRemoveMany() {
-  const selectedIds = gridRef.value?.getCheckboxRecords().map(v => v.key)
-
-  if (!selectedIds?.length) {
-    ElMessage.warning('请选择要删除的数据')
-    return
-  }
-
-  ElMessageBox.confirm('确定删除选中的数据吗？', {
-    type: 'warning',
-    title: '提示',
-  })
-    .then(() => {
-      handleRemove(selectedIds)
-    })
-    .catch(() => {})
-}
-
-function handleConfirmRemoveAll() {
-  ElMessageBox.confirm('确定清空缓存吗？', {
-    type: 'warning',
-    title: '提示',
-  })
-    .then(() => {
-      Apis.MonitorCache.clear()
-        .then(() => {
-          ElNotification.success({ title: '通知', message: '清空成功' })
-          gridRef.value?.commitProxy('query')
-        })
-    })
-    .catch(() => {})
-}
+const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
 </script>
 
 <template>
   <div class="auto-page">
-    <vxe-grid ref="gridRef" v-bind="gridOptions">
-      <template #toolbar_buttons>
-        <ElSpace>
-          <ElButton type="danger" @click="handleConfirmRemoveMany">
+    <plus-page ref="pageInstance" v-bind="pageProps">
+      <template #table-title>
+        <el-space>
+          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             批量删除
-          </ElButton>
-          <ElButton type="danger" @click="handleConfirmRemoveAll">
+          </el-button>
+          <el-button type="danger" @click="confirmClear">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             清空缓存
-          </ElButton>
-        </ElSpace>
+          </el-button>
+        </el-space>
       </template>
-      <template #columns_operation="{ row }">
-        <ElSpace>
-          <ElButton type="danger" link @click="handleConfirmRemoveOne(row)">
-            删除
-          </ElButton>
-        </ElSpace>
-      </template>
-    </vxe-grid>
+    </plus-page>
   </div>
 </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core'
-import { VxeUI } from 'vxe-pc-ui'
 
 defineOptions({
   name: 'DarkToggle',
@@ -17,7 +16,6 @@ const toggleDark = useToggle(isDark)
 
 function handleToggle(e: MouseEvent) {
   toggleDark()
-  VxeUI.setTheme(isDark.value ? 'dark' : 'light')
 }
 </script>
 

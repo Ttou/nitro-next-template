@@ -74,5 +74,9 @@ minimumReleaseAgeExclude:
   - '@napi-rs/canvas-win32-arm64-msvc@1.0.6'
   - '@napi-rs/canvas-win32-x64-msvc@1.0.6'
   - '@napi-rs/canvas@1.0.6'
+  - '@fastify/multipart@10.1.1'
+  - '@nestjs/common@11.2.1'
+  - '@nestjs/core@11.2.1'
+  - '@nestjs/platform-fastify@11.2.1'
 patchedDependencies:
   '@xlt-token/jwt@2.1.0': patches/@xlt-token__jwt@2.1.0.patch

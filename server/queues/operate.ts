@@ -27,31 +27,31 @@ export class OperateQueue extends WorkerHost {
     private em: EntityManager,
   ) {
     super()
+    this.em = em.fork()
   }
 
   async process(job: Job<any>) {
     let { user, ip, ...rest } = job.data
 
     const location = await this.ipService.toLocation(ip)
-    const em = this.em.fork()
 
     // 没有 id 或 userName 表示是特殊操作
     if (!user.userName || !user.id) {
-      user = await em.findOne(SysUserEntity, {
+      user = await this.em.findOne(SysUserEntity, {
         id: user.id ? { $eq: user.id } : {},
         userName: user.userName ? { $eq: user.userName } : {},
       })
     }
 
     try {
-      const operateLog = em.create(SysOperateEntity, {
+      const operateLog = this.em.create(SysOperateEntity, {
         ...rest,
         ip,
         location,
       })
       operateLog.user = user
 
-      await em.persist(operateLog).flush()
+      await this.em.persist(operateLog).flush()
     }
     catch (error) {
       this.logger.error(error)

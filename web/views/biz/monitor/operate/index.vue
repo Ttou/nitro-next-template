@@ -244,6 +244,9 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.operateTime[1])
       }
 
+      Reflect.deleteProperty(_params, 'user')
+      Reflect.deleteProperty(_params, 'operateTime')
+
       return await Apis.MonitorOperate.findPage({ data: _params })
     },
     searchCardProps: {

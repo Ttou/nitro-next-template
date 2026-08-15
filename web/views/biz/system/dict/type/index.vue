@@ -140,6 +140,8 @@ const pageProps = computed<PlusPageProps>(() => {
         Reflect.set(_params, 'endTime', _params.createdAt[1])
       }
 
+      Reflect.deleteProperty(_params, 'createdAt')
+
       return await Apis.SystemDictType.findPage({ data: _params })
     },
     searchCardProps: {

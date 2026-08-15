@@ -17,7 +17,6 @@ import { useIcons } from './hooks/useIcons'
 import i18n from './i18n'
 import { router } from './router'
 import { store } from './store'
-import { useVxeTable } from './hooks'
 
 const app = createApp(App)
 
@@ -29,6 +28,5 @@ app.use(router)
 app.use(i18n)
 
 useIcons()
-useVxeTable(app)
 
 app.mount('#app')

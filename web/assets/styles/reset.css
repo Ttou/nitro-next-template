@@ -4,11 +4,7 @@
 }
 
 .auto-page {
-  height: calc(100vh - 140px);
-
-  .search-area-space {
-    vertical-align: middle;
-  }
+  height: calc(100vh - 155px);
   
   .plus-page {
     display: flex;
