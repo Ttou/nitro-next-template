@@ -1,5 +1,5 @@
+import type { ISysMenuEntity, ISysRoleEntity } from '~db/entities'
 import type { IPropertyNullable } from '~server/interfaces'
-import type { ISysMenuEntity, ISysRoleEntity } from '~shared/db/entities'
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'

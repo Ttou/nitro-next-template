@@ -1,6 +1,6 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core'
 import { Seeder } from '@mikro-orm/seeder'
-import { MenuTypeEnum, YesOrNoEnum } from '../../enums'
+import { MenuTypeEnum, YesOrNoEnum } from '../../shared/enums'
 import { SysMenuEntity } from '../entities'
 
 class FirstLevelSeeder extends Seeder {

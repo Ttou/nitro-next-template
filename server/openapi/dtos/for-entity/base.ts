@@ -1,5 +1,5 @@
+import type { IBaseEntity } from '~db/entities'
 import type { IPropertyNullable } from '~server/interfaces'
-import type { IBaseEntity } from '~shared/db/entities'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class BaseEntityDto implements IBaseEntity {

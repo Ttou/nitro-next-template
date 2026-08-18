@@ -1,5 +1,5 @@
+import type { ISysOperateEntity } from '~db/entities'
 import type { IPropertyNullable } from '~server/interfaces'
-import type { ISysOperateEntity } from '~shared/db/entities'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { UserAgentSerDto } from '~server/openapi'

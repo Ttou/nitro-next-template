@@ -9,11 +9,13 @@
 
     "baseUrl": ".",
     "paths": {
+      "~db/*": ["db/*"],
       "~server/*": ["server/*"],
       "~shared/*": ["shared/*"],
     }
   },
   "include": [
+    "db/**/*.ts",
     "plugins/**/*.ts",
     "scripts/**/*.ts",
     "server/**/*.ts",

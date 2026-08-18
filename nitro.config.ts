@@ -16,6 +16,7 @@ export default defineConfig({
     '/bull-ui/**': { basicAuth: { username: 'bull', password: '123456' } },
   },
   alias: {
+    '~db': resolve(__dirname, 'db'),
     '~server': resolve(__dirname, 'server'),
     '~shared': resolve(__dirname, 'shared'),
   },

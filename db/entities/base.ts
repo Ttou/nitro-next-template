@@ -1,6 +1,6 @@
 import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
-import { generateId } from '../../utils'
+import { generateId } from '../../shared/utils'
 
 export const BaseEntity = defineEntity({
   name: 'BaseEntity',

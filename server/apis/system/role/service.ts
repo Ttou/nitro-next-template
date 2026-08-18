@@ -1,9 +1,9 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { SysRoleEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
-import { SysRoleEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 

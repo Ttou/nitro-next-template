@@ -1,9 +1,9 @@
 import type { RemoveReqDto } from '~server/openapi'
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { SysDictDataEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/shared'
-import { SysDictDataEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
 

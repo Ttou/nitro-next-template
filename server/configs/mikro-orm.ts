@@ -3,9 +3,9 @@ import type { ConfigType } from '@nestjs/config'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
+import * as entities from '~db/entities'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
 import { CustomOrmLogger } from '~server/customs'
-import * as entities from '~shared/db/entities'
 
 export const MikroOrmConfig = registerAs('mikro-orm', () => {
   return match(APP_ENV)

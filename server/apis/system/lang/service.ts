@@ -1,9 +1,9 @@
 import { EntityManager, wrap } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { SysLangEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService, TranslateService } from '~server/shared'
-import { SysLangEntity } from '~shared/db/entities'
 import { LangEnum, YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemLangReqDto,

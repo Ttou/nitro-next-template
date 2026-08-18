@@ -1,6 +1,6 @@
 import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
-import { MenuTypeEnumValues, YesOrNoEnumValues } from '../../enums'
+import { MenuTypeEnumValues, YesOrNoEnumValues } from '../../shared/enums'
 import { BaseEntity } from './base'
 import { SysRoleEntity } from './sys-role'
 

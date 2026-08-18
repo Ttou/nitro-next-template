@@ -3,7 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
 import { ContextService } from '~server/shared'
-import { SysPostEntity } from '~shared/db/entities'
+import { SysPostEntity } from '~db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './dto'
 

@@ -1,6 +1,6 @@
 import type { Queue } from 'bullmq'
+import type { IBaseEntity } from '~db/entities'
 import type { SysOperateEntityDto, SysUserEntityDto } from '~server/openapi'
-import type { IBaseEntity } from '~shared/db/entities'
 import type { ICtxClsStore, IRequest } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
 import { InjectQueue } from '@nestjs/bullmq'
@@ -8,9 +8,9 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { omitBy, uniqBy } from 'es-toolkit'
 import { CLS_REQ, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
+import { SysConfigEntity, SysUserEntity } from '~db/entities'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
 import { QueueNameEnum } from '~server/queues'
-import { SysConfigEntity, SysUserEntity } from '~shared/db/entities'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()
