@@ -1,4 +1,3 @@
-import type { HttpContext } from '@xlt-token/core'
 import { EntityManager } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'
@@ -53,8 +52,8 @@ export class AuthService {
   }
 
   async logout() {
-    const request = this.contextService.getRequest() as unknown as HttpContext
-    const token = await this.stp.getTokenValue(request)
+    const ctx = this.contextService.createHttpContext()
+    const token = await this.stp.getTokenValue(ctx)
     await this.stp.logout(token!)
   }
 }

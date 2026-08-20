@@ -10,6 +10,8 @@ export const ClsConfig = registerAs('cls', () => {
     .with(AppEnvEnum.DEV, () => ({
       middleware: {
         mount: true,
+        saveReq: true,
+        saveRes: true,
         generateId: true,
         idGenerator: req => req.id,
       },

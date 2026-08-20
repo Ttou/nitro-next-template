@@ -1,82 +1,28 @@
 allowBuilds:
-  "@nestjs/core": true
-  "@scarf/scarf": true
-  esbuild: true
-  msgpackr-extract: true
+  '@nestjs/core': set this to true or false
+  '@scarf/scarf': set this to true or false
+  esbuild: set this to true or false
+  msgpackr-extract: set this to true or false
 minimumReleaseAgeExclude:
-  - '@cj-tech-master/excelts@9.6.1 || 10.2.0'
-  - '@scalar/client-side-rendering@0.2.2 || 0.2.3 || 0.2.4 || 0.3.6'
-  - '@scalar/helpers@0.8.2 || 0.10.0'
-  - '@scalar/nestjs-api-reference@1.2.2 || 1.2.3 || 1.2.4 || 1.2.13'
-  - '@scalar/schemas@0.4.2 || 0.4.3 || 0.5.0 || 0.8.1'
-  - '@scalar/types@0.13.2 || 0.13.3 || 0.14.0 || 0.17.1'
-  - element-plus@2.14.2 || 2.14.4
-  - es-toolkit@1.47.1
-  - eslint@10.5.0 || 10.8.1
-  - '@nestjs/common@11.1.27 || 11.2.0'
-  - '@nestjs/core@11.1.27 || 11.2.0'
-  - '@nestjs/platform-fastify@11.1.27 || 11.2.0'
-  - '@oxc-project/runtime@0.136.0 || 0.137.0'
-  - axios@1.18.0
-  - '@bull-board/api@8.0.1 || 8.6.0'
-  - '@bull-board/fastify@8.0.1 || 8.6.0'
-  - '@bull-board/nestjs@8.0.1 || 8.6.0'
-  - '@bull-board/ui@8.0.1 || 8.6.0'
-  - '@intlify/core-base@11.4.6'
-  - '@intlify/devtools-types@11.4.6'
-  - '@intlify/message-compiler@11.4.6'
-  - '@intlify/shared@11.4.6'
-  - '@nestjs-modules/mailer@2.3.7'
-  - bullmq@5.79.0 || 5.79.1 || 5.80.2 || 5.80.7 || 6.1.1
-  - vue-i18n@11.4.6
-  - uuid@14.0.1
-  - enum-plus@3.2.0 || 3.3.0
-  - '@mikro-orm/core@7.1.7'
-  - '@mikro-orm/mysql@7.1.7'
-  - '@mikro-orm/seeder@7.1.7'
-  - '@mikro-orm/sql@7.1.7'
-  - '@nestjs/swagger@11.4.6'
-  - '@rolldown/binding-android-arm64@1.2.3'
-  - '@rolldown/binding-darwin-arm64@1.2.3'
-  - '@rolldown/binding-darwin-x64@1.2.3'
-  - '@rolldown/binding-freebsd-x64@1.2.3'
-  - '@rolldown/binding-linux-arm-gnueabihf@1.2.3'
-  - '@rolldown/binding-linux-arm64-gnu@1.2.3'
-  - '@rolldown/binding-linux-arm64-musl@1.2.3'
-  - '@rolldown/binding-linux-ppc64-gnu@1.2.3'
-  - '@rolldown/binding-linux-s390x-gnu@1.2.3'
-  - '@rolldown/binding-linux-x64-gnu@1.2.3'
-  - '@rolldown/binding-linux-x64-musl@1.2.3'
-  - '@rolldown/binding-openharmony-arm64@1.2.3'
-  - '@rolldown/binding-win32-arm64-msvc@1.2.3'
-  - '@rolldown/binding-win32-x64-msvc@1.2.3'
-  - '@vue/compiler-core@3.5.41'
-  - '@vue/compiler-dom@3.5.41'
-  - '@vue/compiler-sfc@3.5.41'
-  - '@vue/compiler-ssr@3.5.41'
-  - '@vue/reactivity@3.5.41'
-  - '@vue/runtime-core@3.5.41'
-  - '@vue/runtime-dom@3.5.41'
-  - '@vue/server-renderer@3.5.41'
-  - '@vue/shared@3.5.41'
-  - rolldown@1.2.3
-  - vue@3.5.41
-  - fastify@5.11.3 || 5.12.0
-  - '@napi-rs/canvas-android-arm64@1.0.6'
-  - '@napi-rs/canvas-darwin-arm64@1.0.6'
-  - '@napi-rs/canvas-darwin-x64@1.0.6'
-  - '@napi-rs/canvas-linux-arm-gnueabihf@1.0.6'
-  - '@napi-rs/canvas-linux-arm64-gnu@1.0.6'
-  - '@napi-rs/canvas-linux-arm64-musl@1.0.6'
-  - '@napi-rs/canvas-linux-riscv64-gnu@1.0.6'
-  - '@napi-rs/canvas-linux-x64-gnu@1.0.6'
-  - '@napi-rs/canvas-linux-x64-musl@1.0.6'
-  - '@napi-rs/canvas-win32-arm64-msvc@1.0.6'
-  - '@napi-rs/canvas-win32-x64-msvc@1.0.6'
-  - '@napi-rs/canvas@1.0.6'
-  - '@fastify/multipart@10.1.1'
-  - '@nestjs/common@11.2.1'
-  - '@nestjs/core@11.2.1'
-  - '@nestjs/platform-fastify@11.2.1'
-patchedDependencies:
-  '@xlt-token/jwt@2.1.0': patches/@xlt-token__jwt@2.1.0.patch
+  - '@rolldown/binding-android-arm-eabi@1.2.5'
+  - '@rolldown/binding-android-arm64@1.2.5'
+  - '@rolldown/binding-darwin-arm64@1.2.5'
+  - '@rolldown/binding-darwin-x64@1.2.5'
+  - '@rolldown/binding-freebsd-x64@1.2.5'
+  - '@rolldown/binding-linux-arm-gnueabihf@1.2.5'
+  - '@rolldown/binding-linux-arm64-gnu@1.2.5'
+  - '@rolldown/binding-linux-arm64-musl@1.2.5'
+  - '@rolldown/binding-linux-ppc64-gnu@1.2.5'
+  - '@rolldown/binding-linux-s390x-gnu@1.2.5'
+  - '@rolldown/binding-linux-x64-gnu@1.2.5'
+  - '@rolldown/binding-linux-x64-musl@1.2.5'
+  - '@rolldown/binding-openharmony-arm64@1.2.5'
+  - '@rolldown/binding-win32-arm64-msvc@1.2.5'
+  - '@rolldown/binding-win32-x64-msvc@1.2.5'
+  - '@xlt-token/core@2.1.1'
+  - '@xlt-token/jwt@2.1.1'
+  - '@xlt-token/nestjs@2.1.1'
+  - '@xlt-token/store-redis@2.1.1'
+  - mysql2@3.23.4
+  - rolldown@1.2.5
+  - vite@8.2.2

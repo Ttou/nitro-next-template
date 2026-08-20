@@ -8,8 +8,8 @@ import { RedisExtendService } from './redis-extend'
 @Injectable()
 export class CacheService {
   private readonly logger = new Logger(CacheService.name)
-  private readonly cacheKeyPrefix = 'cache'
-  private readonly cacheTTL: StringValue = '15m'
+  private readonly keyPrefix = 'cache'
+  private readonly ttl: StringValue = '15m'
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -19,7 +19,7 @@ export class CacheService {
   async set(key: string, value: number | string, ttl?: number | StringValue) {
     try {
       const parsedKey = this.getKey(key)
-      const parsedTTL = typeof ttl === 'number' ? ttl : parseMs('milliseconds', ttl ?? this.cacheTTL)
+      const parsedTTL = typeof ttl === 'number' ? ttl : parseMs('milliseconds', ttl ?? this.ttl)
       await this.cacheManager.set(parsedKey, value, parsedTTL)
     }
     catch (error) {
@@ -79,6 +79,6 @@ export class CacheService {
   }
 
   getKey(key: string) {
-    return [SharedConfig.appName, this.cacheKeyPrefix, key].join(':')
+    return [SharedConfig.appName, this.keyPrefix, key].join(':')
   }
 }

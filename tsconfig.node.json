@@ -10,14 +10,12 @@
     "baseUrl": ".",
     "paths": {
       "~db/*": ["db/*"],
-      "~packages/*": ["packages/*"],
       "~server/*": ["server/*"],
       "~shared/*": ["shared/*"],
     }
   },
   "include": [
     "db/**/*.ts",
-    "packages/**/*.ts",
     "plugins/**/*.ts",
     "scripts/**/*.ts",
     "server/**/*.ts",

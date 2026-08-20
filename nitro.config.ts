@@ -17,7 +17,6 @@ export default defineConfig({
   },
   alias: {
     '~db': resolve(__dirname, 'db'),
-    '~packages': resolve(__dirname, 'packages'),
     '~server': resolve(__dirname, 'server'),
     '~shared': resolve(__dirname, 'shared'),
   },

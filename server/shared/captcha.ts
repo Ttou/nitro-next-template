@@ -9,8 +9,8 @@ import { generateId, parseMs } from '~shared/utils'
 
 @Injectable()
 export class CaptchaService {
-  private readonly captchaKeyPrefix = 'captcha'
-  private readonly captchaKeyExpire: StringValue = '3m'
+  private readonly keyPrefix = 'captcha'
+  private readonly expire: StringValue = '3m'
 
   constructor(
     @InjectRedis() private redisClient: RedisClient,
@@ -185,11 +185,11 @@ export class CaptchaService {
   }
 
   private async save(captchaId: string, captchaValue: string | number) {
-    const parsedExpire = parseMs('seconds', this.captchaKeyExpire)
+    const parsedExpire = parseMs('seconds', this.expire)
     await this.redisClient.setex(this.getKey(captchaId), parsedExpire, captchaValue)
   }
 
   private getKey(captchaId: string) {
-    return [SharedConfig.appName, this.captchaKeyPrefix, captchaId].join(':')
+    return [SharedConfig.appName, this.keyPrefix, captchaId].join(':')
   }
 }

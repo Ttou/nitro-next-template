@@ -1,4 +1,5 @@
 import type { NestFastifyApplication } from '@nestjs/platform-fastify'
+import cookie from '@fastify/cookie'
 import multipart from '@fastify/multipart'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
@@ -23,6 +24,7 @@ async function bootstrap() {
   nestApp.enableShutdownHooks()
 
   const serverApp = nestApp.getHttpAdapter().getInstance()
+  await serverApp.register(cookie)
   await serverApp.register(multipart)
 
   // #region 日志配置
