@@ -2,6 +2,7 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
+import { useRoute } from 'vue-router'
 import { YesOrNoEnum } from '~shared/enums'
 import { useDict } from '~web/hooks/useDict'
 import { dictToOptions } from '~web/utils'
@@ -10,6 +11,8 @@ import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
 const dict = useDict(['sys.user.sex'])
+
+const route = useRoute()
 
 const sexDictOptions = computed(() => dictToOptions(dict.value.get('sys.user.sex')))
 
@@ -117,6 +120,9 @@ const plusPageProps = computed<PlusPageProps>(() => {
     columns: unref(columns),
     search: {
       showNumber: 3,
+      defaultValues: {
+        userName: route.query.userName,
+      },
     },
     defaultPageInfo: {
       page: 1,

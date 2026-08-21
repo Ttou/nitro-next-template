@@ -2,7 +2,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { forwardRef, Inject, Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
-import { SysLoginLogEntity, SysUserEntity } from '~db/entities'
+import { SysLoginLogEntity } from '~db/entities'
 import { IpService } from '~server/shared'
 import { QueueNameEnum } from './constant'
 
@@ -31,12 +31,9 @@ export class LoginLogQueue extends WorkerHost {
   }
 
   async process(job: Job<any>) {
-    let { userName, ip, ...rest } = job.data
+    let { ip, ...rest } = job.data
 
     const location = await this.ipService.toLocation(ip)
-    const user = await this.em.findOne(SysUserEntity, {
-      userName,
-    })
 
     try {
       const loginLog = this.em.create(SysLoginLogEntity, {
@@ -44,7 +41,6 @@ export class LoginLogQueue extends WorkerHost {
         ip,
         location,
       })
-      loginLog.user = user
 
       await this.em.persist(loginLog).flush()
     }

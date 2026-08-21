@@ -1,7 +1,7 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import type { SysLoginLogEntityWithUserDto } from '~web/apis/globals'
-import { ElText } from 'element-plus'
+import { ElTag, ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
@@ -29,12 +29,20 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       span: 12,
     },
     columns: unref(columns).map((column) => {
-      if (['user.userName', 'user.nickName'].includes(column.prop)) {
+      if (column.prop === 'userName') {
         return {
           ...column,
           valueType: 'text',
           fieldProps: {
             type: 'info',
+          },
+        }
+      }
+      if (column.prop === 'status') {
+        return {
+          ...omit(column, ['valueType', 'fieldProps']),
+          renderField(value, onChange, props) {
+            return h(ElTag, { type: value === 200 ? 'success' : 'danger' }, { default: () => value })
           },
         }
       }

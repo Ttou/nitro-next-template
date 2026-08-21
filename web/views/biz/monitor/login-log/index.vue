@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
-import { ElText } from 'element-plus'
+import { ElLink, ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, unref, useTemplateRef } from 'vue'
+import { useRouter } from 'vue-router'
 import { useDetail } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
+
+const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
@@ -38,7 +41,7 @@ const columns = computed<PlusColumn[]>(() => [
     label: '请求状态',
     prop: 'status',
     minWidth: 100,
-    valueType: 'text',
+    valueType: 'tag',
     fieldProps: value => ({
       type: value === 200 ? 'success' : 'danger',
     }),
@@ -49,16 +52,18 @@ const columns = computed<PlusColumn[]>(() => [
   },
   {
     label: '登录人账号',
-    prop: 'user.userName',
+    prop: 'userName',
     minWidth: 150,
-    tableColumnProps: {
-      align: 'center',
+    render(value, data) {
+      return h(
+        ElLink,
+        {
+          type: 'primary',
+          onClick: () => router.push({ path: '/system/user', query: { userName: value } }),
+        },
+        () => value,
+      )
     },
-  },
-  {
-    label: '登录人昵称',
-    prop: 'user.nickName',
-    minWidth: 150,
     tableColumnProps: {
       align: 'center',
     },
@@ -67,7 +72,11 @@ const columns = computed<PlusColumn[]>(() => [
     label: '耗时',
     prop: 'costTime',
     renderField(value, onChange, props) {
-      return h(ElText, { type: 'warning' }, { default: () => `${value} ms` })
+      return h(
+        ElText,
+        { type: 'warning' },
+        { default: () => `${value} ms` },
+      )
     },
     hideInSearch: true,
     hideInTable: true,

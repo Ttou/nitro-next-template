@@ -1,9 +1,8 @@
 import type { ISysLoginLogEntity } from '~db/entities'
 import type { IPropertyNullable } from '~server/interfaces'
-import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { UserAgentSerDto } from '~server/openapi'
-import { SysUserEntityDto } from './sys-user'
 
 export class SysLoginLogEntityDto implements ISysLoginLogEntity {
   @ApiProperty({ description: '主键', type: String })
@@ -14,6 +13,9 @@ export class SysLoginLogEntityDto implements ISysLoginLogEntity {
 
   @ApiProperty({ description: '位置' })
   location: string
+
+  @ApiProperty({ description: '用户账号' })
+  userName: string
 
   @ApiProperty({ description: '用户代理' })
   userAgent: string
@@ -36,9 +38,4 @@ export class SysLoginLogEntityDto implements ISysLoginLogEntity {
 
   @ApiProperty({ description: '耗时' })
   costTime: number
-
-  @ApiProperty({ description: '用户', type: () => SysUserEntityDto })
-  user: SysUserEntityDto
 }
-
-export class SysLoginLogEntityExcludeRelationDto extends OmitType(SysLoginLogEntityDto, ['user'] as const) {}

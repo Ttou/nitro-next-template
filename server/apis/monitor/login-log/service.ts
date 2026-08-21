@@ -17,17 +17,14 @@ export class MonitorLoginLogService {
     const [data, total] = await this.em.findAndCount(SysLoginLogEntity, {
       $and: [
         {
-          user: {
-            userName: rest.userName ? { $like: `%${rest.userName}%` } : {},
-            nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {},
-          },
+          userName: rest.userName ? { $like: `%${rest.userName}%` } : {},
           operateTime: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {},
         },
       ],
-    }, { limit: pageSize, offset: page - 1, orderBy: { operateTime: 'desc' }, populate: ['user'] })
+    }, { limit: pageSize, offset: page - 1, orderBy: { operateTime: 'desc' } })
 
     // 必须先转换为普通对象，再转换为 dto，否则会报错
-    const serializedData = data.map(item => plainToInstance(SysLoginLogEntityDto, serialize(item, { populate: ['user'] })))
+    const serializedData = data.map(item => plainToInstance(SysLoginLogEntityDto, serialize(item)))
 
     return { page, pageSize, data: serializedData, total }
   }

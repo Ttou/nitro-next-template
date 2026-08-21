@@ -1,7 +1,6 @@
 import type { InferEntity } from '@mikro-orm/core'
 import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '../../shared/utils'
-import { SysUserEntity } from './sys-user'
 
 export const SysLoginLogEntity = defineEntity({
   name: 'SysLoginLogEntity',
@@ -10,15 +9,13 @@ export const SysLoginLogEntity = defineEntity({
     id: p.uuid().primary().onCreate(() => generateId()),
     ip: p.string(),
     location: p.string(),
+    userName: p.string(),
     userAgent: p.type('text'),
     token: p.string().nullable(),
     status: p.integer(),
     errorMsg: p.type('text').nullable(),
     operateTime: p.datetime(),
     costTime: p.integer(),
-    user: () => p
-      .manyToOne(SysUserEntity)
-      .joinColumn('user_id'),
   },
 })
 
