@@ -4,25 +4,25 @@ import { BullModule } from '@nestjs/bullmq'
 import { Global, Module } from '@nestjs/common'
 import { BullBoardConfig, BullConfig } from '../configs'
 import { QueueNameEnum } from './constant'
-import { OperateQueue } from './operate'
+import { LoginLogQueue } from './login-log'
 
 @Global()
 @Module({
   imports: [
     BullModule.forRootAsync(BullConfig.asProvider()),
     BullModule.registerQueue(
-      { name: QueueNameEnum.OPERATE },
+      { name: QueueNameEnum.LOGIN_LOG },
     ),
     BullBoardModule.forRootAsync(BullBoardConfig.asProvider()),
     BullBoardModule.forFeature(
       {
-        name: QueueNameEnum.OPERATE,
+        name: QueueNameEnum.LOGIN_LOG,
         adapter: BullMQAdapter,
       },
     ),
   ],
   providers: [
-    OperateQueue,
+    LoginLogQueue,
   ],
   exports: [BullModule],
 })

@@ -1,6 +1,7 @@
 import type { RedisClient } from '~server/interfaces'
 import { InjectRedis } from '@nestjs-modules/ioredis'
 import { Injectable, Logger } from '@nestjs/common'
+import { destr } from 'destr'
 
 @Injectable()
 export class RedisExtendService {
@@ -76,18 +77,7 @@ export class RedisExtendService {
     return keys.map((key, index) => {
       const [, value] = results![index * 2]!
       const [, ttl] = results![index * 2 + 1]!
-
-      let parsedValue: unknown = value
-      if (value) {
-        try {
-          parsedValue = JSON.parse(value)
-        }
-        catch {
-          // 解析失败，保持原始字符串值
-        }
-      }
-
-      return { key, value: parsedValue, ttl }
+      return { key, value: destr(value), ttl }
     })
   }
 }

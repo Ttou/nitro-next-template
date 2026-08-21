@@ -1,7 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
-import { Operate } from '~server/decorators'
+import { LoginLogInterceptor } from '~server/interceptors'
 import { ApiDoc } from '~server/openapi'
 import { LoginReqDto } from './dto'
 import { AuthService } from './service'
@@ -15,9 +15,7 @@ export class AuthController {
 
   @ApiDoc({ endpointSummary: '登录', responseDto: String })
   @XltIgnore()
-  @Operate({
-    getUser: req => ({ userName: req.body.userName } as any),
-  })
+  @UseInterceptors(LoginLogInterceptor)
   @Post('login')
   async login(@Body() dto: LoginReqDto) {
     return await this.authService.login(dto)
@@ -25,7 +23,6 @@ export class AuthController {
 
   @ApiBearerAuth()
   @ApiDoc({ endpointSummary: '退出' })
-  @Operate()
   @Post('logout')
   async logout() {
     return await this.authService.logout()

@@ -1,12 +1,10 @@
-import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { CustomCacheInterceptor } from '~server/customs'
-import { Operate } from '~server/decorators'
+import { CacheKey, CacheTTL } from '~server/decorators'
+import { CacheInterceptor } from '~server/interceptors'
 import { ApiDoc, RemoveReqDto, SysDictDataEntityDto, SysDictTypeEntityDto } from '~server/openapi'
 import { ExcelService } from '~server/shared'
-import { parseMs } from '~shared/utils'
 import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './dto'
 import { SystemDictTypeService } from './service'
 
@@ -21,7 +19,6 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '创建字典类型' })
   @XltCheckPermission('sys.menu.system.dictType.create')
-  @Operate()
   @Post('create')
   async create(@Body() dto: CreateSystemDictTypeReqDto) {
     await this.systemDictTypeService.create(dto)
@@ -29,8 +26,8 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '根据字典类型查询字典数据', responseDto: SysDictDataEntityDto, isArray: true })
   @CacheKey(ctx => `sys_dict:${ctx.switchToHttp().getRequest().query.dictType}`)
-  @CacheTTL(parseMs('milliseconds', '1d'))
-  @UseInterceptors(CustomCacheInterceptor)
+  @CacheTTL('1d')
+  @UseInterceptors(CacheInterceptor)
   @Get('findByKey')
   async findByKey(@Query() dto: FindSystemDictDetailByKeyReqDto) {
     return await this.systemDictTypeService.findByKey(dto)
@@ -38,7 +35,6 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '查询字典类型分页列表', responseDto: SysDictTypeEntityDto, isPage: true })
   @XltCheckPermission('sys.menu.system.dictType.findPage')
-  @Operate({ ignoreResponse: true })
   @Post('findPage')
   async findPage(@Body() dto: FindSystemDictTypePageReqDto) {
     return await this.systemDictTypeService.findPage(dto)
@@ -46,7 +42,6 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '删除字典类型' })
   @XltCheckPermission('sys.menu.system.dictType.remove')
-  @Operate()
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemDictTypeService.remove(dto)
@@ -54,7 +49,6 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '更新字典类型' })
   @XltCheckPermission('sys.menu.system.dictType.update')
-  @Operate()
   @Post('update')
   async update(@Body() dto: UpdateSystemDictTypeReqDto) {
     return await this.systemDictTypeService.update(dto)
@@ -62,7 +56,6 @@ export class SystemDictTypeController {
 
   @ApiDoc({ endpointSummary: '导出字典类型', isExcel: true })
   @XltCheckPermission('sys.menu.system.dictType.export')
-  @Operate({ ignoreResponse: true })
   @Post('export')
   async export(@Body() dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)

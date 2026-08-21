@@ -1,6 +1,6 @@
 import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
-import type { SysOperateLogEntityWithUserDto } from '~web/apis/globals'
+import type { SysLoginLogEntityWithUserDto } from '~web/apis/globals'
 import { ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'
@@ -13,10 +13,10 @@ interface UseDetailParams {
 
 export function useDetail({ pageInstance, columns }: UseDetailParams) {
   const detailVisible = ref(false)
-  const detailValues = ref<SysOperateLogEntityWithUserDto>({})
+  const detailValues = ref<SysLoginLogEntityWithUserDto>({})
 
   const detailDialogProps = computed<PlusDialogProps>(() => ({
-    title: '操作详情',
+    title: '登录详情',
     width: '1000px',
     hasFooter: false,
     destroyOnClose: true,
@@ -29,7 +29,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       span: 12,
     },
     columns: unref(columns).map((column) => {
-      if (['summary', 'user.userName', 'user.nickName'].includes(column.prop)) {
+      if (['user.userName', 'user.nickName'].includes(column.prop)) {
         return {
           ...column,
           valueType: 'text',

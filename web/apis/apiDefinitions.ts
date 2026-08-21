@@ -29,7 +29,7 @@ export default {
   'MonitorCache.clear': ['DELETE', '/api/monitor/cache/clear'],
   'MonitorOnline.findPage': ['POST', '/api/monitor/online/findPage'],
   'MonitorOnline.remove': ['DELETE', '/api/monitor/online/remove'],
-  'MonitorOperate.findPage': ['POST', '/api/monitor/operate/findPage'],
+  'MonitorLoginLog.findPage': ['POST', '/api/monitor/login-log/findPage'],
   'SystemConfig.create': ['POST', '/api/system/config/create'],
   'SystemConfig.findByKey': ['GET', '/api/system/config/findByKey'],
   'SystemConfig.findPage': ['POST', '/api/system/config/findPage'],

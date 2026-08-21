@@ -1,7 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { Operate } from '~server/decorators'
 import { ApiDoc } from '~server/openapi'
 import { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostReqDto, SysUserEntityWithPostsDto, UnallocateUserForPostReqDto } from './dto'
 import { SystemPostAuthService } from './service'
@@ -16,7 +15,6 @@ export class SystemPostAuthController {
 
   @ApiDoc({ endpointSummary: '为岗位分配用户' })
   @XltCheckPermission('sys.menu.system.postAuth.allocateUser')
-  @Operate()
   @Post('allocateUser')
   async allocateUser(@Body() dto: AllocateUserForPostReqDto) {
     return await this.systemPostAuthService.allocateUser(dto)
@@ -24,7 +22,6 @@ export class SystemPostAuthController {
 
   @ApiDoc({ endpointSummary: '查询岗位已分配用户分页', responseDto: SysUserEntityWithPostsDto, isPage: true })
   @XltCheckPermission('sys.menu.system.postAuth.findAllocatedUserPage')
-  @Operate({ ignoreResponse: true })
   @Post('findAllocatedUserPage')
   async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForPostReqDto) {
     return await this.systemPostAuthService.findAllocatedUserPage(dto)
@@ -32,7 +29,6 @@ export class SystemPostAuthController {
 
   @ApiDoc({ endpointSummary: '查询岗位未分配用户分页', responseDto: SysUserEntityWithPostsDto, isPage: true })
   @XltCheckPermission('sys.menu.system.postAuth.findUnallocatedUserPage')
-  @Operate({ ignoreResponse: true })
   @Post('findUnallocatedUserPage')
   async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForPostReqDto) {
     return await this.systemPostAuthService.findUnallocatedUserPage(dto)
@@ -40,7 +36,6 @@ export class SystemPostAuthController {
 
   @ApiDoc({ endpointSummary: '为岗位取消分配用户' })
   @XltCheckPermission('sys.menu.system.postAuth.unallocateUser')
-  @Operate()
   @Post('unallocateUser')
   async unallocateUser(@Body() dto: UnallocateUserForPostReqDto) {
     return await this.systemPostAuthService.unallocateUser(dto)

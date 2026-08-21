@@ -9,43 +9,6 @@ const pageInstance = useTemplateRef('pageInstance')
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '操作摘要',
-    prop: 'summary',
-    minWidth: 300,
-    fieldProps: {
-      type: 'info',
-    },
-    tableColumnProps: {
-      align: 'center',
-    },
-  },
-  {
-    label: '请求链接',
-    prop: 'requestUrl',
-    minWidth: 300,
-    valueType: 'text',
-    fieldProps: {
-      type: 'info',
-    },
-    tableColumnProps: {
-      align: 'center',
-    },
-    hideInSearch: true,
-  },
-  {
-    label: '请求方法',
-    prop: 'requestMethod',
-    minWidth: 100,
-    valueType: 'text',
-    fieldProps: {
-      type: 'info',
-    },
-    tableColumnProps: {
-      align: 'center',
-    },
-    hideInSearch: true,
-  },
-  {
     label: '请求IP',
     prop: 'ip',
     minWidth: 100,
@@ -85,27 +48,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: '控制器名称',
-    prop: 'controllerName',
-    valueType: 'text',
-    fieldProps: {
-      type: 'info',
-    },
-    hideInSearch: true,
-    hideInTable: true,
-  },
-  {
-    label: '处理器名称',
-    prop: 'handlerName',
-    valueType: 'text',
-    fieldProps: {
-      type: 'info',
-    },
-    hideInSearch: true,
-    hideInTable: true,
-  },
-  {
-    label: '操作人账号',
+    label: '登录人账号',
     prop: 'user.userName',
     minWidth: 150,
     tableColumnProps: {
@@ -113,7 +56,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '操作人昵称',
+    label: '登录人昵称',
     prop: 'user.nickName',
     minWidth: 150,
     tableColumnProps: {
@@ -142,20 +85,8 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '请求参数',
-    prop: 'requestParams',
-    valueType: 'textarea',
-    fieldProps: {
-      rows: 4,
-      readonly: true,
-      placeholder: '无',
-    },
-    hideInSearch: true,
-    hideInTable: true,
-  },
-  {
-    label: '请求结果',
-    prop: 'requestResult',
+    label: '登录密钥',
+    prop: 'token',
     valueType: 'textarea',
     fieldProps: {
       rows: 4,
@@ -247,7 +178,7 @@ const pageProps = computed<PlusPageProps>(() => {
       Reflect.deleteProperty(_params, 'user')
       Reflect.deleteProperty(_params, 'operateTime')
 
-      return await Apis.MonitorOperate.findPage({ data: _params })
+      return await Apis.MonitorLoginLog.findPage({ data: _params })
     },
     searchCardProps: {
       shadow: 'never',

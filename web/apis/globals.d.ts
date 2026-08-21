@@ -183,7 +183,7 @@ export interface RemoveReqDto {
    */
   ids: string[];
 }
-export interface FindMonitorOperatePageReqDto {
+export interface FindMonitorLoginLogPageReqDto {
   /**
    * 页码
    */
@@ -192,10 +192,6 @@ export interface FindMonitorOperatePageReqDto {
    * 页长
    */
   pageSize: number;
-  /**
-   * 操作摘要
-   */
-  summary?: string;
   /**
    * 用户名
    */
@@ -1553,39 +1549,11 @@ export interface SysUserEntityExcludeRelationDto {
    */
   remark: object;
 }
-export interface SysOperateLogEntityWithUserDto {
+export interface SysLoginLogEntityWithUserDto {
   /**
    * 主键
    */
   id: string;
-  /**
-   * 操作摘要
-   */
-  summary: string;
-  /**
-   * 控制器名称
-   */
-  controllerName: string;
-  /**
-   * 处理器名称
-   */
-  handlerName: string;
-  /**
-   * 请求方法
-   */
-  requestMethod: string;
-  /**
-   * 请求链接
-   */
-  requestUrl: string;
-  /**
-   * 请求参数
-   */
-  requestParams: object;
-  /**
-   * 请求结果
-   */
-  requestResult: object;
   /**
    * IP地址
    */
@@ -1598,6 +1566,10 @@ export interface SysOperateLogEntityWithUserDto {
    * 用户代理解析
    */
   userAgentParsed: UserAgentSerDto;
+  /**
+   * 密钥
+   */
+  token: string;
   /**
    * 请求状态
    */
@@ -2659,13 +2631,13 @@ declare global {
         config: Config
       ): Alova2Method<null, 'MonitorOnline.remove', Config>;
     };
-    MonitorOperate: {
+    MonitorLoginLog: {
       /**
        * ---
        *
-       * [POST] 分页查询操作日志
+       * [POST] 分页查询登录日志
        *
-       * **path:** /api/monitor/operate/findPage
+       * **path:** /api/monitor/login-log/findPage
        *
        * ---
        *
@@ -2676,8 +2648,6 @@ declare global {
        *   page: number
        *   // 页长
        *   pageSize: number
-       *   // 操作摘要
-       *   summary?: string
        *   // 用户名
        *   userName?: string
        *   // 昵称
@@ -2706,20 +2676,6 @@ declare global {
        *   data: Array<{
        *     // 主键
        *     id: string
-       *     // 操作摘要
-       *     summary: string
-       *     // 控制器名称
-       *     controllerName: string
-       *     // 处理器名称
-       *     handlerName: string
-       *     // 请求方法
-       *     requestMethod: string
-       *     // 请求链接
-       *     requestUrl: string
-       *     // 请求参数
-       *     requestParams: object
-       *     // 请求结果
-       *     requestResult: object
        *     // IP地址
        *     ip: string
        *     // 位置
@@ -2751,6 +2707,8 @@ declare global {
        *       // 操作系统版本
        *       osVersion: string
        *     }
+       *     // 密钥
+       *     token: string
        *     // 请求状态
        *     status: number
        *     // 错误信息
@@ -2826,18 +2784,18 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data: SysOperateLogEntityWithUserDto[];
+            data: SysLoginLogEntityWithUserDto[];
           }
         > & {
-          data: FindMonitorOperatePageReqDto;
+          data: FindMonitorLoginLogPageReqDto;
         }
       >(
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data: SysOperateLogEntityWithUserDto[];
+          data: SysLoginLogEntityWithUserDto[];
         },
-        'MonitorOperate.findPage',
+        'MonitorLoginLog.findPage',
         Config
       >;
     };

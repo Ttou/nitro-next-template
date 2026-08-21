@@ -1,5 +1,5 @@
 import { Enum } from 'enum-plus'
 
 export const QueueNameEnum = Enum({
-  OPERATE: 'Operate',
+  LOGIN_LOG: 'login_log',
 } as const)

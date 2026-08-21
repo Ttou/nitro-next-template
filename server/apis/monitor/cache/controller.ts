@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { Operate } from '~server/decorators'
 import { ApiDoc } from '~server/openapi'
 import { FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
 import { MonitorCacheService } from './service'
@@ -15,7 +14,6 @@ export class MonitorCacheController {
   ) {}
 
   @ApiDoc({ endpointSummary: '查询缓存列表', responseDto: FindMonitorCachePageItemResDto, isPage: true })
-  @Operate({ ignoreResponse: true })
   @XltCheckPermission('sys.menu.monitor.cache.findPage')
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorCachePageReqDto) {
@@ -23,7 +21,6 @@ export class MonitorCacheController {
   }
 
   @ApiDoc({ endpointSummary: '删除缓存' })
-  @Operate()
   @XltCheckPermission('sys.menu.monitor.cache.remove')
   @Delete('remove')
   async remove(@Body() dto: RemoveMonitorCacheReqDto) {
@@ -31,7 +28,6 @@ export class MonitorCacheController {
   }
 
   @ApiDoc({ endpointSummary: '清空缓存' })
-  @Operate()
   @XltCheckPermission('sys.menu.monitor.cache.clear')
   @Delete('clear')
   async clear() {

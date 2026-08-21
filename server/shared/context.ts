@@ -1,23 +1,19 @@
 import type { HttpContext } from '@xlt-token/core'
-import type { Queue } from 'bullmq'
 import type { IBaseEntity } from '~db/entities'
-import type { SysOperateEntityDto, SysUserEntityDto } from '~server/openapi'
+import type { SysUserEntityDto } from '~server/openapi'
 import type { ICtxClsStore, IRequest, IResponse } from '../interfaces'
 import { EntityManager } from '@mikro-orm/core'
-import { InjectQueue } from '@nestjs/bullmq'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
-import { omitBy, uniqBy } from 'es-toolkit'
+import { uniqBy } from 'es-toolkit'
 import { CLS_REQ, CLS_RES, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { SysConfigEntity, SysUserEntity } from '~db/entities'
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
-import { QueueNameEnum } from '~server/queues'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()
 export class ContextService {
   constructor(
-    @InjectQueue(QueueNameEnum.OPERATE) private operateQueue: Queue,
     @Inject(CLS_REQ) private request: IRequest,
     @Inject(CLS_RES) private response: IResponse,
     private clsService: ClsService<ICtxClsStore>,
@@ -82,15 +78,6 @@ export class ContextService {
     })
 
     return initPasswordConfig!.configValue
-  }
-
-  /**
-   * 添加操作日志
-   */
-  async addOperate(data: SysOperateEntityDto) {
-    // 移除用户关联表属性
-    const user = omitBy(data.user, val => Array.isArray(val))
-    await this.operateQueue.add('', { ...data, user })
   }
 
   /**

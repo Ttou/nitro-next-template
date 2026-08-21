@@ -2,10 +2,9 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
-import { CacheModule } from '@nestjs/cache-manager'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
@@ -14,7 +13,6 @@ import { ApisModule } from './apis'
 import {
   BullBoardConfig,
   BullConfig,
-  CacheConfig,
   ClsConfig,
   FormDataConfig,
   HashConfig,
@@ -26,7 +24,6 @@ import {
 import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
 import { AuthenticationGuard, AuthorizationGuard } from './guards'
-import { OperateInterceptor } from './interceptors'
 import { QueuesModule } from './queues'
 import { SharedModule } from './shared'
 
@@ -38,7 +35,6 @@ import { SharedModule } from './shared'
       skipProcessEnv: true,
       load: [
         ClsConfig,
-        CacheConfig,
         LoggerConfig,
         RedisConfig,
         FormDataConfig,
@@ -51,10 +47,6 @@ import { SharedModule } from './shared'
     ClsModule.forRootAsync({
       global: true,
       ...ClsConfig.asProvider(),
-    }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      ...CacheConfig.asProvider(),
     }),
     LoggerModule.forRootAsync(LoggerConfig.asProvider()),
     RedisModule.forRootAsync(RedisConfig.asProvider()),
@@ -82,10 +74,6 @@ import { SharedModule } from './shared'
     ApisModule,
   ],
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: OperateInterceptor,
-    },
     {
       provide: APP_GUARD,
       useClass: AuthenticationGuard,
