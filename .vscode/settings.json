@@ -1,4 +1,9 @@
 {
+  "i18n-ally-next.localesPaths": [
+    ".vscode/locales"
+  ],
+  "i18n-ally-next.displayLanguage": "zh_CN",
+  "i18n-ally-next.keystyle": "flat",
   "cSpell.words": [
     "alova",
     "bullmq",

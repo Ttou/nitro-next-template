@@ -16,7 +16,9 @@ export type ILocale = keyof typeof messages
 
 const i18n = createI18n({
   legacy: false,
-  fallbackLocale: 'zh_CN',
+  fallbackLocale: 'en_US',
+  fallbackWarn: false,
+  missingWarn: false,
   messages,
 })
 

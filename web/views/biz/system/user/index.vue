@@ -199,25 +199,25 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加
+            {{ $t('common.button.add') }}
           </el-button>
           <el-button type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量删除
+            {{ $t('common.button.batchDelete') }}
           </el-button>
           <el-button type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            导出
+            {{ $t('common.button.export') }}
           </el-button>
           <el-button type="info" @click="showImport">
             <template #icon>
               <Icon icon="ep:upload" />
             </template>
-            导入
+            {{ $t('common.button.import') }}
           </el-button>
         </el-space>
       </template>
