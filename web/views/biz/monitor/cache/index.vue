@@ -3,7 +3,7 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
-import { useRemove } from './hooks'
+import { useDetail, useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
@@ -56,6 +56,16 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
+            text: '详情',
+            code: 'info',
+            props: (row, index, button) => ({
+              type: 'primary',
+            }),
+            onClick({ row }) {
+              showDetail(row)
+            },
+          },
+          {
             text: '删除',
             code: 'delete',
             props: (row, index, button) => ({
@@ -91,6 +101,7 @@ const pageProps = computed<PlusPageProps>(() => {
   }
 })
 
+const { detailVisible, detailValues, detailDialogProps, detailFormProps, showDetail, closeDetail } = useDetail({ pageInstance, columns })
 const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
 </script>
 
@@ -114,5 +125,13 @@ const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
         </el-space>
       </template>
     </plus-page>
+    <!-- 详情 -->
+    <plus-dialog-form
+      v-model:visible="detailVisible"
+      v-model="detailValues"
+      :dialog="detailDialogProps"
+      :form="detailFormProps"
+      @close="closeDetail"
+    />
   </div>
 </template>

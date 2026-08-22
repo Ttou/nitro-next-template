@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
+import { ErrorEnum } from '~server/constants'
 import { CacheService, RedisExtendService } from '~server/shared'
-import { FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
+import { FindMonitorCacheByKeyReqDto, FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
 
 @Injectable()
 export class MonitorCacheService {
@@ -27,6 +28,18 @@ export class MonitorCacheService {
       data: items,
       ...rest,
     }
+  }
+
+  async findByKey(dto: FindMonitorCacheByKeyReqDto) {
+    const { cacheKey } = dto
+
+    const oldRecord = await this.cacheService.get(cacheKey)
+
+    if (!oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CACHE_NOT_FOUND_ERROR))
+    }
+
+    return oldRecord
   }
 
   async remove(dto: RemoveMonitorCacheReqDto) {

@@ -132,8 +132,9 @@ class ThirdLevelSeeder extends Seeder {
       em.create(SysMenuEntity, { menuName: '在线用户下线', menuKey: 'sys.menu.monitor.online.remove', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: monitorOnlineMenu.id }),
       em.create(SysMenuEntity, { menuName: '登录日志分页', menuKey: 'sys.menu.monitor.loginLog.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: monitorLoginLogMenu.id }),
       em.create(SysMenuEntity, { menuName: '缓存监控分页', menuKey: 'sys.menu.monitor.cache.findPage', menuType: MenuTypeEnum.BUTTON, orderNum: 1, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
-      em.create(SysMenuEntity, { menuName: '删除缓存', menuKey: 'sys.menu.monitor.cache.remove', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
-      em.create(SysMenuEntity, { menuName: '清空缓存', menuKey: 'sys.menu.monitor.cache.clear', menuType: MenuTypeEnum.BUTTON, orderNum: 3, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
+      em.create(SysMenuEntity, { menuName: '缓存监控详情', menuKey: 'sys.menu.monitor.cache.findByKey', menuType: MenuTypeEnum.BUTTON, orderNum: 2, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
+      em.create(SysMenuEntity, { menuName: '删除缓存', menuKey: 'sys.menu.monitor.cache.remove', menuType: MenuTypeEnum.BUTTON, orderNum: 3, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
+      em.create(SysMenuEntity, { menuName: '清空缓存', menuKey: 'sys.menu.monitor.cache.clear', menuType: MenuTypeEnum.BUTTON, orderNum: 4, isAvailable: YesOrNoEnum.YES, parentId: monitorCacheMenu.id }),
 
     )
   }

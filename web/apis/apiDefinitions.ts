@@ -25,6 +25,7 @@ export default {
   'CurrentUser.updateProfile': ['POST', '/api/current-user/update-profile'],
   'CurrentUser.updatePassword': ['POST', '/api/current-user/update-password'],
   'MonitorCache.findPage': ['POST', '/api/monitor/cache/findPage'],
+  'MonitorCache.findByKey': ['GET', '/api/monitor/cache/findByKey'],
   'MonitorCache.remove': ['DELETE', '/api/monitor/cache/remove'],
   'MonitorCache.clear': ['DELETE', '/api/monitor/cache/clear'],
   'MonitorOnline.findPage': ['POST', '/api/monitor/online/findPage'],

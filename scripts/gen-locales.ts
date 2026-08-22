@@ -1,4 +1,5 @@
 import { writeFileSync } from 'node:fs'
+import { dirname } from 'node:path'
 import { ensureDirectoryExists, resolve } from './util'
 
 const CONFIG = {
@@ -13,8 +14,9 @@ async function run() {
 
   const lang = await res.json()
   const content = JSON.stringify(lang, null, 2)
+  const dirPath = dirname(CONFIG.TARGET_FILE)
 
-  ensureDirectoryExists(CONFIG.TARGET_FILE)
+  ensureDirectoryExists(dirPath)
 
   writeFileSync(CONFIG.TARGET_FILE, content, 'utf-8')
 }

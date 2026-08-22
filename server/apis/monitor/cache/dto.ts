@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Exclude, Transform } from 'class-transformer'
-import { ArrayNotEmpty, IsOptional } from 'class-validator'
+import { ArrayNotEmpty, IsNotEmpty, IsOptional } from 'class-validator'
 import { PageReqDto } from '~server/openapi'
 
 export class FindMonitorCachePageReqDto extends PageReqDto {
@@ -23,6 +23,12 @@ export class FindMonitorCachePageItemResDto {
 
   @Exclude()
   error?: unknown
+}
+
+export class FindMonitorCacheByKeyReqDto {
+  @ApiProperty({ description: '缓存键名' })
+  @IsNotEmpty({ message: '缓存键名不能为空' })
+  cacheKey: string
 }
 
 export class RemoveMonitorCacheReqDto {

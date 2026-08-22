@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ApiDoc } from '~server/openapi'
-import { FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
+import { FindMonitorCacheByKeyReqDto, FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
 import { MonitorCacheService } from './service'
 
 @ApiTags('缓存监控接口')
@@ -18,6 +18,13 @@ export class MonitorCacheController {
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorCachePageReqDto) {
     return await this.monitorCacheService.findPage(dto)
+  }
+
+  @ApiDoc({ endpointSummary: '根据键名查询缓存详情', responseDto: Object })
+  @XltCheckPermission('sys.menu.monitor.cache.findByKey')
+  @Get('findByKey')
+  async findByKey(@Query() dto: FindMonitorCacheByKeyReqDto) {
+    return await this.monitorCacheService.findByKey(dto)
   }
 
   @ApiDoc({ endpointSummary: '删除缓存' })

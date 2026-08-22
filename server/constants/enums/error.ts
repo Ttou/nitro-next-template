@@ -24,4 +24,5 @@ export const ErrorEnum = Enum({
   POST_NOT_FOUND_ERROR: { value: 'PostNotFoundError', label: '岗位不存在' },
   ROLE_EXIST_ERROR: { value: 'RoleExistError', label: '角色已存在' },
   ROLE_NOT_FOUND_ERROR: { value: 'RoleNotFoundError', label: '角色不存在' },
+  CACHE_NOT_FOUND_ERROR: { value: 'CacheNotFoundError', label: '缓存不存在' },
 } as const)

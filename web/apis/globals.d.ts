@@ -1379,6 +1379,7 @@ export interface FindMonitorCachePageItemResDto {
    */
   ttl: number;
 }
+export type Object = object;
 export interface FindMonitorOnlinePageResDto {
   /**
    * 主键
@@ -1487,69 +1488,7 @@ export interface UserAgentSerDto {
    */
   osVersion: string;
 }
-export interface SysUserEntityExcludeRelationDto {
-  /**
-   * 主键
-   */
-  id: string;
-  /**
-   * 创建人
-   */
-  createBy: object;
-  /**
-   * 创建时间
-   */
-  createdAt: string;
-  /**
-   * 更新人
-   */
-  updateBy: object;
-  /**
-   * 更新时间
-   */
-  updatedAt: string;
-  /**
-   * 账号
-   */
-  userName: string;
-  /**
-   * 昵称
-   */
-  nickName: string;
-  /**
-   * 密码
-   */
-  password: string;
-  /**
-   * 邮箱
-   */
-  email: object;
-  /**
-   * 手机号码
-   */
-  phone: object;
-  /**
-   * 性别
-   */
-  sex: object;
-  /**
-   * 头像
-   */
-  avatar: object;
-  /**
-   * 是否可用
-   */
-  isAvailable: '0' | '1';
-  /**
-   * 是否删除
-   */
-  isDelete: '0' | '1';
-  /**
-   * 备注
-   */
-  remark: object;
-}
-export interface SysLoginLogEntityWithUserDto {
+export interface SysLoginLogEntityDto {
   /**
    * 主键
    */
@@ -1562,6 +1501,14 @@ export interface SysLoginLogEntityWithUserDto {
    * 位置
    */
   location: string;
+  /**
+   * 用户账号
+   */
+  userName: string;
+  /**
+   * 用户代理
+   */
+  userAgent: string;
   /**
    * 用户代理解析
    */
@@ -1586,14 +1533,6 @@ export interface SysLoginLogEntityWithUserDto {
    * 耗时
    */
   costTime: number;
-  /**
-   * 用户代理
-   */
-  userAgent: UserAgentSerDto;
-  /**
-   * 用户
-   */
-  user: SysUserEntityExcludeRelationDto;
 }
 export interface SysConfigEntityDto {
   /**
@@ -1763,7 +1702,6 @@ export interface SysDictTypeEntityDto {
    */
   remark: object;
 }
-export type Object = object;
 export interface SysLangEntityDto {
   /**
    * 主键
@@ -2463,6 +2401,42 @@ declare global {
       /**
        * ---
        *
+       * [GET] 根据键名查询缓存详情
+       *
+       * **path:** /api/monitor/cache/findByKey
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // 缓存键名
+       *   cacheKey: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = object
+       * ```
+       */
+      findByKey<
+        Config extends Alova2MethodConfig<Object> & {
+          params: {
+            /**
+             * 缓存键名
+             */
+            cacheKey: string;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<Object, 'MonitorCache.findByKey', Config>;
+      /**
+       * ---
+       *
        * [DELETE] 删除缓存
        *
        * **path:** /api/monitor/cache/remove
@@ -2680,6 +2654,10 @@ declare global {
        *     ip: string
        *     // 位置
        *     location: string
+       *     // 用户账号
+       *     userName: string
+       *     // 用户代理
+       *     userAgent: string
        *     // 用户代理解析
        *     userAgentParsed: {
        *       // 浏览器名称
@@ -2717,66 +2695,6 @@ declare global {
        *     operateTime: string
        *     // 耗时
        *     costTime: number
-       *     // 用户代理
-       *     userAgent: {
-       *       // 浏览器名称
-       *       browserName: string
-       *       // 浏览器版本
-       *       browserVersion: string
-       *       // 浏览器主版本号
-       *       browserMajor: string
-       *       // 浏览器类型
-       *       browserType: string
-       *       // CPU 架构
-       *       cpuArchitecture: string
-       *       // 设备类型
-       *       deviceType: string
-       *       // 设备型号
-       *       deviceModel: string
-       *       // 设备供应商
-       *       deviceVendor: string
-       *       // 浏览器引擎名称
-       *       engineName: string
-       *       // 浏览器引擎版本
-       *       engineVersion: string
-       *       // 操作系统名称
-       *       osName: string
-       *       // 操作系统版本
-       *       osVersion: string
-       *     }
-       *     // 用户
-       *     user: {
-       *       // 主键
-       *       id: string
-       *       // 创建人
-       *       createBy: object
-       *       // 创建时间
-       *       createdAt: string
-       *       // 更新人
-       *       updateBy: object
-       *       // 更新时间
-       *       updatedAt: string
-       *       // 账号
-       *       userName: string
-       *       // 昵称
-       *       nickName: string
-       *       // 密码
-       *       password: string
-       *       // 邮箱
-       *       email: object
-       *       // 手机号码
-       *       phone: object
-       *       // 性别
-       *       sex: object
-       *       // 头像
-       *       avatar: object
-       *       // 是否可用
-       *       isAvailable: '0' | '1'
-       *       // 是否删除
-       *       isDelete: '0' | '1'
-       *       // 备注
-       *       remark: object
-       *     }
        *   }>
        * }
        * ```
@@ -2784,7 +2702,7 @@ declare global {
       findPage<
         Config extends Alova2MethodConfig<
           PageResDto & {
-            data: SysLoginLogEntityWithUserDto[];
+            data: SysLoginLogEntityDto[];
           }
         > & {
           data: FindMonitorLoginLogPageReqDto;
@@ -2793,7 +2711,7 @@ declare global {
         config: Config
       ): Alova2Method<
         PageResDto & {
-          data: SysLoginLogEntityWithUserDto[];
+          data: SysLoginLogEntityDto[];
         },
         'MonitorLoginLog.findPage',
         Config

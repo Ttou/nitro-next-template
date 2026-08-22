@@ -3,6 +3,7 @@ allowBuilds:
   '@scarf/scarf': true
   esbuild: true
   msgpackr-extract: true
+  vue-demi: false
 minimumReleaseAgeExclude:
   - '@rolldown/binding-android-arm-eabi@1.2.5'
   - '@rolldown/binding-android-arm64@1.2.5'
@@ -30,3 +31,7 @@ minimumReleaseAgeExclude:
   - bullmq@6.2.0
   - element-plus@2.14.5
   - eslint@10.9.0
+  - '@bull-board/api@9.3.3'
+  - '@bull-board/fastify@9.3.3'
+  - '@bull-board/nestjs@9.3.3'
+  - '@bull-board/ui@9.3.3'
