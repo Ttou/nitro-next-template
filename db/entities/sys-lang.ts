@@ -1,4 +1,5 @@
 import type { InferEntity } from '@mikro-orm/core'
+import type { ILangEnum } from '../../shared/enums'
 import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../shared/enums'
 import { BaseEntity } from './base'
@@ -9,7 +10,7 @@ export const SysLangEntity = defineEntity({
   extends: BaseEntity,
   properties: {
     langKey: p.string().unique(),
-    langValue: p.string().nullable(),
+    langValue: p.json<Record<ILangEnum, string>>().nullable(),
     isBuiltin: p.enum(() => YesOrNoEnumValues),
     isAvailable: p.enum(() => YesOrNoEnumValues),
     remark: p.string().nullable(),

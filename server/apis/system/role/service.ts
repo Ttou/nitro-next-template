@@ -1,4 +1,5 @@
-import { EntityManager, wrap } from '@mikro-orm/core'
+import { wrap } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysRoleEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'

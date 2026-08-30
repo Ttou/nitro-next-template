@@ -60,7 +60,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   }))
 
   const langValue = computed(() => {
-    return JSON.stringify(pick(createValues.value, LangEnum.values))
+    return pick(createValues.value, LangEnum.values)
   })
 
   function showCreate() {

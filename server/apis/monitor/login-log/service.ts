@@ -1,5 +1,6 @@
 import type { FindMonitorLoginLogPageReqDto } from './dto'
-import { EntityManager, serialize } from '@mikro-orm/core'
+import { serialize } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { SysLoginLogEntity } from '~db/entities'

@@ -63,7 +63,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   })
 
   function showUpdate(params) {
-    Object.assign(updateValues.value, params, JSON.parse(params.langValue))
+    Object.assign(updateValues.value, params, params.langValue)
     updateVisible.value = true
   }
 

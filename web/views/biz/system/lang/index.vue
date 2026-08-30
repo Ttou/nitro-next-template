@@ -47,7 +47,7 @@ const columns = computed<PlusColumn[]>(() => [
       align: 'center',
     },
     formatter(value, data) {
-      return JSON.parse(value ?? '')[LangEnum.ZH_CN]
+      return value[LangEnum.ZH_CN]
     },
   },
   {

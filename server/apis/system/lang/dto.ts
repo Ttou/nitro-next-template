@@ -1,4 +1,4 @@
-import type { IYesOrNoEnum } from '~shared/enums'
+import type { ILangEnum, IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
 import { PageReqDto } from '~server/openapi'
@@ -55,7 +55,7 @@ export class CreateSystemLangReqDto {
 
   @ApiProperty({ description: '词条值' })
   @IsNotEmpty({ message: '词条值不能为空' })
-  langValue: string
+  langValue: Record<ILangEnum, string>
 
   @ApiProperty({ description: '是否内置', enum: YesOrNoEnumMap })
   @IsNotEmpty({ message: '是否内置不能为空' })

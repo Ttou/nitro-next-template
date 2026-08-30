@@ -501,7 +501,7 @@ export interface CreateSystemLangReqDto {
   /**
    * 词条值
    */
-  langValue: string;
+  langValue: object;
   /**
    * 是否内置
    */
@@ -557,7 +557,7 @@ export interface UpdateSystemLangReqDto {
   /**
    * 词条值
    */
-  langValue: string;
+  langValue: object;
   /**
    * 是否内置
    */
@@ -3700,7 +3700,7 @@ declare global {
        *   // 词条标识
        *   langKey: string
        *   // 词条值
-       *   langValue: string
+       *   langValue: object
        *   // 是否内置
        *   isBuiltin: '0' | '1'
        *   // 是否可用
@@ -3952,7 +3952,7 @@ declare global {
        *   // 词条标识
        *   langKey: string
        *   // 词条值
-       *   langValue: string
+       *   langValue: object
        *   // 是否内置
        *   isBuiltin: '0' | '1'
        *   // 是否可用

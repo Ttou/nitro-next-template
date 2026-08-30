@@ -1,4 +1,5 @@
-import { EntityManager, wrap } from '@mikro-orm/core'
+import { raw, wrap } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysLangEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
@@ -42,14 +43,16 @@ export class SystemLangService {
   }
 
   async findAll(dto: FindSystemLangAllReqDto) {
-    const result = await this.em.findAll(SysLangEntity)
+    const { langCode } = dto
+    const qb = this.em.createQueryBuilder(SysLangEntity)
+
+    const result = await qb
+      .select(['langKey'])
+      .addSelect(raw(`lang_value->>"$.${langCode}" AS ${langCode}`))
+      .execute('all')
 
     return result.reduce((acc, cur) => {
-      const langValue = JSON.parse(cur.langValue!)[dto.langCode]
-
-      if (langValue) {
-        acc[cur.langKey] = langValue
-      }
+      acc[cur.langKey] = cur[langCode]
       return acc
     }, {})
   }
