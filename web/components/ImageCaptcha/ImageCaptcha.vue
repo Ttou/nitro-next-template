@@ -11,7 +11,7 @@ defineProps({
   captchaId: string().def(''),
 })
 
-const emit = defineEmits(['update:captchaValue', 'update:captchaId'])
+const emit = defineEmits(['update:captchaValue', 'update:captchaId', 'enter'])
 
 const imgSrc = ref('')
 
@@ -27,12 +27,21 @@ async function refresh() {
   emit('update:captchaId', data.captchaId)
 }
 
+function handleEnter() {
+  emit('enter')
+}
+
 refresh()
 </script>
 
 <template>
   <div class="image-captcha">
-    <el-input :model-value="captchaValue" placeholder="请输入验证码" @input="handleInput" />
+    <el-input
+      :model-value="captchaValue"
+      placeholder="请输入验证码"
+      @input="handleInput"
+      @keyup.enter="handleEnter"
+    />
     <img :src="imgSrc" alt="验证码" style="cursor: pointer;" @click="refresh">
   </div>
 </template>

@@ -4,7 +4,7 @@ import type { PlusColumn } from 'plus-pro-components'
 
 import type { LoginReqDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { ImageCaptcha } from '~web/components'
 import { useUserStore } from '~web/store'
@@ -17,6 +17,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const loading = ref(false)
+const formRef = useTemplateRef('formRef')
 const formModel = ref<LoginReqDto>({
   userName: '',
   password: '',
@@ -73,6 +74,14 @@ async function handleLogin() {
     loading.value = false
   }
 }
+
+async function handleEnter() {
+  const valid = await formRef.value?.handleSubmit()
+
+  if (valid) {
+    handleLogin()
+  }
+}
 </script>
 
 <template>
@@ -82,6 +91,7 @@ async function handleLogin() {
         <Icon icon="ep:monitor" />
       </div>
       <plus-form
+        ref="formRef"
         v-model="formModel"
         :columns="formColumns"
         :rules="formRules"
@@ -92,11 +102,12 @@ async function handleLogin() {
           <ImageCaptcha
             v-model:captcha-id="formModel.captchaId"
             v-model:captcha-value="formModel.captchaValue"
+            @enter="handleEnter"
           />
         </template>
         <template #footer="{ handleSubmit }">
           <div class="form-footer">
-            <el-button class="login-btn" type="primary" @click="handleSubmit">
+            <el-button class="login-btn" type="primary" :loading="loading" @click="handleSubmit">
               登录
             </el-button>
           </div>
