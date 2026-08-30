@@ -154,6 +154,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
             code: 'delete',
             props: (row, index, button) => ({
               type: 'warning',
+              disabled: row.roles.some(item => item.roleKey.includes('sys.')),
             }),
             confirm: {
               message: ({ row }) => `确定删除【${row.nickName}】吗？`,

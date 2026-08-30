@@ -28,7 +28,14 @@ const columns = computed<PlusColumn[]>(() => [
       disabled: unref(updateVisible),
     },
     render(value, data) {
-      return h(ElLink, { type: 'primary', onClick: () => router.push({ path: '/system/role/auth', query: { id: data.row.id } }) }, () => value)
+      return h(
+        ElLink,
+        {
+          type: 'primary',
+          onClick: () => router.push({ path: '/system/role/auth', query: { id: data.row.id } }),
+        },
+        () => value,
+      )
     },
     tableColumnProps: {
       align: 'center',
@@ -120,6 +127,7 @@ const pageProps = computed<PlusPageProps>(() => {
             code: 'delete',
             props: (row, index, button) => ({
               type: 'warning',
+              disabled: row.roleKey.includes('sys.'),
             }),
             confirm: {
               message: ({ row }) => `确定删除【${row.roleName}】吗？`,

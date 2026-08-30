@@ -225,8 +225,11 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '删除',
             code: 'delete',
-            props: {
-              type: 'warning',
+            props: (row, index, button) => {
+              return {
+                type: 'warning',
+                disabled: row.menuKey.includes('sys.'),
+              }
             },
             confirm: {
               message: ({ row }) => `确定删除【${row.dictLabel}】吗？`,
