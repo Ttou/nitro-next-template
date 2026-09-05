@@ -5,16 +5,19 @@ import { RolldownCopyPlugin } from './plugins/index.ts'
 export default defineConfig({
   serverDir: './server',
   serverEntry: false,
-  imports: false,
   routes: {
     '/:path(api|bull-ui|openapi-json)/**': {
       handler: './server/main.ts',
       format: 'node',
     },
   },
-  routeRules: {
-    '/bull-ui/**': { basicAuth: { username: 'bull', password: '123456' } },
-  },
+  handlers: [
+    {
+      route: '/bull-ui/**',
+      handler: './handlers/bull-ui.ts',
+      middleware: true,
+    },
+  ],
   alias: {
     '~db': resolve(__dirname, 'db'),
     '~server': resolve(__dirname, 'server'),
