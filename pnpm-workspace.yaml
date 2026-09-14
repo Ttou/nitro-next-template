@@ -40,3 +40,7 @@ minimumReleaseAgeExclude:
   - fastify@5.12.3
   - nestjs-cls@6.3.0
   - stylelint@17.15.0
+  - '@nestjs/axios@12.0.1'
+  - '@oxc-project/runtime@0.150.0'
+  - '@vitejs/plugin-vue@6.0.9'
+  - bullmq@6.3.6
