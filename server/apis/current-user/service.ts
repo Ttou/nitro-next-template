@@ -57,15 +57,6 @@ export class CurrentUserService {
     const currentUser = this.contextService.getCurrentUser()
     const { oldPassword, newPassword } = data
 
-    const isMatch = await this.hashService.bcryptVerify({
-      password: oldPassword,
-      hash: currentUser.password,
-    })
-
-    if (!isMatch) {
-      throw new BadRequestException(ErrorEnum.label(ErrorEnum.PASSWORD_NOT_MATCH_ERROR))
-    }
-
     const oldRecord = await this.em.findOne(SysUserEntity, {
       $and: [
         { id: { $eq: currentUser.id } },
@@ -75,6 +66,15 @@ export class CurrentUserService {
 
     if (!oldRecord) {
       throw new BadRequestException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
+    }
+
+    const isMatch = await this.hashService.bcryptVerify({
+      password: oldPassword,
+      hash: oldRecord.password,
+    })
+
+    if (!isMatch) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.PASSWORD_NOT_MATCH_ERROR))
     }
 
     const password = await this.hashService.bcryptCrypto(newPassword)

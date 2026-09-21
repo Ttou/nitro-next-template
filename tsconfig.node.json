@@ -16,12 +16,11 @@
   },
   "include": [
     "db/**/*.ts",
-    "plugins/**/*.ts",
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
     "alova.config.ts",
-    "nitro.config.ts",
+    "tsdown.config.ts",
     "vite.config.ts"
   ]
 }

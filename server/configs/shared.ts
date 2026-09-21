@@ -3,6 +3,10 @@ import { APP_ENV, AppEnvEnum } from '~server/constants'
 
 export interface ISharedConfig {
   appName: string
+  basicAuth: {
+    user: string
+    pass: string
+  }
   redis: {
     host: string
     port: number
@@ -14,6 +18,10 @@ export const SharedConfig = match(APP_ENV)
   .returnType<ISharedConfig>()
   .with(AppEnvEnum.DEV, () => ({
     appName: 'nitro_template',
+    basicAuth: {
+      user: 'admin',
+      pass: '123456',
+    },
     redis: {
       host: '127.0.0.1',
       port: 6379,

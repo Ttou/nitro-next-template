@@ -1,13 +1,40 @@
+import type { PluginOption } from 'vite'
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import { nitro } from 'nitro/vite'
 import { defineConfig, loadEnv } from 'vite'
-import { VitePluginEjsHtml } from './plugins/index.ts'
+import { ViteEjsPlugin } from 'vite-plugin-ejs'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.')
   const dirname = import.meta.dirname
+  const plugins: PluginOption[] = [
+    vue(),
+    ViteEjsPlugin({
+      title: env.VITE_APP_TITLE,
+    }),
+  ]
+
+  if (mode === 'development') {
+    plugins.push(
+      nitro({
+        serverDir: './server',
+        serverEntry: false,
+        routes: {
+          '/:path(api|bull-ui|openapi-json)/**': {
+            handler: './server/main.ts',
+            format: 'node',
+          },
+        },
+        alias: {
+          '~db': resolve(dirname, 'db'),
+          '~server': resolve(dirname, 'server'),
+          '~shared': resolve(dirname, 'shared'),
+        },
+      }),
+    )
+  }
 
   return {
     resolve: {
@@ -23,14 +50,9 @@ export default defineConfig(({ mode }) => {
       ],
     },
     publicDir: false,
-    plugins: [
-      vue(),
-      nitro(),
-      VitePluginEjsHtml({
-        data: {
-          title: env.VITE_APP_TITLE,
-        },
-      }),
-    ],
+    plugins,
+    build: {
+      outDir: './.web',
+    },
   }
 })
