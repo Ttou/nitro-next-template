@@ -4,10 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "jiti scripts/dev",
-    "build": "cross-env APP_ENV=prod vite build",
     "build:web": "cross-env APP_ENV=prod vite build",
     "build:server": "tsdown",
-    "start": "node --env-file .env.deploy .server/index.mjs",
+    "start": "node --env-file .env.deploy .server/main.mjs",
     "gen:apis": "alova gen -f",
     "gen:locales": "jiti scripts/gen-locales",
     "gen:secrets": "jiti scripts/gen-secrets",
