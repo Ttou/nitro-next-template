@@ -31,6 +31,8 @@ export default defineConfig(({ mode }) => {
           '~db': resolve(dirname, 'db'),
           '~server': resolve(dirname, 'server'),
           '~shared': resolve(dirname, 'shared'),
+          '~fastify-plugins': resolve(dirname, 'fastify-plugins'),
+          '~nestjs-modules': resolve(dirname, 'nestjs-modules'),
         },
       }),
     )

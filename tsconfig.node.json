@@ -12,6 +12,8 @@
       "~db/*": ["db/*"],
       "~server/*": ["server/*"],
       "~shared/*": ["shared/*"],
+      "~fastify-plugins/*": ["fastify-plugins/*"],
+      "~nestjs-modules/*": ["nestjs-modules/*"]
     }
   },
   "include": [
@@ -19,6 +21,8 @@
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
+    "fastify-plugins/**/*.ts",
+    "nestjs-modules/**/*.ts",
     "alova.config.ts",
     "tsdown.config.ts",
     "vite.config.ts"
