@@ -1,5 +1,6 @@
 export * from './bull'
 export * from './bull-board'
+export * from './captcha'
 export * from './cls'
 export * from './form-data'
 export * from './hash'

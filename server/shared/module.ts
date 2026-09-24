@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common'
 import { CacheService } from './cache'
-import { CaptchaService } from './captcha'
 import { ContextService } from './context'
 import { ExcelService } from './excel'
 import { HashService } from './hash'
@@ -13,7 +12,6 @@ import { TranslateService } from './translate'
   providers: [
     ContextService,
     IpService,
-    CaptchaService,
     HashService,
     ExcelService,
     RedisExtendService,
@@ -23,7 +21,6 @@ import { TranslateService } from './translate'
   exports: [
     ContextService,
     IpService,
-    CaptchaService,
     HashService,
     ExcelService,
     RedisExtendService,

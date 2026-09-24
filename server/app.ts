@@ -1,6 +1,6 @@
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
-import { RedisModule } from '@nestjs-modules/ioredis'
+import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
 import { HttpModule } from '@nestjs/axios'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
@@ -9,10 +9,12 @@ import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
+import { CaptchaModule } from '~nestjs-modules/captcha'
 import { ApisModule } from './apis'
 import {
   BullBoardConfig,
   BullConfig,
+  CaptchaConfig,
   ClsConfig,
   FormDataConfig,
   HashConfig,
@@ -68,6 +70,11 @@ import { SharedModule } from './shared'
         useClass: CustomXltRedis,
       },
       ...XltTokenConfig.asProvider(),
+    }),
+    CaptchaModule.registerAsync({
+      isGlobal: true,
+      redisToken: getRedisConnectionToken(),
+      ...CaptchaConfig.asProvider(),
     }),
     QueuesModule,
     SharedModule,

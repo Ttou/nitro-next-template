@@ -40,11 +40,9 @@ export const LoggerConfig = registerAs('logger', () => {
         },
 
       },
-      exclude: ['/bull-ui/*splat', '/openapi-*splat'],
+      exclude: ['/bull-*splat', '/openapi-*splat'],
     }))
-    .with(AppEnvEnum.PROD, () => ({
-
-    }))
+    .with(AppEnvEnum.PROD, () => ({}))
     .run()
 })
 

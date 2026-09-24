@@ -1,5 +1,4 @@
 export * from './cache'
-export * from './captcha'
 export * from './context'
 export * from './excel'
 export * from './hash'
