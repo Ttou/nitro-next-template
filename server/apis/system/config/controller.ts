@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { ExcelService } from '~nestjs-modules/excel'
 import { CacheKey, CacheTTL } from '~server/decorators'
 import { CacheInterceptor } from '~server/interceptors'
 import { ApiDoc, RemoveReqDto, SysConfigEntityDto } from '~server/openapi'
-import { ExcelService } from '~server/shared'
 import { CreateSystemConfigReqDto, ExportSystemConfigSerDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './dto'
 import { SystemConfigService } from './service'
 

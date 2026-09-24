@@ -10,12 +10,14 @@ import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
 import { CaptchaModule } from '~nestjs-modules/captcha'
+import { ExcelModule } from '~nestjs-modules/excel'
 import { ApisModule } from './apis'
 import {
   BullBoardConfig,
   BullConfig,
   CaptchaConfig,
   ClsConfig,
+  ExcelConfig,
   FormDataConfig,
   HashConfig,
   LoggerConfig,
@@ -75,6 +77,10 @@ import { SharedModule } from './shared'
       isGlobal: true,
       redisToken: getRedisConnectionToken(),
       ...CaptchaConfig.asProvider(),
+    }),
+    ExcelModule.registerAsync({
+      isGlobal: true,
+      ...ExcelConfig.asProvider(),
     }),
     QueuesModule,
     SharedModule,

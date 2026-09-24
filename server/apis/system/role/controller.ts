@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { ExcelService } from '~nestjs-modules/excel'
 import { ApiDoc, RemoveReqDto, SysRoleEntityExcludeRelationDto } from '~server/openapi'
-import { ExcelService } from '~server/shared'
 import { CreateSystemRoleReqDto, ExportSystemRoleSerDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './dto'
 import { SystemRoleService } from './service'
 

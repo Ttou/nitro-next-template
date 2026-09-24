@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { FormDataRequest } from 'nestjs-form-data'
+import { ExcelService } from '~nestjs-modules/excel'
 import { CustomStoredFile } from '~server/customs'
 import { ApiDoc, RemoveReqDto } from '~server/openapi'
-import { ExcelService } from '~server/shared'
 import {
   CreateSystemUserReqDto,
   ExportSystemUserSerDto,
@@ -72,7 +72,7 @@ export class SystemUserController {
   @FormDataRequest({ storage: CustomStoredFile })
   @Post('importTemplate')
   async importTemplate(@Body() dto: ImportSystemUserReqDto) {
-    const data = await this.excelService.importFile(ImportSystemUserSerDto, dto.file)
+    const data = await this.excelService.importFile(ImportSystemUserSerDto, dto.file.path)
     return await this.systemUserService.importTemplate(data)
   }
 }
