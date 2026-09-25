@@ -11,6 +11,7 @@ import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
 import { CaptchaModule } from '~nestjs-modules/captcha'
 import { ExcelModule } from '~nestjs-modules/excel'
+import { HashModule } from '~nestjs-modules/hash'
 import { ApisModule } from './apis'
 import {
   BullBoardConfig,
@@ -81,6 +82,10 @@ import { SharedModule } from './shared'
     ExcelModule.registerAsync({
       isGlobal: true,
       ...ExcelConfig.asProvider(),
+    }),
+    HashModule.registerAsync({
+      isGlobal: true,
+      ...HashConfig.asProvider(),
     }),
     QueuesModule,
     SharedModule,

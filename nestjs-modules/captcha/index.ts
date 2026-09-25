@@ -1,3 +1,3 @@
-export * from './interface'
-export * from './module'
-export * from './service'
+export type { CaptchaModuleOptions } from './interface'
+export { CaptchaModule } from './module'
+export { CaptchaService } from './service'

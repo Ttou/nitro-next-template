@@ -2,9 +2,10 @@ import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity, SysUserEntity } from '~db/entities'
+import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
 import { RemoveReqDto } from '~server/openapi'
-import { ContextService, HashService } from '~server/shared'
+import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemUserReqDto,

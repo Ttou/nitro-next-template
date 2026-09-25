@@ -19,7 +19,7 @@ export class ExcelService {
   constructor(
     @Inject(MODULE_OPTIONS_TOKEN) private moduleOptions: ExcelModuleOptions,
   ) {
-    this.options = Object.assign({}, defaultOptions, moduleOptions)
+    this.options = Object.assign({}, defaultOptions, this.moduleOptions)
   }
 
   async importFile(cls: ClassConstructor<any>, filePath: string) {
