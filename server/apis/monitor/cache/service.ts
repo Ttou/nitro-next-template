@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
+import { CacheRedisExtendService, CacheService } from '~nestjs-modules/cache'
 import { ErrorEnum } from '~server/constants'
-import { CacheService, RedisExtendService } from '~server/shared'
 import { FindMonitorCacheByKeyReqDto, FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './dto'
 
 @Injectable()
 export class MonitorCacheService {
   constructor(
     private cacheService: CacheService,
-    private redisExtendService: RedisExtendService,
+    private cacheRedisExtendService: CacheRedisExtendService,
   ) {}
 
   async findPage(dto: FindMonitorCachePageReqDto) {
@@ -20,7 +20,7 @@ export class MonitorCacheService {
       pattern += ':*'
     }
 
-    const { data, ...rest } = await this.redisExtendService.page(pattern, page, pageSize)
+    const { data, ...rest } = await this.cacheRedisExtendService.page(pattern, page, pageSize)
 
     const items = plainToInstance(FindMonitorCachePageItemResDto, data, { cacheKeyPrefix: this.cacheService.getKey('') })
 

@@ -1,6 +1,4 @@
-export * from './cache'
 export * from './context'
 export * from './ip'
 export * from './module'
-export * from './redis-extend'
 export * from './translate'

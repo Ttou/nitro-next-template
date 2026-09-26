@@ -9,6 +9,7 @@ import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
+import { CacheModule } from '~nestjs-modules/cache'
 import { CaptchaModule } from '~nestjs-modules/captcha'
 import { ExcelModule } from '~nestjs-modules/excel'
 import { HashModule } from '~nestjs-modules/hash'
@@ -16,6 +17,7 @@ import { ApisModule } from './apis'
 import {
   BullBoardConfig,
   BullConfig,
+  CacheConfig,
   CaptchaConfig,
   ClsConfig,
   ExcelConfig,
@@ -73,6 +75,11 @@ import { SharedModule } from './shared'
         useClass: CustomXltRedis,
       },
       ...XltTokenConfig.asProvider(),
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      redisToken: getRedisConnectionToken(),
+      ...CacheConfig.asProvider(),
     }),
     CaptchaModule.registerAsync({
       isGlobal: true,
