@@ -12,8 +12,8 @@ interface ITransOptions {
 }
 
 @Injectable()
-export class TranslateService {
-  private readonly logger = new Logger(TranslateService.name)
+export class RemoteTranslateService {
+  private readonly logger = new Logger(RemoteTranslateService.name)
 
   constructor(
     private httpService: HttpService,

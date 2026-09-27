@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysUserEntity } from '~db/entities'
 import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
-import { ContextService } from '~server/shared'
+import { ContextService } from '~server/context'
 import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './dto'
 
 @Injectable()

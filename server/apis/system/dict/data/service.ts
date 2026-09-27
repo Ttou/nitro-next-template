@@ -4,7 +4,7 @@ import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
-import { ContextService } from '~server/shared'
+import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
 import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './dto'
 

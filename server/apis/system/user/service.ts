@@ -4,8 +4,8 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity, SysUserEntity } from '~db/entities'
 import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
+import { ContextService } from '~server/context'
 import { RemoveReqDto } from '~server/openapi'
-import { ContextService } from '~server/shared'
 import { YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemUserReqDto,

@@ -3,8 +3,9 @@ import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysLangEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
+import { ContextService } from '~server/context'
 import { RemoveReqDto } from '~server/openapi'
-import { ContextService, TranslateService } from '~server/shared'
+import { RemoteTranslateService } from '~server/remote'
 import { LangEnum, YesOrNoEnum } from '~shared/enums'
 import {
   CreateSystemLangReqDto,
@@ -20,7 +21,7 @@ export class SystemLangService {
   constructor(
     private em: EntityManager,
     private contextService: ContextService,
-    private translateService: TranslateService,
+    private remoteTranslateService: RemoteTranslateService,
   ) {}
 
   async create(dto: CreateSystemLangReqDto) {
@@ -121,7 +122,7 @@ export class SystemLangService {
         targetKey: item.value,
       }))
 
-    const result = await Promise.all(inputArray.map(item => this.translateService.trans(item)))
+    const result = await Promise.all(inputArray.map(item => this.remoteTranslateService.trans(item)))
 
     return result.reduce((acc, cur) => {
       Object.assign(acc, cur)

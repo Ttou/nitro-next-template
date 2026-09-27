@@ -1,6 +1,6 @@
 import type { StpInterface } from '@xlt-token/core'
 import { forwardRef, Inject, Injectable } from '@nestjs/common'
-import { ContextService } from '~server/shared'
+import { ContextService } from '~server/context'
 
 @Injectable()
 export class CustomXltStp implements StpInterface {

@@ -5,7 +5,7 @@ import { SysUserEntity } from '~db/entities'
 import { CaptchaService } from '~nestjs-modules/captcha'
 import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
-import { ContextService } from '~server/shared'
+import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
 import { LoginReqDto } from './dto'
 

@@ -28,11 +28,12 @@ import {
   RedisConfig,
   XltTokenConfig,
 } from './configs'
+import { ContextModule } from './context'
 import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
 import { XltTokenGuard } from './guards'
 import { QueuesModule } from './queues'
-import { SharedModule } from './shared'
+import { RemoteModule } from './remote'
 
 @Module({
   imports: [
@@ -94,8 +95,9 @@ import { SharedModule } from './shared'
       isGlobal: true,
       ...HashConfig.asProvider(),
     }),
+    RemoteModule,
+    ContextModule,
     QueuesModule,
-    SharedModule,
     ApisModule,
   ],
   providers: [

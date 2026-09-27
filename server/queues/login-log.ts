@@ -1,9 +1,9 @@
 import { EntityManager } from '@mikro-orm/mysql'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
-import { forwardRef, Inject, Logger } from '@nestjs/common'
+import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
 import { SysLoginLogEntity } from '~db/entities'
-import { IpService } from '~server/shared'
+import { RemoteIpService } from '~server/remote'
 import { QueueNameEnum } from './constant'
 
 @Processor(
@@ -23,7 +23,7 @@ export class LoginLogQueue extends WorkerHost {
   private readonly logger = new Logger(LoginLogQueue.name)
 
   constructor(
-    @Inject(forwardRef(() => IpService)) private ipService: IpService,
+    private remoteIpService: RemoteIpService,
     private em: EntityManager,
   ) {
     super()
@@ -33,7 +33,7 @@ export class LoginLogQueue extends WorkerHost {
   async process(job: Job<any>) {
     let { ip, ...rest } = job.data
 
-    const location = await this.ipService.toLocation(ip)
+    const location = await this.remoteIpService.toLocation(ip)
 
     try {
       const loginLog = this.em.create(SysLoginLogEntity, {

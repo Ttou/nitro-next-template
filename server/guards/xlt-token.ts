@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { XLT_PERMISSION_KEY, XLT_ROLE_KEY } from '@xlt-token/core'
 import { NotPermissionException, NotRoleException, StpLogic, StpPermLogic, XLT_TOKEN_CONFIG, XltAbstractLoginGuard } from '@xlt-token/nestjs'
-import { ContextService } from '~server/shared'
+import { ContextService } from '~server/context'
 
 @Injectable()
 export class XltTokenGuard extends XltAbstractLoginGuard {
