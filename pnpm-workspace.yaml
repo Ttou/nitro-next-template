@@ -5,64 +5,56 @@ allowBuilds:
   msgpackr-extract: true
   vue-demi: false
 minimumReleaseAgeExclude:
-  - '@rolldown/binding-android-arm-eabi@1.2.5'
-  - '@rolldown/binding-android-arm64@1.2.5'
-  - '@rolldown/binding-darwin-arm64@1.2.5'
-  - '@rolldown/binding-darwin-x64@1.2.5'
-  - '@rolldown/binding-freebsd-x64@1.2.5'
-  - '@rolldown/binding-linux-arm-gnueabihf@1.2.5'
-  - '@rolldown/binding-linux-arm64-gnu@1.2.5'
-  - '@rolldown/binding-linux-arm64-musl@1.2.5'
-  - '@rolldown/binding-linux-ppc64-gnu@1.2.5'
-  - '@rolldown/binding-linux-s390x-gnu@1.2.5'
-  - '@rolldown/binding-linux-x64-gnu@1.2.5'
-  - '@rolldown/binding-linux-x64-musl@1.2.5'
-  - '@rolldown/binding-openharmony-arm64@1.2.5'
-  - '@rolldown/binding-win32-arm64-msvc@1.2.5'
-  - '@rolldown/binding-win32-x64-msvc@1.2.5'
+  - '@rolldown/binding-android-arm-eabi@1.2.5 || 1.2.10'
+  - '@rolldown/binding-android-arm64@1.2.5 || 1.2.10'
+  - '@rolldown/binding-darwin-arm64@1.2.5 || 1.2.10'
+  - '@rolldown/binding-darwin-x64@1.2.5 || 1.2.10'
+  - '@rolldown/binding-freebsd-x64@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-arm-gnueabihf@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-arm64-gnu@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-arm64-musl@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-ppc64-gnu@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-s390x-gnu@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-x64-gnu@1.2.5 || 1.2.10'
+  - '@rolldown/binding-linux-x64-musl@1.2.5 || 1.2.10'
+  - '@rolldown/binding-openharmony-arm64@1.2.5 || 1.2.10'
+  - '@rolldown/binding-win32-arm64-msvc@1.2.5 || 1.2.10'
+  - '@rolldown/binding-win32-x64-msvc@1.2.5 || 1.2.10'
   - '@xlt-token/core@2.1.1'
   - '@xlt-token/jwt@2.1.1'
   - '@xlt-token/nestjs@2.1.1'
   - '@xlt-token/store-redis@2.1.1'
   - mysql2@3.23.4
-  - rolldown@1.2.5
+  - rolldown@1.2.5 || 1.2.10
   - vite@8.2.2
   - alova@3.5.5
-  - bullmq@6.2.0
+  - bullmq@6.2.0 || 6.3.6 || 6.5.3
   - element-plus@2.14.5
-  - eslint@10.9.0
+  - eslint@10.9.0 || 10.10.0 || 10.14.0
   - '@bull-board/api@9.3.3 || 9.4.0 || 9.6.0'
   - '@bull-board/fastify@9.3.3 || 9.4.0 || 9.6.0'
   - '@bull-board/nestjs@9.3.3 || 9.4.0 || 9.6.0'
   - '@bull-board/ui@9.3.3 || 9.4.0 || 9.6.0'
   - type-fest@5.9.0
-  - eslint@10.10.0
   - fastify@5.12.3
-  - nestjs-cls@6.3.0
+  - nestjs-cls@6.3.0 || 7.0.0
   - stylelint@17.15.0
   - '@nestjs/axios@12.0.1'
-  - '@oxc-project/runtime@0.150.0'
+  - '@oxc-project/runtime@0.150.0 || 0.151.0'
   - '@vitejs/plugin-vue@6.0.9'
-  - bullmq@6.3.6
   - '@nestjs/common@12.0.4'
   - '@nestjs/core@12.0.4'
   - '@nestjs/platform-fastify@12.0.4'
-  - nestjs-cls@7.0.0
   - '@iconify/vue@5.0.3'
-  - '@oxc-project/runtime@0.151.0'
-  - '@rolldown/binding-android-arm-eabi@1.2.10'
-  - '@rolldown/binding-android-arm64@1.2.10'
-  - '@rolldown/binding-darwin-arm64@1.2.10'
-  - '@rolldown/binding-darwin-x64@1.2.10'
-  - '@rolldown/binding-freebsd-x64@1.2.10'
-  - '@rolldown/binding-linux-arm-gnueabihf@1.2.10'
-  - '@rolldown/binding-linux-arm64-gnu@1.2.10'
-  - '@rolldown/binding-linux-arm64-musl@1.2.10'
-  - '@rolldown/binding-linux-ppc64-gnu@1.2.10'
-  - '@rolldown/binding-linux-s390x-gnu@1.2.10'
-  - '@rolldown/binding-linux-x64-gnu@1.2.10'
-  - '@rolldown/binding-linux-x64-musl@1.2.10'
-  - '@rolldown/binding-openharmony-arm64@1.2.10'
-  - '@rolldown/binding-win32-arm64-msvc@1.2.10'
-  - '@rolldown/binding-win32-x64-msvc@1.2.10'
-  - rolldown@1.2.10
+  - '@napi-rs/canvas-android-arm64@1.1.0'
+  - '@napi-rs/canvas-darwin-arm64@1.1.0'
+  - '@napi-rs/canvas-darwin-x64@1.1.0'
+  - '@napi-rs/canvas-linux-arm-gnueabihf@1.1.0'
+  - '@napi-rs/canvas-linux-arm64-gnu@1.1.0'
+  - '@napi-rs/canvas-linux-arm64-musl@1.1.0'
+  - '@napi-rs/canvas-linux-x64-gnu@1.1.0'
+  - '@napi-rs/canvas-linux-x64-musl@1.1.0'
+  - '@napi-rs/canvas-win32-arm64-msvc@1.1.0'
+  - '@napi-rs/canvas-win32-x64-msvc@1.1.0'
+  - '@napi-rs/canvas@1.1.0'
+  - es-toolkit@1.53.1
