@@ -1,15 +1,14 @@
-import type { ISysDeptEntity, ISysMenuEntity, ISysRoleEntity, ISysUserEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { SysDeptEntity, SysMenuEntity, SysRoleEntity, SysUserEntity } from '~db/entities'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 import { SysDeptEntityDto } from './sys-dept'
 import { SysMenuEntityDto } from './sys-menu'
 import { SysUserEntityDto } from './sys-user'
 
-export class SysRoleEntityDto extends BaseEntityDto implements ISysRoleEntity {
+export class SysRoleEntityDto extends BaseEntityDto implements SysRoleEntity {
   @ApiProperty({ description: '角色键值' })
   roleKey: string
 
@@ -20,16 +19,25 @@ export class SysRoleEntityDto extends BaseEntityDto implements ISysRoleEntity {
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 
-  @ApiProperty({ description: '部门列表', type: () => [SysDeptEntityDto] })
-  depts: Collection<ISysDeptEntity, ISysRoleEntity>
+  @ApiProperty({
+    description: '部门列表',
+    type: () => [SysDeptEntityDto],
+  })
+  depts: Collection<SysDeptEntity, SysRoleEntity>
 
-  @ApiProperty({ description: '菜单列表', type: () => [SysMenuEntityDto] })
-  menus: Collection<ISysMenuEntity, ISysRoleEntity>
+  @ApiProperty({
+    description: '菜单列表',
+    type: () => [SysMenuEntityDto],
+  })
+  menus: Collection<SysMenuEntity, SysRoleEntity>
 
-  @ApiProperty({ description: '用户列表', type: () => [SysUserEntityDto] })
-  users: Collection<ISysUserEntity, ISysRoleEntity>
+  @ApiProperty({
+    description: '用户列表',
+    type: () => [SysUserEntityDto],
+  })
+  users: Collection<SysUserEntity, SysRoleEntity>
 }
 
 export class SysRoleEntityExcludeRelationDto extends OmitType(SysRoleEntityDto, ['depts', 'menus', 'users'] as const) {}

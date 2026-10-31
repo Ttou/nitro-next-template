@@ -1,20 +1,28 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
+import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Entity, Enum, Index, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
 
-export const SysDictDataEntity = defineEntity({
-  name: 'SysDictDataEntity',
-  tableName: 'sys_dict_data',
-  indexes: [{ properties: ['dictType', 'dictValue'] }],
-  extends: BaseEntity,
-  properties: {
-    dictLabel: p.string(),
-    dictValue: p.string(),
-    dictType: p.string(),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-  },
+@Entity({ tableName: 'sys_dict_data' })
+@Index({
+  properties: ['dictType', 'dictValue'],
 })
+export class SysDictDataEntity extends BaseEntity {
+  @Property({ type: 'string' })
+  dictLabel: string
 
-export type ISysDictDataEntity = InferEntity<typeof SysDictDataEntity>
+  @Property({ type: 'string' })
+  dictValue: string
+
+  @Property({ type: 'string' })
+  dictType: string
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+}

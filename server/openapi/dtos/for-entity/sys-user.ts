@@ -1,15 +1,14 @@
-import type { ISysDeptEntity, ISysPostEntity, ISysRoleEntity, ISysUserEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { SysDeptEntity, SysPostEntity, SysRoleEntity, SysUserEntity } from '~db/entities'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 import { SysDeptEntityDto } from './sys-dept'
 import { SysPostEntityDto } from './sys-post'
 import { SysRoleEntityDto } from './sys-role'
 
-export class SysUserEntityDto extends BaseEntityDto implements ISysUserEntity {
+export class SysUserEntityDto extends BaseEntityDto implements SysUserEntity {
   @ApiProperty({ description: '账号' })
   userName: string
 
@@ -20,16 +19,16 @@ export class SysUserEntityDto extends BaseEntityDto implements ISysUserEntity {
   password: string
 
   @ApiProperty({ description: '邮箱' })
-  email: IPropertyNullable<string>
+  email?: INullable<string>
 
   @ApiProperty({ description: '手机号码' })
-  phone: IPropertyNullable<string>
+  phone?: INullable<string>
 
   @ApiProperty({ description: '性别' })
-  sex: IPropertyNullable<string>
+  sex?: INullable<string>
 
   @ApiProperty({ description: '头像' })
-  avatar: IPropertyNullable<string>
+  avatar?: INullable<string>
 
   @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
   isAvailable: IYesOrNoEnum
@@ -38,16 +37,25 @@ export class SysUserEntityDto extends BaseEntityDto implements ISysUserEntity {
   isDelete: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 
-  @ApiProperty({ description: '部门列表', type: () => [SysDeptEntityDto] })
-  depts: Collection<ISysDeptEntity, ISysUserEntity>
+  @ApiProperty({
+    description: '部门列表',
+    type: () => [SysDeptEntityDto],
+  })
+  depts: Collection<SysDeptEntity, SysUserEntity>
 
-  @ApiProperty({ description: '岗位列表', type: () => [SysPostEntityDto] })
-  posts: Collection<ISysPostEntity, ISysUserEntity>
+  @ApiProperty({
+    description: '岗位列表',
+    type: () => [SysPostEntityDto],
+  })
+  posts: Collection<SysPostEntity, SysUserEntity>
 
-  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityDto] })
-  roles: Collection<ISysRoleEntity, ISysUserEntity>
+  @ApiProperty({
+    description: '角色列表',
+    type: () => [SysRoleEntityDto],
+  })
+  roles: Collection<SysRoleEntity, SysUserEntity>
 }
 
 export class SysUserEntityExcludeRelationDto extends OmitType(SysUserEntityDto, ['depts', 'posts', 'roles'] as const) {}

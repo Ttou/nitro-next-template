@@ -10,8 +10,8 @@
     "gen:apis": "alova gen -f",
     "gen:locales": "jiti scripts/gen-locales",
     "gen:secrets": "jiti scripts/gen-secrets",
-    "db:init": "jiti scripts/db-init",
-    "db:seed": "jiti scripts/db-seed"
+    "db:init": "node --import=@poppinss/ts-exec scripts/db-init.ts",
+    "db:seed": "node --import=@poppinss/ts-exec scripts/db-seed.ts"
   },
   "dependencies": {
     "@alova/adapter-axios": "2.0.20",
@@ -25,6 +25,7 @@
     "@iconify-json/ep": "1.2.4",
     "@iconify/vue": "5.0.4",
     "@mikro-orm/core": "7.2.5",
+    "@mikro-orm/decorators": "7.2.5",
     "@mikro-orm/mysql": "7.2.5",
     "@mikro-orm/nestjs": "7.1.0",
     "@napi-rs/canvas": "1.1.0",
@@ -84,6 +85,7 @@
     "@antfu/eslint-config": "^10.0.0",
     "@mikro-orm/seeder": "^7.2.5",
     "@oxc-project/runtime": "^0.156.0",
+    "@poppinss/ts-exec": "^1.5.1",
     "@types/ejs": "^3.1.5",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/ms": "^2.1.0",

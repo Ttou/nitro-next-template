@@ -1,51 +1,80 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
-import { SysDeptEntity } from './sys-dept'
-import { SysPostEntity } from './sys-post'
-import { SysRoleEntity } from './sys-role'
+import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Collection } from '@mikro-orm/core'
+import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
+import { SysDeptEntity } from './sys-dept.ts'
+import { SysPostEntity } from './sys-post.ts'
+import { SysRoleEntity } from './sys-role.ts'
 
-export const SysUserEntity = defineEntity({
-  name: 'SysUserEntity',
-  tableName: 'sys_user',
-  extends: BaseEntity,
-  properties: {
-    userName: p.string().unique(),
-    nickName: p.string(),
-    password: p.string(),
-    email: p.string().nullable(),
-    phone: p.string().nullable(),
-    sex: p.string().nullable(),
-    avatar: p.string().nullable(),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    isDelete: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-    depts: () => p
-      .manyToMany(SysDeptEntity)
-      .mappedBy(dept => dept.users)
-      .owner()
-      .ref()
-      .pivotTable('rel_user_dept')
-      .joinColumn('user_id')
-      .inverseJoinColumn('dept_id'),
-    posts: () => p
-      .manyToMany(SysPostEntity)
-      .mappedBy(post => post.users)
-      .owner()
-      .ref()
-      .pivotTable('rel_user_post')
-      .joinColumn('user_id')
-      .inverseJoinColumn('post_id'),
-    roles: () => p
-      .manyToMany(SysRoleEntity)
-      .mappedBy(role => role.users)
-      .owner()
-      .ref()
-      .pivotTable('rel_user_role')
-      .joinColumn('user_id')
-      .inverseJoinColumn('role_id'),
-  },
-})
+@Entity({ tableName: 'sys_user' })
+export class SysUserEntity extends BaseEntity {
+  @Property({ type: 'string', unique: true })
+  userName: string
 
-export type ISysUserEntity = InferEntity<typeof SysUserEntity>
+  @Property({ type: 'string' })
+  nickName: string
+
+  @Property({ type: 'string' })
+  password: string
+
+  @Property({ type: 'string', nullable: true })
+  email?: INullable<string>
+
+  @Property({ type: 'string', nullable: true })
+  phone?: INullable<string>
+
+  @Property({ type: 'string', nullable: true })
+  sex?: INullable<string>
+
+  @Property({ type: 'string', nullable: true })
+  avatar?: INullable<string>
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isDelete: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+
+  @ManyToMany({
+    entity: () => SysDeptEntity,
+    inversedBy: dept => dept.users,
+    owner: true,
+    ref: true,
+    pivotTable: 'rel_user_dept',
+    joinColumn: 'user_id',
+    inverseJoinColumn: 'dept_id',
+  })
+  depts = new Collection<SysDeptEntity, SysUserEntity>(this)
+
+  @ManyToMany({
+    entity: () => SysPostEntity,
+    inversedBy: post => post.users,
+    owner: true,
+    ref: true,
+    pivotTable: 'rel_user_post',
+    joinColumn: 'user_id',
+    inverseJoinColumn: 'post_id',
+  })
+  posts = new Collection<SysPostEntity, SysUserEntity>(this)
+
+  @ManyToMany({
+    entity: () => SysRoleEntity,
+    inversedBy: role => role.users,
+    owner: true,
+    ref: true,
+    pivotTable: 'rel_user_role',
+    joinColumn: 'user_id',
+    inverseJoinColumn: 'role_id',
+  })
+  roles = new Collection<SysRoleEntity, SysUserEntity>(this)
+}

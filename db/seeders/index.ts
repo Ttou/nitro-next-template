@@ -1,15 +1,15 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core'
 
 import { Seeder } from '@mikro-orm/seeder'
-import { SysConfigSeeder } from './sys-config'
-import { SysDeptSeeder } from './sys-dept'
-import { SysDictDataSeeder } from './sys-dict-data'
-import { SysDictTypeSeeder } from './sys-dict-type'
-import { SysLangSeeder } from './sys-lang'
-import { SysMenuSeeder } from './sys-menu'
-import { SysPostSeeder } from './sys-post'
-import { SysRoleSeeder } from './sys-role'
-import { SysUserSeeder } from './sys-user'
+import { SysConfigSeeder } from './sys-config.ts'
+import { SysDeptSeeder } from './sys-dept.ts'
+import { SysDictDataSeeder } from './sys-dict-data.ts'
+import { SysDictTypeSeeder } from './sys-dict-type.ts'
+import { SysLangSeeder } from './sys-lang.ts'
+import { SysMenuSeeder } from './sys-menu.ts'
+import { SysPostSeeder } from './sys-post.ts'
+import { SysRoleSeeder } from './sys-role.ts'
+import { SysUserSeeder } from './sys-user.ts'
 
 export class DatabaseSeeders extends Seeder {
   async run(em: EntityManager, context: Dictionary) {

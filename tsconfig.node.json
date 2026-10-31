@@ -21,6 +21,7 @@
     "scripts/**/*.ts",
     "server/**/*.ts",
     "shared/**/*.ts",
+    "types/global.d.ts",
     "fastify-plugins/**/*.ts",
     "nestjs-modules/**/*.ts",
     "alova.config.ts",

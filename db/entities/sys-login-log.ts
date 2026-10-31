@@ -1,22 +1,38 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { generateId } from '../../shared/utils'
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
+import { generateId } from '../../shared/utils/index.ts'
 
-export const SysLoginLogEntity = defineEntity({
-  name: 'SysLoginLogEntity',
-  tableName: 'sys_login_log',
-  properties: {
-    id: p.uuid().primary().onCreate(() => generateId()),
-    ip: p.string(),
-    location: p.string(),
-    userName: p.string(),
-    userAgent: p.type('text'),
-    token: p.string().nullable(),
-    status: p.integer(),
-    errorMsg: p.type('text').nullable(),
-    operateTime: p.datetime(),
-    costTime: p.integer(),
-  },
-})
+@Entity({ tableName: 'sys_login_log' })
+export class SysLoginLogEntity {
+  @PrimaryKey({
+    type: 'uuid',
+    onCreate: () => generateId(),
+  })
+  id: string
 
-export type ISysLoginLogEntity = InferEntity<typeof SysLoginLogEntity>
+  @Property({ type: 'string' })
+  ip: string
+
+  @Property({ type: 'string' })
+  location: string
+
+  @Property({ type: 'string' })
+  userName: string
+
+  @Property({ type: 'text' })
+  userAgent: string
+
+  @Property({ type: 'string', nullable: true })
+  token?: INullable<string>
+
+  @Property({ type: 'integer' })
+  status: number
+
+  @Property({ type: 'text', nullable: true })
+  errorMsg?: INullable<string>
+
+  @Property({ type: 'datetime' })
+  operateTime: Date
+
+  @Property({ type: 'integer' })
+  costTime: number
+}

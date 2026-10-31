@@ -1,20 +1,31 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
+import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Entity, Enum, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
 
-export const SysConfigEntity = defineEntity({
-  name: 'SysConfigEntity',
-  tableName: 'sys_config',
-  extends: BaseEntity,
-  properties: {
-    configKey: p.string().unique(),
-    configName: p.string(),
-    configValue: p.string(),
-    isBuiltin: p.enum(() => YesOrNoEnumValues),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-  },
-})
+@Entity({ tableName: 'sys_config' })
+export class SysConfigEntity extends BaseEntity {
+  @Property({ type: 'string', unique: true })
+  configKey: string
 
-export type ISysConfigEntity = InferEntity<typeof SysConfigEntity>
+  @Property({ type: 'string' })
+  configName: string
+
+  @Property({ type: 'string' })
+  configValue: string
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isBuiltin: IYesOrNoEnum
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+}

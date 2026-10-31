@@ -1,5 +1,6 @@
 import type { MikroOrmModuleOptions } from '@mikro-orm/nestjs'
 import type { ConfigType } from '@nestjs/config'
+import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
@@ -12,6 +13,7 @@ export const MikroOrmConfig = registerAs('mikro-orm', () => {
     .returnType<MikroOrmModuleOptions>()
     .with(AppEnvEnum.DEV, () => ({
       driver: MySqlDriver,
+      metadataProvider: ReflectMetadataProvider,
       host: '127.0.0.1',
       port: 3306,
       user: 'root',

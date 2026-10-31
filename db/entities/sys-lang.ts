@@ -1,20 +1,28 @@
-import type { InferEntity } from '@mikro-orm/core'
-import type { ILangEnum } from '../../shared/enums'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
+import type { ILangEnum, IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Entity, Enum, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
 
-export const SysLangEntity = defineEntity({
-  name: 'SysLangEntity',
-  tableName: 'sys_lang',
-  extends: BaseEntity,
-  properties: {
-    langKey: p.string().unique(),
-    langValue: p.json<Record<ILangEnum, string>>().nullable(),
-    isBuiltin: p.enum(() => YesOrNoEnumValues),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-  },
-})
+@Entity({ tableName: 'sys_lang' })
+export class SysLangEntity extends BaseEntity {
+  @Property({ type: 'string', unique: true })
+  langKey: string
 
-export type ISysLangEntity = InferEntity<typeof SysLangEntity>
+  @Property({ type: 'json', nullable: true })
+  langValue?: INullable<Record<ILangEnum, string>>
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isBuiltin: IYesOrNoEnum
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+}

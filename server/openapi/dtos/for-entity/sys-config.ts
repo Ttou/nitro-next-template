@@ -1,11 +1,10 @@
-import type { ISysConfigEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { SysConfigEntity } from '~db/entities'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
-export class SysConfigEntityDto extends BaseEntityDto implements ISysConfigEntity {
+export class SysConfigEntityDto extends BaseEntityDto implements SysConfigEntity {
   @ApiProperty({ description: '配置键值' })
   configKey: string
 
@@ -22,5 +21,5 @@ export class SysConfigEntityDto extends BaseEntityDto implements ISysConfigEntit
   isAvailable: IYesOrNoEnum
 
   @ApiPropertyOptional({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 }

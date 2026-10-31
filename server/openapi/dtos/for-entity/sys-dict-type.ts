@@ -1,11 +1,10 @@
-import type { ISysDictTypeEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty } from '@nestjs/swagger'
+import { SysDictTypeEntity } from '~db/entities'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
-export class SysDictTypeEntityDto extends BaseEntityDto implements ISysDictTypeEntity {
+export class SysDictTypeEntityDto extends BaseEntityDto implements SysDictTypeEntity {
   @ApiProperty({ description: '字典名称' })
   dictName: string
 
@@ -16,5 +15,5 @@ export class SysDictTypeEntityDto extends BaseEntityDto implements ISysDictTypeE
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 }

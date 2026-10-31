@@ -1,3 +1,3 @@
-export * from './lang'
-export * from './menu-type'
-export * from './yes-or-no'
+export * from './lang.ts'
+export * from './menu-type.ts'
+export * from './yes-or-no.ts'

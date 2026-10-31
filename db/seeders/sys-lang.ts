@@ -1,7 +1,7 @@
 import type { Dictionary, EntityManager } from '@mikro-orm/core'
 import { Seeder } from '@mikro-orm/seeder'
-import { YesOrNoEnum } from '../../shared/enums'
-import { SysLangEntity } from '../entities'
+import { YesOrNoEnum } from '../../shared/enums/index.ts'
+import { SysLangEntity } from '../entities/index.ts'
 
 export class SysLangSeeder extends Seeder {
   run(em: EntityManager, context: Dictionary) {

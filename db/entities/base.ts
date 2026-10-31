@@ -1,17 +1,33 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { generateId } from '../../shared/utils'
+import { OptionalProps } from '@mikro-orm/core'
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
+import { generateId } from '../../shared/utils/index.ts'
 
-export const BaseEntity = defineEntity({
-  name: 'BaseEntity',
-  abstract: true,
-  properties: {
-    id: p.uuid().primary().onCreate(() => generateId()),
-    createBy: p.string().nullable(),
-    createdAt: p.datetime().onCreate(() => new Date()),
-    updateBy: p.string().nullable(),
-    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
-  },
-})
+@Entity({ abstract: true })
+export abstract class BaseEntity {
+  [OptionalProps]?: 'createdAt' | 'updatedAt'
 
-export type IBaseEntity = InferEntity<typeof BaseEntity>
+  @PrimaryKey({
+    type: 'uuid',
+    onCreate: () => generateId(),
+  })
+  id: string
+
+  @Property({ type: 'string', nullable: true })
+  createBy?: INullable<string>
+
+  @Property({
+    type: 'datetime',
+    onCreate: () => new Date(),
+  })
+  createdAt: Date
+
+  @Property({ type: 'string', nullable: true })
+  updateBy?: INullable<string>
+
+  @Property({
+    type: 'datetime',
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+  })
+  updatedAt: Date
+}

@@ -1,5 +1,4 @@
 import type { HttpContext } from '@xlt-token/core'
-import type { IBaseEntity } from '~db/entities'
 import type { SysUserEntityDto } from '~server/openapi'
 import type { ICtxClsStore, IRequest, IResponse } from '../interfaces'
 import { EntityManager } from '@mikro-orm/mysql'
@@ -7,7 +6,8 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { pick, uniqBy } from 'es-toolkit'
 import { CLS_REQ, CLS_RES, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
-import { SysConfigEntity, SysUserEntity } from '~db/entities'
+import { BaseEntity, SysConfigEntity, SysUserEntity } from '~db/entities'
+
 import { ClsKeyEnum, ErrorEnum } from '~server/constants'
 import { YesOrNoEnum } from '~shared/enums'
 
@@ -46,7 +46,11 @@ export class ContextService {
     const roleList = [...roles]
     const permissions = uniqBy(roleList.map(role => [...role.menus]).flat(1), menu => menu.id).map(menu => menu.menuKey) || []
     const _roles = roleList.map(role => role.roleKey) || []
-    const currentUser = { ...pick(rest, ['id', 'userName']), permissions, roles: _roles }
+    const currentUser = {
+      ...pick(rest, ['id', 'userName']),
+      permissions,
+      roles: _roles,
+    }
 
     this.clsService.set(ClsKeyEnum.CURRENT_USER, currentUser)
   }
@@ -118,7 +122,7 @@ export class ContextService {
     }
   }
 
-  bindCurrentUserToEntity<T extends IBaseEntity>(entity: T, bindType: 'create' | 'update') {
+  bindCurrentUserToEntity<T extends BaseEntity>(entity: T, bindType: 'create' | 'update') {
     match(bindType).with('create', () => {
       entity.createBy = this.getCurrentUser().userName
     }).with('update', () => {

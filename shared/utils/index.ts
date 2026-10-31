@@ -1,2 +1,2 @@
-export * from './id'
-export * from './time'
+export * from './id.ts'
+export * from './time.ts'

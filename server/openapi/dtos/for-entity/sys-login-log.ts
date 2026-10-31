@@ -1,10 +1,9 @@
-import type { ISysLoginLogEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
+import { SysLoginLogEntity } from '~db/entities'
 import { UserAgentSerDto } from '~server/openapi'
 
-export class SysLoginLogEntityDto implements ISysLoginLogEntity {
+export class SysLoginLogEntityDto implements SysLoginLogEntity {
   @ApiProperty({ description: '主键', type: String })
   id: string
 
@@ -20,7 +19,10 @@ export class SysLoginLogEntityDto implements ISysLoginLogEntity {
   @ApiProperty({ description: '用户代理' })
   userAgent: string
 
-  @ApiProperty({ description: '用户代理解析', type: () => UserAgentSerDto })
+  @ApiProperty({
+    description: '用户代理解析',
+    type: () => UserAgentSerDto,
+  })
   @Transform(({ obj }) => Reflect.construct(UserAgentSerDto, [obj.userAgent]))
   userAgentParsed: UserAgentSerDto
 
@@ -31,7 +33,7 @@ export class SysLoginLogEntityDto implements ISysLoginLogEntity {
   status: number
 
   @ApiProperty({ description: '错误信息' })
-  errorMsg: IPropertyNullable<string>
+  errorMsg?: INullable<string>
 
   @ApiProperty({ description: '操作时间', type: Date })
   operateTime: Date

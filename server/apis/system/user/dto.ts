@@ -1,5 +1,4 @@
 import type { CustomStoredFile } from '~server/customs'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
@@ -100,36 +99,36 @@ export class ExportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswor
   nickName: string
 
   @ExcelColumn({ header: '手机号码' })
-  phone: IPropertyNullable<string>
+  phone?: INullable<string>
 
   @ExcelColumn({ header: '邮箱' })
-  email: IPropertyNullable<string>
+  email?: INullable<string>
 
   @ExcelColumn({ header: '性别' })
-  sex: IPropertyNullable<string>
+  sex?: INullable<string>
 
   @ExcelColumn({ header: '是否可用' })
   @Transform(({ value }) => YesOrNoEnum.label(value))
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 
   @ExcelColumn({ header: '是否删除' })
   @Transform(({ value }) => YesOrNoEnum.label(value))
   isDelete: IYesOrNoEnum
 
   @ExcelColumn({ header: '头像' })
-  avatar: IPropertyNullable<string>
+  avatar?: INullable<string>
 
   @ExcelColumn({ header: '创建人' })
-  createBy: IPropertyNullable<string>
+  createBy?: INullable<string>
 
   @ExcelColumn({ header: '创建时间' })
   createdAt: Date
 
   @ExcelColumn({ header: '更新人' })
-  updateBy: IPropertyNullable<string>
+  updateBy?: INullable<string>
 
   @ExcelColumn({ header: '更新时间' })
   updatedAt: Date
@@ -153,28 +152,28 @@ export class ImportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswor
   nickName: string
 
   @ExcelColumn({ header: '手机号码' })
-  phone: IPropertyNullable<string>
+  phone?: INullable<string>
 
   @ExcelColumn({ header: '邮箱' })
-  email: IPropertyNullable<string>
+  email?: INullable<string>
 
   @ExcelColumn({ header: '性别' })
-  sex: IPropertyNullable<string>
+  sex?: INullable<string>
 
   isAvailable: IYesOrNoEnum
 
   @ExcelColumn({ header: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 
   isDelete: IYesOrNoEnum
 
-  avatar: IPropertyNullable<string>
+  avatar?: INullable<string>
 
-  createBy: IPropertyNullable<string>
+  createBy?: INullable<string>
 
   createdAt: Date
 
-  updateBy: IPropertyNullable<string>
+  updateBy?: INullable<string>
 
   updatedAt: Date
 

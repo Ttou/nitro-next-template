@@ -1,16 +1,15 @@
-import type { ISysLangEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
-import type { IYesOrNoEnum } from '~shared/enums'
+import type { ILangEnum, IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty } from '@nestjs/swagger'
+import { SysLangEntity } from '~db/entities'
 import { YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 
-export class SysLangEntityDto extends BaseEntityDto implements ISysLangEntity {
+export class SysLangEntityDto extends BaseEntityDto implements SysLangEntity {
   @ApiProperty({ description: '语言键值' })
   langKey: string
 
   @ApiProperty({ description: '语言值' })
-  langValue: IPropertyNullable<string>
+  langValue?: INullable<Record<ILangEnum, string>>
 
   @ApiProperty({ description: '是否内置', enum: YesOrNoEnumMap })
   isBuiltin: IYesOrNoEnum
@@ -19,5 +18,5 @@ export class SysLangEntityDto extends BaseEntityDto implements ISysLangEntity {
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 }

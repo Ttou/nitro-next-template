@@ -1,7 +1,7 @@
-# Vue 3 + TypeScript + Vite
-
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+# Nitro Next Template
 
 ## TODO
+
+[ ] 使用 @nestjs/platform-node 代替 @nestjs/platform-fastify
+[ ] 配置文件合并，模块配置使用 options service 描述
+[ ] 使用 nitro 打包服务端

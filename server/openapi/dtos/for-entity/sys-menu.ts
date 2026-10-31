@@ -1,15 +1,14 @@
-import type { ISysMenuEntity, ISysRoleEntity } from '~db/entities'
-import type { IPropertyNullable } from '~server/interfaces'
 import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
 import { Collection } from '@mikro-orm/core'
 import { ApiProperty, OmitType } from '@nestjs/swagger'
+import { SysMenuEntity, SysRoleEntity } from '~db/entities'
 import { MenuTypeEnumMap, YesOrNoEnumMap } from '~shared/enums'
 import { BaseEntityDto } from './base'
 import { SysRoleEntityDto } from './sys-role'
 
-export class SysMenuEntityDto extends BaseEntityDto implements ISysMenuEntity {
+export class SysMenuEntityDto extends BaseEntityDto implements SysMenuEntity {
   @ApiProperty({ description: '父菜单ID' })
-  parentId: IPropertyNullable<string>
+  parentId?: INullable<string>
 
   @ApiProperty({ description: '菜单名称' })
   menuName: string
@@ -24,34 +23,37 @@ export class SysMenuEntityDto extends BaseEntityDto implements ISysMenuEntity {
   orderNum: number
 
   @ApiProperty({ description: '路径' })
-  path: IPropertyNullable<string>
+  path?: INullable<string>
 
   @ApiProperty({ description: '组件' })
-  component: IPropertyNullable<string>
+  component?: INullable<string>
 
   @ApiProperty({ description: '重定向' })
-  redirect: IPropertyNullable<string>
+  redirect?: INullable<string>
 
   @ApiProperty({ description: '图标' })
-  icon: IPropertyNullable<string>
+  icon?: INullable<string>
 
   @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
   isAvailable: IYesOrNoEnum
 
   @ApiProperty({ description: '是否缓存', enum: YesOrNoEnumMap })
-  isCache: IPropertyNullable<IYesOrNoEnum>
+  isCache?: INullable<IYesOrNoEnum>
 
   @ApiProperty({ description: '是否内嵌', enum: YesOrNoEnumMap })
-  isFrame: IPropertyNullable<IYesOrNoEnum>
+  isFrame?: INullable<IYesOrNoEnum>
 
   @ApiProperty({ description: '是否显示', enum: YesOrNoEnumMap })
-  isVisible: IPropertyNullable<IYesOrNoEnum>
+  isVisible?: INullable<IYesOrNoEnum>
 
   @ApiProperty({ description: '备注' })
-  remark: IPropertyNullable<string>
+  remark?: INullable<string>
 
-  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityDto] })
-  roles: Collection<ISysRoleEntity, ISysMenuEntity>
+  @ApiProperty({
+    description: '角色列表',
+    type: () => [SysRoleEntityDto],
+  })
+  roles: Collection<SysRoleEntity, SysMenuEntity>
 }
 
 export class SysMenuEntityExcludeRelationDto extends OmitType(SysMenuEntityDto, ['roles'] as const) {}

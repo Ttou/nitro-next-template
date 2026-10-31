@@ -1,18 +1,22 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
+import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Entity, Enum, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
 
-export const SysDictTypeEntity = defineEntity({
-  name: 'SysDictTypeEntity',
-  tableName: 'sys_dict_type',
-  extends: BaseEntity,
-  properties: {
-    dictName: p.string(),
-    dictType: p.string(),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-  },
-})
+@Entity({ tableName: 'sys_dict_type' })
+export class SysDictTypeEntity extends BaseEntity {
+  @Property({ type: 'string' })
+  dictName: string
 
-export type ISysDictTypeEntity = InferEntity<typeof SysDictTypeEntity>
+  @Property({ type: 'string' })
+  dictType: string
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+}

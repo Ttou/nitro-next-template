@@ -1,40 +1,54 @@
-import type { InferEntity } from '@mikro-orm/core'
-import { defineEntity, p } from '@mikro-orm/core'
-import { YesOrNoEnumValues } from '../../shared/enums'
-import { BaseEntity } from './base'
-import { SysDeptEntity } from './sys-dept'
-import { SysMenuEntity } from './sys-menu'
-import { SysUserEntity } from './sys-user'
+import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
+import { Collection } from '@mikro-orm/core'
+import { Entity, Enum, ManyToMany, Property } from '@mikro-orm/decorators/legacy'
+import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
+import { BaseEntity } from './base.ts'
+import { SysDeptEntity } from './sys-dept.ts'
+import { SysMenuEntity } from './sys-menu.ts'
+import { SysUserEntity } from './sys-user.ts'
 
-export const SysRoleEntity = defineEntity({
-  name: 'SysRoleEntity',
-  tableName: 'sys_role',
-  extends: BaseEntity,
-  properties: {
-    roleKey: p.string().unique(),
-    roleName: p.string(),
-    isAvailable: p.enum(() => YesOrNoEnumValues),
-    remark: p.string().nullable(),
-    depts: () => p
-      .manyToMany(SysDeptEntity)
-      .mappedBy(dept => dept.roles)
-      .owner()
-      .ref()
-      .pivotTable('rel_role_dept')
-      .joinColumn('role_id')
-      .inverseJoinColumn('dept_id'),
-    menus: () => p
-      .manyToMany(SysMenuEntity)
-      .mappedBy(menu => menu.roles)
-      .owner()
-      .ref()
-      .pivotTable('rel_role_menu')
-      .joinColumn('role_id')
-      .inverseJoinColumn('menu_id'),
-    users: () => p
-      .manyToMany(SysUserEntity)
-      .mappedBy(user => user.roles),
-  },
-})
+@Entity({ tableName: 'sys_role' })
+export class SysRoleEntity extends BaseEntity {
+  @Property({ type: 'string', unique: true })
+  roleKey: string
 
-export type ISysRoleEntity = InferEntity<typeof SysRoleEntity>
+  @Property({ type: 'string' })
+  roleName: string
+
+  @Enum({
+    items: () => YesOrNoEnumValues,
+    type: 'string',
+  })
+  isAvailable: IYesOrNoEnum
+
+  @Property({ type: 'string', nullable: true })
+  remark?: INullable<string>
+
+  @ManyToMany({
+    entity: () => SysDeptEntity,
+    inversedBy: dept => dept.roles,
+    owner: true,
+    ref: true,
+    pivotTable: 'rel_role_dept',
+    joinColumn: 'role_id',
+    inverseJoinColumn: 'dept_id',
+  })
+  depts = new Collection<SysDeptEntity, SysRoleEntity>(this)
+
+  @ManyToMany({
+    entity: () => SysMenuEntity,
+    inversedBy: menu => menu.roles,
+    owner: true,
+    ref: true,
+    pivotTable: 'rel_role_menu',
+    joinColumn: 'role_id',
+    inverseJoinColumn: 'menu_id',
+  })
+  menus = new Collection<SysMenuEntity, SysRoleEntity>(this)
+
+  @ManyToMany({
+    entity: () => SysUserEntity,
+    mappedBy: user => user.roles,
+  })
+  users = new Collection<SysUserEntity, SysRoleEntity>(this)
+}
