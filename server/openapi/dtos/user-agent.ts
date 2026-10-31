@@ -43,7 +43,9 @@ export class UserAgentSerDto {
   constructor(userAgent: string) {
     const { ua, ...rest } = UAParser(userAgent)
     // @ts-ignore
-    const obj = toCamelCaseKeys(flattenObject(mapValues(rest, value => isObject(value) ? { ...value } : value)))
+    const obj = toCamelCaseKeys(flattenObject(mapValues(rest, value => isObject(value)
+      ? { ...value }
+      : value)))
     Object.assign(this, obj)
   }
 }

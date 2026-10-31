@@ -73,7 +73,9 @@ export function ApiDoc(options: ApiDocOptions) {
         schema: {
           description: responseDescription,
           allOf: [
-            { $ref: getSchemaPath(PageResDto) },
+            {
+              $ref: getSchemaPath(PageResDto),
+            },
             {
               required: ['data'],
               properties: {
@@ -93,8 +95,16 @@ export function ApiDoc(options: ApiDocOptions) {
   }
   else if (options.responseDto) {
     const isPrimitive = isPrimitiveConstructor(options.responseDto)
-    const refsOrType = isPrimitive ? { type: options.responseDto.name.toLowerCase() } : { $ref: getSchemaPath(options.responseDto) }
-    const models = isPrimitive ? [] : [options.responseDto]
+    const refsOrType = isPrimitive
+      ? {
+          type: options.responseDto.name.toLowerCase(),
+        }
+      : {
+          $ref: getSchemaPath(options.responseDto),
+        }
+    const models = isPrimitive
+      ? []
+      : [options.responseDto]
 
     decorators.push(
       ApiOkResponse({
