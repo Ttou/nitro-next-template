@@ -5,7 +5,6 @@ import { nitro } from 'nitro/vite'
 import { defineConfig, loadEnv } from 'vite'
 import { ViteEjsPlugin } from 'vite-plugin-ejs'
 
-// https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.')
   const dirname = import.meta.dirname
@@ -18,23 +17,7 @@ export default defineConfig(({ mode }) => {
 
   if (mode === 'development') {
     plugins.push(
-      nitro({
-        serverDir: './server',
-        serverEntry: false,
-        routes: {
-          '/:path(api|bull-ui|openapi-json)/**': {
-            handler: './server/main.ts',
-            format: 'node',
-          },
-        },
-        alias: {
-          '~db': resolve(dirname, 'db'),
-          '~server': resolve(dirname, 'server'),
-          '~shared': resolve(dirname, 'shared'),
-          '~fastify-plugins': resolve(dirname, 'fastify-plugins'),
-          '~nestjs-modules': resolve(dirname, 'nestjs-modules'),
-        },
-      }),
+      nitro(),
     )
   }
 

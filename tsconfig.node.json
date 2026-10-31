@@ -25,7 +25,7 @@
     "fastify-plugins/**/*.ts",
     "nestjs-modules/**/*.ts",
     "alova.config.ts",
-    "tsdown.config.ts",
+    "nitro.config.ts",
     "vite.config.ts"
   ]
 }
