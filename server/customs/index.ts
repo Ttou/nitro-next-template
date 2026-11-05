@@ -1,4 +1,3 @@
 export * from './orm-logger'
-export * from './stored-file'
 export * from './xlt-redis'
 export * from './xlt-stp'

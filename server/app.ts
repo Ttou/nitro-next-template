@@ -5,9 +5,9 @@ import { HttpModule } from '@nestjs/axios'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
+import { MulterModule } from '@nestjs/platform-node'
 import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
-import { NestjsFormDataModule } from 'nestjs-form-data'
 import { LoggerModule } from 'nestjs-pino'
 import { CacheModule } from '~nestjs-modules/cache'
 import { CaptchaModule } from '~nestjs-modules/captcha'
@@ -21,10 +21,10 @@ import {
   CaptchaConfig,
   ClsConfig,
   ExcelConfig,
-  FormDataConfig,
   HashConfig,
   LoggerConfig,
   MikroOrmConfig,
+  MulterConfig,
   RedisConfig,
   XltTokenConfig,
 } from './configs'
@@ -45,8 +45,8 @@ import { RemoteModule } from './remote'
         ClsConfig,
         LoggerConfig,
         RedisConfig,
-        FormDataConfig,
         MikroOrmConfig,
+        MulterConfig,
         BullConfig,
         BullBoardConfig,
         HashConfig,
@@ -58,10 +58,6 @@ import { RemoteModule } from './remote'
     }),
     LoggerModule.forRootAsync(LoggerConfig.asProvider()),
     RedisModule.forRootAsync(RedisConfig.asProvider()),
-    NestjsFormDataModule.configAsync({
-      isGlobal: true,
-      ...FormDataConfig.asProvider(),
-    }),
     HttpModule.register({
       global: true,
     }),
@@ -69,6 +65,12 @@ import { RemoteModule } from './remote'
       driver: MySqlDriver,
       ...MikroOrmConfig.asProvider(),
     }),
+    {
+      global: true,
+      ...MulterModule.registerAsync({
+        ...MulterConfig.asProvider(),
+      }),
+    },
     XltTokenModule.forRootAsync({
       isGlobal: true,
       stpInterface: CustomXltStp,

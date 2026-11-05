@@ -1,9 +1,7 @@
-import type { CustomStoredFile } from '~server/customs'
 import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
-import { HasMimeType, IsFile } from 'nestjs-form-data'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
 import { PageReqDto, SysUserEntityExcludeRelationDto } from '~server/openapi'
 import { IsEnumValues } from '~server/validators'
@@ -180,12 +178,6 @@ export class ImportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswor
   constructor(partial: any) {
     Object.assign(this, partial)
   }
-}
-
-export class ImportSystemUserReqDto {
-  @IsFile({ message: '文件不能为空' })
-  @HasMimeType(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'], { message: '文件类型错误' })
-  file: CustomStoredFile
 }
 
 export class ImportSystemUserResDto {

@@ -14,7 +14,7 @@ export const ClsConfig = registerAs('cls', () => {
         saveReq: true,
         saveRes: true,
         generateId: true,
-        idGenerator: req => req.id ?? generateId(),
+        idGenerator: req => (req.id = generateId()),
       },
     }))
     .with(AppEnvEnum.PROD, () => ({}))

@@ -1,6 +1,7 @@
 import type { HashModuleOptions } from '~nestjs-modules/hash'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
+import { genSalt } from '~nestjs-modules/hash'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
 
 export const HashConfig = registerAs('hash', () => {
@@ -8,7 +9,7 @@ export const HashConfig = registerAs('hash', () => {
     .returnType<HashModuleOptions>()
     .with(AppEnvEnum.DEV, () => ({
       bcrypt: {
-        salt: '$2b$10$v0UAl9V6T7OpZAlYZKvc5O==',
+        salt: genSalt(),
         costFactor: 10,
       },
     }))

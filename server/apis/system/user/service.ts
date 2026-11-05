@@ -29,8 +29,12 @@ export class SystemUserService {
       SysUserEntity,
       {
         $or: [
-          { userName: { $eq: userName } },
-          { email: { $eq: email } },
+          {
+            userName: { $eq: userName },
+          },
+          {
+            email: { $eq: email },
+          },
         ],
       },
     )
@@ -60,16 +64,44 @@ export class SystemUserService {
       SysUserEntity,
       {
         $and: [
-          { userName: rest.userName ? { $like: `%${rest.userName}%` } : {} },
-          { nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {} },
-          { phone: rest.phone ? { $like: `%${rest.phone}%` } : {} },
-          { email: rest.email ? { $like: `%${rest.email}%` } : {} },
-          { sex: rest.sex ? { $eq: rest.sex } : {} },
-          { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
+          {
+            userName: rest.userName
+              ? { $like: `%${rest.userName}%` }
+              : {},
+          },
+          {
+            nickName: rest.nickName
+              ? { $like: `%${rest.nickName}%` }
+              : {},
+          },
+          {
+            phone: rest.phone
+              ? { $like: `%${rest.phone}%` }
+              : {},
+          },
+          {
+            email: rest.email
+              ? { $like: `%${rest.email}%` }
+              : {},
+          },
+          {
+            sex: rest.sex
+              ? { $eq: rest.sex }
+              : {},
+          },
+          {
+            isAvailable: rest.isAvailable
+              ? { $eq: rest.isAvailable }
+              : {},
+          },
           { isDelete: YesOrNoEnum.NO },
         ],
       },
-      { limit: pageSize, offset: page - 1, exclude: ['password'] },
+      {
+        limit: pageSize,
+        offset: page - 1,
+        exclude: ['password'],
+      },
     )
 
     return { page, pageSize, data, total }
@@ -100,8 +132,12 @@ export class SystemUserService {
       SysUserEntity,
       {
         $and: [
-          { id: { $eq: id } },
-          { userName: { $eq: userName } },
+          {
+            id: { $eq: id },
+          },
+          {
+            userName: { $eq: userName },
+          },
         ],
       },
     )

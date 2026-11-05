@@ -1,15 +1,14 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common'
+import type { IUploadedFile } from '~server/interfaces'
+import { BadRequestException, Body, Controller, Delete, FileTypeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-node'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { FormDataRequest } from 'nestjs-form-data'
 import { ExcelService } from '~nestjs-modules/excel'
-import { CustomStoredFile } from '~server/customs'
 import { ApiDoc, RemoveReqDto } from '~server/openapi'
 import {
   CreateSystemUserReqDto,
   ExportSystemUserSerDto,
   FindSystemUserPageReqDto,
-  ImportSystemUserReqDto,
   ImportSystemUserResDto,
   ImportSystemUserSerDto,
   SysUserEntityNoRelationsNoPasswordDto,
@@ -69,10 +68,26 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto, isUpload: true })
-  @FormDataRequest({ storage: CustomStoredFile })
+  @UseInterceptors(FileInterceptor('file'))
   @Post('importTemplate')
-  async importTemplate(@Body() dto: ImportSystemUserReqDto) {
-    const data = await this.excelService.importFile(ImportSystemUserSerDto, dto.file.path)
+  async importTemplate(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({
+            fileType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            skipMagicNumbersValidation: true,
+            errorMessage: '文件类型错误',
+          }),
+        ],
+        exceptionFactory: error => new BadRequestException(error === 'File is required'
+          ? '文件不能为空'
+          : error),
+      }),
+    )
+    file: IUploadedFile,
+  ) {
+    const data = await this.excelService.importFile(ImportSystemUserSerDto, file.path)
     return await this.systemUserService.importTemplate(data)
   }
 }

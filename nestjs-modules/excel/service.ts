@@ -56,11 +56,14 @@ export class ExcelService {
           obj[key] = row.getCell(index + 1).value
         })
 
-        result.push(instanceToPlain(Reflect.construct(cls, [obj]), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] }))
+        result.push(instanceToPlain(Reflect.construct(cls, [obj]), {
+          strategy: 'excludeAll',
+          groups: [EXCEL_COLUMN_EXPOSE],
+        }))
       }
     }
 
-    // 处理完成后，可以删除临时文件（可选）
+    // 处理完成后删除 multer 写入的临时文件
     await promises.unlink(filePath)
 
     return result
@@ -135,12 +138,18 @@ export class ExcelService {
 
   private getRows(cls: ClassConstructor<any>, data: any[]) {
     return data.map(v =>
-      instanceToPlain(Reflect.construct(cls, [v]), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] }),
+      instanceToPlain(Reflect.construct(cls, [v]), {
+        strategy: 'excludeAll',
+        groups: [EXCEL_COLUMN_EXPOSE],
+      }),
     )
   }
 
   private getKeys(cls: ClassConstructor<any>) {
-    const instance = instanceToPlain(Reflect.construct(cls, []), { strategy: 'excludeAll', groups: [EXCEL_COLUMN_EXPOSE] })
+    const instance = instanceToPlain(Reflect.construct(cls, []), {
+      strategy: 'excludeAll',
+      groups: [EXCEL_COLUMN_EXPOSE],
+    })
     return Object.keys(instance)
   }
 
@@ -153,10 +162,14 @@ export class ExcelService {
   }
 
   private get defaultSheetName() {
-    return isFunction(this.options.defaultSheetName) ? this.options.defaultSheetName() : this.options.defaultSheetName
+    return isFunction(this.options.defaultSheetName)
+      ? this.options.defaultSheetName()
+      : this.options.defaultSheetName
   }
 
   private get defaultFileName() {
-    return isFunction(this.options.defaultFileName) ? this.options.defaultFileName() : this.options.defaultFileName
+    return isFunction(this.options.defaultFileName)
+      ? this.options.defaultFileName()
+      : this.options.defaultFileName
   }
 }

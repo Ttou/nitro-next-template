@@ -1,5 +1,4 @@
 import type { HashModuleOptions } from './interface'
-import { getRandomValues } from 'node:crypto'
 import { Inject, Injectable } from '@nestjs/common'
 import { bcrypt, bcryptVerify } from 'hash-wasm'
 import { defaultOptions } from './constant'
@@ -30,13 +29,5 @@ export class HashService {
    */
   get bcryptVerify() {
     return bcryptVerify
-  }
-
-  /**
-   * 生成盐
-   */
-  genSalt() {
-    const str = new Uint8Array(16)
-    return getRandomValues(str)
   }
 }
