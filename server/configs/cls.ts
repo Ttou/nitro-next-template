@@ -3,6 +3,7 @@ import type { ClsModuleFactoryOptions } from 'nestjs-cls'
 import { registerAs } from '@nestjs/config'
 import { match } from 'ts-pattern'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
+import { generateId } from '~shared/utils'
 
 export const ClsConfig = registerAs('cls', () => {
   return match(APP_ENV)
@@ -13,7 +14,7 @@ export const ClsConfig = registerAs('cls', () => {
         saveReq: true,
         saveRes: true,
         generateId: true,
-        idGenerator: req => req.id,
+        idGenerator: req => req.id ?? generateId(),
       },
     }))
     .with(AppEnvEnum.PROD, () => ({}))

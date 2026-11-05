@@ -1,21 +1,14 @@
-import type { NestFastifyApplication } from '@nestjs/platform-fastify'
-import cookie from '@fastify/cookie'
-import multipart from '@fastify/multipart'
+import type { NestNodeApplication } from '@nestjs/platform-node'
 import { NestFactory } from '@nestjs/core'
-import { FastifyAdapter } from '@nestjs/platform-fastify'
+import { NodeAdapter } from '@nestjs/platform-node'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { Logger } from 'nestjs-pino'
-import basicAuth from '~fastify-plugins/basic-auth'
-import { generateId } from '~shared/utils'
 import { AppModule } from './app'
-import { SharedConfig } from './configs'
 import { APP_ENV, AppEnvEnum } from './constants'
 
 async function bootstrap() {
-  const adpater = new FastifyAdapter({
-    genReqId: (req: any) => req.id ?? generateId(),
-  })
-  const nestApp = await NestFactory.create<NestFastifyApplication>(
+  const adpater = new NodeAdapter()
+  const app = await NestFactory.create<NestNodeApplication>(
     AppModule,
     adpater,
     {
@@ -24,23 +17,14 @@ async function bootstrap() {
     },
   )
 
-  nestApp.enableShutdownHooks()
+  app.enableShutdownHooks()
 
-  const serverApp = nestApp.getHttpAdapter().getInstance()
-  await serverApp.register(cookie)
-  await serverApp.register(multipart)
-  // #region Basic Auth 配置
-  await serverApp.register(basicAuth, {
-    include: ['/bull-ui'],
-    okUser: SharedConfig.basicAuth.user,
-    okPass: SharedConfig.basicAuth.pass,
-  })
-  // #endregion
+  const instance = app.getHttpAdapter().getInstance()
 
   // #region 日志配置
-  const logger = nestApp.get(Logger)
-  nestApp.useLogger(logger)
-  nestApp.flushLogs()
+  const logger = app.get(Logger)
+  app.useLogger(logger)
+  app.flushLogs()
   // #endregion
 
   if (APP_ENV === AppEnvEnum.DEV) {
@@ -51,20 +35,18 @@ async function bootstrap() {
       .setVersion('1.0')
       .addBearerAuth()
       .build()
-    const document = SwaggerModule.createDocument(nestApp, config)
-    SwaggerModule.setup('openapi', nestApp, document, { swaggerUiEnabled: false })
+    const document = SwaggerModule.createDocument(app, config)
+    SwaggerModule.setup('openapi', app, document, { swaggerUiEnabled: false })
     // #endregion
   }
 
-  await nestApp.init()
-
-  await serverApp.ready()
+  await app.init()
 
   if (APP_ENV === AppEnvEnum.PROD) {
-    await nestApp.listen(3000)
+    await app.listen(3000)
   }
 
-  return serverApp.routing
+  return instance
 }
 
 export default await bootstrap()

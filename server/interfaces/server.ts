@@ -1,5 +1,5 @@
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { NodeRequest, NodeResponse } from '@nestjs/platform-node'
 
-export interface IRequest extends FastifyRequest {}
+export interface IRequest extends NodeRequest {}
 
-export interface IResponse extends FastifyReply {}
+export interface IResponse extends NodeResponse {}

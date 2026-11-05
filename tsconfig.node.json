@@ -12,7 +12,6 @@
       "~db/*": ["db/*"],
       "~server/*": ["server/*"],
       "~shared/*": ["shared/*"],
-      "~fastify-plugins/*": ["fastify-plugins/*"],
       "~nestjs-modules/*": ["nestjs-modules/*"]
     }
   },
@@ -22,7 +21,6 @@
     "server/**/*.ts",
     "shared/**/*.ts",
     "types/global.d.ts",
-    "fastify-plugins/**/*.ts",
     "nestjs-modules/**/*.ts",
     "alova.config.ts",
     "nitro.config.ts",
