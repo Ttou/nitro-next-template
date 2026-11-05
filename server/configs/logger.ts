@@ -18,13 +18,23 @@ export const LoggerConfig = registerAs('logger', () => {
            * 响应时间
            * @description 请求会记录响应时间
            */
-            const responseTime = log.responseTime !== undefined ? colors.yellow(`[${log.responseTime}ms]`) : undefined
+            const responseTime = log.responseTime !== undefined
+              ? colors.yellow(`[${log.responseTime}ms]`)
+              : undefined
 
             return [
-              responseTime ? colors.gray(`[HttpLogging]`) : undefined,
-              log.context ? colors.gray(`[${log.context}]`) : undefined,
-              log.req?.id ? colors.gray(`[${log.req.id}]`) : undefined,
-              log.namespace ? colors.gray(`[${log.namespace}]`) : undefined, // ORM 日志命名空间
+              responseTime
+                ? colors.gray(`[HttpLogging]`)
+                : undefined,
+              log.context
+                ? colors.gray(`[${log.context}]`)
+                : undefined,
+              log.req?.id
+                ? colors.gray(`[${log.req.id}]`)
+                : undefined,
+              log.namespace
+                ? colors.gray(`[${log.namespace}]`)
+                : undefined, // ORM 日志命名空间
               log[messageKey],
               responseTime,
             ]

@@ -2,7 +2,7 @@ import type { NestNodeApplication } from '@nestjs/platform-node'
 import { NestFactory } from '@nestjs/core'
 import { NodeAdapter } from '@nestjs/platform-node'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { Logger } from 'nestjs-pino'
+import { NativeLogger } from 'nestjs-pino'
 import { AppModule } from './app'
 import { APP_ENV, AppEnvEnum } from './constants'
 
@@ -22,7 +22,7 @@ async function bootstrap() {
   const instance = app.getHttpAdapter().getInstance()
 
   // #region 日志配置
-  const logger = app.get(Logger)
+  const logger = app.get(NativeLogger)
   app.useLogger(logger)
   app.flushLogs()
   // #endregion
