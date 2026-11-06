@@ -1,7 +1,7 @@
 import { cwd } from 'node:process'
 import { EntityManager } from '@mikro-orm/core'
 import { Controller, Get } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiExcludeEndpoint } from '@nestjs/swagger'
 import {
   DiskHealthIndicator,
   HealthCheck,
@@ -13,7 +13,6 @@ import {
 import { XltIgnore } from '@xlt-token/nestjs'
 import { RemoteIpService, RemoteTranslateService } from '~server/remote'
 
-@ApiTags('健康检查')
 @Controller()
 export class HealthController {
   constructor(
@@ -27,6 +26,7 @@ export class HealthController {
     private em: EntityManager,
   ) {}
 
+  @ApiExcludeEndpoint()
   @HealthCheck()
   @XltIgnore()
   @Get()
