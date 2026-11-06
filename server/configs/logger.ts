@@ -65,7 +65,7 @@ export const LoggerConfig = registerAs('logger', () => {
         },
 
       },
-      exclude: ['/bull-*splat', '/openapi-*splat'],
+      exclude: ['/bull-*splat', '/health', '/openapi-*splat'],
       nativeLogger: {
         // 让对象形式的附加参数展开到日志根字段，例如 ORM 日志的 namespace
         flattenParams: true,

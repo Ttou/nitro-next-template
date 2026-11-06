@@ -1,6 +1,15 @@
+import { cwd } from 'node:process'
+import { EntityManager } from '@mikro-orm/core'
 import { Controller, Get } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { HealthCheck, HealthCheckService, HealthIndicatorService } from '@nestjs/terminus'
+import {
+  DiskHealthIndicator,
+  HealthCheck,
+  HealthCheckService,
+  HealthIndicatorService,
+  MemoryHealthIndicator,
+  MikroOrmHealthIndicator,
+} from '@nestjs/terminus'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { RemoteIpService, RemoteTranslateService } from '~server/remote'
 
@@ -10,8 +19,12 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private healthIndicator: HealthIndicatorService,
+    private diskHealthIndicator: DiskHealthIndicator,
+    private memoryHealthIndicator: MemoryHealthIndicator,
+    private mikroOrmHealthIndicator: MikroOrmHealthIndicator,
     private remoteIpService: RemoteIpService,
     private remoteTranslateService: RemoteTranslateService,
+    private em: EntityManager,
   ) {}
 
   @HealthCheck()
@@ -19,6 +32,12 @@ export class HealthController {
   @Get()
   check() {
     return this.health.check([
+      () => this.checkDatabase(),
+      () => this.diskHealthIndicator.checkStorage('disk', {
+        path: cwd(),
+        thresholdPercent: 0.9,
+      }),
+      () => this.memoryHealthIndicator.checkHeap('memory', 512 * 1024 * 1024),
       () => this.healthIndicator
         .check('ip-parser')
         .attempt(async () => {
@@ -43,5 +62,14 @@ export class HealthController {
         })
         .withTimeout(8_000),
     ])
+  }
+
+  private async checkDatabase() {
+    // MikroORM v7 默认惰性连接，健康探测前需先确保连接已建立
+    const connection = this.em.getConnection()
+
+    await connection.ensureConnection()
+
+    return this.mikroOrmHealthIndicator.pingCheck('database', { connection })
   }
 }
