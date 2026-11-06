@@ -31,16 +31,16 @@ async function bootstrap() {
   // #endregion
 
   // #region Basic Auth 保护路径
-  // const { user, pass } = SharedConfig.basicAuth ?? {}
-  // if (user && pass) {
-  //   const auth = basicAuth({
-  //     users: { [user]: pass },
-  //     challenge: true,
-  //   })
-  //   app.use('/health', auth)
-  //   app.use('/bull-ui', auth)
-  //   app.use('/openapi-ui', auth)
-  // }
+  const { user, pass } = SharedConfig.basicAuth ?? {}
+  if (user && pass) {
+    const auth = basicAuth({
+      users: { [user]: pass },
+      challenge: true,
+    })
+    app.use('/health', auth)
+    app.use('/bull-ui', auth)
+    app.use('/openapi-ui', auth)
+  }
   // #endregion
 
   if (APP_ENV === AppEnvEnum.DEV) {
