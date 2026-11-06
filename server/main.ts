@@ -40,6 +40,7 @@ async function bootstrap() {
     app.use('/health', auth)
     app.use('/bull-ui', auth)
     app.use('/openapi-ui', auth)
+    app.use('/inspector', auth)
   }
   // #endregion
 

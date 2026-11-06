@@ -4,6 +4,7 @@ import { registerAs } from '@nestjs/config'
 import { createJwtStrategyConfig, JwtStrategy } from '@xlt-token/jwt'
 import { match } from 'ts-pattern'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
+import { xltEventBuffer } from '~server/customs'
 
 export const XltTokenConfig = registerAs('xlt-token', () => {
   return match(APP_ENV)
@@ -12,6 +13,7 @@ export const XltTokenConfig = registerAs('xlt-token', () => {
       config: {
         timeout: '7d',
       },
+      eventSink: xltEventBuffer.sink,
       strategy: {
         useValue: new JwtStrategy(
           createJwtStrategyConfig({
