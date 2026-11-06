@@ -4,10 +4,8 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ExpressAdapter } from '@bull-board/express'
 import { registerAs } from '@nestjs/config'
-import basicAuth from 'express-basic-auth'
 import { match } from 'ts-pattern'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
-import { SharedConfig } from './shared'
 
 export const BullBoardConfig = registerAs('bull-board', () => {
   const __filename = fileURLToPath(import.meta.url)
@@ -18,12 +16,6 @@ export const BullBoardConfig = registerAs('bull-board', () => {
     .with(AppEnvEnum.DEV, () => ({
       route: '/bull-ui',
       adapter: ExpressAdapter,
-      middleware: basicAuth({
-        challenge: true,
-        users: {
-          [SharedConfig.basicAuth.user]: SharedConfig.basicAuth.pass,
-        },
-      }),
       boardOptions: {
         uiBasePath: dirname(resolve(__dirname, '../../node_modules/@bull-board/ui/package.json')),
       },

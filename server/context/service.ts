@@ -99,9 +99,10 @@ export class ContextService {
           return request.headers[name.toLowerCase()] ?? null
         },
       },
+      // 没有用到 cookie，所以返回 null
       cookies: {
         get(name) {
-          return request.cookies[name] ?? null
+          return null
         },
       },
       query: {
@@ -113,9 +114,8 @@ export class ContextService {
       setHeader(name, value) {
         response.header(name, value)
       },
-      setCookie(name, value, options) {
-        response.setCookie(name, value, options)
-      },
+      // 没有用到 cookie，所以不设置
+      setCookie(name, value, options) {},
       raw() {
         return request
       },

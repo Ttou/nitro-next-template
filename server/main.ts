@@ -2,9 +2,12 @@ import type { NestNodeApplication } from '@nestjs/platform-node'
 import { NestFactory } from '@nestjs/core'
 import { NodeAdapter } from '@nestjs/platform-node'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { apiReference } from '@scalar/nestjs-api-reference'
 import { NativeLogger } from 'nestjs-pino'
 import { AppModule } from './app'
+import { SharedConfig } from './configs'
 import { APP_ENV, AppEnvEnum } from './constants'
+import { basicAuth, html } from './middlewares'
 
 async function bootstrap() {
   const adpater = new NodeAdapter()
@@ -27,6 +30,19 @@ async function bootstrap() {
   app.flushLogs()
   // #endregion
 
+  // #region Basic Auth 保护路径
+  // const { user, pass } = SharedConfig.basicAuth ?? {}
+  // if (user && pass) {
+  //   const auth = basicAuth({
+  //     users: { [user]: pass },
+  //     challenge: true,
+  //   })
+  //   app.use('/health', auth)
+  //   app.use('/bull-ui', auth)
+  //   app.use('/openapi-ui', auth)
+  // }
+  // #endregion
+
   if (APP_ENV === AppEnvEnum.DEV) {
     // #region Swagger 接口文档配置
     const config = new DocumentBuilder()
@@ -37,6 +53,16 @@ async function bootstrap() {
       .build()
     const document = SwaggerModule.createDocument(app, config)
     SwaggerModule.setup('openapi', app, document, { swaggerUiEnabled: false })
+    // #endregion
+
+    // #region Scalar API Reference
+    app.use(
+      '/openapi-ui',
+      html(),
+      apiReference({
+        content: document,
+      }),
+    )
     // #endregion
   }
 

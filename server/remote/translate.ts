@@ -1,7 +1,5 @@
-import type { AxiosError } from 'axios'
-import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
-import { catchError, firstValueFrom } from 'rxjs'
+import { HttpClient, HttpResponseError } from '@nestjs/http-client'
 import { UrlEnum } from '~server/constants'
 
 interface ITransOptions {
@@ -16,18 +14,18 @@ export class RemoteTranslateService {
   private readonly logger = new Logger(RemoteTranslateService.name)
 
   constructor(
-    private httpService: HttpService,
+    private httpClient: HttpClient,
   ) {}
 
   async trans(options: ITransOptions) {
-    const { data } = await firstValueFrom(
-      this.httpService.get(UrlEnum.TRANSLATE, { params: options }).pipe(
-        catchError((err: AxiosError) => {
-          this.logger.error(err.response?.data)
-          throw err
-        }),
-      ),
-    )
+    const { data } = await this.httpClient
+      .get(UrlEnum.TRANSLATE, { query: options })
+      .catch((err) => {
+        this.logger.error(err instanceof HttpResponseError
+          ? err.body
+          : err.message)
+        throw err
+      })
 
     return { [options.targetKey]: data.data.targetText }
   }

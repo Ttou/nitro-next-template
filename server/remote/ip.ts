@@ -1,8 +1,6 @@
-import type { AxiosError } from 'axios'
 import { isIPv4, isIPv6 } from 'node:net'
-import { HttpService } from '@nestjs/axios'
 import { Injectable, Logger } from '@nestjs/common'
-import { catchError, firstValueFrom } from 'rxjs'
+import { HttpClient, HttpResponseError } from '@nestjs/http-client'
 import { UrlEnum } from '~server/constants'
 
 @Injectable()
@@ -10,7 +8,7 @@ export class RemoteIpService {
   private readonly logger = new Logger(RemoteIpService.name)
 
   constructor(
-    private httpService: HttpService,
+    private httpClient: HttpClient,
   ) {}
 
   async toLocation(ip: string) {
@@ -18,16 +16,19 @@ export class RemoteIpService {
       return '内网IP'
     }
 
-    const { data } = await firstValueFrom(
-      this.httpService.get(UrlEnum.IP_PARSER, { params: { ip } }).pipe(
-        catchError((err: AxiosError) => {
-          this.logger.error(err.response?.data)
-          throw err
-        }),
-      ),
-    )
+    const { data } = await this.httpClient
+      .get(UrlEnum.IP_PARSER, {
+        query: { ip },
+      })
+      .then(res => JSON.parse(res.data))
+      .catch((err) => {
+        this.logger.error(err instanceof HttpResponseError
+          ? err.body
+          : err.message)
+        throw err
+      })
 
-    return [data.data.COUNTRY_CN, data.data.PROVINCE_CN, data.data.CITY_CN].join('/')
+    return [data.COUNTRY_CN, data.PROVINCE_CN, data.CITY_CN].join('/')
   }
 
   isInternalIP(ip: string) {

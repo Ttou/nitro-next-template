@@ -18,19 +18,24 @@ export class DefaultFilter implements ExceptionFilter {
     const { httpAdapter } = this.httpAdapterHost
     const ctx = host.switchToHttp()
     const status = this.getStatus(exception)
-    const message = this.getMessage(exception)
 
     // @ts-ignore
     this.logger.error(exception)
 
-    httpAdapter.reply(
-      ctx.getResponse(),
-      {
-        status,
-        message,
-      },
-      status,
-    )
+    // 当 HttpException 携带结构化响应体时（如 @nestjs/terminus 的健康检查结果），
+    // 直接返回该响应体，避免被统一包装为 { status, message } 而丢失健康检查详情。
+    const response = exception instanceof HttpException
+      ? exception.getResponse()
+      : null
+
+    const body = response !== null && typeof response === 'object'
+      ? response
+      : {
+          status,
+          message: this.getMessage(exception),
+        }
+
+    httpAdapter.reply(ctx.getResponse(), body, status)
   }
 
   private getStatus(exception: unknown) {

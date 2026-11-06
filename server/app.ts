@@ -1,10 +1,10 @@
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
-import { HttpModule } from '@nestjs/axios'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
+import { HttpClientModule } from '@nestjs/http-client'
 import { MulterModule } from '@nestjs/platform-node'
 import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
@@ -58,8 +58,8 @@ import { RemoteModule } from './remote'
     }),
     LoggerModule.forRootAsync(LoggerConfig.asProvider()),
     RedisModule.forRootAsync(RedisConfig.asProvider()),
-    HttpModule.register({
-      global: true,
+    HttpClientModule.register({
+      isGlobal: true,
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
