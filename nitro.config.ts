@@ -27,6 +27,6 @@ export default defineConfig({
     // 前端静态资源由 build:web 独立产出，服务端构建不再打包
     noPublicDir: true,
     renderer: false,
-    traceDeps: ['reflect-metadata'],
+    traceDeps: ['reflect-metadata', 'tslib'],
   },
 })

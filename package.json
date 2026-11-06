@@ -14,7 +14,6 @@
     "db:seed": "node --import=@poppinss/ts-exec scripts/db-seed.ts"
   },
   "dependencies": {
-    "@alova/adapter-axios": "2.0.20",
     "@bull-board/api": "9.11.0",
     "@bull-board/express": "9.11.0",
     "@bull-board/nestjs": "9.11.0",
@@ -34,6 +33,7 @@
     "@nestjs/core": "12.3.3",
     "@nestjs/http-client": "^0.0.2",
     "@nestjs/platform-node": "12.3.3",
+    "@nestjs/storage": "^0.0.4",
     "@nestjs/swagger": "12.1.0",
     "@nestjs/terminus": "^12.1.0",
     "@scalar/nestjs-api-reference": "^1.2.34",
@@ -43,7 +43,6 @@
     "@xlt-token/nestjs": "2.4.0",
     "@xlt-token/store-redis": "2.4.0",
     "alova": "3.5.5",
-    "axios": "1.21.0",
     "bullmq": "6.5.4",
     "class-transformer": "0.5.1",
     "class-validator": "0.15.1",
