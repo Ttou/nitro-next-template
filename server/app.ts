@@ -5,7 +5,7 @@ import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { HttpClientModule } from '@nestjs/http-client'
-import { MulterModule } from '@nestjs/platform-node'
+import { StorageModule } from '@nestjs/storage'
 import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
@@ -24,8 +24,8 @@ import {
   HashConfig,
   LoggerConfig,
   MikroOrmConfig,
-  MulterConfig,
   RedisConfig,
+  StorageConfig,
   XltTokenConfig,
 } from './configs'
 import { ContextModule } from './context'
@@ -46,7 +46,7 @@ import { RemoteModule } from './remote'
         LoggerConfig,
         RedisConfig,
         MikroOrmConfig,
-        MulterConfig,
+        StorageConfig,
         BullConfig,
         BullBoardConfig,
         HashConfig,
@@ -65,12 +65,10 @@ import { RemoteModule } from './remote'
       driver: MySqlDriver,
       ...MikroOrmConfig.asProvider(),
     }),
-    {
-      global: true,
-      ...MulterModule.registerAsync({
-        ...MulterConfig.asProvider(),
-      }),
-    },
+    StorageModule.forRootAsync({
+      isGlobal: true,
+      ...StorageConfig.asProvider(),
+    }),
     XltTokenModule.forRootAsync({
       isGlobal: true,
       stpInterface: CustomXltStp,

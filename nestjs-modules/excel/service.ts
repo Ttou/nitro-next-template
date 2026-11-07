@@ -1,8 +1,8 @@
 import type { StreamableFileOptions } from '@nestjs/common/file-stream/interfaces/index.js'
 import type { ClassConstructor } from 'class-transformer'
+import type { Readable } from 'node:stream'
 import type { ExcelModuleOptions, IExcelFileOptions } from './interface'
-import { createReadStream, promises } from 'node:fs'
-import { PassThrough, pipeline } from 'node:stream'
+import { PassThrough } from 'node:stream'
 import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
 import { Inject, Injectable, Logger, StreamableFile } from '@nestjs/common'
 import { instanceToPlain } from 'class-transformer'
@@ -22,17 +22,8 @@ export class ExcelService {
     this.options = Object.assign({}, defaultOptions, this.moduleOptions)
   }
 
-  async importFile(cls: ClassConstructor<any>, filePath: string) {
-    const fileStream = createReadStream(filePath)
-    const stream = new PassThrough()
-
-    pipeline(fileStream, stream, (err) => {
-      if (err) {
-        this.logger.error('导入文件失败:', err)
-      }
-    })
-
-    const workbookReader = new WorkbookReader(stream, {
+  async importFile<T>(cls: ClassConstructor<T>, fileStream: Readable): Promise<T[]> {
+    const workbookReader = new WorkbookReader(fileStream, {
       sharedStrings: 'cache',
       hyperlinks: 'ignore',
       styles: 'ignore',
@@ -62,9 +53,6 @@ export class ExcelService {
         }))
       }
     }
-
-    // 处理完成后删除 multer 写入的临时文件
-    await promises.unlink(filePath)
 
     return result
   }

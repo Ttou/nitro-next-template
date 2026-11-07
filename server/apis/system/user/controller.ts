@@ -1,10 +1,15 @@
-import type { IUploadedFile } from '~server/interfaces'
-import { BadRequestException, Body, Controller, Delete, FileTypeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
+import type { StoredUpload } from '@nestjs/storage'
+import { extname } from 'node:path'
+import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-node'
+import { StorageDisk, uploadToDisk } from '@nestjs/storage'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
+import { localDisk } from '~server/configs'
 import { ApiDoc, RemoveReqDto } from '~server/openapi'
+import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
+import { generateId } from '~shared/utils'
 import {
   CreateSystemUserReqDto,
   ExportSystemUserSerDto,
@@ -23,6 +28,7 @@ export class SystemUserController {
   constructor(
     private systemUserService: SystemUserService,
     private excelService: ExcelService,
+    private disk: StorageDisk,
   ) {}
 
   @ApiDoc({ endpointSummary: '创建系统用户' })
@@ -68,26 +74,34 @@ export class SystemUserController {
   }
 
   @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto, isUpload: true })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    // busboy 默认按 latin1 解析文件名，会导致中文乱码
+    defParamCharset: 'utf8',
+    // 限制上传文件大小为 10MB，最多上传 1 个文件
+    limits: { fileSize: 10 * 1024 * 1024, files: 1 },
+    storage: uploadToDisk({
+      // nitro 托管请求无法命中按 server 实例建立的磁盘注册表，直接传入磁盘实例
+      disk: localDisk,
+      // 仅允许上传 xlsx，检测逻辑见 validators/upload-content-type
+      contentTypes: [XLSX_CONTENT_TYPE],
+      contentTypeSampleBytes: 64 * 1024,
+      detectContentType: composeContentTypeDetectors(detectXlsxContentType),
+      // 保留原文件后缀
+      key: file => `${generateId()}${extname(file.originalname)}`,
+    }),
+  }))
   @Post('importTemplate')
-  async importTemplate(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({
-            fileType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            skipMagicNumbersValidation: true,
-            errorMessage: '文件类型错误',
-          }),
-        ],
-        exceptionFactory: error => new BadRequestException(error === 'File is required'
-          ? '文件不能为空'
-          : error),
-      }),
-    )
-    file: IUploadedFile,
-  ) {
-    const data = await this.excelService.importFile(ImportSystemUserSerDto, file.path)
-    return await this.systemUserService.importTemplate(data)
+  async importTemplate(@UploadedFile() file: StoredUpload) {
+    const { body } = await this.disk.get(file.key)
+
+    try {
+      const data = await this.excelService.importFile(ImportSystemUserSerDto, body)
+      return await this.systemUserService.importTemplate(data)
+    }
+    finally {
+      body.destroy()
+      // 处理完成后删除临时文件
+      await this.disk.delete(file.key)
+    }
   }
 }

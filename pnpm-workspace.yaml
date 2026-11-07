@@ -70,3 +70,4 @@ minimumReleaseAgeExclude:
   - '@vue/shared@3.5.45'
   - vue@3.5.45
   - '@xlt-token/inspector@2.5.0'
+  - '@nestjs/storage@0.0.5'
