@@ -1,3 +1,4 @@
+import type { ILangEnum } from '~shared/enums'
 import { raw, wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -12,6 +13,7 @@ import {
   FindSystemLangAllReqDto,
   FindSystemLangOneReqDto,
   FindSystemLangPageReqDto,
+  ImportSystemLangSerDto,
   TranslateSystemLangReqDto,
   UpdateSystemLangReqDto,
 } from './lang.dto'
@@ -71,11 +73,31 @@ export class SystemLangService {
 
     const [data, total] = await this.em.findAndCount(SysLangEntity, {
       $and: [
-        { langKey: rest.langKey ? { $like: `%${rest.langKey}%` } : {} },
-        { remark: rest.remark ? { $like: `%${rest.remark}%` } : {} },
-        { isBuiltin: rest.isBuiltin ? { $eq: rest.isBuiltin } : {} },
-        { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
-        { createdAt: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {} },
+        {
+          langKey: rest.langKey
+            ? { $like: `%${rest.langKey}%` }
+            : {},
+        },
+        {
+          remark: rest.remark
+            ? { $like: `%${rest.remark}%` }
+            : {},
+        },
+        {
+          isBuiltin: rest.isBuiltin
+            ? { $eq: rest.isBuiltin }
+            : {},
+        },
+        {
+          isAvailable: rest.isAvailable
+            ? { $eq: rest.isAvailable }
+            : {},
+        },
+        {
+          createdAt: rest.beginTime
+            ? { $gte: rest.beginTime, $lte: rest.endTime }
+            : {},
+        },
       ],
     }, { limit: pageSize, offset: page - 1 })
 
@@ -97,8 +119,12 @@ export class SystemLangService {
 
     const oldRecord = await this.em.findOne(SysLangEntity, {
       $and: [
-        { id: { $eq: id } },
-        { langKey: { $eq: langKey } },
+        {
+          id: { $eq: id },
+        },
+        {
+          langKey: { $eq: langKey },
+        },
       ],
     })
 
@@ -128,5 +154,73 @@ export class SystemLangService {
       Object.assign(acc, cur)
       return acc
     }, {})
+  }
+
+  async importTemplate(data: ImportSystemLangSerDto[]) {
+    let fail = 0
+    const items: string[] = []
+    // 忽略完全空白的行（Excel 末尾常带空行），避免产生虚假失败项
+    const rows = data.filter(item =>
+      Object.values(item).some(value => value !== undefined && value !== null && value !== ''),
+    )
+    const langKeys = rows
+      .map(item => (item.langKey == null
+        ? ''
+        : String(item.langKey).trim()))
+      .filter(Boolean)
+
+    // 一次性查询已存在的词条，避免逐行查询
+    const oldRecords = langKeys.length
+      ? await this.em.find(SysLangEntity, {
+          langKey: { $in: langKeys },
+        })
+      : []
+    const existKeys = new Set(oldRecords.map(item => item.langKey))
+    // 防止同一个文件内出现重复的 langKey
+    const handledKeys = new Set<string>()
+
+    for (const item of rows) {
+      const langKey = item.langKey == null
+        ? ''
+        : String(item.langKey).trim()
+
+      if (!langKey || existKeys.has(langKey) || handledKeys.has(langKey)) {
+        items.push(langKey || '(空)')
+        fail++
+        continue
+      }
+
+      handledKeys.add(langKey)
+
+      // 每种语言对应模板中的一列，这里重新组装成 langValue JSON
+      const row = item as unknown as Record<string, unknown>
+      const langValue = LangEnum.items.reduce((acc, lang) => {
+        const value = row[lang.value]
+        if (value !== undefined && value !== null && value !== '') {
+          acc[lang.value] = String(value)
+        }
+        return acc
+      }, {} as Record<ILangEnum, string>)
+
+      const lang = this.em.create(SysLangEntity, {
+        langKey,
+        langValue,
+        remark: item.remark
+          ? String(item.remark)
+          : undefined,
+        isBuiltin: YesOrNoEnum.NO,
+        isAvailable: YesOrNoEnum.YES,
+      })
+      this.contextService.bindCurrentUserToEntity(lang, 'create')
+      this.em.persist(lang)
+    }
+
+    await this.em.flush()
+
+    return {
+      success: rows.length - fail,
+      fail,
+      items,
+    }
   }
 }

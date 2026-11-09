@@ -59,6 +59,8 @@ export default {
   'SystemLang.remove': ['POST', '/api/system/lang/remove'],
   'SystemLang.update': ['POST', '/api/system/lang/update'],
   'SystemLang.translate': ['POST', '/api/system/lang/translate'],
+  'SystemLang.exportTemplate': ['POST', '/api/system/lang/exportTemplate'],
+  'SystemLang.importTemplate': ['POST', '/api/system/lang/importTemplate'],
   'SystemMenu.create': ['POST', '/api/system/menu/create'],
   'SystemMenu.findList': ['POST', '/api/system/menu/findList'],
   'SystemMenu.remove': ['DELETE', '/api/system/menu/remove'],

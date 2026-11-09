@@ -1744,6 +1744,20 @@ export interface SysLangEntityDto {
    */
   remark: object;
 }
+export interface ImportSystemLangResDto {
+  /**
+   * 成功数
+   */
+  success: number;
+  /**
+   * 失败数
+   */
+  fail: number;
+  /**
+   * 导入失败的词条标识列表
+   */
+  items: string[];
+}
 export interface SysPostEntityExcludeRelationDto {
   /**
    * 主键
@@ -4009,6 +4023,64 @@ declare global {
       >(
         config: Config
       ): Alova2Method<Object, 'SystemLang.translate', Config>;
+      /**
+       * ---
+       *
+       * [POST] 导出系统语言导入模板
+       *
+       * **path:** /api/system/lang/exportTemplate
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = Blob
+       * ```
+       */
+      exportTemplate<Config extends Alova2MethodConfig<Blob>>(
+        config?: Config
+      ): Alova2Method<Blob, 'SystemLang.exportTemplate', Config>;
+      /**
+       * ---
+       *
+       * [POST] 导入系统语言
+       *
+       * **path:** /api/system/lang/importTemplate
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   file?: Blob
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 成功数
+       *   success: number
+       *   // 失败数
+       *   fail: number
+       *   // 导入失败的词条标识列表
+       *   // [items] start
+       *   // [items] end
+       *   items: string[]
+       * }
+       * ```
+       */
+      importTemplate<
+        Config extends Alova2MethodConfig<ImportSystemLangResDto> & {
+          data: {
+            file?: Blob;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<ImportSystemLangResDto, 'SystemLang.importTemplate', Config>;
     };
     SystemMenu: {
       /**

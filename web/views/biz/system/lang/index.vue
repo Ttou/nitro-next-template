@@ -4,7 +4,7 @@ import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { LangEnum, YesOrNoEnum } from '~shared/enums'
-import { useCreate, useRemove, useUpdate } from './hooks'
+import { useCreate, useImport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
 const selectedIds = ref<string[]>([])
@@ -164,6 +164,7 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDrawerProps, createFormProps, showCreate, confirmCreate, cancelCreate } = useCreate({ pageInstance, columns })
 const { updateVisible, updateValues, updateDrawerProps, updateFormProps, showUpdate, confirmUpdate, cancelUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
+const { importVisible, importValues, importDialogProps, importFormProps, importTemplateLoading, exportTemplateLoading, showImport, exportTemplate, httpRequest, beforeUpload } = useImport({ pageInstance })
 </script>
 
 <template>
@@ -182,6 +183,12 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
               <Icon icon="ep:delete" />
             </template>
             批量删除
+          </el-button>
+          <el-button type="info" @click="showImport">
+            <template #icon>
+              <Icon icon="ep:upload" />
+            </template>
+            导入
           </el-button>
         </el-space>
       </template>
@@ -204,5 +211,55 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
       @confirm="confirmUpdate"
       @cancel="cancelUpdate"
     />
+    <!-- 导入 -->
+    <plus-dialog-form
+      v-model:visible="importVisible"
+      v-model="importValues"
+      :dialog="importDialogProps"
+      :form="importFormProps"
+    >
+      <template #plus-field-template>
+        <el-button type="primary" :loading="exportTemplateLoading" @click="exportTemplate">
+          <template #icon>
+            <Icon icon="ep:download" />
+          </template>
+          下载
+        </el-button>
+      </template>
+      <template #plus-field-file>
+        <el-upload
+          v-loading="importTemplateLoading"
+          element-loading-text="上传中..."
+          class="upload-wrap"
+          drag
+          :http-request="httpRequest"
+          :before-upload="beforeUpload"
+          :show-file-list="false"
+        >
+          <Icon class="upload-icon" icon="ep:upload-filled" />
+          <div class="el-upload__text">
+            拖放文件或 <em>点击上传</em>
+          </div>
+          <template #tip>
+            <div class="el-upload__tip">
+              Excel 文件大小不能超过 10mb
+            </div>
+          </template>
+        </el-upload>
+      </template>
+    </plus-dialog-form>
   </div>
 </template>
+
+<style scoped>
+.upload-wrap {
+  width: 90%;
+}
+
+.upload-icon {
+  margin-bottom: 16px;
+  font-size: 67px;
+  line-height: 50px;
+  color: var(--el-text-color-placeholder);
+}
+</style>
