@@ -1,3 +1,3 @@
-export * from './cls-store'
-export * from './redis-client'
-export * from './server'
+export * from './cls-store.interface'
+export * from './redis-client.interface'
+export * from './server.interface'

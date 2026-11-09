@@ -1,0 +1,81 @@
+import type { RemoveReqDto } from '~server/dtos'
+import { wrap } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { SysMenuEntity } from '~db/entities'
+import { ErrorEnum } from '~server/constants'
+import { ContextService } from '~server/context'
+import { YesOrNoEnum } from '~shared/enums'
+import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './menu.dto'
+
+@Injectable()
+export class SystemMenuService {
+  constructor(
+    private em: EntityManager,
+    private contextService: ContextService,
+  ) {}
+
+  async create(dto: CreateSystemMenuReqDto) {
+    const { menuKey } = dto
+
+    const oldRecord = await this.em.findOne(SysMenuEntity, {
+      menuKey: { $eq: menuKey },
+    })
+
+    if (oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.MENU_EXIST_ERROR))
+    }
+
+    const newRecord = this.em.create(SysMenuEntity, {
+      ...dto,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
+    this.contextService.bindCurrentUserToEntity(newRecord, 'create')
+
+    await this.em.persist(newRecord).flush()
+  }
+
+  async findList(dto: FindSystemMenuListReqDto) {
+    const { menuName, menuKey, isAvailable } = dto
+
+    const result = await this.em.findAll(SysMenuEntity, {
+      where: {
+        menuName: menuName ? { $like: `%${menuName}%` } : {},
+        menuKey: menuKey ? { $like: `%${menuKey}%` } : {},
+        isAvailable: isAvailable ? { $eq: isAvailable } : {},
+      },
+    })
+
+    return result
+  }
+
+  async remove(dto: RemoveReqDto) {
+    const { ids } = dto
+
+    const oldRecords = await this.em.find(SysMenuEntity, {
+      id: { $in: ids },
+    })
+
+    await this.em.remove(oldRecords).flush()
+  }
+
+  async update(dto: UpdateSystemMenuReqDto) {
+    const { id, menuKey, ...rest } = dto
+
+    const oldRecord = await this.em.findOne(SysMenuEntity, {
+      $and: [
+        { id: { $eq: id } },
+        { menuKey: { $eq: menuKey } },
+      ],
+    })
+
+    if (!oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.MENU_NOT_FOUND_ERROR))
+    }
+
+    wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
+
+    await this.em.persist(oldRecord).flush()
+  }
+}

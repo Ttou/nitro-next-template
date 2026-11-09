@@ -1,3 +1,3 @@
-export { RemoteIpService } from './ip'
-export { RemoteModule } from './module'
-export { RemoteTranslateService } from './translate'
+export { RemoteIpService } from './ip.service'
+export { RemoteModule } from './remote.module'
+export { RemoteTranslateService } from './translate.service'

@@ -1,4 +1,4 @@
-export { genSalt } from './constant'
-export type { HashModuleOptions } from './interface'
-export { HashModule } from './module'
-export { HashService } from './service'
+export { genSalt } from './hash.constant'
+export type { HashModuleOptions } from './hash.interface'
+export { HashModule } from './hash.module'
+export { HashService } from './hash.service'

@@ -1,3 +1,3 @@
 export * from './auth'
 export * from './menu'
-export * from './module'
+export * from './role.module'

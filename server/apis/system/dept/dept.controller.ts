@@ -1,0 +1,45 @@
+import { Body, Controller, Delete, Post } from '@nestjs/common'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { XltCheckPermission } from '@xlt-token/nestjs'
+import { ApiDoc } from '~server/decorators'
+import { SysDeptEntityExcludeRelationDto } from '~db/dtos'
+import { RemoveReqDto } from '~server/dtos'
+import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dept.dto'
+import { SystemDeptService } from './dept.service'
+
+@ApiTags('系统部门接口')
+@ApiBearerAuth()
+@Controller()
+export class SystemDeptController {
+  constructor(
+    private systemDeptService: SystemDeptService,
+  ) {}
+
+  @ApiDoc({ endpointSummary: '创建部门' })
+  @XltCheckPermission('sys.menu.system.dept.create')
+  @Post('create')
+  async create(@Body() dto: CreateSystemDeptReqDto) {
+    return await this.systemDeptService.create(dto)
+  }
+
+  @ApiDoc({ endpointSummary: '查询部门列表', responseDto: SysDeptEntityExcludeRelationDto, isArray: true })
+  @XltCheckPermission('sys.menu.system.dept.findList')
+  @Post('findList')
+  async findList(@Body() dto: FindSystemDeptListReqDto) {
+    return await this.systemDeptService.findList(dto)
+  }
+
+  @ApiDoc({ endpointSummary: '删除部门' })
+  @XltCheckPermission('sys.menu.system.dept.remove')
+  @Delete('remove')
+  async remove(@Body() dto: RemoveReqDto) {
+    return await this.systemDeptService.remove(dto)
+  }
+
+  @ApiDoc({ endpointSummary: '更新部门' })
+  @XltCheckPermission('sys.menu.system.dept.update')
+  @Post('update')
+  async update(@Body() dto: UpdateSystemDeptReqDto) {
+    return await this.systemDeptService.update(dto)
+  }
+}

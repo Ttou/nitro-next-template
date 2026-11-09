@@ -1,1 +1,1 @@
-export * from './xlt-token'
+export * from './xlt-token.guard'

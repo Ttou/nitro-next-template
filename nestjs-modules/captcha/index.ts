@@ -1,3 +1,3 @@
-export type { CaptchaModuleOptions } from './interface'
-export { CaptchaModule } from './module'
-export { CaptchaService } from './service'
+export type { CaptchaModuleOptions } from './captcha.interface'
+export { CaptchaModule } from './captcha.module'
+export { CaptchaService } from './captcha.service'

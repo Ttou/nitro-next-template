@@ -1,2 +1,2 @@
-export { ContextModule } from './module'
-export { ContextService } from './service'
+export { ContextModule } from './context.module'
+export { ContextService } from './context.service'

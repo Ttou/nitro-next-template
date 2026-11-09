@@ -1,1 +1,1 @@
-export { InspectorModule } from './module'
+export { InspectorModule } from './inspector.module'

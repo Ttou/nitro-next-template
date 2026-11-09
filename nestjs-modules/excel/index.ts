@@ -1,4 +1,4 @@
-export { ExcelColumn, ExcelFile } from './decorator'
-export type { ExcelModuleOptions } from './interface'
-export { ExcelModule } from './module'
-export { ExcelService } from './service'
+export { ExcelColumn, ExcelFile } from './excel.decorator'
+export type { ExcelModuleOptions } from './excel.interface'
+export { ExcelModule } from './excel.module'
+export { ExcelService } from './excel.service'

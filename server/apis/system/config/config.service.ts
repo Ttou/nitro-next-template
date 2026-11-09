@@ -1,0 +1,103 @@
+import { wrap } from '@mikro-orm/core'
+import { EntityManager } from '@mikro-orm/mysql'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { SysConfigEntity } from '~db/entities'
+import { ErrorEnum } from '~server/constants'
+import { ContextService } from '~server/context'
+import { RemoveReqDto } from '~server/dtos'
+import { YesOrNoEnum } from '~shared/enums'
+import {
+  CreateSystemConfigReqDto,
+  FindSystemConfigByKeyReqDto,
+  FindSystemConfigPageReqDto,
+  UpdateSystemConfigReqDto,
+} from './config.dto'
+
+@Injectable()
+export class SystemConfigService {
+  constructor(
+    private em: EntityManager,
+    private contextService: ContextService,
+  ) {}
+
+  async create(dto: CreateSystemConfigReqDto) {
+    const { configKey } = dto
+
+    const oldRecord = await this.em.findOne(SysConfigEntity, {
+      configKey: { $eq: configKey },
+    })
+
+    if (oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_EXIST_ERROR))
+    }
+
+    const config = this.em.create(SysConfigEntity, {
+      ...dto,
+      isBuiltin: dto.isBuiltin ?? YesOrNoEnum.NO,
+      isAvailable: dto.isAvailable ?? YesOrNoEnum.YES,
+    })
+    this.contextService.bindCurrentUserToEntity(config, 'create')
+
+    await this.em.persist(config).flush()
+  }
+
+  async findByKey(dto: FindSystemConfigByKeyReqDto) {
+    const { configKey } = dto
+
+    const oldRecord = await this.em.findOne(SysConfigEntity, {
+      configKey: { $eq: configKey },
+    })
+
+    if (!oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_NOT_FOUND_ERROR))
+    }
+
+    return oldRecord
+  }
+
+  async findPage(dto: FindSystemConfigPageReqDto) {
+    const { page, pageSize, ...rest } = dto
+
+    const [data, total] = await this.em.findAndCount(SysConfigEntity, {
+      $and: [
+        { configName: rest.configName ? { $like: `%${rest.configName}%` } : {} },
+        { configKey: rest.configKey ? { $like: `%${rest.configKey}%` } : {} },
+        { isBuiltin: rest.isBuiltin ? { $eq: rest.isBuiltin } : {} },
+        { createdAt: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {} },
+      ],
+    }, { limit: pageSize, offset: page - 1 })
+
+    return { page, pageSize, data, total }
+  }
+
+  async remove(dto: RemoveReqDto) {
+    const { ids } = dto
+
+    const oldRecords = await this.em.find(SysConfigEntity, {
+      id: { $in: ids },
+      isBuiltin: { $eq: YesOrNoEnum.NO },
+    })
+
+    await this.em.remove(oldRecords).flush()
+  }
+
+  async update(dto: UpdateSystemConfigReqDto) {
+    const { id, configKey, ...rest } = dto
+
+    const oldRecord = await this.em.findOne(SysConfigEntity, {
+      $and: [
+        { id: { $eq: id } },
+        { configKey: { $eq: configKey } },
+      ],
+    })
+
+    if (!oldRecord) {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.CONFIG_NOT_FOUND_ERROR))
+    }
+
+    wrap(oldRecord).assign(rest)
+    this.contextService.bindCurrentUserToEntity(oldRecord, 'update')
+
+    await this.em.persist(oldRecord).flush()
+  }
+}

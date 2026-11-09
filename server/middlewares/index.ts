@@ -1,2 +1,2 @@
-export * from './basic-auth'
-export * from './html'
+export * from './basic-auth.middleware'
+export * from './html.middleware'

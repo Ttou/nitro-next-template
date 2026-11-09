@@ -1,0 +1,38 @@
+import { EntityManager } from '@mikro-orm/mysql'
+import { Injectable } from '@nestjs/common'
+import { StpLogic } from '@xlt-token/core'
+import { SysUserEntity } from '~db/entities'
+import { RemoveReqDto } from '~server/dtos'
+import { FindMonitorOnlinePageReqDto } from './online.dto'
+
+@Injectable()
+export class MonitorOnlineService {
+  constructor(
+    private em: EntityManager,
+    private stp: StpLogic,
+  ) {}
+
+  async findPage(dto: FindMonitorOnlinePageReqDto) {
+    const { page, pageSize, ...rest } = dto
+    const ids = await this.stp.getOnlineLoginIds({ page: page - 1, pageSize })
+
+    const result = await this.em.findAll(SysUserEntity, {
+      where: {
+        id: { $in: ids },
+        userName: rest.userName ? { $like: `%${rest.userName}%` } : {},
+        nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {},
+      },
+      exclude: ['password'],
+    })
+
+    return { page, pageSize, data: result, total: result.length }
+  }
+
+  async remove(dto: RemoveReqDto) {
+    const { ids } = dto
+
+    for (const id of ids) {
+      await this.stp.logoutByLoginId(id)
+    }
+  }
+}
