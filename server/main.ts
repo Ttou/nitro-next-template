@@ -5,7 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { apiReference } from '@scalar/nestjs-api-reference'
 import { NativeLogger } from 'nestjs-pino'
 import { AppModule } from './app.module'
-import { SharedConfig } from './configs'
+import { sharedConfig } from './configs'
 import { APP_ENV, AppEnvEnum } from './constants'
 import { basicAuth, html } from './middlewares'
 
@@ -31,7 +31,7 @@ async function bootstrap() {
   // #endregion
 
   // #region Basic Auth 保护路径
-  const { user, pass } = SharedConfig.basicAuth ?? {}
+  const { user, pass } = sharedConfig.basicAuth ?? {}
   if (user && pass) {
     const auth = basicAuth({
       users: { [user]: pass },

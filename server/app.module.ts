@@ -4,7 +4,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
 import { BullModule } from '@nestjs/bullmq'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { HttpClientModule } from '@nestjs/http-client'
 import { StorageModule } from '@nestjs/storage'
@@ -17,21 +17,21 @@ import { ExcelModule } from '~nestjs-modules/excel'
 import { HashModule } from '~nestjs-modules/hash'
 import { ApisModule } from './apis'
 import {
-  BullBoardConfig,
-  BullConfig,
-  CacheConfig,
-  CaptchaConfig,
-  ClsConfig,
-  ExcelConfig,
-  HashConfig,
-  LoggerConfig,
-  MikroOrmConfig,
-  RedisConfig,
-  StorageConfig,
-  XltTokenConfig,
+  bullBoardModuleAsyncOptions,
+  BullModuleOptions,
+  CacheModuleOptions,
+  CaptchaModuleOptions,
+  clsModuleAsyncOptions,
+  configuration,
+  ExcelModuleOptions,
+  HashModuleOptions,
+  loggerModuleAsyncOptions,
+  MikroOrmModuleOptions,
+  RedisModuleOptions,
+  StorageModuleOptions,
+  xltTokenModuleAsyncOptions,
 } from './configs'
 import { ContextModule } from './context'
-import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
 import { XltTokenGuard } from './guards'
 import { LoginLogQueue, QueueForFeature, QueueForRegister } from './queues'
@@ -43,66 +43,59 @@ import { RemoteModule } from './remote'
       isGlobal: true,
       ignoreEnvFile: true,
       skipProcessEnv: true,
-      load: [
-        ClsConfig,
-        LoggerConfig,
-        RedisConfig,
-        MikroOrmConfig,
-        StorageConfig,
-        BullConfig,
-        BullBoardConfig,
-        HashConfig,
-      ],
+      load: [configuration],
     }),
-    ClsModule.forRootAsync({
-      global: true,
-      ...ClsConfig.asProvider(),
+    ClsModule.forRootAsync(clsModuleAsyncOptions),
+    LoggerModule.forRootAsync(loggerModuleAsyncOptions),
+    RedisModule.forRootAsync({
+      useClass: RedisModuleOptions,
+      inject: [ConfigService],
     }),
-    LoggerModule.forRootAsync(LoggerConfig.asProvider()),
-    RedisModule.forRootAsync(RedisConfig.asProvider()),
     HttpClientModule.register({
       isGlobal: true,
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,
-      ...MikroOrmConfig.asProvider(),
+      useClass: MikroOrmModuleOptions,
+      inject: [ConfigService],
     }),
     StorageModule.forRootAsync({
       isGlobal: true,
-      ...StorageConfig.asProvider(),
+      useClass: StorageModuleOptions,
+      inject: [ConfigService],
     }),
-    XltTokenModule.forRootAsync({
-      isGlobal: true,
-      stpInterface: CustomXltStp,
-      store: {
-        useClass: CustomXltRedis,
-      },
-      ...XltTokenConfig.asProvider(),
-    }),
+    XltTokenModule.forRootAsync(xltTokenModuleAsyncOptions),
     CacheModule.registerAsync({
       isGlobal: true,
       redisToken: getRedisConnectionToken(),
-      ...CacheConfig.asProvider(),
+      useClass: CacheModuleOptions,
+      inject: [ConfigService],
     }),
     CaptchaModule.registerAsync({
       isGlobal: true,
       redisToken: getRedisConnectionToken(),
-      ...CaptchaConfig.asProvider(),
+      useClass: CaptchaModuleOptions,
+      inject: [ConfigService],
     }),
     ExcelModule.registerAsync({
       isGlobal: true,
-      ...ExcelConfig.asProvider(),
+      useClass: ExcelModuleOptions,
+      inject: [ConfigService],
     }),
     HashModule.registerAsync({
       isGlobal: true,
-      ...HashConfig.asProvider(),
+      useClass: HashModuleOptions,
+      inject: [ConfigService],
     }),
     {
       global: true,
       imports: [
-        BullModule.forRootAsync(BullConfig.asProvider()),
+        BullModule.forRootAsync({
+          useClass: BullModuleOptions,
+          inject: [ConfigService],
+        }),
         BullModule.registerQueue(...QueueForRegister),
-        BullBoardModule.forRootAsync(BullBoardConfig.asProvider()),
+        BullBoardModule.forRootAsync(bullBoardModuleAsyncOptions),
         BullBoardModule.forFeature(...QueueForFeature),
       ],
       providers: [

@@ -10,6 +10,7 @@ export interface CacheModuleExtras {
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
   = new ConfigurableModuleBuilder<CacheModuleOptions>()
+    .setFactoryMethodName('createCacheOptions')
     .setExtras<CacheModuleExtras>(
       {
         isGlobal: false,
@@ -20,7 +21,9 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
         providers: [
           ...(definition.providers ?? []),
           ...(extras.redisToken
-            ? [{ provide: CACHE_REDIS, useExisting: extras.redisToken }]
+            ? [
+                { provide: CACHE_REDIS, useExisting: extras.redisToken },
+              ]
             : []),
         ],
       }),

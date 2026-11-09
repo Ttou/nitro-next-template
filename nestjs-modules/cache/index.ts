@@ -1,6 +1,6 @@
 export { CacheKey, CacheTTL } from './cache.decorator'
 export { CacheInterceptor } from './cache.interceptor'
-export type { CacheModuleOptions } from './cache.interface'
+export type { CacheModuleOptions, CacheModuleOptionsFactory } from './cache.interface'
 export { CacheModule } from './cache.module'
 export { CacheRedisExtendService } from './cache.redis-extend.service'
 export { CacheService } from './cache.service'

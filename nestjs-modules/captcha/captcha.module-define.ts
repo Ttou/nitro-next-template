@@ -10,6 +10,7 @@ export interface CaptchaModuleExtras {
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
   = new ConfigurableModuleBuilder<CaptchaModuleOptions>()
+    .setFactoryMethodName('createCaptchaOptions')
     .setExtras<CaptchaModuleExtras>(
       {
         isGlobal: false,
@@ -20,7 +21,9 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
         providers: [
           ...(definition.providers ?? []),
           ...(extras.redisToken
-            ? [{ provide: CAPTCHA_REDIS, useExisting: extras.redisToken }]
+            ? [
+                { provide: CAPTCHA_REDIS, useExisting: extras.redisToken },
+              ]
             : []),
         ],
       }),

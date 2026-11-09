@@ -7,6 +7,7 @@ export interface ExcelModuleExtras {
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
   = new ConfigurableModuleBuilder<ExcelModuleOptions>()
+    .setFactoryMethodName('createExcelOptions')
     .setExtras<ExcelModuleExtras>(
       {
         isGlobal: false,

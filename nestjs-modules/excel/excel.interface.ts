@@ -1,4 +1,5 @@
 import type { AddWorksheetOptions, Column } from '@cj-tech-master/excelts'
+import type { ConfigurableModuleOptionsFactory } from '@nestjs/common'
 
 export interface IExcelFileOptions {
   fileName?: string
@@ -18,3 +19,5 @@ export interface ExcelModuleOptions {
    */
   defaultFileName?: string | (() => string)
 }
+
+export interface ExcelModuleOptionsFactory extends ConfigurableModuleOptionsFactory<ExcelModuleOptions, 'createExcelOptions'> {}

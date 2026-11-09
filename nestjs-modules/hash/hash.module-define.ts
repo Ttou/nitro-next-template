@@ -7,6 +7,7 @@ export interface HashModuleExtras {
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
   = new ConfigurableModuleBuilder<HashModuleOptions>()
+    .setFactoryMethodName('createHashOptions')
     .setExtras<HashModuleExtras>(
       {
         isGlobal: false,
