@@ -1,6 +1,8 @@
+import { BullBoardModule } from '@bull-board/nestjs'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
+import { BullModule } from '@nestjs/bullmq'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
@@ -32,7 +34,7 @@ import { ContextModule } from './context'
 import { CustomXltRedis, CustomXltStp } from './customs'
 import { DefaultFilter } from './filters'
 import { XltTokenGuard } from './guards'
-import { QueuesModule } from './queues'
+import { LoginLogQueue, QueueForFeature, QueueForRegister } from './queues'
 import { RemoteModule } from './remote'
 
 @Module({
@@ -95,9 +97,22 @@ import { RemoteModule } from './remote'
       isGlobal: true,
       ...HashConfig.asProvider(),
     }),
+    {
+      global: true,
+      imports: [
+        BullModule.forRootAsync(BullConfig.asProvider()),
+        BullModule.registerQueue(...QueueForRegister),
+        BullBoardModule.forRootAsync(BullBoardConfig.asProvider()),
+        BullBoardModule.forFeature(...QueueForFeature),
+      ],
+      providers: [
+        LoginLogQueue,
+      ],
+      exports: [BullModule],
+      module: class QueuesModule {},
+    },
     RemoteModule,
     ContextModule,
-    QueuesModule,
     ApisModule,
   ],
   providers: [

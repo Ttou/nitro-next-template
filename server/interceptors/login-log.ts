@@ -1,5 +1,6 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
 import type { Queue } from 'bullmq'
+import type { LoginLogQueueData } from '~server/queues'
 import type { IRequest } from '../interfaces'
 import { InjectQueue } from '@nestjs/bullmq'
 import { HttpStatus, Injectable } from '@nestjs/common'
@@ -16,8 +17,8 @@ export class LoginLogInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler) {
     const req = context.switchToHttp().getRequest<IRequest>()
 
-    const params = {
-      ip: req.ip,
+    const params: Partial<LoginLogQueueData> = {
+      ip: req.ip!,
       userName: req.body.userName,
       userAgent: req.headers['user-agent']!,
       operateTime: new Date(),

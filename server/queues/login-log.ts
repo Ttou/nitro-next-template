@@ -1,10 +1,21 @@
 import { EntityManager } from '@mikro-orm/mysql'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
-import { Logger } from '@nestjs/common'
+import { HttpStatus, Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
 import { SysLoginLogEntity } from '~db/entities'
 import { RemoteIpService } from '~server/remote'
 import { QueueNameEnum } from './constant'
+
+export interface LoginLogQueueData {
+  ip: string
+  userName: any
+  userAgent: string
+  token: string
+  operateTime: Date
+  costTime: number
+  status: HttpStatus
+  errorMsg?: string
+}
 
 @Processor(
   QueueNameEnum.LOGIN_LOG,
@@ -30,8 +41,8 @@ export class LoginLogQueue extends WorkerHost {
     this.em = em.fork()
   }
 
-  async process(job: Job<any>) {
-    let { ip, ...rest } = job.data
+  async process(job: Job<LoginLogQueueData>) {
+    const { ip, ...rest } = job.data
 
     const location = await this.remoteIpService.toLocation(ip)
 
