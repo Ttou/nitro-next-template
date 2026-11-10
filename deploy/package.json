@@ -1,0 +1,8 @@
+{
+  "name": "nitro-next-template-deploy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file .env.deploy ../.server/index.mjs"
+  }
+}
