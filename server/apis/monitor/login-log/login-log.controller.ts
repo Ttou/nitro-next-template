@@ -3,6 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ApiDoc } from '~server/decorators'
 import { SysLoginLogEntityDto } from '~db/dtos'
+import { PermissionEnum } from '~shared/enums'
 import { FindMonitorLoginLogPageReqDto } from './login-log.dto'
 import { MonitorLoginLogService } from './login-log.service'
 
@@ -16,7 +17,7 @@ export class MonitorLoginLogController {
 
   @ApiDoc({ endpointSummary: '分页查询登录日志', responseDto: SysLoginLogEntityDto, isPage: true })
   @UseInterceptors(ClassSerializerInterceptor)
-  @XltCheckPermission('sys.menu.monitor.loginLog.findPage')
+  @XltCheckPermission(PermissionEnum.MONITOR_LOGIN_LOG_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindMonitorLoginLogPageReqDto) {
     return this.monitorLoginLogService.findPage(dto)
