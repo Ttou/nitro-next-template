@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "jiti scripts/dev",
     "build:web": "cross-env APP_ENV=prod vite build",
-    "build:server": "cross-env APP_ENV=prod nitro build",
+    "build:server": "cross-env APP_ENV=prod nitro build && jiti scripts/copy-deploy",
     "gen:apis": "alova gen -f",
     "gen:locales": "jiti scripts/gen-locales",
     "gen:secrets": "jiti scripts/gen-secrets",

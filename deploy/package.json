@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node --env-file .env.deploy ../.server/index.mjs"
+    "start": "node --env-file .env.deploy index.mjs"
   }
 }
