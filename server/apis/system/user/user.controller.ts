@@ -10,6 +10,7 @@ import { localDisk } from '~server/configs'
 import { ApiDoc } from '~server/decorators'
 import { RemoveReqDto } from '~server/dtos'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
+import { PermissionEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
 import {
   CreateSystemUserReqDto,
@@ -33,35 +34,35 @@ export class SystemUserController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建系统用户' })
-  @XltCheckPermission('sys.menu.system.user.create')
+  @XltCheckPermission(PermissionEnum.SYSTEM_USER_CREATE)
   @Post('create')
   async create(@Body() dto: CreateSystemUserReqDto) {
     return await this.systemUserService.create(dto)
   }
 
   @ApiDoc({ endpointSummary: '查询系统用户分页列表', responseDto: SysUserEntityNoRelationsNoPasswordDto, isPage: true })
-  @XltCheckPermission('sys.menu.system.user.findPage')
+  @XltCheckPermission(PermissionEnum.SYSTEM_USER_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindSystemUserPageReqDto) {
     return await this.systemUserService.findPage(dto)
   }
 
   @ApiDoc({ endpointSummary: '删除系统用户' })
-  @XltCheckPermission('sys.menu.system.user.remove')
+  @XltCheckPermission(PermissionEnum.SYSTEM_USER_REMOVE)
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemUserService.remove(dto)
   }
 
   @ApiDoc({ endpointSummary: '更新系统用户' })
-  @XltCheckPermission('sys.menu.system.user.update')
+  @XltCheckPermission(PermissionEnum.SYSTEM_USER_UPDATE)
   @Post('update')
   async update(@Body() dto: UpdateSystemUserReqDto) {
     return await this.systemUserService.update(dto)
   }
 
   @ApiDoc({ endpointSummary: '导出系统用户', isExcel: true })
-  @XltCheckPermission('sys.menu.system.user.export')
+  @XltCheckPermission(PermissionEnum.SYSTEM_USER_EXPORT)
   @Post('export')
   async export(@Body() dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)

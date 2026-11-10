@@ -6,6 +6,7 @@ import { ExcelService } from '~nestjs-modules/excel'
 import { ApiDoc } from '~server/decorators'
 import { SysConfigEntityDto } from '~db/dtos'
 import { RemoveReqDto } from '~server/dtos'
+import { PermissionEnum } from '~shared/enums'
 import { CreateSystemConfigReqDto, ExportSystemConfigSerDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './config.dto'
 import { SystemConfigService } from './config.service'
 
@@ -19,7 +20,7 @@ export class SystemConfigController {
   ) {}
 
   @ApiDoc({ endpointSummary: '创建系统配置' })
-  @XltCheckPermission('sys.menu.system.config.create')
+  @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_CREATE)
   @Post('create')
   async create(@Body() dto: CreateSystemConfigReqDto) {
     return await this.systemConfigService.create(dto)
@@ -35,28 +36,28 @@ export class SystemConfigController {
   }
 
   @ApiDoc({ endpointSummary: '查询系统配置分页列表', responseDto: SysConfigEntityDto, isPage: true })
-  @XltCheckPermission('sys.menu.system.config.findPage')
+  @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindSystemConfigPageReqDto) {
     return await this.systemConfigService.findPage(dto)
   }
 
   @ApiDoc({ endpointSummary: '删除系统配置' })
-  @XltCheckPermission('sys.menu.system.config.remove')
+  @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_REMOVE)
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemConfigService.remove(dto)
   }
 
   @ApiDoc({ endpointSummary: '更新系统配置' })
-  @XltCheckPermission('sys.menu.system.config.update')
+  @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_UPDATE)
   @Post('update')
   async update(@Body() dto: UpdateSystemConfigReqDto) {
     return await this.systemConfigService.update(dto)
   }
 
   @ApiDoc({ endpointSummary: '导出系统配置', isExcel: true })
-  @XltCheckPermission('sys.menu.system.config.export')
+  @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_EXPORT)
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)
