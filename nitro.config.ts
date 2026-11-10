@@ -28,5 +28,14 @@ export default defineConfig({
     noPublicDir: true,
     renderer: false,
     traceDeps: ['reflect-metadata', 'tslib'],
+    // NestJS 依赖 legacy 装饰器与 design:* 元数据做依赖注入，需显式交给 Oxc 处理
+    rolldownConfig: {
+      transform: {
+        decorator: {
+          legacy: true,
+          emitDecoratorMetadata: true,
+        },
+      },
+    },
   },
 })

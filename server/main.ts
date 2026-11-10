@@ -69,10 +69,6 @@ async function bootstrap() {
 
   await app.init()
 
-  if (APP_ENV === AppEnvEnum.PROD) {
-    await app.listen(3000)
-  }
-
   return instance
 }
 
