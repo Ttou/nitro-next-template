@@ -5,7 +5,8 @@ import { ElLink } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
-import { YesOrNoEnum } from '~shared/enums'
+import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -112,6 +113,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '编辑',
             code: 'update',
+            show: hasPermission(PermissionEnum.SYSTEM_POST_UPDATE),
             props: { type: 'success' },
             onClick({ row }) {
               showUpdate(row)
@@ -120,6 +122,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '删除',
             code: 'delete',
+            show: hasPermission(PermissionEnum.SYSTEM_POST_REMOVE),
             props: {
               type: 'warning',
             },
@@ -171,19 +174,19 @@ const { confirmExport } = useExport({ pageInstance, selectedIds })
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
-          <el-button type="primary" @click="showCreate">
+          <el-button v-permission="PermissionEnum.SYSTEM_POST_CREATE" type="primary" @click="showCreate">
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
             添加
           </el-button>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+          <el-button v-permission="PermissionEnum.SYSTEM_POST_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             批量删除
           </el-button>
-          <el-button type="success" @click="confirmExport">
+          <el-button v-permission="PermissionEnum.SYSTEM_POST_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>

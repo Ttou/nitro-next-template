@@ -70,6 +70,11 @@ export const useUserStore = defineStore(
 
     async function clear() {
       token.value = ''
+      user.value = undefined
+      routes.value = []
+      permissions.value = []
+      infoRequested.value = false
+      homePath.value = ''
     }
 
     return {

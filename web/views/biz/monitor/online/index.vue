@@ -3,7 +3,8 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
-import { YesOrNoEnum } from '~shared/enums'
+import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -58,6 +59,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '下线',
             code: 'delete',
+            show: hasPermission(PermissionEnum.MONITOR_ONLINE_REMOVE),
             props: (row, index, button) => ({
               type: 'warning',
               disabled: row.isBuiltin === YesOrNoEnum.YES,
@@ -100,7 +102,7 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+          <el-button v-permission="PermissionEnum.MONITOR_ONLINE_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>

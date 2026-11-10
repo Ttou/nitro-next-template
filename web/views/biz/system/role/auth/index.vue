@@ -4,7 +4,8 @@ import { Icon } from '@iconify/vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
-import { YesOrNoEnum } from '~shared/enums'
+import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { useCreate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -101,6 +102,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '取消授权',
             code: 'cancel',
+            show: hasPermission(PermissionEnum.SYSTEM_ROLE_AUTH_UNALLOCATE_USER),
             props: { type: 'danger' },
             confirm: {
               message: ({ row }) => `确定取消授权【${row.userName}】吗？`,
@@ -175,13 +177,13 @@ function confirmRemove(ids: string[], batch: boolean = false) {
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
-          <el-button type="primary" @click="showCreate">
+          <el-button v-permission="PermissionEnum.SYSTEM_ROLE_AUTH_ALLOCATE_USER" type="primary" @click="showCreate">
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
             添加
           </el-button>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+          <el-button v-permission="PermissionEnum.SYSTEM_ROLE_AUTH_UNALLOCATE_USER" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>

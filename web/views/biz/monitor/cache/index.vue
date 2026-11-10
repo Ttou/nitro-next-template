@@ -3,6 +3,8 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
+import { PermissionEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { useDetail, useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -58,6 +60,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '详情',
             code: 'info',
+            show: hasPermission(PermissionEnum.MONITOR_CACHE_FIND_BY_KEY),
             props: (row, index, button) => ({
               type: 'primary',
             }),
@@ -68,6 +71,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '删除',
             code: 'delete',
+            show: hasPermission(PermissionEnum.MONITOR_CACHE_REMOVE),
             props: (row, index, button) => ({
               type: 'warning',
             }),
@@ -110,13 +114,13 @@ const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+          <el-button v-permission="PermissionEnum.MONITOR_CACHE_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             批量删除
           </el-button>
-          <el-button type="danger" @click="confirmClear">
+          <el-button v-permission="PermissionEnum.MONITOR_CACHE_CLEAR" type="danger" @click="confirmClear">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>

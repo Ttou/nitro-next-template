@@ -3,7 +3,8 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
-import { YesOrNoEnum } from '~shared/enums'
+import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { useDict } from '~web/hooks/useDict'
 import { dictToOptions } from '~web/utils'
 import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
@@ -144,6 +145,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
           {
             text: '编辑',
             code: 'update',
+            show: hasPermission(PermissionEnum.SYSTEM_USER_UPDATE),
             props: { type: 'success' },
             onClick({ row }) {
               showUpdate(row)
@@ -152,6 +154,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
           {
             text: '删除',
             code: 'delete',
+            show: hasPermission(PermissionEnum.SYSTEM_USER_REMOVE),
             props: (row, index, button) => ({
               type: 'warning',
               disabled: row.roles.some(item => item.roleKey.includes('sys.')),
@@ -196,19 +199,19 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
     <plus-page ref="pageInstance" v-bind="plusPageProps">
       <template #table-title>
         <el-space>
-          <el-button type="primary" @click="showCreate">
+          <el-button v-permission="PermissionEnum.SYSTEM_USER_CREATE" type="primary" @click="showCreate">
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
             {{ $t('common.button.add') }}
           </el-button>
-          <el-button type="danger" @click="confirmRemove(selectedIds, true)">
+          <el-button v-permission="PermissionEnum.SYSTEM_USER_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
             {{ $t('common.button.batchDelete') }}
           </el-button>
-          <el-button type="success" @click="confirmExport">
+          <el-button v-permission="PermissionEnum.SYSTEM_USER_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>

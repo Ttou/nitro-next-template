@@ -2,7 +2,8 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
-import { YesOrNoEnum } from '~shared/enums'
+import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
+import { hasPermission } from '~web/directives'
 import { listToTree } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
@@ -108,6 +109,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '编辑',
             code: 'update',
+            show: hasPermission(PermissionEnum.SYSTEM_DEPT_UPDATE),
             props: { type: 'success' },
             onClick({ row }) {
               showUpdate(row)
@@ -116,6 +118,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '删除',
             code: 'delete',
+            show: hasPermission(PermissionEnum.SYSTEM_DEPT_REMOVE),
             props: {
               type: 'warning',
             },
@@ -163,7 +166,7 @@ const { confirmRemove } = useRemove({ pageInstance })
     <plus-page ref="pageInstance" v-bind="pageProps">
       <template #table-title>
         <el-space>
-          <el-button type="primary" @click="showCreate">
+          <el-button v-permission="PermissionEnum.SYSTEM_DEPT_CREATE" type="primary" @click="showCreate">
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
