@@ -1,4 +1,5 @@
-import type { IConfig, ISharedConfig } from './config.interface'
+import type { IAuthConfig, IConfig, ISharedConfig } from './config.interface'
+import { generateKeyPairSync } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -36,6 +37,41 @@ export const sharedConfig: ISharedConfig = match(APP_ENV)
   .run()
 
 /**
+ * 登录密码加密密钥对。
+ * 生产环境通过环境变量注入（换行可用 \n 表示），未注入时进程启动时临时生成，
+ * 前端每次登录都会重新拉取公钥，因此临时密钥不影响登录。
+ */
+function createAuthKeys(): IAuthConfig {
+  const publicKey = process.env.AUTH_RSA_PUBLIC_KEY
+  const privateKey = process.env.AUTH_RSA_PRIVATE_KEY
+
+  if (publicKey && privateKey) {
+    return {
+      publicKey: publicKey.replace(/\\n/g, '\n'),
+      privateKey: privateKey.replace(/\\n/g, '\n'),
+    }
+  }
+
+  // 生产环境未注入密钥时直接失败，避免多实例各自生成密钥导致登录随机解密失败
+  if (APP_ENV === AppEnvEnum.PROD) {
+    throw new Error('缺少环境变量 AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY')
+  }
+
+  const pair = generateKeyPairSync('rsa', {
+    modulusLength: 2048,
+    publicKeyEncoding: { type: 'spki', format: 'pem' },
+    privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+  })
+
+  return {
+    publicKey: pair.publicKey,
+    privateKey: pair.privateKey,
+  }
+}
+
+const authKeys = createAuthKeys()
+
+/**
  * 默认 local 磁盘实例。uploadToDisk 按磁盘名解析时依赖按 HTTP server 实例建立的注册表，
  * 而 dev 环境应用只 app.init() 不 listen、请求由 nitro 服务器处理，注册表无法命中，
  * 因此上传处需直接传入该实例
@@ -55,6 +91,7 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
 
   return {
     'shared': sharedConfig,
+    'auth': authKeys,
     'cls': match(APP_ENV)
       .returnType<IConfig['cls']>()
       .with(AppEnvEnum.DEV, () => ({

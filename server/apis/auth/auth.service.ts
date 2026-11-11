@@ -1,18 +1,23 @@
+import { constants, createPublicKey, privateDecrypt } from 'node:crypto'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { StpLogic } from '@xlt-token/core'
 import { SysUserEntity } from '~db/entities'
 import { CaptchaService } from '~nestjs-modules/captcha'
 import { HashService } from '~nestjs-modules/hash'
+import type { IConfig } from '~server/configs'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
+import type { AuthPublicKeyResDto } from './auth.dto'
 import { LoginReqDto } from './auth.dto'
 
 @Injectable()
 export class AuthService {
   constructor(
     private captchaService: CaptchaService,
+    private configService: ConfigService,
     private hashService: HashService,
     private contextService: ContextService,
     private em: EntityManager,
@@ -20,7 +25,7 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginReqDto) {
-    const { captchaId, captchaValue, userName, password } = dto
+    const { captchaId, captchaValue, userName } = dto
 
     const isCaseSensitive = await this.contextService.isCaptchaCaseSensitive()
     const isVerify = await this.captchaService.verify(captchaId, captchaValue, isCaseSensitive)
@@ -40,7 +45,7 @@ export class AuthService {
     }
 
     const isMatch = await this.hashService.bcryptVerify({
-      password,
+      password: this.decryptPassword(dto.password),
       hash: oldRecord.password,
     })
 
@@ -51,6 +56,40 @@ export class AuthService {
     const token = await this.stp.login(oldRecord.id)
 
     return token
+  }
+
+  /**
+   * 获取登录密码加密公钥
+   */
+  getPublicKey(): AuthPublicKeyResDto {
+    const { publicKey } = this.configService.getOrThrow<IConfig['auth']>('auth')
+    const der = createPublicKey(publicKey).export({ type: 'spki', format: 'der' })
+
+    return {
+      algorithm: 'RSA-OAEP-256',
+      publicKey: der.toString('base64'),
+    }
+  }
+
+  /**
+   * 解密登录密码，失败时统一按账号或密码错误处理
+   */
+  private decryptPassword(password: string) {
+    const { privateKey } = this.configService.getOrThrow<IConfig['auth']>('auth')
+
+    try {
+      return privateDecrypt(
+        {
+          key: privateKey,
+          padding: constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash: 'sha256',
+        },
+        Buffer.from(password, 'base64'),
+      ).toString('utf8')
+    }
+    catch {
+      throw new BadRequestException(ErrorEnum.label(ErrorEnum.ACCOUNT_OR_PASSWORD_ERROR))
+    }
   }
 
   async logout() {

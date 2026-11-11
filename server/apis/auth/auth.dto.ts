@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, MinLength } from 'class-validator'
+import { IsNotEmpty } from 'class-validator'
 
 /**
  * 登录请求传输对象
@@ -15,9 +15,8 @@ export class LoginReqDto {
   /**
    * 密码
    */
-  @ApiProperty({ description: '密码', example: '' })
+  @ApiProperty({ description: '密码（RSA-OAEP 加密后的 Base64 密文）', example: '' })
   @IsNotEmpty({ message: '密码不能为空' })
-  @MinLength(6, { message: '密码最少6位' })
   password: string
 
   /**
@@ -33,4 +32,21 @@ export class LoginReqDto {
   @ApiProperty({ description: '验证码值', example: '' })
   @IsNotEmpty({ message: '验证码值不能为空' })
   captchaValue: string
+}
+
+/**
+ * 登录公钥响应传输对象
+ */
+export class AuthPublicKeyResDto {
+  /**
+   * 加密算法
+   */
+  @ApiProperty({ description: '加密算法', example: 'RSA-OAEP-256' })
+  algorithm: string
+
+  /**
+   * 公钥（SPKI DER 的 Base64）
+   */
+  @ApiProperty({ description: '公钥（SPKI DER 的 Base64）', example: '' })
+  publicKey: string
 }

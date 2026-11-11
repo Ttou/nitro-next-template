@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
 
-import { createMenus, listToTree } from '~web/utils'
+import { createMenus, encryptPassword, listToTree } from '~web/utils'
 
 export const useUserStore = defineStore(
   'user',
@@ -18,7 +18,12 @@ export const useUserStore = defineStore(
     const homePath = ref<string>('')
 
     async function login(data: LoginReqDto) {
-      const result = await Apis.Auth.login({ data })
+      const result = await Apis.Auth.login({
+        data: {
+          ...data,
+          password: await encryptPassword(data.password),
+        },
+      })
 
       token.value = result
     }
