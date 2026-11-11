@@ -6,11 +6,11 @@ import { BullModule } from '@nestjs/bullmq'
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
-import { HttpClientModule } from '@nestjs/http-client'
 import { StorageModule } from '@nestjs/storage'
 import { XltTokenModule } from '@xlt-token/nestjs'
 import { ClsModule } from 'nestjs-cls'
 import { LoggerModule } from 'nestjs-pino'
+import { AlovaModule } from '~nestjs-modules/alova'
 import { CacheModule } from '~nestjs-modules/cache'
 import { CaptchaModule } from '~nestjs-modules/captcha'
 import { ExcelModule } from '~nestjs-modules/excel'
@@ -51,7 +51,7 @@ import { RemoteModule } from './remote'
       useClass: RedisModuleOptions,
       inject: [ConfigService],
     }),
-    HttpClientModule.register({
+    AlovaModule.register({
       isGlobal: true,
     }),
     MikroOrmModule.forRootAsync({

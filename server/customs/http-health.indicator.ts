@@ -1,15 +1,19 @@
-import type { HttpRequestOptions } from '@nestjs/http-client'
 import type { HealthCheckAttempt } from '@nestjs/terminus'
+import type { AlovaInstance } from '~nestjs-modules/alova'
 import { Injectable } from '@nestjs/common'
-import { HttpClient } from '@nestjs/http-client'
 import { HealthIndicatorService } from '@nestjs/terminus'
+import { InjectAlova } from '~nestjs-modules/alova'
 
-export type HttpHealthIndicatorOptions = Omit<HttpRequestOptions, 'method' | 'signal'>
+export interface HttpHealthIndicatorOptions {
+  params?: Record<string, any>
+  headers?: Record<string, any>
+  timeout?: number
+}
 
 @Injectable()
 export class HttpHealthIndicator {
   constructor(
-    private readonly httpClient: HttpClient,
+    @InjectAlova() private readonly alova: AlovaInstance,
     private readonly healthIndicatorService: HealthIndicatorService,
   ) {}
 
@@ -23,16 +27,10 @@ export class HttpHealthIndicator {
   ): HealthCheckAttempt<Key> {
     return this.healthIndicatorService
       .check(key)
-      .attempt(async ({ signal }) => {
-        const response = await this.httpClient.get(url, {
-          ...options,
-          signal,
-        })
+      .attempt(async () => {
+        await this.alova.Get(url, options)
 
-        return {
-          statusCode: response.status,
-          url: response.url,
-        }
+        return { url }
       })
   }
 }

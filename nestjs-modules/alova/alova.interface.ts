@@ -1,7 +1,7 @@
 import type { ConfigurableModuleOptionsFactory } from '@nestjs/common'
-import type { Alova, AlovaGenerics, createAlova } from 'alova'
+import type { Alova, AlovaGenerics, AlovaOptions } from 'alova'
 
-export type AlovaModuleOptions = NonNullable<Parameters<typeof createAlova>[0]>
+export type AlovaModuleOptions = Partial<AlovaOptions<AlovaGenerics>>
 
 export type AlovaInstance = Alova<AlovaGenerics>
 
