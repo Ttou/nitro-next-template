@@ -1,8 +1,9 @@
 import type { IAuthConfig, IConfig, ISharedConfig } from './config.interface'
 import { generateKeyPairSync } from 'node:crypto'
+import { existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { dirname, join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { join, resolve } from 'node:path'
+import { cwd, env } from 'node:process'
 import { ExpressAdapter } from '@bull-board/express'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
@@ -15,7 +16,7 @@ import { match } from 'ts-pattern'
 import * as entities from '~db/entities'
 import { genSalt } from '~nestjs-modules/hash'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
-import { CustomOrmLogger, xltEventBuffer } from '~server/customs'
+import { CustomOrmLogger } from '~server/customs'
 import { generateId } from '~shared/utils'
 
 /** 各环境共用配置 */
@@ -37,24 +38,71 @@ export const sharedConfig: ISharedConfig = match(APP_ENV)
   .run()
 
 /**
+ * 未配置路径时的默认密钥文件（相对进程工作目录）。
+ * 密钥由 pnpm gen:secrets 生成到 deploy/；dev 直接读源码目录，
+ * prod 读构建产物根目录（nitro 构建时已把 deploy/ 下的密钥复制到 .server/）。
+ */
+const defaultKeyDir = APP_ENV === AppEnvEnum.DEV
+  ? 'deploy'
+  : '.'
+const DEFAULT_AUTH_PUBLIC_KEY_PATH = join(defaultKeyDir, 'auth-rsa-public.pem')
+const DEFAULT_AUTH_PRIVATE_KEY_PATH = join(defaultKeyDir, 'auth-rsa-private.pem')
+
+/** 从 PEM 文件读取密钥，相对路径以进程工作目录为基准 */
+function readAuthKeyFile(envName: string, filePath: string): string {
+  const absPath = resolve(filePath)
+  try {
+    return readFileSync(absPath, 'utf8')
+  }
+  catch (err) {
+    throw new Error(`读取 ${envName} 指向的密钥文件失败：${absPath}`, { cause: err })
+  }
+}
+
+/** JWT 签名密钥文件（由 pnpm gen:secrets 生成到 deploy/） */
+const JWT_KEYS_PATH = join(defaultKeyDir, 'jwt-keys.json')
+type JwtKeys = Parameters<typeof createJwtStrategyConfig>[0]['keys']
+
+/** 从 JSON 文件读取 JWT keys，相对路径以进程工作目录为基准 */
+function readJwtKeys(): JwtKeys {
+  const absPath = resolve(JWT_KEYS_PATH)
+  try {
+    return JSON.parse(readFileSync(absPath, 'utf8')) as JwtKeys
+  }
+  catch (err) {
+    throw new Error(`读取 JWT 密钥文件失败：${absPath}，请执行 pnpm gen:secrets`, { cause: err })
+  }
+}
+
+/**
  * 登录密码加密密钥对。
- * 生产环境通过环境变量注入（换行可用 \n 表示），未注入时进程启动时临时生成，
- * 前端每次登录都会重新拉取公钥，因此临时密钥不影响登录。
+ * AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY 为 PEM 文件路径（不再是密钥内容），
+ * 未配置时回退到 deploy/（prod 为构建产物根目录）下的默认文件；都取不到时 dev 临时生成、prod 直接失败。
+ * 前端每次登录都会重新拉取公钥，因此 dev 的临时密钥不影响登录。
  */
 function createAuthKeys(): IAuthConfig {
-  const publicKey = process.env.AUTH_RSA_PUBLIC_KEY
-  const privateKey = process.env.AUTH_RSA_PRIVATE_KEY
+  const publicKeyPath = env.AUTH_RSA_PUBLIC_KEY || DEFAULT_AUTH_PUBLIC_KEY_PATH
+  const privateKeyPath = env.AUTH_RSA_PRIVATE_KEY || DEFAULT_AUTH_PRIVATE_KEY_PATH
 
-  if (publicKey && privateKey) {
+  // 防止沿用旧配置把 PEM 内容直接塞进环境变量：那样会被当成路径，且私钥可能出现在报错中
+  if ([publicKeyPath, privateKeyPath].some(value => value.includes('-----BEGIN'))) {
+    throw new Error('AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY 现为 PEM 文件路径，不再接受密钥内容；请执行 pnpm gen:secrets 生成密钥文件')
+  }
+
+  if (existsSync(resolve(publicKeyPath)) && existsSync(resolve(privateKeyPath))) {
     return {
-      publicKey: publicKey.replace(/\\n/g, '\n'),
-      privateKey: privateKey.replace(/\\n/g, '\n'),
+      publicKey: readAuthKeyFile('AUTH_RSA_PUBLIC_KEY', publicKeyPath),
+      privateKey: readAuthKeyFile('AUTH_RSA_PRIVATE_KEY', privateKeyPath),
     }
   }
 
-  // 生产环境未注入密钥时直接失败，避免多实例各自生成密钥导致登录随机解密失败
+  // 生产环境缺文件时直接失败，避免多实例各自生成密钥导致登录随机解密失败
   if (APP_ENV === AppEnvEnum.PROD) {
-    throw new Error('缺少环境变量 AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY')
+    throw new Error(
+      '缺少登录 RSA 密钥文件，请配置 AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY 为 PEM 文件路径，或执行 pnpm gen:secrets 后重新 build:server：\n'
+      + `  publicKey:  ${resolve(publicKeyPath)}\n`
+      + `  privateKey: ${resolve(privateKeyPath)}`,
+    )
   }
 
   const pair = generateKeyPairSync('rsa', {
@@ -86,8 +134,6 @@ export const localDisk = new LocalDisk({
 
 export const configuration = registerAs<IConfig>('', (): IConfig => {
   const { appName, redis } = sharedConfig
-  const __filename = fileURLToPath(import.meta.url)
-  const __dirname = dirname(__filename)
 
   return {
     'shared': sharedConfig,
@@ -167,7 +213,6 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
           '/bull-*splat',
           '/health',
           '/openapi-*splat',
-          '/inspector/*splat',
         ],
         nativeLogger: {
           // 让对象形式的附加参数展开到日志根字段，例如 ORM 日志的 namespace
@@ -221,14 +266,11 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
         config: {
           timeout: '7d',
         },
-        eventSink: xltEventBuffer.sink,
         strategy: {
           useValue: new JwtStrategy(
             createJwtStrategyConfig({
               activeKid: '2026-08',
-              keys: [
-                { kid: '2026-08', algorithm: 'HS256', secret: 'c426fcc9dd2776153bb58b8b9ec69f3c53f02a2053f398ca513f4104ad482ad5' },
-              ],
+              keys: readJwtKeys(),
               issuer: 'xlt-token',
             }),
           ),
@@ -283,7 +325,8 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
         route: '/bull-ui',
         adapter: ExpressAdapter,
         boardOptions: {
-          uiBasePath: dirname(resolve(__dirname, '../../node_modules/@bull-board/ui/package.json')),
+          // 以启动命令的 cwd 为基准，避免打包后 __dirname 指向构建产物目录导致路径失效
+          uiBasePath: join(cwd(), 'node_modules/@bull-board/ui'),
         },
       }))
       .with(AppEnvEnum.PROD, () => ({} as IConfig['bull-board']))

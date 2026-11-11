@@ -1,3 +1,6 @@
+import type { IConfig } from '~server/configs'
+import type { AuthPublicKeyResDto } from './auth.dto'
+import { Buffer } from 'node:buffer'
 import { constants, createPublicKey, privateDecrypt } from 'node:crypto'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -6,11 +9,9 @@ import { StpLogic } from '@xlt-token/core'
 import { SysUserEntity } from '~db/entities'
 import { CaptchaService } from '~nestjs-modules/captcha'
 import { HashService } from '~nestjs-modules/hash'
-import type { IConfig } from '~server/configs'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
-import type { AuthPublicKeyResDto } from './auth.dto'
 import { LoginReqDto } from './auth.dto'
 
 @Injectable()

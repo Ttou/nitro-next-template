@@ -95,7 +95,7 @@ export interface LoginReqDto {
    */
   userName: string;
   /**
-   * 密码
+   * 密码（RSA-OAEP 加密后的 Base64 密文）
    */
   password: string;
   /**
@@ -106,16 +106,6 @@ export interface LoginReqDto {
    * 验证码值
    */
   captchaValue: string;
-}
-export interface AuthPublicKeyResDto {
-  /**
-   * 加密算法
-   */
-  algorithm: string;
-  /**
-   * 公钥（SPKI DER 的 Base64）
-   */
-  publicKey: string;
 }
 export interface UpdateCurrentUserProfileReqDto {
   /**
@@ -1115,6 +1105,16 @@ export interface UpdateSystemUserReqDto {
    */
   id: string;
 }
+export interface AuthPublicKeyResDto {
+  /**
+   * 加密算法
+   */
+  algorithm: string;
+  /**
+   * 公钥（SPKI DER 的 Base64）
+   */
+  publicKey: string;
+}
 export interface CaptchaImageResDto {
   /**
    * 验证码ID
@@ -2065,7 +2065,7 @@ declare global {
        * type RequestBody = {
        *   // 账号
        *   userName: string
-       *   // 密码
+       *   // 密码（RSA-OAEP 加密后的 Base64 密文）
        *   password: string
        *   // 验证码编号
        *   captchaId: string

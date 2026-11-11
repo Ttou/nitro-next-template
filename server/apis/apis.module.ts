@@ -4,7 +4,6 @@ import { AuthModule } from './auth'
 import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
 import { HealthModule } from './health'
-import { InspectorModule } from './inspector'
 import { MonitorCacheModule, MonitorLoginLogModule, MonitorOnlineModule } from './monitor'
 import {
   SystemConfigModule,
@@ -27,7 +26,6 @@ import {
     CaptchaModule,
     CurrentUserModule,
     HealthModule,
-    InspectorModule,
     MonitorCacheModule,
     MonitorOnlineModule,
     MonitorLoginLogModule,
@@ -143,10 +141,6 @@ import {
       {
         path: 'health',
         module: HealthModule,
-      },
-      {
-        path: 'inspector',
-        module: InspectorModule,
       },
     ]),
   ],
