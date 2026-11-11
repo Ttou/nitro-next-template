@@ -12,7 +12,7 @@ import { LocalDisk } from '@nestjs/storage'
 import { createJwtStrategyConfig, JwtStrategy } from '@xlt-token/jwt'
 import { nativeLoggerOptions } from 'nestjs-pino'
 import pinoPretty from 'pino-pretty'
-import { match } from 'ts-pattern'
+import { match, P } from 'ts-pattern'
 import * as entities from '~db/entities'
 import { genSalt } from '~nestjs-modules/hash'
 import { APP_ENV, AppEnvEnum } from '~server/constants'
@@ -117,8 +117,6 @@ function createAuthKeys(): IAuthConfig {
   }
 }
 
-const authKeys = createAuthKeys()
-
 /**
  * 默认 local 磁盘实例。uploadToDisk 按磁盘名解析时依赖按 HTTP server 实例建立的注册表，
  * 而 dev 环境应用只 app.init() 不 listen、请求由 nitro 服务器处理，注册表无法命中，
@@ -136,8 +134,7 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
   const { appName, redis } = sharedConfig
 
   return {
-    'shared': sharedConfig,
-    'auth': authKeys,
+    'auth': createAuthKeys(),
     'cls': match(APP_ENV)
       .returnType<IConfig['cls']>()
       .with(AppEnvEnum.DEV, () => ({
@@ -207,7 +204,6 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
           customErrorMessage(req, res, err) {
             return `${req.method} - ${req.url} - ${res.statusCode}`
           },
-
         },
         exclude: [
           '/bull-*splat',
@@ -321,7 +317,7 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
       .run(),
     'bull-board': match(APP_ENV)
       .returnType<IConfig['bull-board']>()
-      .with(AppEnvEnum.DEV, () => ({
+      .with(P.union(AppEnvEnum.DEV, AppEnvEnum.PROD), () => ({
         route: '/bull-ui',
         adapter: ExpressAdapter,
         boardOptions: {
@@ -329,7 +325,6 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
           uiBasePath: join(cwd(), 'node_modules/@bull-board/ui'),
         },
       }))
-      .with(AppEnvEnum.PROD, () => ({} as IConfig['bull-board']))
       .run(),
   }
 })

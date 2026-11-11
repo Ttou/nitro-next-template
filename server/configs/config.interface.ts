@@ -31,7 +31,6 @@ export interface IAuthConfig {
 }
 
 export interface IConfig {
-  'shared': ISharedConfig
   'auth': IAuthConfig
   'alova': AlovaModuleOptions
   'bull': BullRootModuleOptions
