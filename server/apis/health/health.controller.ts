@@ -36,19 +36,8 @@ export class HealthController {
         thresholdPercent: 0.9,
       }),
       () => this.memoryHealthIndicator.checkHeap('memory', 512 * 1024 * 1024),
-      () => this.httpHealthIndicator.pingCheck('ip-parser', UrlEnum.IP_PARSER, {
-        query: { ip: '8.8.8.8' },
-        timeout: 8_000,
-      }),
-      () => this.httpHealthIndicator.pingCheck('translate', UrlEnum.TRANSLATE, {
-        query: {
-          text: 'hello',
-          source: 'en',
-          target: 'zh',
-          targetKey: 'text',
-        },
-        timeout: 8_000,
-      }),
+      () => this.httpHealthIndicator.pingCheck('ip-parser', UrlEnum.IP_PARSER, { timeout: 8_000 }),
+      () => this.httpHealthIndicator.pingCheck('translate', UrlEnum.TRANSLATE, { timeout: 8_000 }),
     ])
   }
 
