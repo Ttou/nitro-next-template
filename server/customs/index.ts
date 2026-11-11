@@ -1,3 +1,4 @@
+export * from './http-health.indicator'
 export * from './orm-logger'
 export * from './xlt-inspector'
 export * from './xlt-redis'

@@ -6,23 +6,21 @@ import {
   DiskHealthIndicator,
   HealthCheck,
   HealthCheckService,
-  HealthIndicatorService,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus'
 import { XltIgnore } from '@xlt-token/nestjs'
-import { RemoteIpService, RemoteTranslateService } from '~server/remote'
+import { UrlEnum } from '~server/constants'
+import { HttpHealthIndicator } from '~server/customs'
 
 @Controller()
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private healthIndicator: HealthIndicatorService,
     private diskHealthIndicator: DiskHealthIndicator,
     private memoryHealthIndicator: MemoryHealthIndicator,
     private mikroOrmHealthIndicator: MikroOrmHealthIndicator,
-    private remoteIpService: RemoteIpService,
-    private remoteTranslateService: RemoteTranslateService,
+    private httpHealthIndicator: HttpHealthIndicator,
     private em: EntityManager,
   ) {}
 
@@ -38,29 +36,8 @@ export class HealthController {
         thresholdPercent: 0.9,
       }),
       () => this.memoryHealthIndicator.checkHeap('memory', 512 * 1024 * 1024),
-      () => this.healthIndicator
-        .check('ip-parser')
-        .attempt(async () => {
-          const location = await this.remoteIpService.toLocation('8.8.8.8')
-          if (!location || location === '内网IP')
-            throw new Error('IP 解析服务返回结果异常')
-          return { location }
-        })
-        .withTimeout(8_000),
-      () => this.healthIndicator
-        .check('translate')
-        .attempt(async () => {
-          const result = await this.remoteTranslateService.trans({
-            text: 'hello',
-            source: 'en',
-            target: 'zh',
-            targetKey: 'text',
-          })
-          if (!result.text)
-            throw new Error('翻译服务返回结果异常')
-          return { translated: result.text }
-        })
-        .withTimeout(8_000),
+      () => this.httpHealthIndicator.pingCheck('ip-parser', UrlEnum.IP_PARSER, { timeout: 8_000 }),
+      () => this.httpHealthIndicator.pingCheck('translate', UrlEnum.TRANSLATE, { timeout: 8_000 }),
     ])
   }
 

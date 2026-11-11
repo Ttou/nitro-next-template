@@ -1,14 +1,23 @@
+import type { AlovaInstance } from '~nestjs-modules/alova'
 import { isIPv4, isIPv6 } from 'node:net'
 import { Injectable, Logger } from '@nestjs/common'
-import { HttpClient, HttpResponseError } from '@nestjs/http-client'
+import { InjectAlova } from '~nestjs-modules/alova'
 import { UrlEnum } from '~server/constants'
+
+interface IIpLocationResponse {
+  data: {
+    COUNTRY_CN: string
+    PROVINCE_CN: string
+    CITY_CN: string
+  }
+}
 
 @Injectable()
 export class RemoteIpService {
   private readonly logger = new Logger(RemoteIpService.name)
 
   constructor(
-    private httpClient: HttpClient,
+    @InjectAlova() private alova: AlovaInstance,
   ) {}
 
   async toLocation(ip: string) {
@@ -16,19 +25,18 @@ export class RemoteIpService {
       return '内网IP'
     }
 
-    const { data } = await this.httpClient
-      .get(UrlEnum.IP_PARSER, {
-        query: { ip },
-      })
-      .then(res => JSON.parse(res.data))
-      .catch((err) => {
-        this.logger.error(err instanceof HttpResponseError
-          ? err.body
-          : err.message)
-        throw err
-      })
+    try {
+      const { data } = await this.alova
+        .Get<IIpLocationResponse>(UrlEnum.IP_PARSER, {
+          params: { ip },
+        })
 
-    return [data.COUNTRY_CN, data.PROVINCE_CN, data.CITY_CN].join('/')
+      return [data.COUNTRY_CN, data.PROVINCE_CN, data.CITY_CN].join('/')
+    }
+    catch (error) {
+      this.logger.error(error instanceof Error ? error.message : String(error))
+      throw error
+    }
   }
 
   isInternalIP(ip: string) {

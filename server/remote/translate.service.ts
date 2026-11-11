@@ -1,5 +1,6 @@
+import type { AlovaInstance } from '~nestjs-modules/alova'
 import { Injectable, Logger } from '@nestjs/common'
-import { HttpClient, HttpResponseError } from '@nestjs/http-client'
+import { InjectAlova } from '~nestjs-modules/alova'
 import { UrlEnum } from '~server/constants'
 
 interface ITransOptions {
@@ -9,24 +10,30 @@ interface ITransOptions {
   targetKey: string
 }
 
+interface ITransResponse {
+  data: {
+    targetText: string
+  }
+}
+
 @Injectable()
 export class RemoteTranslateService {
   private readonly logger = new Logger(RemoteTranslateService.name)
 
   constructor(
-    private httpClient: HttpClient,
+    @InjectAlova() private alova: AlovaInstance,
   ) {}
 
   async trans(options: ITransOptions) {
-    const { data } = await this.httpClient
-      .get(UrlEnum.TRANSLATE, { query: options })
-      .catch((err) => {
-        this.logger.error(err instanceof HttpResponseError
-          ? err.body
-          : err.message)
-        throw err
-      })
+    try {
+      const { data } = await this.alova
+        .Get<ITransResponse>(UrlEnum.TRANSLATE, { params: options })
 
-    return { [options.targetKey]: data.data.targetText }
+      return { [options.targetKey]: data.data.targetText }
+    }
+    catch (error) {
+      this.logger.error(error instanceof Error ? error.message : String(error))
+      throw error
+    }
   }
 }

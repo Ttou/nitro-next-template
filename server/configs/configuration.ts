@@ -173,6 +173,11 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
         local: localDisk,
       },
     },
+    'alova': match(APP_ENV)
+      .returnType<IConfig['alova']>()
+      .with(AppEnvEnum.DEV, () => ({}))
+      .with(AppEnvEnum.PROD, () => ({}))
+      .run(),
     'xlt-token': match(APP_ENV)
       .returnType<IConfig['xlt-token']>()
       .with(AppEnvEnum.DEV, () => ({
