@@ -6,6 +6,7 @@ import type { StorageModuleOptions } from '@nestjs/storage'
 import type { XltTokenModuleOptions } from '@xlt-token/nestjs'
 import type { ClsModuleFactoryOptions } from 'nestjs-cls'
 import type { Params as LoggerModuleOptions } from 'nestjs-pino'
+import type { AlovaModuleOptions } from '~nestjs-modules/alova'
 import type { CacheModuleOptions } from '~nestjs-modules/cache'
 import type { CaptchaModuleOptions } from '~nestjs-modules/captcha'
 import type { ExcelModuleOptions } from '~nestjs-modules/excel'
@@ -26,6 +27,7 @@ export interface ISharedConfig {
 
 export interface IConfig {
   'shared': ISharedConfig
+  'alova': AlovaModuleOptions
   'bull': BullRootModuleOptions
   'bull-board': BullBoardModuleOptions
   'cache': CacheModuleOptions

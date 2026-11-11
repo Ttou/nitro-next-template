@@ -17,6 +17,7 @@ import { ExcelModule } from '~nestjs-modules/excel'
 import { HashModule } from '~nestjs-modules/hash'
 import { ApisModule } from './apis'
 import {
+  AlovaModuleOptions,
   bullBoardModuleAsyncOptions,
   BullModuleOptions,
   CacheModuleOptions,
@@ -51,8 +52,10 @@ import { RemoteModule } from './remote'
       useClass: RedisModuleOptions,
       inject: [ConfigService],
     }),
-    AlovaModule.register({
+    AlovaModule.registerAsync({
       isGlobal: true,
+      useClass: AlovaModuleOptions,
+      inject: [ConfigService],
     }),
     MikroOrmModule.forRootAsync({
       driver: MySqlDriver,

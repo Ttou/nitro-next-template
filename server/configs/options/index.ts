@@ -1,3 +1,4 @@
+export * from './alova.option'
 export * from './bull-board.option'
 export * from './bull.option'
 export * from './cache.option'
