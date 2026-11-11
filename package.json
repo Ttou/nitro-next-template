@@ -35,7 +35,6 @@
     "@nestjs/storage": "0.0.5",
     "@nestjs/swagger": "12.1.1",
     "@nestjs/terminus": "12.1.0",
-    "@scalar/nestjs-api-reference": "1.2.35",
     "@vueuse/core": "15.0.0",
     "@xlt-token/core": "2.5.0",
     "@xlt-token/inspector": "2.5.0",

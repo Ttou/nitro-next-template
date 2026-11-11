@@ -2,12 +2,11 @@ import type { NestNodeApplication } from '@nestjs/platform-node'
 import { NestFactory } from '@nestjs/core'
 import { NodeAdapter } from '@nestjs/platform-node'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { apiReference } from '@scalar/nestjs-api-reference'
 import { NativeLogger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 import { sharedConfig } from './configs'
 import { APP_ENV, AppEnvEnum } from './constants'
-import { basicAuth, html } from './middlewares'
+import { basicAuth } from './middlewares'
 
 async function bootstrap() {
   const adpater = new NodeAdapter()
@@ -39,7 +38,6 @@ async function bootstrap() {
     })
     app.use('/health', auth)
     app.use('/bull-ui', auth)
-    app.use('/openapi-ui', auth)
     app.use('/inspector', auth)
   }
   // #endregion
@@ -54,16 +52,6 @@ async function bootstrap() {
       .build()
     const document = SwaggerModule.createDocument(app, config)
     SwaggerModule.setup('openapi', app, document, { swaggerUiEnabled: false })
-    // #endregion
-
-    // #region Scalar API Reference
-    app.use(
-      '/openapi-ui',
-      html(),
-      apiReference({
-        content: document,
-      }),
-    )
     // #endregion
   }
 
