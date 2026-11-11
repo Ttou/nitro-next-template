@@ -25,8 +25,14 @@ export interface ISharedConfig {
   }
 }
 
+export interface IAuthConfig {
+  publicKey: string
+  privateKey: string
+}
+
 export interface IConfig {
   'shared': ISharedConfig
+  'auth': IAuthConfig
   'alova': AlovaModuleOptions
   'bull': BullRootModuleOptions
   'bull-board': BullBoardModuleOptions

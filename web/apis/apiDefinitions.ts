@@ -18,6 +18,7 @@
  */
 export default {
   'Auth.login': ['POST', '/api/auth/login'],
+  'Auth.getPublicKey': ['GET', '/api/auth/public-key'],
   'Auth.logout': ['POST', '/api/auth/logout'],
   'Captcha.image': ['GET', '/api/captcha/image'],
   'CurrentUser.getInfo': ['GET', '/api/current-user/info'],

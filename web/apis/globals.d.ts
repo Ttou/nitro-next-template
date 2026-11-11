@@ -107,6 +107,16 @@ export interface LoginReqDto {
    */
   captchaValue: string;
 }
+export interface AuthPublicKeyResDto {
+  /**
+   * 加密算法
+   */
+  algorithm: string;
+  /**
+   * 公钥（SPKI DER 的 Base64）
+   */
+  publicKey: string;
+}
 export interface UpdateCurrentUserProfileReqDto {
   /**
    * 昵称
@@ -2078,6 +2088,28 @@ declare global {
       >(
         config: Config
       ): Alova2Method<string, 'Auth.login', Config>;
+      /**
+       * ---
+       *
+       * [GET] 获取登录公钥
+       *
+       * **path:** /api/auth/public-key
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 加密算法
+       *   algorithm: string
+       *   // 公钥（SPKI DER 的 Base64）
+       *   publicKey: string
+       * }
+       * ```
+       */
+      getPublicKey<Config extends Alova2MethodConfig<AuthPublicKeyResDto>>(
+        config?: Config
+      ): Alova2Method<AuthPublicKeyResDto, 'Auth.getPublicKey', Config>;
       /**
        * ---
        *
