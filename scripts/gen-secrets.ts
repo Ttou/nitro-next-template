@@ -5,10 +5,10 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createHMAC, createSHA256 } from 'hash-wasm'
 
-// 与 deploy/.env.deploy、package.json 一起作为部署产物源；build:server 会复制到 .server/
-const PUBLIC_KEY_FILE = 'deploy/auth-rsa-public.pem'
-const PRIVATE_KEY_FILE = 'deploy/auth-rsa-private.pem'
-const JWT_KEYS_FILE = 'deploy/jwt-keys.json'
+// 与 resource/.env.deploy、package.json 一起作为部署产物源；build:server 会把整个 secrets/ 目录复制到 .server/
+const PUBLIC_KEY_FILE = 'resource/secrets/auth-rsa-public.pem'
+const PRIVATE_KEY_FILE = 'resource/secrets/auth-rsa-private.pem'
+const JWT_KEYS_FILE = 'resource/secrets/jwt-keys.json'
 
 // kid 需与 server/configs/configuration.ts 中 createJwtStrategyConfig 的 activeKid 一致
 const JWT_KIDS = ['2026-08']
@@ -21,7 +21,7 @@ const jwtKeysPath = resolve(rootDir, JWT_KEYS_FILE)
 async function run() {
   await mkdir(dirname(jwtKeysPath), { recursive: true })
 
-  // 登录密码加密密钥对，写入 deploy/ 供服务端与构建产物按文件路径读取
+  // 登录密码加密密钥对，写入 resource/secrets/ 供服务端与构建产物按文件路径读取
   if (existsSync(publicKeyPath) || existsSync(privateKeyPath)) {
     console.log('RSA 密钥文件已存在，未覆盖：')
     console.log(`  ${PUBLIC_KEY_FILE}`)
@@ -42,7 +42,7 @@ async function run() {
     console.log(`  ${PRIVATE_KEY_FILE}`)
   }
 
-  // JWT 签名密钥，写入 deploy/jwt-keys.json 供 createJwtStrategyConfig 读取
+  // JWT 签名密钥，写入 resource/secrets/jwt-keys.json 供 createJwtStrategyConfig 读取
   if (existsSync(jwtKeysPath)) {
     console.log('JWT keys 已存在，未覆盖：')
     console.log(`  ${JWT_KEYS_FILE}`)
@@ -65,8 +65,8 @@ async function run() {
     console.log(`  ${JWT_KEYS_FILE}`)
   }
 
-  console.log('dev 直接读取 deploy/；build:server 会复制到 .server/ 供 prod 使用')
-  console.log('deploy/*.pem 与 deploy/jwt-keys.json 已被 .gitignore 忽略，请勿提交')
+  console.log('dev 直接读取 resource/secrets/；build:server 会把整个目录复制到 .server/secrets/ 供 prod 使用')
+  console.log('resource/secrets/*.pem 与 resource/secrets/jwt-keys.json 已被 .gitignore 忽略，请勿提交')
   console.log('如需重新生成，请先手动删除对应文件')
 }
 run()
