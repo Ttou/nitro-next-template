@@ -8,10 +8,10 @@ const dirname = import.meta.dirname
 /** 源路径（相对项目根），或 [源路径, 目标路径（相对 .server）] */
 type DeployPath = string | [source: string, target: string]
 
-/** deploy/ 下的内容平铺到产物根，其余路径按原结构镜像到 .server/ */
+/** resource/ 下的内容按相对路径落到产物根（目录保持目录），其余路径按原结构镜像到 .server/ */
 function defaultTarget(source: string): string {
-  return source.startsWith('deploy/')
-    ? source.slice('deploy/'.length)
+  return source.startsWith('resource/')
+    ? source.slice('resource/'.length)
     : source
 }
 
@@ -106,11 +106,11 @@ export default defineConfig({
     rolldownConfig: {
       plugins: [
         copyDeployFiles([
-          'deploy/.env.deploy',
-          'deploy/package.json',
-          'deploy/auth-rsa-public.pem',
-          'deploy/auth-rsa-private.pem',
-          'deploy/jwt-keys.json',
+          'resource/.env.deploy',
+          'resource/package.json',
+          // 密钥与国际化按目录整体复制到 .server/secrets、.server/locales
+          'resource/secrets',
+          'resource/locales',
           // bull-board 面板的静态资源，prod 下按 node_modules 解析 uiBasePath
           'node_modules/@bull-board/ui',
         ]),

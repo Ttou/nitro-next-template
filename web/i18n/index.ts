@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
+import { messageCompiler } from './compilation'
 import appEnUS from './langs/en_US.json'
 import appZhCN from './langs/zh_CN.json'
 
@@ -19,6 +20,7 @@ const i18n = createI18n({
   fallbackLocale: 'en_US',
   fallbackWarn: false,
   missingWarn: false,
+  messageCompiler,
   messages,
 })
 

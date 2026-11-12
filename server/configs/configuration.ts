@@ -38,13 +38,13 @@ export const sharedConfig: ISharedConfig = match(APP_ENV)
   .run()
 
 /**
- * 未配置路径时的默认密钥文件（相对进程工作目录）。
- * 密钥由 pnpm gen:secrets 生成到 deploy/；dev 直接读源码目录，
- * prod 读构建产物根目录（nitro 构建时已把 deploy/ 下的密钥复制到 .server/）。
+ * 未配置路径时的默认密钥目录（相对进程工作目录）。
+ * 密钥由 pnpm gen:secrets 生成到 resource/secrets/；dev 直接读源码目录，
+ * prod 读构建产物下的 secrets/（nitro 构建时已把 resource/secrets/ 整个目录复制到 .server/secrets/）。
  */
 const defaultKeyDir = APP_ENV === AppEnvEnum.DEV
-  ? 'deploy'
-  : '.'
+  ? 'resource/secrets'
+  : 'secrets'
 const DEFAULT_AUTH_PUBLIC_KEY_PATH = join(defaultKeyDir, 'auth-rsa-public.pem')
 const DEFAULT_AUTH_PRIVATE_KEY_PATH = join(defaultKeyDir, 'auth-rsa-private.pem')
 
@@ -59,7 +59,7 @@ function readAuthKeyFile(envName: string, filePath: string): string {
   }
 }
 
-/** JWT 签名密钥文件（由 pnpm gen:secrets 生成到 deploy/） */
+/** JWT 签名密钥文件（由 pnpm gen:secrets 生成到 resource/secrets/） */
 const JWT_KEYS_PATH = join(defaultKeyDir, 'jwt-keys.json')
 type JwtKeys = Parameters<typeof createJwtStrategyConfig>[0]['keys']
 
@@ -77,7 +77,7 @@ function readJwtKeys(): JwtKeys {
 /**
  * 登录密码加密密钥对。
  * AUTH_RSA_PUBLIC_KEY / AUTH_RSA_PRIVATE_KEY 为 PEM 文件路径（不再是密钥内容），
- * 未配置时回退到 deploy/（prod 为构建产物根目录）下的默认文件；都取不到时 dev 临时生成、prod 直接失败。
+ * 未配置时回退到 resource/secrets/（prod 为构建产物下的 secrets/）中的默认文件；都取不到时 dev 临时生成、prod 直接失败。
  * 前端每次登录都会重新拉取公钥，因此 dev 的临时密钥不影响登录。
  */
 function createAuthKeys(): IAuthConfig {

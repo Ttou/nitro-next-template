@@ -49,6 +49,7 @@
     "enum-plus": "3.4.0",
     "es-toolkit": "1.53.2",
     "hash-wasm": "4.13.0",
+    "intl-messageformat": "12.1.5",
     "ioredis": "6.0.0",
     "json-editor-vue": "0.19.2",
     "jsonwebtoken": "9.0.3",
