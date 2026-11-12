@@ -8,7 +8,7 @@ const CONFIG = {
   // 语言编码与目标文件
   TARGETS: [
     { langCode: 'zh_CN', file: 'resource/locales/zh_CN.json' },
-    { langCode: 'en_US', file: 'resource/locales/en.json' },
+    { langCode: 'en_US', file: 'resource/locales/en_US.json' },
   ],
 }
 
