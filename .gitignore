@@ -32,3 +32,6 @@ dist.*
 # Lock files
 pnpm-lock.yaml
 package-lock.json
+
+# AI agent workspace data
+.workbuddy
