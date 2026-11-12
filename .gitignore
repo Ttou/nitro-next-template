@@ -32,7 +32,3 @@ dist.*
 # Lock files
 pnpm-lock.yaml
 package-lock.json
-
-# 密钥文件（pnpm gen:secrets 生成到 resource/secrets/，含私钥与 JWT secret）
-resource/secrets/*.pem
-resource/secrets/jwt-keys.json

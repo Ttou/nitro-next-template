@@ -66,7 +66,7 @@ async function run() {
   }
 
   console.log('dev 直接读取 resource/secrets/；build:server 会把整个目录复制到 .server/secrets/ 供 prod 使用')
-  console.log('resource/secrets/*.pem 与 resource/secrets/jwt-keys.json 已被 .gitignore 忽略，请勿提交')
+  console.log('resource/secrets/ 下的文件包含私钥，请勿提交到公开仓库')
   console.log('如需重新生成，请先手动删除对应文件')
 }
 run()
