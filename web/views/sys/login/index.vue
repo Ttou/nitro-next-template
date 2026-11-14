@@ -7,6 +7,7 @@ import { Icon } from '@iconify/vue'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { ImageCaptcha } from '~web/components'
+import { t } from '~web/i18n'
 import { useUserStore } from '~web/store'
 
 defineOptions({
@@ -27,37 +28,49 @@ const formModel = ref<LoginReqDto>({
 
 const formRules = ref<FormRules<LoginReqDto>>({
   userName: [
-    { required: true, message: '请输入账号', trigger: 'blur' },
+    {
+      required: true,
+      message: t('common.validation.inputAccount'),
+      trigger: 'blur',
+    },
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
+    {
+      required: true,
+      message: t('common.validation.inputPassword'),
+      trigger: 'blur',
+    },
   ],
   captchaValue: [
-    { required: true, message: '请输入验证码', trigger: 'blur' },
+    {
+      required: true,
+      message: t('common.validation.inputCaptcha'),
+      trigger: 'blur',
+    },
   ],
 })
 
 const formColumns = computed<PlusColumn[]>(() => [
   {
-    label: '账号',
+    label: t('common.field.account'),
     hasLabel: false,
     prop: 'userName',
     fieldProps: {
-      placeholder: '请输入账号',
+      placeholder: t('common.validation.inputAccount'),
     },
   },
   {
-    label: '密码',
+    label: t('common.field.password'),
     hasLabel: false,
     prop: 'password',
     fieldProps: {
-      placeholder: '请输入密码',
+      placeholder: t('common.validation.inputPassword'),
       type: 'password',
       showPassword: true,
     },
   },
   {
-    label: '验证码',
+    label: t('common.field.captcha'),
     hasLabel: false,
     prop: 'captchaValue',
   },
@@ -114,7 +127,7 @@ async function handleEnter() {
         <template #footer="{ handleSubmit }">
           <div class="form-footer">
             <el-button class="login-btn" type="primary" :loading="loading" @click="handleSubmit">
-              登录
+              {{ $t('common.button.login') }}
             </el-button>
           </div>
         </template>

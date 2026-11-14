@@ -1,6 +1,7 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -9,9 +10,14 @@ interface UseCreateParams {
 
 export function useRemove({ pageInstance, selectedIds }: UseCreateParams) {
   function handleRemove(ids: string[]) {
-    Apis.SystemDictType.remove({ data: { ids } })
+    Apis.SystemDictType.remove({
+      data: { ids },
+    })
       .then(() => {
-        ElNotification.success({ title: '通知', message: '删除成功' })
+        ElNotification.success({
+          title: t('common.title.notification'),
+          message: t('common.message.deleteSuccess'),
+        })
         pageInstance.value.getList()
       })
   }
@@ -19,13 +25,13 @@ export function useRemove({ pageInstance, selectedIds }: UseCreateParams) {
   function confirmRemove(ids: string[], batch: boolean = false) {
     if (batch) {
       if (!selectedIds.value.length) {
-        ElMessage.warning('请选择要删除的数据')
+        ElMessage.warning(t('common.message.selectDataToDelete'))
         return
       }
 
-      ElMessageBox.confirm('确定删除选中的数据吗？', {
+      ElMessageBox.confirm(t('common.confirm.deleteSelected'), {
         type: 'warning',
-        title: '提示',
+        title: t('common.title.tip'),
       })
         .then(() => {
           handleRemove(ids)

@@ -29,7 +29,7 @@ function handleClick() {
   <el-result :title="status" :sub-title="subTitle" :icon="icon">
     <template #extra>
       <el-button type="primary" @click="handleClick">
-        返回首页
+        {{ $t('common.button.backHome') }}
       </el-button>
     </template>
   </el-result>

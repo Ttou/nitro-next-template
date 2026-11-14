@@ -5,6 +5,7 @@ import { ElButton, ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -17,7 +18,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDrawerProps = computed<PlusDrawerFormProps>(() => ({
-    title: '新增词条',
+    title: t('system.lang.dialog.create'),
     width: '700px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -26,36 +27,60 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [...[], ...unref(columns), ...LangEnum.items.map((v) => {
-      const column: PlusColumn = {
-        label: v.label,
-        prop: v.value,
-      }
-
-      if (v.value === 'zh_CN') {
-        column.fieldSlots = {
-          append: () => h(
-            ElButton,
-            {
-              onClick: () => {
-                Apis.SystemLang.translate({ data: { text: createValues.value[v.value] } }).then((res) => {
-                  Object.keys(res).forEach((key) => {
-                    createValues.value[key] = res[key]
-                  })
-                })
-              },
-            },
-            () => '翻译 ',
-          ),
+    columns: [
+      ...[],
+      ...unref(columns),
+      ...LangEnum.items.map((v) => {
+        const column: PlusColumn = {
+          label: v.label,
+          prop: v.value,
         }
-      }
 
-      return column
-    })],
+        if (v.value === 'zh_CN') {
+          column.fieldSlots = {
+            append: () => h(
+              ElButton,
+              {
+                onClick: () => {
+                  Apis.SystemLang.translate({
+                    data: { text: createValues.value[v.value] },
+                  }).then((res) => {
+                    Object.keys(res).forEach((key) => {
+                      createValues.value[key] = res[key]
+                    })
+                  })
+                },
+              },
+              () => t('system.lang.button.translate'),
+            ),
+          }
+        }
+
+        return column
+      }),
+    ],
     rules: {
-      langKey: [{ required: true, message: '请输入词条标识', trigger: 'blur' }],
-      isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      langKey: [
+        {
+          required: true,
+          message: t('common.validation.inputLangKey'),
+          trigger: 'blur',
+        },
+      ],
+      isBuiltin: [
+        {
+          required: true,
+          message: t('common.validation.selectIsBuiltin'),
+          trigger: 'change',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -82,7 +107,10 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createVisible.value = false
       createConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '新增成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.createSuccess'),
+      })
 
       pageInstance.value.getList()
     }

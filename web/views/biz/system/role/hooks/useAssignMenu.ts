@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
 import { computed, h, ref, shallowRef, unref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
+import { t } from '~web/i18n'
 import { listToTree } from '~web/utils'
 
 interface UseAssignMenuParams {
@@ -19,7 +20,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   const checkedKeys = ref(new Set())
 
   const assignMenuDialogProps = computed<PlusDialogProps>(() => ({
-    title: '分配菜单',
+    title: t('system.role.assignMenu'),
     width: '700px',
     confirmLoading: unref(assignMenuConfirmLoading),
     destroyOnClose: true,
@@ -30,17 +31,24 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
     labelPosition: 'right',
     columns: [
       {
-        label: '角色名称',
+        label: t('system.role.field.roleName'),
         prop: 'roleName',
         fieldProps: {
           disabled: true,
         },
       },
       {
-        label: '角色菜单',
+        label: t('system.role.field.roleMenus'),
         prop: 'menuIds',
         renderField(value, onChange, props) {
-          return h('div', { style: { width: '100%', height: '400px', padding: '10px', border: '1px solid #eee' } }, [
+          return h('div', {
+            style: {
+              width: '100%',
+              height: '400px',
+              padding: '10px',
+              border: '1px solid #eee',
+            },
+          }, [
             h(ElScrollbar, {}, () => [
               h(ElTree, {
                 'ref': menuTreeRef,
@@ -58,7 +66,9 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
                     checkedKeys.value.delete(node.id)
                   }
                 },
-              }, { default: ({ node, data }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}` }),
+              }, {
+                default: ({ node, data }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}`,
+              }),
             ]),
           ])
         },
@@ -73,7 +83,10 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
     Object.assign(assignMenuValues.value, params)
 
     try {
-      await Promise.all([getMenuIds(), getMenuTree()])
+      await Promise.all([
+        getMenuIds(),
+        getMenuTree(),
+      ])
       assignMenuConfirmLoading.value = false
     }
     catch (error) {
@@ -96,7 +109,10 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
       assignMenuVisible.value = false
       assignMenuConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '分配成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.assignSuccess'),
+      })
 
       pageInstance.value.getList()
     }
@@ -106,7 +122,9 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   }
 
   async function getMenuIds() {
-    const menuIds = await Apis.SystemRoleMenu.assigned({ data: { id: assignMenuValues.value.id } })
+    const menuIds = await Apis.SystemRoleMenu.assigned({
+      data: { id: assignMenuValues.value.id },
+    })
 
     menuIds.forEach((id) => {
       checkedKeys.value.add(id)

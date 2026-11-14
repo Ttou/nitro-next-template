@@ -4,6 +4,7 @@ import { Icon } from '@iconify/vue'
 import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { MenuTypeEnum, PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { listToTree } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
@@ -13,7 +14,7 @@ const tree = ref([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '上级菜单',
+    label: t('system.menu.field.parentMenu'),
     prop: 'parentId',
     valueType: 'tree-select',
     fieldProps: {
@@ -30,12 +31,12 @@ const columns = computed<PlusColumn[]>(() => [
     hideInTable: true,
   },
   {
-    label: '菜单名称',
+    label: t('system.menu.field.menuName'),
     prop: 'menuName',
     minWidth: 200,
   },
   {
-    label: '菜单标识',
+    label: t('system.menu.field.menuKey'),
     prop: 'menuKey',
     minWidth: 300,
     fieldProps: {
@@ -46,7 +47,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '菜单类型',
+    label: t('system.menu.field.menuType'),
     prop: 'menuType',
     minWidth: 100,
     valueType: 'select',
@@ -56,7 +57,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '排序',
+    label: t('common.field.sort'),
     prop: 'orderNum',
     hideInSearch: true,
     valueType: 'input-number',
@@ -68,7 +69,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '路由地址',
+    label: t('system.menu.field.routePath'),
     prop: 'path',
     minWidth: 150,
     hideInForm: unref(updateVisible)
@@ -79,7 +80,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '组件路径',
+    label: t('system.menu.field.componentPath'),
     prop: 'component',
     minWidth: 150,
     hideInForm: unref(updateVisible)
@@ -90,7 +91,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '跳转地址',
+    label: t('system.menu.field.redirectPath'),
     prop: 'redirect',
     minWidth: 150,
     hideInForm: unref(updateVisible)
@@ -101,21 +102,23 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '图标',
+    label: t('system.menu.field.icon'),
     prop: 'icon',
     hideInSearch: true,
     hideInForm: unref(updateVisible)
       ? updateValues.value.menuType === MenuTypeEnum.BUTTON
       : createValues.value.menuType === MenuTypeEnum.BUTTON,
     render(value, data) {
-      return value ? h(Icon, { icon: value }) : null
+      return value
+        ? h(Icon, { icon: value })
+        : null
     },
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: '是否可用',
+    label: t('common.field.isAvailable'),
     prop: 'isAvailable',
     minWidth: 100,
     valueType: 'select',
@@ -125,7 +128,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否缓存',
+    label: t('system.menu.field.isCache'),
     prop: 'isCache',
     minWidth: 100,
     valueType: 'select',
@@ -139,7 +142,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否外链',
+    label: t('system.menu.field.isExternal'),
     prop: 'isFrame',
     minWidth: 100,
     valueType: 'select',
@@ -153,7 +156,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否可见',
+    label: t('system.menu.field.isVisible'),
     prop: 'isVisible',
     minWidth: 100,
     valueType: 'select',
@@ -167,7 +170,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '备注',
+    label: t('common.field.remark'),
     prop: 'remark',
     hideInSearch: true,
     tableColumnProps: {
@@ -175,7 +178,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '创建时间',
+    label: t('common.field.createdAt'),
     prop: 'createdAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -186,7 +189,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '更新时间',
+    label: t('common.field.updatedAt'),
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -216,7 +219,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '编辑',
+            text: t('common.button.edit'),
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_MENU_UPDATE),
             props: { type: 'success' },
@@ -225,7 +228,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '删除',
+            text: t('common.button.delete'),
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_MENU_REMOVE),
             props: (row, index, button) => {
@@ -235,7 +238,7 @@ const pageProps = computed<PlusPageProps>(() => {
               }
             },
             confirm: {
-              message: ({ row }) => `确定删除【${row.dictLabel}】吗？`,
+              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.dictLabel }),
               options: {
                 type: 'warning',
               },
@@ -285,7 +288,7 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加
+            {{ $t('common.button.add') }}
           </el-button>
         </el-space>
       </template>

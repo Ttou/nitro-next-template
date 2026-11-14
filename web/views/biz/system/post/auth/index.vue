@@ -6,6 +6,7 @@ import { computed, ref, unref, useTemplateRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { useCreate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -19,21 +20,21 @@ const pageProps = computed<PlusPageProps>(() => {
   return {
     columns: [
       {
-        label: '账号',
+        label: t('common.field.account'),
         prop: 'userName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: '昵称',
+        label: t('common.field.nickname'),
         prop: 'nickName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: '手机',
+        label: t('common.field.phone'),
         prop: 'phone',
         hideInSearch: true,
         tableColumnProps: {
@@ -41,7 +42,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
       },
       {
-        label: '邮箱',
+        label: t('common.field.email'),
         prop: 'email',
         hideInSearch: true,
         tableColumnProps: {
@@ -49,7 +50,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
       },
       {
-        label: '是否可用',
+        label: t('common.field.isAvailable'),
         prop: 'isAvailable',
         valueType: 'select',
         options: YesOrNoEnum.items,
@@ -59,7 +60,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
       },
       {
-        label: '创建时间',
+        label: t('common.field.createdAt'),
         prop: 'createdAt',
         valueType: 'date-picker',
         hideInSearch: true,
@@ -69,7 +70,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
       },
       {
-        label: '更新时间',
+        label: t('common.field.updatedAt'),
         prop: 'updatedAt',
         valueType: 'date-picker',
         hideInSearch: true,
@@ -91,7 +92,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -99,12 +100,12 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '取消授权',
+            text: t('system.auth.button.revoke'),
             code: 'cancel',
             show: hasPermission(PermissionEnum.SYSTEM_POST_AUTH_UNALLOCATE_USER),
             props: { type: 'danger' },
             confirm: {
-              message: ({ row }) => `确定取消授权【${row.userName}】吗？`,
+              message: ({ row }) => t('system.auth.confirm.revokeWithName', { name: row.userName }),
               options: {
                 type: 'warning',
               },
@@ -146,19 +147,22 @@ function confirmRemove(ids: string[], batch: boolean = false) {
     },
   })
     .then(() => {
-      ElNotification.success({ title: '通知', message: '取消授权成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('system.auth.message.revokeSuccess'),
+      })
       pageInstance.value?.getList()
     })
 
   if (batch) {
     if (!selectedIds.value.length) {
-      ElMessage.warning('请选择要取消授权的数据')
+      ElMessage.warning(t('system.auth.message.selectDataToRevoke'))
       return
     }
 
-    ElMessageBox.confirm('确定取消授权选中的数据吗？', {
+    ElMessageBox.confirm(t('system.auth.confirm.revokeSelected'), {
       type: 'warning',
-      title: '提示',
+      title: t('common.title.tip'),
     })
       .then(() => {
         handler()
@@ -180,13 +184,13 @@ function confirmRemove(ids: string[], batch: boolean = false) {
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加授权
+            {{ $t('system.auth.button.grant') }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_POST_AUTH_UNALLOCATE_USER" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量取消授权
+            {{ $t('system.auth.button.batchRevoke') }}
           </el-button>
         </el-space>
       </template>

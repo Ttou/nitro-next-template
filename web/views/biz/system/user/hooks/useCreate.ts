@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: '新增用户',
+    title: t('system.user.dialog.create'),
     width: '900px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -29,12 +30,48 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     },
     columns: unref(columns),
     rules: {
-      userName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-      password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-      nickName: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
-      email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
-      sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      userName: [
+        {
+          required: true,
+          message: t('common.validation.inputAccount'),
+          trigger: 'blur',
+        },
+      ],
+      password: [
+        {
+          required: true,
+          message: t('common.validation.inputPassword'),
+          trigger: 'blur',
+        },
+      ],
+      nickName: [
+        {
+          required: true,
+          message: t('common.validation.inputNickname'),
+          trigger: 'blur',
+        },
+      ],
+      email: [
+        {
+          required: true,
+          message: t('common.validation.inputEmail'),
+          trigger: 'blur',
+        },
+      ],
+      sex: [
+        {
+          required: true,
+          message: t('common.validation.selectGender'),
+          trigger: 'change',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -52,7 +89,10 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createVisible.value = false
       createConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '新增成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.createSuccess'),
+      })
 
       pageInstance.value.getList()
     }

@@ -5,6 +5,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { PermissionEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { useDetail, useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -12,7 +13,7 @@ const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '缓存键',
+    label: t('monitor.cache.field.cacheKey'),
     prop: 'key',
     minWidth: 350,
     tableColumnProps: {
@@ -20,7 +21,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '过期时间',
+    label: t('monitor.cache.field.expireTime'),
     prop: 'ttl',
     width: 200,
     valueType: 'date-picker',
@@ -50,7 +51,7 @@ const pageProps = computed<PlusPageProps>(() => {
       isSelection: true,
       rowKey: 'key',
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -58,7 +59,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '详情',
+            text: t('common.button.detail'),
             code: 'info',
             show: hasPermission(PermissionEnum.MONITOR_CACHE_FIND_BY_KEY),
             props: (row, index, button) => ({
@@ -69,14 +70,14 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '删除',
+            text: t('common.button.delete'),
             code: 'delete',
             show: hasPermission(PermissionEnum.MONITOR_CACHE_REMOVE),
             props: (row, index, button) => ({
               type: 'warning',
             }),
             confirm: {
-              message: ({ row }) => `确定删除【${row.key}】吗？`,
+              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.key }),
               options: {
                 type: 'warning',
               },
@@ -118,13 +119,13 @@ const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量删除
+            {{ $t('common.button.batchDelete') }}
           </el-button>
           <el-button v-permission="PermissionEnum.MONITOR_CACHE_CLEAR" type="danger" @click="confirmClear">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            清空缓存
+            {{ $t('monitor.cache.button.clear') }}
           </el-button>
         </el-space>
       </template>

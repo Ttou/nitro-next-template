@@ -17,7 +17,9 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const originalTabs = ref<Map<string, RouteLocationNormalizedLoadedGeneric>>(new Map())
-const rendererTabs = computed(() => [...originalTabs.value.values()])
+const rendererTabs = computed(() => [
+  ...originalTabs.value.values(),
+])
 const activeTab = computed(() => originalTabs.value.get(route.path)!)
 
 function handleChangeTab(path: TabPaneName) {
@@ -28,7 +30,9 @@ function handleCloseTab(name: TabPaneName) {
   originalTabs.value.delete(name as string)
 
   if (originalTabs.value.size > 0) {
-    const lastPath = [...originalTabs.value.keys()].pop()
+    const lastPath = [
+      ...originalTabs.value.keys(),
+    ].pop()
     router.push(lastPath!)
   }
   else {
@@ -47,7 +51,9 @@ function handleCommand(command: 'refresh-self' | 'close-other' | 'close-all') {
       router.replace({ path: `/redirect${route.path}`, query: route.query ?? {} })
     })
     .with('close-other', () => {
-      [...originalTabs.value.keys()].forEach((path) => {
+      [
+        ...originalTabs.value.keys(),
+      ].forEach((path) => {
         if (path !== route.path) {
           originalTabs.value.delete(path)
         }
@@ -77,13 +83,13 @@ watchEffect(() => {
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="refresh-self">
-                刷新当前
+                {{ $t('layout.tabs.refresh') }}
               </el-dropdown-item>
               <el-dropdown-item command="close-other">
-                关闭其它
+                {{ $t('layout.tabs.closeOthers') }}
               </el-dropdown-item>
               <el-dropdown-item command="close-all">
-                关闭全部
+                {{ $t('layout.tabs.closeAll') }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

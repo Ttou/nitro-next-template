@@ -1,3 +1,5 @@
+import { t } from '~web/i18n'
+
 export type IStatus = '403' | '404' | '500'
 
 type IStatusMap = Record<
@@ -10,15 +12,15 @@ type IStatusMap = Record<
 
 export const STATUS_MAP: IStatusMap = {
   403: {
-    title: '权限不够',
+    title: t('sys.error.forbidden'),
     icon: 'error',
   },
   404: {
-    title: '页面不存在',
+    title: t('sys.error.notFound'),
     icon: 'error',
   },
   500: {
-    title: '服务器异常',
+    title: t('sys.error.serverError'),
     icon: 'error',
   },
 }

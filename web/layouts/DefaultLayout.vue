@@ -8,6 +8,7 @@ import { joinURL } from 'ufo'
 import { computed, unref, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { AppTabs, DarkToggle, LangSelect, UpdatePassword, UpdateProfile } from '~web/components'
+import { t } from '~web/i18n'
 import { useUserStore } from '~web/store'
 
 defineOptions({
@@ -26,19 +27,25 @@ const filteredRoutes = computed(() => filterRoutes(cloneDeep(userStore.routes)))
 
 const headerProps = computed<PlusHeaderProps>(() => {
   return {
-    title: '后台管理',
+    title: t('layout.appTitle'),
     userInfo: {
       username: userStore.user?.nickName ?? userStore.user.userName,
     },
     dropdownList: [
-      { label: '修改密码', value: 'password' },
-      { label: '个人中心', value: 'profile' },
+      {
+        label: t('profile.password.title'),
+        value: 'password',
+      },
+      {
+        label: t('layout.menu.profile'),
+        value: 'profile',
+      },
     ],
     onClickDropdownItem: (item: any) => {
       match(item.value as 'logout' | 'profile' | 'password')
         .with('logout', () => {
-          ElMessageBox.confirm('确认退出登录？', {
-            title: '提示',
+          ElMessageBox.confirm(t('layout.confirm.logout'), {
+            title: t('common.title.tip'),
             type: 'warning',
             beforeClose: (action, instance, done) => {
               match(action)

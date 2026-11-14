@@ -2,6 +2,7 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
-    title: '编辑字典数据',
+    title: t('system.dictData.dialog.update'),
     width: '700px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -26,9 +27,27 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
     labelPosition: 'right',
     columns: unref(columns),
     rules: {
-      dictLabel: [{ required: true, message: '请输入字典标签', trigger: 'blur' }],
-      dictValue: [{ required: true, message: '请输入字典值', trigger: 'blur' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      dictLabel: [
+        {
+          required: true,
+          message: t('common.validation.inputDictLabel'),
+          trigger: 'blur',
+        },
+      ],
+      dictValue: [
+        {
+          required: true,
+          message: t('common.validation.inputDictValue'),
+          trigger: 'blur',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -52,7 +71,10 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
       updateVisible.value = false
       updateConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '编辑成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.updateSuccess'),
+      })
 
       pageInstance.value.getList()
     }

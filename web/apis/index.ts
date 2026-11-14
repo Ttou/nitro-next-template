@@ -2,6 +2,7 @@ import { createAlova } from 'alova'
 import adapterFetch from 'alova/fetch'
 import { ElMessage } from 'element-plus'
 import { omitBy } from 'es-toolkit/compat'
+import { t } from '~web/i18n'
 import { useUserStore } from '~web/store'
 import { createApis, mountApis, withConfigType } from './createApis'
 
@@ -95,7 +96,7 @@ export const alovaInstance = createAlova({
         showError(error.message)
       }
       else {
-        showError('网络错误')
+        showError(t('common.message.networkError'))
       }
 
       throw error

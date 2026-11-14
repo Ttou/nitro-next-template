@@ -2,6 +2,7 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -14,7 +15,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: '新增字典类型',
+    title: t('system.dictType.dialog.create'),
     width: '700px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -25,9 +26,27 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     labelPosition: 'right',
     columns: unref(columns),
     rules: {
-      dictName: [{ required: true, message: '请输入字典名称', trigger: 'blur' }],
-      dictType: [{ required: true, message: '请输入字典类型', trigger: 'blur' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      dictName: [
+        {
+          required: true,
+          message: t('common.validation.inputDictName'),
+          trigger: 'blur',
+        },
+      ],
+      dictType: [
+        {
+          required: true,
+          message: t('common.validation.inputDictType'),
+          trigger: 'blur',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -45,7 +64,10 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createVisible.value = false
       createConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '新增成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.createSuccess'),
+      })
 
       pageInstance.value.getList()
     }

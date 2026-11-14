@@ -3,6 +3,7 @@ import type { PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-
 import type { Ref } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 import { download } from '~web/utils'
 
 interface UseImportParams {
@@ -16,7 +17,7 @@ export function useImport({ pageInstance }: UseImportParams) {
   const importTemplateLoading = ref(false)
 
   const importDialogProps = computed<PlusDialogProps>(() => ({
-    title: '导入词库',
+    title: t('system.lang.dialog.import'),
     width: '600px',
     confirmLoading: unref(importTemplateLoading),
     destroyOnClose: true,
@@ -31,17 +32,21 @@ export function useImport({ pageInstance }: UseImportParams) {
     },
     columns: [
       {
-        label: '导入模板',
+        label: t('common.import.template'),
         prop: 'template',
       },
       {
-        label: '导入文件',
+        label: t('common.import.file'),
         prop: 'file',
       },
     ],
     rules: {
       file: [
-        { required: true, message: '请上传文件', trigger: 'blur' },
+        {
+          required: true,
+          message: t('common.validation.uploadFile'),
+          trigger: 'blur',
+        },
       ],
     },
   }))
@@ -72,13 +77,16 @@ export function useImport({ pageInstance }: UseImportParams) {
       })
       const failItems = res.items.slice(0, 10).join('、')
       const more = res.items.length > 10
-        ? ` 等 ${res.items.length} 条`
+        ? ` ${t('system.lang.message.moreCount', { count: res.items.length })}`
         : ''
       ElNotification.info({
-        title: '导入结果',
-        message: `成功导入 ${res.success} 条词条，失败 ${res.fail} 条词条。${res.items.length
-          ? `失败词条：${failItems}${more}`
-          : ''}`,
+        title: t('common.import.result'),
+        message: [
+          t('system.lang.message.importResult', { success: res.success, fail: res.fail }),
+          res.items.length
+            ? t('system.lang.message.importFailDetail', { items: `${failItems}${more}` })
+            : '',
+        ].filter(Boolean).join(' '),
       })
       onSuccess?.(res)
       importVisible.value = false
@@ -95,12 +103,12 @@ export function useImport({ pageInstance }: UseImportParams) {
   function beforeUpload(file: File) {
     const isExcel = file.type === 'application/vnd.ms-excel' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     if (!isExcel) {
-      ElMessage.error('只能上传 Excel 文件!')
+      ElMessage.error(t('common.upload.excelOnly'))
       return false
     }
     const isLt10M = file.size / 1024 / 1024 < 10
     if (!isLt10M) {
-      ElMessage.error('上传文件大小不能超过 10MB!')
+      ElMessage.error(t('common.upload.fileSizeLimit'))
       return false
     }
     return true

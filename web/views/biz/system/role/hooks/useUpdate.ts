@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemRoleReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
-    title: '编辑角色',
+    title: t('system.role.dialog.update'),
     width: '700px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -26,9 +27,27 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     labelPosition: 'right',
     columns: unref(columns),
     rules: {
-      roleName: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
-      roleKey: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      roleName: [
+        {
+          required: true,
+          message: t('common.validation.inputRoleName'),
+          trigger: 'blur',
+        },
+      ],
+      roleKey: [
+        {
+          required: true,
+          message: t('common.validation.inputRoleKey'),
+          trigger: 'blur',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -47,7 +66,10 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
       updateVisible.value = false
       updateConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '编辑成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.updateSuccess'),
+      })
 
       pageInstance.value.getList()
     }

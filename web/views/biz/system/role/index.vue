@@ -7,6 +7,7 @@ import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { useAssignMenu, useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -16,14 +17,14 @@ const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '角色名称',
+    label: t('system.role.field.roleName'),
     prop: 'roleName',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: '角色标识',
+    label: t('system.role.field.roleKey'),
     prop: 'roleKey',
     fieldProps: {
       disabled: unref(updateVisible),
@@ -33,7 +34,10 @@ const columns = computed<PlusColumn[]>(() => [
         ElLink,
         {
           type: 'primary',
-          onClick: () => router.push({ path: '/system/role/auth', query: { id: data.row.id } }),
+          onClick: () => router.push({
+            path: '/system/role/auth',
+            query: { id: data.row.id },
+          }),
         },
         () => value,
       )
@@ -43,7 +47,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否可用',
+    label: t('common.field.isAvailable'),
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -52,7 +56,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '备注',
+    label: t('common.field.remark'),
     prop: 'remark',
     hideInSearch: true,
     tableColumnProps: {
@@ -60,7 +64,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '创建时间',
+    label: t('common.field.createdAt'),
     prop: 'createdAt',
     valueType: 'date-picker',
     fieldProps: {
@@ -73,7 +77,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '更新时间',
+    label: t('common.field.updatedAt'),
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -100,7 +104,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -108,7 +112,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '分配菜单',
+            text: t('system.role.assignMenu'),
             code: 'assignMenu',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGN),
             props: { type: 'primary' },
@@ -117,7 +121,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '编辑',
+            text: t('common.button.edit'),
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_UPDATE),
             props: { type: 'success' },
@@ -126,7 +130,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '删除',
+            text: t('common.button.delete'),
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_REMOVE),
             props: (row, index, button) => ({
@@ -134,7 +138,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.roleKey.includes('sys.'),
             }),
             confirm: {
-              message: ({ row }) => `确定删除【${row.roleName}】吗？`,
+              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.roleName }),
               options: {
                 type: 'warning',
               },
@@ -186,19 +190,19 @@ const { assignMenuVisible, assignMenuValues, assignMenuDialogProps, assignMenuFo
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加
+            {{ $t('common.button.add') }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_ROLE_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量删除
+            {{ $t('common.button.batchDelete') }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_ROLE_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            导出
+            {{ $t('common.button.export') }}
           </el-button>
         </el-space>
       </template>

@@ -2,6 +2,7 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useUpdate({ pageInstance, columns, getDeptTree }: UseUpdateParam
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
-    title: '编辑部门',
+    title: t('system.dept.dialog.update'),
     width: '700px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -26,9 +27,27 @@ export function useUpdate({ pageInstance, columns, getDeptTree }: UseUpdateParam
     labelPosition: 'right',
     columns: unref(columns),
     rules: {
-      deptName: [{ required: true, message: '请输入部门名称', trigger: 'blur' }],
-      deptKey: [{ required: true, message: '请输入部门标识', trigger: 'blur' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      deptName: [
+        {
+          required: true,
+          message: t('common.validation.inputDeptName'),
+          trigger: 'blur',
+        },
+      ],
+      deptKey: [
+        {
+          required: true,
+          message: t('common.validation.inputDeptKey'),
+          trigger: 'blur',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -57,7 +76,10 @@ export function useUpdate({ pageInstance, columns, getDeptTree }: UseUpdateParam
       updateVisible.value = false
       updateConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '编辑成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.updateSuccess'),
+      })
 
       pageInstance.value.getList()
     }

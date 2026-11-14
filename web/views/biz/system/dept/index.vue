@@ -4,6 +4,7 @@ import { Icon } from '@iconify/vue'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { listToTree } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
@@ -12,7 +13,7 @@ const deptTree = ref<any[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '上级部门',
+    label: t('system.dept.field.parentDept'),
     prop: 'parentId',
     valueType: 'tree-select',
     fieldProps: {
@@ -29,11 +30,11 @@ const columns = computed<PlusColumn[]>(() => [
     hideInTable: true,
   },
   {
-    label: '部门名称',
+    label: t('system.dept.field.deptName'),
     prop: 'deptName',
   },
   {
-    label: '部门标识',
+    label: t('system.dept.field.deptKey'),
     prop: 'deptKey',
     fieldProps: {
       disabled: unref(updateVisible),
@@ -43,7 +44,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否可用',
+    label: t('common.field.isAvailable'),
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -52,7 +53,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '备注',
+    label: t('common.field.remark'),
     prop: 'remark',
     hideInSearch: true,
     fieldProps: {
@@ -65,7 +66,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '创建时间',
+    label: t('common.field.createdAt'),
     prop: 'createdAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -76,7 +77,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '更新时间',
+    label: t('common.field.updatedAt'),
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -107,7 +108,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '编辑',
+            text: t('common.button.edit'),
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_DEPT_UPDATE),
             props: { type: 'success' },
@@ -116,14 +117,14 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '删除',
+            text: t('common.button.delete'),
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_DEPT_REMOVE),
             props: {
               type: 'warning',
             },
             confirm: {
-              message: ({ row }) => `确定删除【${row.deptName}】吗？`,
+              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.deptName }),
               options: {
                 type: 'warning',
               },
@@ -170,7 +171,7 @@ const { confirmRemove } = useRemove({ pageInstance })
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加
+            {{ $t('common.button.add') }}
           </el-button>
         </el-space>
       </template>

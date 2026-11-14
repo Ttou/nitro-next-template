@@ -1,6 +1,6 @@
 import type { ILocale } from '~web/i18n'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import i18n from '~web/i18n'
 
 export const useAppStore = defineStore(
@@ -17,9 +17,10 @@ export const useAppStore = defineStore(
       i18n.global.mergeLocaleMessage(locale.value, value)
     }
 
-    if (locale.value) {
-      i18n.global.locale.value = locale.value
-    }
+    // 持久化恢复发生在 store 初始化之后，用 watch 跟随可保证 i18n 语言始终与 store 一致
+    watch(locale, (value) => {
+      i18n.global.locale.value = value
+    }, { immediate: true })
 
     return {
       locale,

@@ -5,6 +5,7 @@ import { ElButton, ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'
 import { LangEnum } from '~shared/enums'
+import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -17,7 +18,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateConfirmLoading = ref(false)
 
   const updateDrawerProps = computed<PlusDialogProps>(() => ({
-    title: '编辑词条',
+    title: t('system.lang.dialog.update'),
     width: '700px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -26,35 +27,53 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateFormProps = computed<PlusFormProps>(() => ({
     labelWidth: '100px',
     labelPosition: 'right',
-    columns: [...[], ...unref(columns), ...LangEnum.items.map((v) => {
-      const column: PlusColumn = {
-        label: v.label,
-        prop: v.value,
-      }
-
-      if (v.value === 'zh_CN') {
-        column.fieldSlots = {
-          append: () => h(
-            ElButton,
-            {
-              onClick: () => {
-                Apis.SystemLang.translate({ data: { text: updateValues.value[v.value] } }).then((res) => {
-                  Object.keys(res).forEach((key) => {
-                    updateValues.value[key] = res[key]
-                  })
-                })
-              },
-            },
-            () => '翻译 ',
-          ),
+    columns: [
+      ...[],
+      ...unref(columns),
+      ...LangEnum.items.map((v) => {
+        const column: PlusColumn = {
+          label: v.label,
+          prop: v.value,
         }
-      }
 
-      return column
-    })],
+        if (v.value === 'zh_CN') {
+          column.fieldSlots = {
+            append: () => h(
+              ElButton,
+              {
+                onClick: () => {
+                  Apis.SystemLang.translate({
+                    data: { text: updateValues.value[v.value] },
+                  }).then((res) => {
+                    Object.keys(res).forEach((key) => {
+                      updateValues.value[key] = res[key]
+                    })
+                  })
+                },
+              },
+              () => t('system.lang.button.translate'),
+            ),
+          }
+        }
+
+        return column
+      }),
+    ],
     rules: {
-      isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      isBuiltin: [
+        {
+          required: true,
+          message: t('common.validation.selectIsBuiltin'),
+          trigger: 'change',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -82,7 +101,10 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
       updateVisible.value = false
       updateConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '编辑成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.updateSuccess'),
+      })
 
       pageInstance.value.getList()
     }

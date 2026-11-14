@@ -2,6 +2,7 @@ import { Icon } from '@iconify/vue'
 import { pascalCase } from 'es-toolkit'
 import { h } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
+import { t } from '~web/i18n'
 import { DefaultLayout } from '~web/layouts'
 
 const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
@@ -20,7 +21,9 @@ export async function createMenus(menus: any[]) {
     temp.meta = {
       hideInSidebar: temp.isVisible === YesOrNoEnum.NO,
       title: temp.menuName,
-      icon: temp.icon ? () => h(Icon, { icon: temp.icon }) : null,
+      icon: temp.icon
+        ? () => h(Icon, { icon: temp.icon })
+        : null,
     }
     temp.name = pascalCase(menu.menuKey)
 
@@ -43,7 +46,7 @@ export async function createMenus(menus: any[]) {
         module.default.name = temp.name
       }
       else {
-        console.warn('配置的页面不存在：', menu.component)
+        console.warn(t('common.message.pageComponentMissing'), menu.component)
       }
     }
 

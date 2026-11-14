@@ -1,6 +1,7 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { t } from '~web/i18n'
 
 interface UseRemoveParams {
   pageInstance: Ref<PlusPageInstance>
@@ -9,9 +10,14 @@ interface UseRemoveParams {
 
 export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   function handleRemove(keys: string[]) {
-    Apis.MonitorCache.remove({ data: { keys } })
+    Apis.MonitorCache.remove({
+      data: { keys },
+    })
       .then(() => {
-        ElNotification.success({ title: '通知', message: '删除成功' })
+        ElNotification.success({
+          title: t('common.title.notification'),
+          message: t('common.message.deleteSuccess'),
+        })
         pageInstance.value.getList()
       })
   }
@@ -19,13 +25,13 @@ export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   function confirmRemove(ids: string[], batch: boolean = false) {
     if (batch) {
       if (!selectedIds.value.length) {
-        ElMessage.warning('请选择要删除的数据')
+        ElMessage.warning(t('common.message.selectDataToDelete'))
         return
       }
 
-      ElMessageBox.confirm('确定删除选中的数据吗？', {
+      ElMessageBox.confirm(t('common.confirm.deleteSelected'), {
         type: 'warning',
-        title: '提示',
+        title: t('common.title.tip'),
       })
         .then(() => {
           handleRemove(ids)
@@ -38,14 +44,17 @@ export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   }
 
   function confirmClear() {
-    ElMessageBox.confirm('确定清空缓存吗？', {
+    ElMessageBox.confirm(t('monitor.cache.confirm.clear'), {
       type: 'warning',
-      title: '提示',
+      title: t('common.title.tip'),
     })
       .then(() => {
         Apis.MonitorCache.clear()
           .then(() => {
-            ElNotification.success({ title: '通知', message: '清空成功' })
+            ElNotification.success({
+              title: t('common.title.notification'),
+              message: t('monitor.cache.message.clearSuccess'),
+            })
             pageInstance.value.getList()
           })
       })

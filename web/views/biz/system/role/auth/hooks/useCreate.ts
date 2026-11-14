@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
   const createSelectedIds = ref<string[]>([])
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: '添加授权',
+    title: t('system.auth.button.grant'),
     width: '1200px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -23,21 +24,21 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
   const createPageProps = computed<PlusPageProps>(() => ({
     columns: [
       {
-        label: '账号',
+        label: t('common.field.account'),
         prop: 'userName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: '昵称',
+        label: t('common.field.nickname'),
         prop: 'nickName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: '手机',
+        label: t('common.field.phone'),
         prop: 'phone',
         hideInSearch: true,
         tableColumnProps: {
@@ -45,7 +46,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
         },
       },
       {
-        label: '邮箱',
+        label: t('common.field.email'),
         prop: 'email',
         hideInSearch: true,
         tableColumnProps: {
@@ -53,7 +54,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
         },
       },
       {
-        label: '是否可用',
+        label: t('common.field.isAvailable'),
         prop: 'isAvailable',
         valueType: 'select',
         options: YesOrNoEnum.items,
@@ -94,7 +95,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
 
   async function confirmCreate() {
     if (createSelectedIds.value.length === 0) {
-      ElMessage.error('请选择要授权的用户')
+      ElMessage.error(t('system.auth.message.selectUserToGrant'))
       return
     }
 

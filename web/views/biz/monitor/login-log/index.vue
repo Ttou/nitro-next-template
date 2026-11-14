@@ -4,6 +4,7 @@ import { ElLink, ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
+import { t } from '~web/i18n'
 import { useDetail } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -12,7 +13,7 @@ const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '请求IP',
+    label: t('monitor.loginLog.field.requestIp'),
     prop: 'ip',
     minWidth: 100,
     valueType: 'text',
@@ -25,7 +26,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: '请求地点',
+    label: t('monitor.loginLog.field.requestLocation'),
     prop: 'location',
     minWidth: 120,
     valueType: 'text',
@@ -38,12 +39,14 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: '请求状态',
+    label: t('monitor.loginLog.field.requestStatus'),
     prop: 'status',
     minWidth: 100,
     valueType: 'tag',
     fieldProps: value => ({
-      type: value === 200 ? 'success' : 'danger',
+      type: value === 200
+        ? 'success'
+        : 'danger',
     }),
     tableColumnProps: {
       align: 'center',
@@ -51,7 +54,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: '登录人账号',
+    label: t('monitor.loginLog.field.loginAccount'),
     prop: 'userName',
     minWidth: 150,
     render(value, data) {
@@ -59,7 +62,10 @@ const columns = computed<PlusColumn[]>(() => [
         ElLink,
         {
           type: 'primary',
-          onClick: () => router.push({ path: '/system/user', query: { userName: value } }),
+          onClick: () => router.push({
+            path: '/system/user',
+            query: { userName: value },
+          }),
         },
         () => value,
       )
@@ -69,20 +75,22 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '耗时',
+    label: t('monitor.loginLog.field.costTime'),
     prop: 'costTime',
     renderField(value, onChange, props) {
       return h(
         ElText,
         { type: 'warning' },
-        { default: () => `${value} ms` },
+        {
+          default: () => `${value} ms`,
+        },
       )
     },
     hideInSearch: true,
     hideInTable: true,
   },
   {
-    label: '操作时间',
+    label: t('monitor.loginLog.field.operateTime'),
     prop: 'operateTime',
     width: 200,
     valueType: 'date-picker',
@@ -94,37 +102,37 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '登录密钥',
+    label: t('monitor.loginLog.field.loginToken'),
     prop: 'token',
     valueType: 'textarea',
     fieldProps: {
       rows: 4,
       readonly: true,
-      placeholder: '无',
+      placeholder: t('common.placeholder.none'),
     },
     hideInSearch: true,
     hideInTable: true,
   },
   {
-    label: '错误信息',
+    label: t('monitor.loginLog.field.errorMessage'),
     prop: 'errorMsg',
     valueType: 'textarea',
     fieldProps: {
       rows: 4,
       readonly: true,
-      placeholder: '无',
+      placeholder: t('common.placeholder.none'),
     },
     hideInSearch: true,
     hideInTable: true,
   },
   {
-    label: '用户代理',
+    label: t('monitor.loginLog.field.userAgent'),
     prop: 'userAgent',
     valueType: 'textarea',
     fieldProps: value => ({
       rows: 4,
       readonly: true,
-      placeholder: '无',
+      placeholder: t('common.placeholder.none'),
       value: JSON.stringify(value),
     }),
     hideInSearch: true,
@@ -148,7 +156,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: false,
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -156,7 +164,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '详情',
+            text: t('common.button.detail'),
             code: 'info',
             props: (row, index, button) => ({
               type: 'primary',

@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemConfigReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +16,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: '新增配置',
+    title: t('system.config.dialog.create'),
     width: '700px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -26,11 +27,41 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     labelPosition: 'right',
     columns: unref(columns),
     rules: {
-      configName: [{ required: true, message: '请输入参数名称', trigger: 'blur' }],
-      configKey: [{ required: true, message: '请输入参数标识', trigger: 'blur' }],
-      configValue: [{ required: true, message: '请输入参数键值', trigger: 'blur' }],
-      isBuiltin: [{ required: true, message: '请选择系统内置', trigger: 'change' }],
-      isAvailable: [{ required: true, message: '请选择是否可用', trigger: 'change' }],
+      configName: [
+        {
+          required: true,
+          message: t('common.validation.inputConfigName'),
+          trigger: 'blur',
+        },
+      ],
+      configKey: [
+        {
+          required: true,
+          message: t('common.validation.inputConfigKey'),
+          trigger: 'blur',
+        },
+      ],
+      configValue: [
+        {
+          required: true,
+          message: t('common.validation.inputConfigValue'),
+          trigger: 'blur',
+        },
+      ],
+      isBuiltin: [
+        {
+          required: true,
+          message: t('common.validation.selectIsBuiltin'),
+          trigger: 'change',
+        },
+      ],
+      isAvailable: [
+        {
+          required: true,
+          message: t('common.validation.selectIsAvailable'),
+          trigger: 'change',
+        },
+      ],
     },
   }))
 
@@ -48,7 +79,10 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createVisible.value = false
       createConfirmLoading.value = false
 
-      ElNotification.success({ title: '通知', message: '新增成功' })
+      ElNotification.success({
+        title: t('common.title.notification'),
+        message: t('common.message.createSuccess'),
+      })
 
       pageInstance.value.getList()
     }

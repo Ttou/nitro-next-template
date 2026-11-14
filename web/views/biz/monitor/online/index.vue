@@ -5,6 +5,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { useRemove } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -12,7 +13,7 @@ const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '登录名称',
+    label: t('monitor.online.field.loginName'),
     prop: 'userName',
     minWidth: 120,
     tableColumnProps: {
@@ -20,7 +21,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '登录昵称',
+    label: t('monitor.online.field.loginNickname'),
     prop: 'nickName',
     minWidth: 120,
     tableColumnProps: {
@@ -44,7 +45,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       selectionTableColumnProps: {
         selectable(row, index) {
@@ -57,7 +58,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '下线',
+            text: t('monitor.online.button.offline'),
             code: 'delete',
             show: hasPermission(PermissionEnum.MONITOR_ONLINE_REMOVE),
             props: (row, index, button) => ({
@@ -65,7 +66,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.isBuiltin === YesOrNoEnum.YES,
             }),
             confirm: {
-              message: ({ row }) => `确定下线【${row.userName}】吗？`,
+              message: ({ row }) => t('monitor.online.confirm.offlineWithName', { name: row.userName }),
               options: {
                 type: 'warning',
               },
@@ -106,7 +107,7 @@ const { confirmRemove } = useRemove({ pageInstance, selectedIds })
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量下线
+            {{ $t('monitor.online.button.batchOffline') }}
           </el-button>
         </el-space>
       </template>

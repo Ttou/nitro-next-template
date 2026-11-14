@@ -5,6 +5,7 @@ import { omit } from 'es-toolkit'
 import JsonEditorVue from 'json-editor-vue'
 import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
+import { t } from '~web/i18n'
 
 interface UseDetailParams {
   pageInstance: Ref<PlusPageInstance>
@@ -16,7 +17,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
   const detailValues = ref({})
 
   const detailDialogProps = computed<PlusDialogProps>(() => ({
-    title: '缓存详情',
+    title: t('monitor.cache.dialog.detail'),
     width: '1000px',
     hasFooter: false,
     destroyOnClose: true,
@@ -40,7 +41,9 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
           return {
             ...omit(column, ['valueType', 'fieldProps']),
             renderField(value, onChange, props) {
-              return h(ElText, { type: 'warning' }, { default: () => formatTime(value) })
+              return h(ElText, { type: 'warning' }, {
+                default: () => formatTime(value),
+              })
             },
           }
         }
@@ -49,7 +52,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       }) as PlusColumn[],
       [
         {
-          label: '缓存键值',
+          label: t('monitor.cache.field.cacheValue'),
           prop: 'value',
           renderField(value, onChange, props) {
             return h(JsonEditorVue, {
@@ -69,7 +72,9 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
     detailVisible.value = true
     Object.assign(detailValues.value, params)
 
-    Apis.MonitorCache.findByKey({ params: { cacheKey: params.key } }).then((res) => {
+    Apis.MonitorCache.findByKey({
+      params: { cacheKey: params.key },
+    }).then((res) => {
       detailValues.value.value = res
     })
   }

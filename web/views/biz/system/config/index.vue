@@ -5,6 +5,7 @@ import { cloneDeep } from 'es-toolkit/compat'
 import { computed, ref, unref, useTemplateRef } from 'vue'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { t } from '~web/i18n'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -12,14 +13,14 @@ const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: '参数名称',
+    label: t('system.config.field.configName'),
     prop: 'configName',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: '参数标识',
+    label: t('system.config.field.configKey'),
     prop: 'configKey',
     fieldProps: {
       disabled: unref(updateVisible),
@@ -29,14 +30,14 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '参数键值',
+    label: t('system.config.field.configValue'),
     prop: 'configValue',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: '系统内置',
+    label: t('common.field.isBuiltin'),
     prop: 'isBuiltin',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -45,7 +46,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '是否可用',
+    label: t('common.field.isAvailable'),
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -54,7 +55,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '备注',
+    label: t('common.field.remark'),
     prop: 'remark',
     hideInSearch: true,
     fieldProps: {
@@ -67,7 +68,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '创建时间',
+    label: t('common.field.createdAt'),
     prop: 'createdAt',
     valueType: 'date-picker',
     fieldProps: {
@@ -79,7 +80,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: '更新时间',
+    label: t('common.field.updatedAt'),
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -105,7 +106,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: '序号',
+        label: t('common.field.index'),
       },
       selectionTableColumnProps: {
         selectable(row, index) {
@@ -118,7 +119,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: '编辑',
+            text: t('common.button.edit'),
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_CONFIG_UPDATE),
             props: { type: 'success' },
@@ -127,7 +128,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: '删除',
+            text: t('common.button.delete'),
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_CONFIG_REMOVE),
             props: (row, index, button) => ({
@@ -135,7 +136,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.isBuiltin === YesOrNoEnum.YES,
             }),
             confirm: {
-              message: ({ row }) => `确定删除【${row.configName}】吗？`,
+              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.configName }),
               options: {
                 type: 'warning',
               },
@@ -186,19 +187,19 @@ const { confirmExport } = useExport({ pageInstance })
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            添加
+            {{ $t('common.button.add') }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_CONFIG_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            批量删除
+            {{ $t('common.button.batchDelete') }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_CONFIG_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            导出
+            {{ $t('common.button.export') }}
           </el-button>
         </el-space>
       </template>
