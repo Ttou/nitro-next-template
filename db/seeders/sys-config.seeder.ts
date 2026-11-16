@@ -5,6 +5,9 @@ import { SysConfigEntity } from '../entities/index.ts'
 
 export class SysConfigSeeder extends Seeder {
   run(em: EntityManager, context: Dictionary) {
+    const initPassword = '123456'
+    context.initPassword = initPassword
+
     em.create(SysConfigEntity, {
       configName: '验证码大小写敏感',
       configKey: 'sys.captcha.caseSensitive',
@@ -16,7 +19,7 @@ export class SysConfigSeeder extends Seeder {
     em.create(SysConfigEntity, {
       configName: '账号初始密码',
       configKey: 'sys.user.initPassword',
-      configValue: '123456',
+      configValue: initPassword,
       isBuiltin: YesOrNoEnum.YES,
       isAvailable: YesOrNoEnum.YES,
     })
