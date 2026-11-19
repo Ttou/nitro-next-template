@@ -5,7 +5,6 @@ import { SysConfigSeeder } from './sys-config.seeder.ts'
 import { SysDeptSeeder } from './sys-dept.seeder.ts'
 import { SysDictDataSeeder } from './sys-dict-data.seeder.ts'
 import { SysDictTypeSeeder } from './sys-dict-type.seeder.ts'
-import { SysLangSeeder } from './sys-lang.seeder.ts'
 import { SysMenuSeeder } from './sys-menu.seeder.ts'
 import { SysPostSeeder } from './sys-post.seeder.ts'
 import { SysRoleSeeder } from './sys-role.seeder.ts'
@@ -23,7 +22,6 @@ export class DatabaseSeeders extends Seeder {
       SysRoleSeeder,
       SysDeptSeeder,
       SysUserSeeder,
-      SysLangSeeder,
     ])
   }
 }

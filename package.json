@@ -7,7 +7,6 @@
     "build:web": "cross-env APP_ENV=prod vite build",
     "build:server": "cross-env APP_ENV=prod nitro build",
     "gen:apis": "alova gen -f",
-    "gen:locales": "jiti scripts/gen-locales",
     "gen:secrets": "jiti scripts/gen-secrets",
     "db:init": "node --import=@poppinss/ts-exec scripts/db-init.ts",
     "db:seed": "node --import=@poppinss/ts-exec scripts/db-seed.ts"
@@ -49,7 +48,6 @@
     "enum-plus": "3.4.0",
     "es-toolkit": "1.53.2",
     "hash-wasm": "4.13.0",
-    "intl-messageformat": "12.1.5",
     "ioredis": "6.0.0",
     "json-editor-vue": "0.19.2",
     "jsonwebtoken": "9.0.3",
@@ -70,7 +68,6 @@
     "ufo": "1.6.4",
     "uuid": "14.0.3",
     "vue": "3.5.45",
-    "vue-i18n": "11.4.18",
     "vue-router": "5.4.0",
     "vue-types": "7.0.1"
   },

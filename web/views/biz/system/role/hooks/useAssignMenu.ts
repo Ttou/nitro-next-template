@@ -4,7 +4,6 @@ import type { Ref } from 'vue'
 import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
 import { computed, h, ref, shallowRef, unref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
-import { t } from '~web/i18n'
 import { listToTree } from '~web/utils'
 
 interface UseAssignMenuParams {
@@ -20,7 +19,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   const checkedKeys = ref(new Set())
 
   const assignMenuDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.role.assignMenu'),
+    title: '分配菜单',
     width: '700px',
     confirmLoading: unref(assignMenuConfirmLoading),
     destroyOnClose: true,
@@ -31,14 +30,14 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
     labelPosition: 'right',
     columns: [
       {
-        label: t('system.role.field.roleName'),
+        label: '角色名称',
         prop: 'roleName',
         fieldProps: {
           disabled: true,
         },
       },
       {
-        label: t('system.role.field.roleMenus'),
+        label: '角色菜单',
         prop: 'menuIds',
         renderField(value, onChange, props) {
           return h('div', {
@@ -110,8 +109,8 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
       assignMenuConfirmLoading.value = false
 
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.assignSuccess'),
+        title: '通知',
+        message: '分配成功',
       })
 
       pageInstance.value.getList()

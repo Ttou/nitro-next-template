@@ -2,7 +2,6 @@ import { Icon } from '@iconify/vue'
 import { pascalCase } from 'es-toolkit'
 import { h } from 'vue'
 import { YesOrNoEnum } from '~shared/enums'
-import { t } from '~web/i18n'
 import { DefaultLayout } from '~web/layouts'
 
 const routeComponents = import.meta.glob(`../views/**/index.{jsx,tsx,vue}`)
@@ -46,7 +45,7 @@ export async function createMenus(menus: any[]) {
         module.default.name = temp.name
       }
       else {
-        console.warn(t('common.message.pageComponentMissing'), menu.component)
+        console.warn('配置的页面不存在：', menu.component)
       }
     }
 

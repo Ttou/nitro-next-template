@@ -10,7 +10,6 @@ import {
   SystemDeptModule,
   SystemDictDataModule,
   SystemDictTypeModule,
-  SystemLangModule,
   SystemMenuModule,
   SystemPostAuthModule,
   SystemPostModule,
@@ -33,7 +32,6 @@ import {
     SystemDeptModule,
     SystemDictTypeModule,
     SystemDictDataModule,
-    SystemLangModule,
     SystemMenuModule,
     SystemPostModule,
     SystemPostAuthModule,
@@ -97,10 +95,6 @@ import {
                     module: SystemDictDataModule,
                   },
                 ],
-              },
-              {
-                path: 'lang',
-                module: SystemLangModule,
               },
               {
                 path: 'menu',

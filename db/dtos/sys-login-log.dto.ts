@@ -1,6 +1,8 @@
 import type { SysLoginLogEntity } from '../entities'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
+import { flattenObject, mapValues, toCamelCaseKeys } from 'es-toolkit'
+import { isObject } from 'es-toolkit/compat'
 import { UAParser } from 'ua-parser-js'
 
 export class UserAgentSerDto {

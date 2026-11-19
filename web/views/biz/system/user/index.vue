@@ -6,7 +6,6 @@ import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
 import { useDict } from '~web/hooks/useDict'
-import { t } from '~web/i18n'
 import { dictToOptions } from '~web/utils'
 import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
 
@@ -20,7 +19,7 @@ const sexDictOptions = computed(() => dictToOptions(dict.value.get('sys.user.sex
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: t('common.field.account'),
+    label: '账号',
     prop: 'userName',
     fieldProps: {
       disabled: unref(updateVisible),
@@ -30,7 +29,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.password'),
+    label: '密码',
     prop: 'password',
     fieldProps: {
       type: 'password',
@@ -43,14 +42,14 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.nickname'),
+    label: '昵称',
     prop: 'nickName',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: t('common.field.phone'),
+    label: '手机',
     prop: 'phone',
     tableColumnProps: {
       align: 'center',
@@ -58,7 +57,7 @@ const columns = computed<PlusColumn[]>(() => [
     minWidth: 120,
   },
   {
-    label: t('common.field.email'),
+    label: '邮箱',
     prop: 'email',
     tableColumnProps: {
       align: 'center',
@@ -66,7 +65,7 @@ const columns = computed<PlusColumn[]>(() => [
     minWidth: 180,
   },
   {
-    label: t('common.field.gender'),
+    label: '性别',
     prop: 'sex',
     valueType: 'select',
     options: sexDictOptions,
@@ -75,7 +74,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.avatar'),
+    label: '头像',
     prop: 'avatar',
     valueType: 'image',
     hideInSearch: true,
@@ -84,7 +83,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.isAvailable'),
+    label: '是否可用',
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -94,7 +93,7 @@ const columns = computed<PlusColumn[]>(() => [
     minWidth: 100,
   },
   {
-    label: t('common.field.createdAt'),
+    label: '创建时间',
     prop: 'createdAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -105,7 +104,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.updatedAt'),
+    label: '更新时间',
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -136,7 +135,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: t('common.field.index'),
+        label: '序号',
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -144,7 +143,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: t('common.button.edit'),
+            text: '编辑',
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_USER_UPDATE),
             props: { type: 'success' },
@@ -153,7 +152,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: t('common.button.delete'),
+            text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_USER_REMOVE),
             props: (row, index, button) => ({
@@ -161,7 +160,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
               disabled: row.roles.some(item => item.roleKey.includes('sys.')),
             }),
             confirm: {
-              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.nickName }),
+              message: ({ row }) => `确定删除【${row.nickName}】吗？`,
               options: {
                 type: 'warning',
               },
@@ -204,25 +203,25 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            {{ $t('common.button.add') }}
+            {{ '添加' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_USER_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            {{ $t('common.button.batchDelete') }}
+            {{ '批量删除' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_USER_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            {{ $t('common.button.export') }}
+            {{ '导出' }}
           </el-button>
           <el-button type="info" @click="showImport">
             <template #icon>
               <Icon icon="ep:upload" />
             </template>
-            {{ $t('common.button.import') }}
+            {{ '导入' }}
           </el-button>
         </el-space>
       </template>
@@ -255,13 +254,13 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
           <template #icon>
             <Icon icon="ep:download" />
           </template>
-          {{ $t('common.button.download') }}
+          {{ '下载' }}
         </el-button>
       </template>
       <template #plus-field-file>
         <el-upload
           v-loading="importTemplateLoading"
-          :element-loading-text="$t('common.upload.uploading')"
+          :element-loading-text="'上传中...'"
           class="upload-wrap"
           drag
           :http-request="httpRequest"
@@ -270,11 +269,11 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
         >
           <Icon class="upload-icon" icon="ep:upload-filled" />
           <div class="el-upload__text">
-            {{ $t('common.upload.dragOrClick') }} <em>{{ $t('common.upload.clickToUpload') }}</em>
+            {{ '拖放文件或' }} <em>{{ '点击上传' }}</em>
           </div>
           <template #tip>
             <div class="el-upload__tip">
-              {{ $t('common.upload.excelSizeLimit') }}
+              {{ 'Excel 文件大小不能超过 10mb' }}
             </div>
           </template>
         </el-upload>

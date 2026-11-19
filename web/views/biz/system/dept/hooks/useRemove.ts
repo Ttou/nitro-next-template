@@ -1,7 +1,6 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElNotification } from 'element-plus'
-import { t } from '~web/i18n'
 
 interface UseRemoveParams {
   pageInstance: Ref<PlusPageInstance>
@@ -14,8 +13,8 @@ export function useRemove({ pageInstance }: UseRemoveParams) {
     })
       .then(() => {
         ElNotification.success({
-          title: t('common.title.notification'),
-          message: t('common.message.deleteSuccess'),
+          title: '通知',
+          message: '删除成功',
         })
         pageInstance.value?.getList()
       })

@@ -3,7 +3,6 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -16,7 +15,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.user.dialog.create'),
+    title: '新增用户',
     width: '900px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -33,42 +32,42 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       userName: [
         {
           required: true,
-          message: t('common.validation.inputAccount'),
+          message: '请输入账号',
           trigger: 'blur',
         },
       ],
       password: [
         {
           required: true,
-          message: t('common.validation.inputPassword'),
+          message: '请输入密码',
           trigger: 'blur',
         },
       ],
       nickName: [
         {
           required: true,
-          message: t('common.validation.inputNickname'),
+          message: '请输入昵称',
           trigger: 'blur',
         },
       ],
       email: [
         {
           required: true,
-          message: t('common.validation.inputEmail'),
+          message: '请输入邮箱',
           trigger: 'blur',
         },
       ],
       sex: [
         {
           required: true,
-          message: t('common.validation.selectGender'),
+          message: '请选择性别',
           trigger: 'change',
         },
       ],
       isAvailable: [
         {
           required: true,
-          message: t('common.validation.selectIsAvailable'),
+          message: '请选择是否可用',
           trigger: 'change',
         },
       ],
@@ -90,8 +89,8 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createConfirmLoading.value = false
 
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.createSuccess'),
+        title: '通知',
+        message: '新增成功',
       })
 
       pageInstance.value.getList()

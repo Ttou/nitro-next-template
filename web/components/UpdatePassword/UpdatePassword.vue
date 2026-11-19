@@ -3,7 +3,6 @@ import type { FieldValues, PlusDrawerFormProps } from 'plus-pro-components'
 import type { UpdateCurrentUserPasswordReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 import { useUserStore } from '~web/store'
 
 defineOptions({
@@ -17,7 +16,7 @@ const userStore = useUserStore()
 
 const drawerProps = computed<PlusDrawerFormProps>(() => {
   return {
-    title: t('profile.password.title'),
+    title: '修改密码',
     confirmLoading: unref(confirmLoading),
     width: '600px',
     form: {
@@ -25,7 +24,7 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
       labelPosition: 'right',
       columns: [
         {
-          label: t('profile.oldPassword'),
+          label: '旧密码',
           prop: 'oldPassword',
           fieldProps: {
             type: 'password',
@@ -33,7 +32,7 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
           },
         },
         {
-          label: t('profile.newPassword'),
+          label: '新密码',
           prop: 'newPassword',
           fieldProps: {
             type: 'password',
@@ -41,7 +40,7 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
           },
         },
         {
-          label: t('profile.confirmPassword'),
+          label: '确认密码',
           prop: 'confirmPassword',
           fieldProps: {
             type: 'password',
@@ -53,21 +52,21 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
         oldPassword: [
           {
             required: true,
-            message: t('common.validation.inputOldPassword'),
+            message: '请输入旧密码',
             trigger: 'blur',
           },
         ],
         newPassword: [
           {
             required: true,
-            message: t('common.validation.inputNewPassword'),
+            message: '请输入新密码',
             trigger: 'blur',
           },
         ],
         confirmPassword: [
           {
             required: true,
-            message: t('common.validation.inputConfirmPassword'),
+            message: '请输入确认密码',
             trigger: 'blur',
           },
         ],
@@ -91,8 +90,8 @@ async function handleConfirm(values: FieldValues) {
     confirmLoading.value = false
 
     ElNotification.success({
-      title: t('common.title.notification'),
-      message: t('common.message.passwordChangedRelogin'),
+      title: '通知',
+      message: '修改成功，请重新登录',
       onClose: async () => {
         await userStore.logout()
       },

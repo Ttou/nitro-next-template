@@ -2,7 +2,6 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +14,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.role.dialog.create'),
+    title: '新增角色',
     width: '700px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -29,21 +28,21 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       roleName: [
         {
           required: true,
-          message: t('common.validation.inputRoleName'),
+          message: '请输入角色名称',
           trigger: 'blur',
         },
       ],
       roleKey: [
         {
           required: true,
-          message: t('common.validation.inputRoleKey'),
+          message: '请输入角色标识',
           trigger: 'blur',
         },
       ],
       isAvailable: [
         {
           required: true,
-          message: t('common.validation.selectIsAvailable'),
+          message: '请选择是否可用',
           trigger: 'change',
         },
       ],
@@ -65,8 +64,8 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
       createConfirmLoading.value = false
 
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.createSuccess'),
+        title: '通知',
+        message: '新增成功',
       })
 
       pageInstance.value.getList()

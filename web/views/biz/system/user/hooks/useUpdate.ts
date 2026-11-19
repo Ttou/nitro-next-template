@@ -3,7 +3,6 @@ import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -16,7 +15,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.user.dialog.update'),
+    title: '编辑用户',
     width: '900px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -33,21 +32,21 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
       nickName: [
         {
           required: true,
-          message: t('common.validation.inputNickname'),
+          message: '请输入昵称',
           trigger: 'blur',
         },
       ],
       email: [
         {
           required: true,
-          message: t('common.validation.inputEmail'),
+          message: '请输入邮箱',
           trigger: 'blur',
         },
       ],
       isAvailable: [
         {
           required: true,
-          message: t('common.validation.selectIsAvailable'),
+          message: '请选择是否可用',
           trigger: 'change',
         },
       ],
@@ -70,8 +69,8 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
       updateConfirmLoading.value = false
 
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.updateSuccess'),
+        title: '通知',
+        message: '编辑成功',
       })
 
       pageInstance.value.getList()

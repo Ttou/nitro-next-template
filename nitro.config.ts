@@ -108,9 +108,8 @@ export default defineConfig({
         copyDeployFiles([
           'resource/.env.deploy',
           'resource/package.json',
-          // 密钥与国际化按目录整体复制到 .server/secrets、.server/locales
+          // 密钥按目录整体复制到 .server/secrets
           'resource/secrets',
-          'resource/locales',
           // bull-board 面板的静态资源，prod 下按 node_modules 解析 uiBasePath
           'node_modules/@bull-board/ui',
         ]),

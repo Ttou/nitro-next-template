@@ -83,13 +83,13 @@ watchEffect(() => {
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="refresh-self">
-                {{ $t('layout.tabs.refresh') }}
+                {{ '刷新当前' }}
               </el-dropdown-item>
               <el-dropdown-item command="close-other">
-                {{ $t('layout.tabs.closeOthers') }}
+                {{ '关闭其它' }}
               </el-dropdown-item>
               <el-dropdown-item command="close-all">
-                {{ $t('layout.tabs.closeAll') }}
+                {{ '关闭全部' }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

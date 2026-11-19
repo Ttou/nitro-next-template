@@ -5,7 +5,6 @@ import { omit } from 'es-toolkit'
 import JsonEditorVue from 'json-editor-vue'
 import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
-import { t } from '~web/i18n'
 
 interface UseDetailParams {
   pageInstance: Ref<PlusPageInstance>
@@ -17,7 +16,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
   const detailValues = ref({})
 
   const detailDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('monitor.cache.dialog.detail'),
+    title: '缓存详情',
     width: '1000px',
     hasFooter: false,
     destroyOnClose: true,
@@ -52,7 +51,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       }) as PlusColumn[],
       [
         {
-          label: t('monitor.cache.field.cacheValue'),
+          label: '缓存键值',
           prop: 'value',
           renderField(value, onChange, props) {
             return h(JsonEditorVue, {

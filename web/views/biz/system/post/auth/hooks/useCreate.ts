@@ -2,7 +2,6 @@ import type { PlusDialogProps, PlusPageInstance, PlusPageProps } from 'plus-pro-
 import type { ComputedRef, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,7 +14,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
   const createSelectedIds = ref<string[]>([])
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.auth.button.grant'),
+    title: '添加授权',
     width: '1200px',
     confirmLoading: unref(createConfirmLoading),
     destroyOnClose: true,
@@ -23,21 +22,21 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
   const createPageProps = computed<PlusPageProps>(() => ({
     columns: [
       {
-        label: t('common.field.account'),
+        label: '账号',
         prop: 'userName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: t('common.field.nickname'),
+        label: '昵称',
         prop: 'nickName',
         tableColumnProps: {
           align: 'center',
         },
       },
       {
-        label: t('common.field.phone'),
+        label: '手机',
         prop: 'phone',
         hideInSearch: true,
         tableColumnProps: {
@@ -45,7 +44,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
         },
       },
       {
-        label: t('common.field.email'),
+        label: '邮箱',
         prop: 'email',
         hideInSearch: true,
         tableColumnProps: {
@@ -53,7 +52,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
         },
       },
       {
-        label: t('common.field.isAvailable'),
+        label: '是否可用',
         prop: 'isAvailable',
         valueType: 'select',
         options: YesOrNoEnum.items,
@@ -94,7 +93,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
 
   async function confirmCreate() {
     if (createSelectedIds.value.length === 0) {
-      ElMessage.error(t('system.auth.message.selectUserToGrant'))
+      ElMessage.error('请选择要授权的用户')
       return
     }
 

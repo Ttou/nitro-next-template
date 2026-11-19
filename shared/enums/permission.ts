@@ -11,7 +11,6 @@ export const PermissionEnum = Enum({
   SYSTEM_DICT_DATA: { label: '字典数据', value: 'sys.menu.system.dictData' },
   SYSTEM_MENU: { label: '菜单管理', value: 'sys.menu.system.menu' },
   SYSTEM_CONFIG: { label: '配置管理', value: 'sys.menu.system.config' },
-  SYSTEM_LANG: { label: '词库管理', value: 'sys.menu.system.lang' },
   SYSTEM_ROLE_AUTH: { label: '角色分配用户', value: 'sys.menu.system.roleAuth' },
   SYSTEM_POST_AUTH: { label: '岗位分配用户', value: 'sys.menu.system.postAuth' },
   SYSTEM_ROLE_MENU: { label: '角色分配菜单', value: 'sys.menu.system.roleMenu' },
@@ -57,10 +56,6 @@ export const PermissionEnum = Enum({
   SYSTEM_CONFIG_UPDATE: { label: '配置编辑', value: 'sys.menu.system.config.update' },
   SYSTEM_CONFIG_REMOVE: { label: '配置删除', value: 'sys.menu.system.config.remove' },
   SYSTEM_CONFIG_EXPORT: { label: '配置导出', value: 'sys.menu.system.config.export' },
-  SYSTEM_LANG_FIND_PAGE: { label: '词库分页', value: 'sys.menu.system.lang.findPage' },
-  SYSTEM_LANG_CREATE: { label: '词库新增', value: 'sys.menu.system.lang.create' },
-  SYSTEM_LANG_UPDATE: { label: '词库编辑', value: 'sys.menu.system.lang.update' },
-  SYSTEM_LANG_REMOVE: { label: '词库删除', value: 'sys.menu.system.lang.remove' },
   SYSTEM_ROLE_AUTH_FIND_UNALLOCATED_USER_PAGE: {
     label: '未分配用户分页',
     value: 'sys.menu.system.roleAuth.findUnallocatedUserPage',

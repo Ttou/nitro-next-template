@@ -2,7 +2,6 @@ import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageI
 import type { ComputedRef, Ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -16,7 +15,7 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.dictData.dialog.update'),
+    title: '编辑字典数据',
     width: '700px',
     confirmLoading: unref(updateConfirmLoading),
     destroyOnClose: true,
@@ -30,21 +29,21 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
       dictLabel: [
         {
           required: true,
-          message: t('common.validation.inputDictLabel'),
+          message: '请输入字典标签',
           trigger: 'blur',
         },
       ],
       dictValue: [
         {
           required: true,
-          message: t('common.validation.inputDictValue'),
+          message: '请输入字典值',
           trigger: 'blur',
         },
       ],
       isAvailable: [
         {
           required: true,
-          message: t('common.validation.selectIsAvailable'),
+          message: '请选择是否可用',
           trigger: 'change',
         },
       ],
@@ -72,8 +71,8 @@ export function useUpdate({ pageInstance, dictType, columns }: UseUpdateParams) 
       updateConfirmLoading.value = false
 
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.updateSuccess'),
+        title: '通知',
+        message: '编辑成功',
       })
 
       pageInstance.value.getList()

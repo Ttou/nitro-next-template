@@ -3,7 +3,6 @@ import type { VNode } from 'vue'
 import { Icon } from '@iconify/vue'
 import { ElButton, ElPopover } from 'element-plus'
 import { h, ref, render, shallowRef } from 'vue'
-import { t } from '~web/i18n'
 
 type IProps = ActionBarButtonsRow
 interface IParams {
@@ -17,7 +16,7 @@ interface IParams {
 
 export function usePopconfirmAction(params?: IParams): IProps {
   return {
-    text: params?.text ?? t('common.button.delete'),
+    text: params?.text ?? '删除',
     props: (row: any, index: number, button: ActionBarButtonsRow) => {
       const exposedRef = shallowRef()
       const confirmLoading = ref(false)
@@ -56,20 +55,20 @@ export function usePopconfirmAction(params?: IParams): IProps {
               default: () => [
                 h('div', { class: 'el-popconfirm__main' }, [
                   h(Icon, { class: 'el-popconfirm__icon', icon: 'ep:question-filled', color: 'rgb(255, 153, 0)' }),
-                  h('span', params?.message ?? t('common.confirm.delete')),
+                  h('span', params?.message ?? '确定删除吗？'),
                 ]),
                 h('div', { class: 'el-popconfirm__action' }, [
                   h(ElButton, {
                     size: 'small',
                     text: true,
                     onClick: () => handleCancel(),
-                  }, () => params?.cancelText ?? t('common.button.cancel')),
+                  }, () => params?.cancelText ?? '取消'),
                   h(ElButton, {
                     size: 'small',
                     type: 'primary',
                     loading: confirmLoading.value,
                     onClick: () => handleConfirm(),
-                  }, () => params?.confirmText ?? t('common.button.confirm')),
+                  }, () => params?.confirmText ?? '确定'),
                 ]),
               ],
             }),

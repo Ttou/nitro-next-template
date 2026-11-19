@@ -1,7 +1,6 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { t } from '~web/i18n'
 
 interface UseRemoveParams {
   pageInstance: Ref<PlusPageInstance>
@@ -15,8 +14,8 @@ export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
     })
       .then(() => {
         ElNotification.success({
-          title: t('common.title.notification'),
-          message: t('common.message.deleteSuccess'),
+          title: '通知',
+          message: '删除成功',
         })
         pageInstance.value.getList()
       })
@@ -25,13 +24,13 @@ export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   function confirmRemove(ids: string[], batch: boolean = false) {
     if (batch) {
       if (!selectedIds.value.length) {
-        ElMessage.warning(t('common.message.selectDataToDelete'))
+        ElMessage.warning('请选择要删除的数据')
         return
       }
 
-      ElMessageBox.confirm(t('common.confirm.deleteSelected'), {
+      ElMessageBox.confirm('确定删除选中的数据吗？', {
         type: 'warning',
-        title: t('common.title.tip'),
+        title: '提示',
       })
         .then(() => {
           handleRemove(ids)
@@ -44,16 +43,16 @@ export function useRemove({ pageInstance, selectedIds }: UseRemoveParams) {
   }
 
   function confirmClear() {
-    ElMessageBox.confirm(t('monitor.cache.confirm.clear'), {
+    ElMessageBox.confirm('确定清空缓存吗？', {
       type: 'warning',
-      title: t('common.title.tip'),
+      title: '提示',
     })
       .then(() => {
         Apis.MonitorCache.clear()
           .then(() => {
             ElNotification.success({
-              title: t('common.title.notification'),
-              message: t('monitor.cache.message.clearSuccess'),
+              title: '通知',
+              message: '清空成功',
             })
             pageInstance.value.getList()
           })

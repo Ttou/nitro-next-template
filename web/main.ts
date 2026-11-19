@@ -15,7 +15,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { setupDirectives } from './directives'
 import { useIcons } from './hooks/useIcons'
-import i18n from './i18n'
 import { router } from './router'
 import { store } from './store'
 
@@ -26,7 +25,6 @@ app.use(PlusProComponents)
 
 app.use(store)
 app.use(router)
-app.use(i18n)
 
 setupDirectives(app)
 

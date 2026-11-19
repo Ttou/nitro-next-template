@@ -16,8 +16,6 @@ export const ErrorEnum = Enum({
   DICT_VALUE_NOT_FOUND_ERROR: { value: 'DictValueNotFoundError', label: '字典值不存在' },
   DICT_TYPE_EXIST_ERROR: { value: 'DictTypeExistError', label: '字典类型已存在' },
   DICT_TYPE_NOT_FOUND_ERROR: { value: 'DictTypeNotFoundError', label: '字典类型不存在' },
-  LANG_EXIST_ERROR: { value: 'LangExistError', label: '语言翻译已存在' },
-  LANG_NOT_FOUND_ERROR: { value: 'LangNotFoundError', label: '语言翻译不存在' },
   MENU_EXIST_ERROR: { value: 'MenuExistError', label: '菜单已存在' },
   MENU_NOT_FOUND_ERROR: { value: 'MenuNotFoundError', label: '菜单不存在' },
   POST_EXIST_ERROR: { value: 'PostExistError', label: '岗位已存在' },

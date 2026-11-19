@@ -1,20 +1,7 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
 import { useElementPlusConfig } from './hooks'
-import { useAppStore } from './store'
 
 const config = useElementPlusConfig()
-const appStore = useAppStore()
-
-async function loadLocale() {
-  const result = await Apis.SystemLang.findAll({ params: { langCode: appStore.locale } })
-
-  appStore.mergeMessage(result)
-}
-
-onBeforeMount(async () => {
-  await loadLocale()
-})
 </script>
 
 <template>

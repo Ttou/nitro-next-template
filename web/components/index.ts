@@ -1,6 +1,5 @@
 export * from './AppTabs'
 export * from './DarkToggle'
 export * from './ImageCaptcha'
-export * from './LangSelect'
 export * from './UpdatePassword'
 export * from './UpdateProfile'

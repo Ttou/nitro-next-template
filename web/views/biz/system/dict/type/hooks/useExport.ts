@@ -1,7 +1,6 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
-import { t } from '~web/i18n'
 import { download } from '~web/utils'
 
 interface UseExportParams {
@@ -11,9 +10,9 @@ interface UseExportParams {
 
 export function useExport({ pageInstance }: UseExportParams) {
   function confirmExport() {
-    ElMessageBox.confirm(t('common.confirm.export'), {
+    ElMessageBox.confirm('确定要导出吗？', {
       type: 'warning',
-      title: t('common.title.tip'),
+      title: '提示',
     })
       .then(async () => {
         const searchParams = pageInstance.value.getSearchFieldsValue()

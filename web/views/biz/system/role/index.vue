@@ -7,7 +7,6 @@ import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
-import { t } from '~web/i18n'
 import { useAssignMenu, useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -17,14 +16,14 @@ const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: t('system.role.field.roleName'),
+    label: '角色名称',
     prop: 'roleName',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: t('system.role.field.roleKey'),
+    label: '角色标识',
     prop: 'roleKey',
     fieldProps: {
       disabled: unref(updateVisible),
@@ -47,7 +46,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.isAvailable'),
+    label: '是否可用',
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -56,7 +55,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.remark'),
+    label: '备注',
     prop: 'remark',
     hideInSearch: true,
     tableColumnProps: {
@@ -64,7 +63,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.createdAt'),
+    label: '创建时间',
     prop: 'createdAt',
     valueType: 'date-picker',
     fieldProps: {
@@ -77,7 +76,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.updatedAt'),
+    label: '更新时间',
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -104,7 +103,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: t('common.field.index'),
+        label: '序号',
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -112,7 +111,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: t('system.role.assignMenu'),
+            text: '分配菜单',
             code: 'assignMenu',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGN),
             props: { type: 'primary' },
@@ -121,7 +120,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: t('common.button.edit'),
+            text: '编辑',
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_UPDATE),
             props: { type: 'success' },
@@ -130,7 +129,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: t('common.button.delete'),
+            text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_ROLE_REMOVE),
             props: (row, index, button) => ({
@@ -138,7 +137,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.roleKey.includes('sys.'),
             }),
             confirm: {
-              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.roleName }),
+              message: ({ row }) => `确定删除【${row.roleName}】吗？`,
               options: {
                 type: 'warning',
               },
@@ -190,19 +189,19 @@ const { assignMenuVisible, assignMenuValues, assignMenuDialogProps, assignMenuFo
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            {{ $t('common.button.add') }}
+            {{ '添加' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_ROLE_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            {{ $t('common.button.batchDelete') }}
+            {{ '批量删除' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_ROLE_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            {{ $t('common.button.export') }}
+            {{ '导出' }}
           </el-button>
         </el-space>
       </template>

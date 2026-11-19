@@ -6,5 +6,4 @@ const store = createPinia()
 store.use(piniaPluginPersistedstate)
 
 export { store }
-export * from './useAppStore'
 export * from './useUserStore'

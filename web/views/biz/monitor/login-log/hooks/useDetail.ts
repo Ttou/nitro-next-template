@@ -5,7 +5,6 @@ import { ElTag, ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
 import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
-import { t } from '~web/i18n'
 
 interface UseDetailParams {
   pageInstance: Ref<PlusPageInstance>
@@ -17,7 +16,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
   const detailValues = ref<SysLoginLogEntityWithUserDto>({})
 
   const detailDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('monitor.loginLog.dialog.detail'),
+    title: '登录详情',
     width: '1000px',
     hasFooter: false,
     destroyOnClose: true,

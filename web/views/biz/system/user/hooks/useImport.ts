@@ -3,7 +3,6 @@ import type { PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-
 import type { Ref } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
-import { t } from '~web/i18n'
 import { download } from '~web/utils'
 
 interface UseImportParams {
@@ -17,7 +16,7 @@ export function useImport({ pageInstance }: UseImportParams) {
   const importTemplateLoading = ref(false)
 
   const importDialogProps = computed<PlusDialogProps>(() => ({
-    title: t('system.user.dialog.import'),
+    title: '导入用户',
     width: '600px',
     confirmLoading: unref(importTemplateLoading),
     destroyOnClose: true,
@@ -32,11 +31,11 @@ export function useImport({ pageInstance }: UseImportParams) {
     },
     columns: [
       {
-        label: t('common.import.template'),
+        label: '导入模板',
         prop: 'template',
       },
       {
-        label: t('common.import.file'),
+        label: '导入文件',
         prop: 'file',
       },
     ],
@@ -44,7 +43,7 @@ export function useImport({ pageInstance }: UseImportParams) {
       file: [
         {
           required: true,
-          message: t('common.validation.uploadFile'),
+          message: '请上传文件',
           trigger: 'blur',
         },
       ],
@@ -78,8 +77,8 @@ export function useImport({ pageInstance }: UseImportParams) {
         data: formData,
       })
       ElNotification.info({
-        title: t('common.import.result'),
-        message: t('system.user.message.importResult', { success: res.success, fail: res.fail }),
+        title: '导入结果',
+        message: `成功导入 ${res.success} 条记录，失败 ${res.fail} 条记录。`,
       })
       onSuccess?.(res)
       importVisible.value = false
@@ -96,12 +95,12 @@ export function useImport({ pageInstance }: UseImportParams) {
   function beforeUpload(file: File) {
     const isExcel = file.type === 'application/vnd.ms-excel' || file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     if (!isExcel) {
-      ElMessage.error(t('common.upload.excelOnly'))
+      ElMessage.error('只能上传 Excel 文件!')
       return false
     }
     const isLt10M = file.size / 1024 / 1024 < 10
     if (!isLt10M) {
-      ElMessage.error(t('common.upload.fileSizeLimit'))
+      ElMessage.error('上传文件大小不能超过 10MB!')
       return false
     }
     return true

@@ -8,7 +8,6 @@ import { computed, h, ref, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
-import { t } from '~web/i18n'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -18,14 +17,14 @@ const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: t('system.dictType.field.dictName'),
+    label: '字典名称',
     prop: 'dictName',
     tableColumnProps: {
       align: 'center',
     },
   },
   {
-    label: t('system.dictType.field.dictType'),
+    label: '字典类型',
     prop: 'dictType',
     valueType: 'link',
     fieldProps: {
@@ -45,7 +44,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.isAvailable'),
+    label: '是否可用',
     prop: 'isAvailable',
     valueType: 'select',
     options: YesOrNoEnum.items,
@@ -54,7 +53,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.remark'),
+    label: '备注',
     prop: 'remark',
     hideInSearch: true,
     tableColumnProps: {
@@ -63,7 +62,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.createdAt'),
+    label: '创建时间',
     prop: 'createdAt',
     valueType: 'date-picker',
     fieldProps: {
@@ -76,7 +75,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('common.field.updatedAt'),
+    label: '更新时间',
     prop: 'updatedAt',
     valueType: 'date-picker',
     hideInSearch: true,
@@ -103,7 +102,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: true,
       indexTableColumnProps: {
-        label: t('common.field.index'),
+        label: '序号',
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -111,7 +110,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: t('common.button.edit'),
+            text: '编辑',
             code: 'update',
             show: hasPermission(PermissionEnum.SYSTEM_DICT_TYPE_UPDATE),
             props: { type: 'success' },
@@ -120,7 +119,7 @@ const pageProps = computed<PlusPageProps>(() => {
             },
           },
           {
-            text: t('common.button.delete'),
+            text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_DICT_TYPE_REMOVE),
             props: (row, index, button) => ({
@@ -128,7 +127,7 @@ const pageProps = computed<PlusPageProps>(() => {
               disabled: row.dictType.includes('sys.'),
             }),
             confirm: {
-              message: ({ row }) => t('common.confirm.deleteWithName', { name: row.dictName }),
+              message: ({ row }) => `确定删除【${row.dictName}】吗？`,
               options: {
                 type: 'warning',
               },
@@ -179,19 +178,19 @@ const { confirmExport } = useExport({ pageInstance, selectedIds })
             <template #icon>
               <Icon icon="ep:plus" />
             </template>
-            {{ $t('common.button.add') }}
+            {{ '添加' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_DICT_TYPE_REMOVE" type="danger" @click="confirmRemove(selectedIds, true)">
             <template #icon>
               <Icon icon="ep:delete" />
             </template>
-            {{ $t('common.button.batchDelete') }}
+            {{ '批量删除' }}
           </el-button>
           <el-button v-permission="PermissionEnum.SYSTEM_DICT_TYPE_EXPORT" type="success" @click="confirmExport">
             <template #icon>
               <Icon icon="ep:download" />
             </template>
-            {{ $t('common.button.export') }}
+            {{ '导出' }}
           </el-button>
         </el-space>
       </template>

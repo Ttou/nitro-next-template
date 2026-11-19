@@ -1,6 +1,5 @@
 import { withQuery } from 'ufo'
 import { createRouter, createWebHistory } from 'vue-router'
-import { t } from '~web/i18n'
 import { DefaultLayout } from '~web/layouts'
 import { useUserStore } from '~web/store'
 
@@ -11,14 +10,14 @@ const router = createRouter({
       path: '/login',
       component: () => import('~web/views/sys/login/index.vue'),
       meta: {
-        title: t('common.button.login'),
+        title: '登录',
       },
     },
     {
       path: '/error',
       component: () => import('~web/views/sys/error/index.vue'),
       meta: {
-        title: t('sys.error.title'),
+        title: '错误',
       },
     },
     {

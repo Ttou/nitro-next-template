@@ -4,7 +4,6 @@ import { ElNotification } from 'element-plus'
 import { pick } from 'es-toolkit/compat'
 import { computed, ref, unref } from 'vue'
 import { useDict } from '~web/hooks'
-import { t } from '~web/i18n'
 import { dictToOptions } from '~web/utils'
 
 defineOptions({
@@ -21,26 +20,26 @@ const sexDictOptions = computed(() => dictToOptions(dict.value.get('sys.user.sex
 
 const drawerProps = computed<PlusDrawerFormProps>(() => {
   return {
-    title: t('profile.title'),
+    title: '更新个人信息',
     confirmLoading: unref(confirmLoading),
     form: {
       labelWidth: 80,
       labelPosition: 'right',
       columns: [
         {
-          label: t('profile.nickname'),
+          label: '用户昵称',
           prop: 'nickName',
         },
         {
-          label: t('common.field.phone'),
+          label: '手机',
           prop: 'phone',
         },
         {
-          label: t('common.field.email'),
+          label: '邮箱',
           prop: 'email',
         },
         {
-          label: t('common.field.gender'),
+          label: '性别',
           prop: 'sex',
           valueType: 'select',
           options: sexDictOptions,
@@ -49,7 +48,7 @@ const drawerProps = computed<PlusDrawerFormProps>(() => {
       rules: {
         sex: {
           required: true,
-          message: t('common.validation.selectGender'),
+          message: '请选择性别',
           trigger: 'blur',
         },
       },
@@ -78,8 +77,8 @@ function handleConfirm(values: any) {
     .then(() => {
       visible.value = false
       ElNotification.success({
-        title: t('common.title.notification'),
-        message: t('common.message.saveSuccess'),
+        title: '通知',
+        message: '修改成功',
       })
     })
     .finally(() => {

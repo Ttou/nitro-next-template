@@ -7,8 +7,7 @@ import { match } from 'ts-pattern'
 import { joinURL } from 'ufo'
 import { computed, unref, useTemplateRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { AppTabs, DarkToggle, LangSelect, UpdatePassword, UpdateProfile } from '~web/components'
-import { t } from '~web/i18n'
+import { AppTabs, DarkToggle, UpdatePassword, UpdateProfile } from '~web/components'
 import { useUserStore } from '~web/store'
 
 defineOptions({
@@ -27,25 +26,25 @@ const filteredRoutes = computed(() => filterRoutes(cloneDeep(userStore.routes)))
 
 const headerProps = computed<PlusHeaderProps>(() => {
   return {
-    title: t('layout.appTitle'),
+    title: '后台管理',
     userInfo: {
       username: userStore.user?.nickName ?? userStore.user.userName,
     },
     dropdownList: [
       {
-        label: t('profile.password.title'),
+        label: '修改密码',
         value: 'password',
       },
       {
-        label: t('layout.menu.profile'),
+        label: '个人中心',
         value: 'profile',
       },
     ],
     onClickDropdownItem: (item: any) => {
       match(item.value as 'logout' | 'profile' | 'password')
         .with('logout', () => {
-          ElMessageBox.confirm(t('layout.confirm.logout'), {
-            title: t('common.title.tip'),
+          ElMessageBox.confirm('确认退出登录？', {
+            title: '提示',
             type: 'warning',
             beforeClose: (action, instance, done) => {
               match(action)
@@ -122,7 +121,6 @@ function filterRoutes(routes: RouteRecordRaw[], basePath = '/') {
       <div style="margin-right: 12px;">
         <el-space>
           <DarkToggle />
-          <LangSelect />
         </el-space>
         <UpdatePassword ref="updatePasswordRef" />
         <UpdateProfile ref="updateProfileRef" />

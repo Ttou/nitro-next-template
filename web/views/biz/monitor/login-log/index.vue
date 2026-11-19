@@ -4,7 +4,6 @@ import { ElLink, ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
 import { computed, h, unref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
-import { t } from '~web/i18n'
 import { useDetail } from './hooks'
 
 const pageInstance = useTemplateRef('pageInstance')
@@ -13,7 +12,7 @@ const router = useRouter()
 
 const columns = computed<PlusColumn[]>(() => [
   {
-    label: t('monitor.loginLog.field.requestIp'),
+    label: '请求IP',
     prop: 'ip',
     minWidth: 100,
     valueType: 'text',
@@ -26,7 +25,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: t('monitor.loginLog.field.requestLocation'),
+    label: '请求地点',
     prop: 'location',
     minWidth: 120,
     valueType: 'text',
@@ -39,7 +38,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: t('monitor.loginLog.field.requestStatus'),
+    label: '请求状态',
     prop: 'status',
     minWidth: 100,
     valueType: 'tag',
@@ -54,7 +53,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInSearch: true,
   },
   {
-    label: t('monitor.loginLog.field.loginAccount'),
+    label: '登录人账号',
     prop: 'userName',
     minWidth: 150,
     render(value, data) {
@@ -75,7 +74,7 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('monitor.loginLog.field.costTime'),
+    label: '耗时',
     prop: 'costTime',
     renderField(value, onChange, props) {
       return h(
@@ -90,7 +89,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInTable: true,
   },
   {
-    label: t('monitor.loginLog.field.operateTime'),
+    label: '操作时间',
     prop: 'operateTime',
     width: 200,
     valueType: 'date-picker',
@@ -102,37 +101,37 @@ const columns = computed<PlusColumn[]>(() => [
     },
   },
   {
-    label: t('monitor.loginLog.field.loginToken'),
+    label: '登录密钥',
     prop: 'token',
     valueType: 'textarea',
     fieldProps: {
       rows: 4,
       readonly: true,
-      placeholder: t('common.placeholder.none'),
+      placeholder: '无',
     },
     hideInSearch: true,
     hideInTable: true,
   },
   {
-    label: t('monitor.loginLog.field.errorMessage'),
+    label: '错误信息',
     prop: 'errorMsg',
     valueType: 'textarea',
     fieldProps: {
       rows: 4,
       readonly: true,
-      placeholder: t('common.placeholder.none'),
+      placeholder: '无',
     },
     hideInSearch: true,
     hideInTable: true,
   },
   {
-    label: t('monitor.loginLog.field.userAgent'),
+    label: '用户代理',
     prop: 'userAgent',
     valueType: 'textarea',
     fieldProps: value => ({
       rows: 4,
       readonly: true,
-      placeholder: t('common.placeholder.none'),
+      placeholder: '无',
       value: JSON.stringify(value),
     }),
     hideInSearch: true,
@@ -156,7 +155,7 @@ const pageProps = computed<PlusPageProps>(() => {
       hasIndexColumn: true,
       isSelection: false,
       indexTableColumnProps: {
-        label: t('common.field.index'),
+        label: '序号',
       },
       actionBar: {
         actionBarTableColumnProps: {
@@ -164,7 +163,7 @@ const pageProps = computed<PlusPageProps>(() => {
         },
         buttons: [
           {
-            text: t('common.button.detail'),
+            text: '详情',
             code: 'info',
             props: (row, index, button) => ({
               type: 'primary',

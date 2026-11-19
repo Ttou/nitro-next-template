@@ -37,7 +37,6 @@ export class HealthController {
       }),
       () => this.memoryHealthIndicator.checkHeap('memory', 512 * 1024 * 1024),
       () => this.httpHealthIndicator.pingCheck('ip-parser', UrlEnum.IP_PARSER, { timeout: 8_000 }),
-      () => this.httpHealthIndicator.pingCheck('translate', UrlEnum.TRANSLATE, { timeout: 8_000 }),
     ])
   }
 
