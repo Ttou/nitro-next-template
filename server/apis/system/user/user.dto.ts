@@ -1,96 +1,46 @@
+import type { SysUserEntityNoRelationsNoPasswordDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
-import { SysUserEntityExcludeRelationDto } from '~db/dtos'
+import { z } from 'zod'
+import { sysUserEntityNoRelationsNoPasswordSchema } from '~db/dtos'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { PageReqDto, PageResDto } from '~server/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { emailText, optionalEnumOf, optionalText, phoneText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemUserPageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '用户名' })
-  @IsOptional()
-  userName?: string
+export const findSystemUserPageReqSchema = pageReqSchema.extend({
+  userName: optionalText().describe('用户名'),
+  nickName: optionalText().describe('昵称'),
+  phone: phoneText().nullish().transform(value => value ?? undefined).describe('手机号码'),
+  email: emailText().nullish().transform(value => value ?? undefined).describe('邮箱'),
+  sex: optionalText().describe('性别'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+}).meta({ id: 'FindSystemUserPageReqDto' })
 
-  @ApiPropertyOptional({ description: '昵称' })
-  @IsOptional()
-  nickName?: string
+export type FindSystemUserPageReqDto = z.infer<typeof findSystemUserPageReqSchema>
 
-  @ApiPropertyOptional({ description: '手机号码' })
-  @IsOptional()
-  @IsPhoneNumber('CN', { message: '手机号码格式不正确' })
-  phone?: string
+export const findSystemUserPageResSchema = pageResSchema('FindSystemUserPageResDto', sysUserEntityNoRelationsNoPasswordSchema)
 
-  @ApiPropertyOptional({ description: '邮箱' })
-  @IsOptional()
-  @IsEmail({}, { message: '邮箱格式不正确' })
-  email?: string
+export type FindSystemUserPageResDto = z.infer<typeof findSystemUserPageResSchema>
 
-  @ApiPropertyOptional({ description: '性别' })
-  @IsOptional()
-  sex?: string
+export const createSystemUserReqSchema = z.object({
+  userName: requiredText('用户名不能为空').describe('用户名'),
+  nickName: requiredText('昵称不能为空').describe('昵称'),
+  password: requiredText('密码不能为空').min(6, { error: '密码不能少于6位' }).describe('密码'),
+  sex: optionalText().describe('性别'),
+  phone: phoneText().nullish().transform(value => value ?? undefined).describe('手机号码'),
+  email: emailText().nullish().transform(value => value ?? undefined).describe('邮箱'),
+  remark: optionalText().describe('备注'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+}).meta({ id: 'CreateSystemUserReqDto' })
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-}
+export type CreateSystemUserReqDto = z.infer<typeof createSystemUserReqSchema>
 
-export class FindSystemUserPageResDto extends PageResDto<SysUserEntityNoRelationsNoPasswordDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysUserEntityNoRelationsNoPasswordDto],
-  })
-  declare data: SysUserEntityNoRelationsNoPasswordDto[]
-}
+export const updateSystemUserReqSchema = createSystemUserReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemUserReqDto' })
 
-export class CreateSystemUserReqDto {
-  @ApiProperty({ description: '用户名' })
-  @IsNotEmpty({ message: '用户名不能为空' })
-  userName: string
-
-  @ApiProperty({ description: '昵称' })
-  @IsNotEmpty({ message: '昵称不能为空' })
-  nickName: string
-
-  @ApiProperty({ description: '密码' })
-  @IsNotEmpty({ message: '密码不能为空' })
-  @MinLength(6, { message: '密码不能少于6位' })
-  password: string
-
-  @ApiPropertyOptional({ description: '性别' })
-  @IsOptional()
-  sex?: string
-
-  @ApiPropertyOptional({ description: '手机号码' })
-  @IsOptional()
-  @IsPhoneNumber('CN', { message: '手机号码格式不正确' })
-  phone?: string
-
-  @ApiPropertyOptional({ description: '邮箱' })
-  @IsOptional()
-  @IsEmail({}, { message: '邮箱格式不正确' })
-  email?: string
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-}
-
-export class UpdateSystemUserReqDto extends CreateSystemUserReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
-
-export class SysUserEntityNoRelationsNoPasswordDto extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}
+export type UpdateSystemUserReqDto = z.infer<typeof updateSystemUserReqSchema>
 
 @ExcelFile({
   fileName: '系统用户.xlsx',
@@ -189,13 +139,13 @@ export class ImportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswor
   }
 }
 
-export class ImportSystemUserResDto {
-  @ApiProperty({ description: '成功数' })
-  success: number
+/**
+ * 导入系统用户响应传输对象
+ */
+export const importSystemUserResSchema = z.object({
+  success: z.number().describe('成功数'),
+  fail: z.number().describe('失败数'),
+  items: z.array(z.string()).describe('导入失败的用户名列表'),
+}).meta({ id: 'ImportSystemUserResDto' })
 
-  @ApiProperty({ description: '失败数' })
-  fail: number
-
-  @ApiProperty({ description: '导入失败的用户名列表' })
-  items: string[]
-}
+export type ImportSystemUserResDto = z.infer<typeof importSystemUserResSchema>

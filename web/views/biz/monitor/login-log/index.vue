@@ -2,11 +2,10 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { ElLink, ElText } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, h, unref, useTemplateRef } from 'vue'
+import { computed, h, unref } from 'vue'
 import { useRouter } from 'vue-router'
+import { toPayload } from '~web/utils'
 import { useDetail } from './hooks'
-
-const pageInstance = useTemplateRef('pageInstance')
 
 const router = useRouter()
 
@@ -56,7 +55,7 @@ const columns = computed<PlusColumn[]>(() => [
     label: '登录人账号',
     prop: 'userName',
     minWidth: 150,
-    render(value, data) {
+    render(value) {
       return h(
         ElLink,
         {
@@ -76,7 +75,7 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '耗时',
     prop: 'costTime',
-    renderField(value, onChange, props) {
+    renderField(value) {
       return h(
         ElText,
         { type: 'warning' },
@@ -167,7 +166,7 @@ const pageProps = computed<PlusPageProps>(() => {
           {
             text: '详情',
             code: 'info',
-            props: (row, index, button) => ({
+            props: () => ({
               type: 'primary',
             }),
             onClick({ row }) {
@@ -196,7 +195,9 @@ const pageProps = computed<PlusPageProps>(() => {
       Reflect.deleteProperty(_params, 'user')
       Reflect.deleteProperty(_params, 'operateTime')
 
-      return await Apis.MonitorLoginLog.findPage({ data: _params })
+      return await Apis.MonitorLoginLog.findPage({
+        data: toPayload(_params),
+      })
     },
     searchCardProps: {
       shadow: 'never',
@@ -207,12 +208,12 @@ const pageProps = computed<PlusPageProps>(() => {
   }
 })
 
-const { detailVisible, detailValues, detailDialogProps, detailFormProps, showDetail, closeDetail } = useDetail({ pageInstance, columns })
+const { detailVisible, detailValues, detailDialogProps, detailFormProps, showDetail, closeDetail } = useDetail({ columns })
 </script>
 
 <template>
   <div class="auto-page">
-    <plus-page ref="pageInstance" v-bind="pageProps" />
+    <plus-page v-bind="pageProps" />
     <!-- 详情 -->
     <plus-dialog-form
       v-model:visible="detailVisible"

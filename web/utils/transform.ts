@@ -39,6 +39,9 @@ export function treeToList<T extends Record<string, any>>(tree: T[]) {
 
   while (stack.length) {
     const node = stack.shift()
+    if (!node) {
+      continue
+    }
     if (node.children) {
       stack.unshift(...node.children)
       delete node.children

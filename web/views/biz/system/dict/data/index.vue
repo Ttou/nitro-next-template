@@ -2,13 +2,15 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
+import { toPayload } from '~web/utils'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 
 const route = useRoute()
@@ -134,9 +136,11 @@ const pageProps = computed<PlusPageProps>(() => {
 
       Reflect.set(_params, 'dictType', unref(dictType))
 
-      const data = await Apis.SystemDictData.findList({ data: _params })
+      const data = await Apis.SystemDictData.findList({
+        data: toPayload(_params),
+      })
 
-      return { data }
+      return { data, total: data.length }
     },
     pagination: false,
     searchCardProps: {
@@ -151,7 +155,7 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, dictType, columns })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, dictType, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
-const { confirmExport } = useExport({ pageInstance, selectedIds, dictType })
+const { confirmExport } = useExport({ pageInstance, dictType })
 </script>
 
 <template>

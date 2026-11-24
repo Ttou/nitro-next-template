@@ -1,71 +1,41 @@
+import type { SysPostEntityExcludeRelationDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysPostEntityExcludeRelationDto } from '~db/dtos'
+import { z } from 'zod'
+import { sysPostEntityExcludeRelationSchema } from '~db/dtos'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { PageReqDto, PageResDto } from '~server/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemPostPageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '岗位标识' })
-  @IsOptional()
-  postKey?: string
+export const findSystemPostPageReqSchema = pageReqSchema.extend({
+  postKey: optionalText().describe('岗位标识'),
+  postName: optionalText().describe('岗位名称'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
+  endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
+}).meta({ id: 'FindSystemPostPageReqDto' })
 
-  @ApiPropertyOptional({ description: '岗位名称' })
-  @IsOptional()
-  postName?: string
+export type FindSystemPostPageReqDto = z.infer<typeof findSystemPostPageReqSchema>
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
+export const findSystemPostPageResSchema = pageResSchema('FindSystemPostPageResDto', sysPostEntityExcludeRelationSchema)
 
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '开始时间格式不正确' })
-  beginTime?: string
+export type FindSystemPostPageResDto = z.infer<typeof findSystemPostPageResSchema>
 
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '结束时间格式不正确' })
-  endTime?: string
-}
+export const createSystemPostReqSchema = z.object({
+  postName: requiredText('岗位名称不能为空').describe('岗位名称'),
+  postKey: requiredText('岗位标识不能为空').describe('岗位标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemPostReqDto' })
 
-export class FindSystemPostPageResDto extends PageResDto<SysPostEntityExcludeRelationDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysPostEntityExcludeRelationDto],
-  })
-  declare data: SysPostEntityExcludeRelationDto[]
-}
+export type CreateSystemPostReqDto = z.infer<typeof createSystemPostReqSchema>
 
-export class CreateSystemPostReqDto {
-  @ApiProperty({ description: '岗位名称' })
-  @IsNotEmpty({ message: '岗位名称不能为空' })
-  postName: string
+export const updateSystemPostReqSchema = createSystemPostReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemPostReqDto' })
 
-  @ApiProperty({ description: '岗位标识' })
-  @IsNotEmpty({ message: '岗位标识不能为空' })
-  postKey: string
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemPostReqDto extends CreateSystemPostReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemPostReqDto = z.infer<typeof updateSystemPostReqSchema>
 
 @ExcelFile({
   fileName: '系统岗位.xlsx',

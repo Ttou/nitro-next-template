@@ -111,19 +111,19 @@ export interface UpdateCurrentUserProfileReqDto {
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
   /**
    * 手机号码
    */
-  phone?: string;
+  phone?: string | null;
   /**
    * 邮箱
    */
-  email?: string;
+  email?: string | null;
   /**
    * 头像
    */
-  avatar?: string;
+  avatar?: string | null;
 }
 export interface UpdateCurrentUserPasswordReqDto {
   /**
@@ -151,7 +151,7 @@ export interface FindMonitorCachePageReqDto {
   /**
    * 缓存键
    */
-  key?: string;
+  key?: string | null;
 }
 export interface RemoveMonitorCacheReqDto {
   /**
@@ -171,11 +171,11 @@ export interface FindMonitorOnlinePageReqDto {
   /**
    * 用户名
    */
-  userName?: string;
+  userName?: string | null;
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
 }
 export interface RemoveReqDto {
   /**
@@ -195,19 +195,19 @@ export interface FindMonitorLoginLogPageReqDto {
   /**
    * 用户名
    */
-  userName?: string;
+  userName?: string | null;
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
   /**
    * 开始时间
    */
-  beginTime?: string;
+  beginTime?: string | null;
   /**
    * 结束时间
    */
-  endTime?: string;
+  endTime?: string | null;
 }
 export interface CreateSystemConfigReqDto {
   /**
@@ -225,15 +225,15 @@ export interface CreateSystemConfigReqDto {
   /**
    * 是否内置参数
    */
-  isBuiltin?: '0' | '1';
+  isBuiltin?: ('0' | '1') | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemConfigPageReqDto {
   /**
@@ -247,27 +247,27 @@ export interface FindSystemConfigPageReqDto {
   /**
    * 参数名称
    */
-  configName: string;
+  configName?: string | null;
   /**
    * 参数标识
    */
-  configKey: string;
+  configKey?: string | null;
   /**
    * 是否内置参数
    */
-  isBuiltin?: '0' | '1';
+  isBuiltin?: ('0' | '1') | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 开始时间
    */
-  beginTime?: string;
+  beginTime?: string | null;
   /**
    * 结束时间
    */
-  endTime?: string;
+  endTime?: string | null;
 }
 export interface UpdateSystemConfigReqDto {
   /**
@@ -285,15 +285,15 @@ export interface UpdateSystemConfigReqDto {
   /**
    * 是否内置参数
    */
-  isBuiltin?: '0' | '1';
+  isBuiltin?: ('0' | '1') | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -303,59 +303,59 @@ export interface CreateSystemDeptReqDto {
   /**
    * 父部门ID
    */
-  parentId?: string;
+  parentId?: string | null;
   /**
    * 部门名称
    */
-  deptName?: string;
+  deptName: string;
   /**
    * 部门标识
    */
-  deptKey?: string;
+  deptKey: string;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemDeptListReqDto {
   /**
    * 部门名称
    */
-  deptName?: string;
+  deptName?: string | null;
   /**
    * 部门标识
    */
-  deptKey?: string;
+  deptKey?: string | null;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
 }
 export interface UpdateSystemDeptReqDto {
   /**
    * 父部门ID
    */
-  parentId?: string;
+  parentId?: string | null;
   /**
    * 部门名称
    */
-  deptName?: string;
+  deptName: string;
   /**
    * 部门标识
    */
-  deptKey?: string;
+  deptKey: string;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -365,19 +365,19 @@ export interface CreateSystemDictTypeReqDto {
   /**
    * 字典名称
    */
-  dictName?: string;
+  dictName: string;
   /**
    * 字典类型
    */
-  dictType?: string;
+  dictType: string;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemDictTypePageReqDto {
   /**
@@ -391,41 +391,41 @@ export interface FindSystemDictTypePageReqDto {
   /**
    * 字典名称
    */
-  dictName?: string;
+  dictName?: string | null;
   /**
    * 字典类型
    */
-  dictType?: string;
+  dictType?: string | null;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 开始时间
    */
-  beginTime?: string;
+  beginTime?: string | null;
   /**
    * 结束时间
    */
-  endTime?: string;
+  endTime?: string | null;
 }
 export interface UpdateSystemDictTypeReqDto {
   /**
    * 字典名称
    */
-  dictName?: string;
+  dictName: string;
   /**
    * 字典类型
    */
-  dictType?: string;
+  dictType: string;
   /**
    * 可用状态
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -447,11 +447,11 @@ export interface CreateSystemDictDataReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemDictDataListReqDto {
   /**
@@ -461,11 +461,11 @@ export interface FindSystemDictDataListReqDto {
   /**
    * 字典标签
    */
-  dictLabel?: string;
+  dictLabel?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
 }
 export interface UpdateSystemDictDataReqDto {
   /**
@@ -483,11 +483,11 @@ export interface UpdateSystemDictDataReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -497,7 +497,7 @@ export interface CreateSystemMenuReqDto {
   /**
    * 父菜单ID
    */
-  parentId?: string;
+  parentId?: string | null;
   /**
    * 菜单标识
    */
@@ -517,59 +517,59 @@ export interface CreateSystemMenuReqDto {
   /**
    * 路由地址
    */
-  path?: string;
+  path?: string | null;
   /**
    * 组件
    */
-  component?: string;
+  component?: string | null;
   /**
    * 重定向
    */
-  redirect?: string;
+  redirect?: string | null;
   /**
    * 图标
    */
-  icon?: string;
+  icon?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 是否外链
    */
-  isFrame?: '0' | '1';
+  isFrame?: ('0' | '1') | null;
   /**
    * 是否缓存
    */
-  isCache?: '0' | '1';
+  isCache?: ('0' | '1') | null;
   /**
    * 是否显示
    */
-  isVisible?: '0' | '1';
+  isVisible?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemMenuListReqDto {
   /**
    * 菜单名称
    */
-  menuName?: string;
+  menuName?: string | null;
   /**
    * 菜单标识
    */
-  menuKey?: string;
+  menuKey?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
 }
 export interface UpdateSystemMenuReqDto {
   /**
    * 父菜单ID
    */
-  parentId?: string;
+  parentId?: string | null;
   /**
    * 菜单标识
    */
@@ -589,39 +589,39 @@ export interface UpdateSystemMenuReqDto {
   /**
    * 路由地址
    */
-  path?: string;
+  path?: string | null;
   /**
    * 组件
    */
-  component?: string;
+  component?: string | null;
   /**
    * 重定向
    */
-  redirect?: string;
+  redirect?: string | null;
   /**
    * 图标
    */
-  icon?: string;
+  icon?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 是否外链
    */
-  isFrame?: '0' | '1';
+  isFrame?: ('0' | '1') | null;
   /**
    * 是否缓存
    */
-  isCache?: '0' | '1';
+  isCache?: ('0' | '1') | null;
   /**
    * 是否显示
    */
-  isVisible?: '0' | '1';
+  isVisible?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -639,11 +639,11 @@ export interface CreateSystemPostReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemPostPageReqDto {
   /**
@@ -657,23 +657,23 @@ export interface FindSystemPostPageReqDto {
   /**
    * 岗位标识
    */
-  postKey?: string;
+  postKey?: string | null;
   /**
    * 岗位名称
    */
-  postName?: string;
+  postName?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 开始时间
    */
-  beginTime?: string;
+  beginTime?: string | null;
   /**
    * 结束时间
    */
-  endTime?: string;
+  endTime?: string | null;
 }
 export interface UpdateSystemPostReqDto {
   /**
@@ -687,11 +687,11 @@ export interface UpdateSystemPostReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -723,44 +723,14 @@ export interface FindAllocatedUserPageForPostReqDto {
   /**
    * 用户名
    */
-  userName?: string;
+  userName?: string | null;
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
 }
-export interface FindUnallocatedUserPageForPostReqDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 岗位ID
-   */
-  id: string;
-  /**
-   * 用户名
-   */
-  userName?: string;
-  /**
-   * 昵称
-   */
-  nickName?: string;
-}
-export interface UnallocateUserForPostReqDto {
-  /**
-   * 岗位ID
-   */
-  id: string;
-  /**
-   * 用户ID数组
-   */
-  ids: string[];
-}
+export type FindUnallocatedUserPageForPostReqDto = FindAllocatedUserPageForPostReqDto;
+export type UnallocateUserForPostReqDto = AllocateUserForPostReqDto;
 export interface CreateSystemRoleReqDto {
   /**
    * 角色名称
@@ -773,11 +743,11 @@ export interface CreateSystemRoleReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
 }
 export interface FindSystemRolePageReqDto {
   /**
@@ -791,23 +761,23 @@ export interface FindSystemRolePageReqDto {
   /**
    * 角色名称
    */
-  roleName?: string;
+  roleName?: string | null;
   /**
    * 角色标识
    */
-  roleKey?: string;
+  roleKey?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 开始时间
    */
-  beginTime?: string;
+  beginTime?: string | null;
   /**
    * 结束时间
    */
-  endTime?: string;
+  endTime?: string | null;
 }
 export interface UpdateSystemRoleReqDto {
   /**
@@ -821,11 +791,11 @@ export interface UpdateSystemRoleReqDto {
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * ID
    */
@@ -857,44 +827,14 @@ export interface FindAllocatedUserPageForRoleReqDto {
   /**
    * 用户名
    */
-  userName?: string;
+  userName?: string | null;
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
 }
-export interface FindUnallocatedUserPageForRoleReqDto {
-  /**
-   * 页码
-   */
-  page: number;
-  /**
-   * 页长
-   */
-  pageSize: number;
-  /**
-   * 角色ID
-   */
-  id: string;
-  /**
-   * 用户名
-   */
-  userName?: string;
-  /**
-   * 昵称
-   */
-  nickName?: string;
-}
-export interface UnallocateUserForRoleReqDto {
-  /**
-   * 角色ID
-   */
-  id: string;
-  /**
-   * 用户ID数组
-   */
-  ids: string[];
-}
+export type FindUnallocatedUserPageForRoleReqDto = FindAllocatedUserPageForRoleReqDto;
+export type UnallocateUserForRoleReqDto = AllocateUserForRoleReqDto;
 export interface AssignMenuForRoleReqDto {
   /**
    * 角色ID
@@ -927,23 +867,23 @@ export interface CreateSystemUserReqDto {
   /**
    * 性别
    */
-  sex?: string;
+  sex?: string | null;
   /**
    * 手机号码
    */
-  phone?: string;
+  phone?: string | null;
   /**
    * 邮箱
    */
-  email?: string;
+  email?: string | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
 }
 export interface FindSystemUserPageReqDto {
   /**
@@ -957,27 +897,27 @@ export interface FindSystemUserPageReqDto {
   /**
    * 用户名
    */
-  userName?: string;
+  userName?: string | null;
   /**
    * 昵称
    */
-  nickName?: string;
+  nickName?: string | null;
   /**
    * 手机号码
    */
-  phone?: string;
+  phone?: string | null;
   /**
    * 邮箱
    */
-  email?: string;
+  email?: string | null;
   /**
    * 性别
    */
-  sex?: string;
+  sex?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
 }
 export interface UpdateSystemUserReqDto {
   /**
@@ -995,23 +935,23 @@ export interface UpdateSystemUserReqDto {
   /**
    * 性别
    */
-  sex?: string;
+  sex?: string | null;
   /**
    * 手机号码
    */
-  phone?: string;
+  phone?: string | null;
   /**
    * 邮箱
    */
-  email?: string;
+  email?: string | null;
   /**
    * 备注
    */
-  remark?: string;
+  remark?: string | null;
   /**
    * 是否可用
    */
-  isAvailable?: '0' | '1';
+  isAvailable?: ('0' | '1') | null;
   /**
    * ID
    */
@@ -1045,7 +985,7 @@ export interface SysMenuEntityExcludeRelationDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1053,7 +993,7 @@ export interface SysMenuEntityExcludeRelationDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1061,7 +1001,7 @@ export interface SysMenuEntityExcludeRelationDto {
   /**
    * 父菜单ID
    */
-  parentId: object;
+  parentId?: string | null;
   /**
    * 菜单名称
    */
@@ -1081,19 +1021,19 @@ export interface SysMenuEntityExcludeRelationDto {
   /**
    * 路径
    */
-  path: object;
+  path?: string | null;
   /**
    * 组件
    */
-  component: object;
+  component?: string | null;
   /**
    * 重定向
    */
-  redirect: object;
+  redirect?: string | null;
   /**
    * 图标
    */
-  icon: object;
+  icon?: string | null;
   /**
    * 是否可用
    */
@@ -1101,19 +1041,19 @@ export interface SysMenuEntityExcludeRelationDto {
   /**
    * 是否缓存
    */
-  isCache: '0' | '1';
+  isCache?: ('0' | '1') | null;
   /**
    * 是否内嵌
    */
-  isFrame: '0' | '1';
+  isFrame?: ('0' | '1') | null;
   /**
    * 是否显示
    */
-  isVisible: '0' | '1';
+  isVisible?: ('0' | '1') | null;
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface SysRoleEntityWithMenusRelation {
   /**
@@ -1123,7 +1063,7 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1131,7 +1071,7 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1151,7 +1091,7 @@ export interface SysRoleEntityWithMenusRelation {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
   /**
    * 菜单列表
    */
@@ -1165,7 +1105,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1173,7 +1113,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1189,19 +1129,19 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -1213,7 +1153,7 @@ export interface CurrentUserGetInfoResDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
   /**
    * 角色列表
    */
@@ -1227,7 +1167,7 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1235,7 +1175,7 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1251,19 +1191,19 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -1275,7 +1215,7 @@ export interface CurrentUserGetProfileResDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindMonitorCachePageItemResDto {
   /**
@@ -1313,7 +1253,7 @@ export interface FindMonitorOnlinePageItemResDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1321,7 +1261,7 @@ export interface FindMonitorOnlinePageItemResDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1337,19 +1277,19 @@ export interface FindMonitorOnlinePageItemResDto {
   /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -1361,7 +1301,7 @@ export interface FindMonitorOnlinePageItemResDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindMonitorOnlinePageResDto {
   /**
@@ -1385,51 +1325,51 @@ export interface UserAgentSerDto {
   /**
    * 浏览器名称
    */
-  browserName: string;
+  browserName?: string;
   /**
    * 浏览器版本
    */
-  browserVersion: string;
+  browserVersion?: string;
   /**
    * 浏览器主版本号
    */
-  browserMajor: string;
+  browserMajor?: string;
   /**
    * 浏览器类型
    */
-  browserType: string;
+  browserType?: string;
   /**
    * CPU 架构
    */
-  cpuArchitecture: string;
+  cpuArchitecture?: string;
   /**
    * 设备类型
    */
-  deviceType: string;
+  deviceType?: string;
   /**
    * 设备型号
    */
-  deviceModel: string;
+  deviceModel?: string;
   /**
    * 设备供应商
    */
-  deviceVendor: string;
+  deviceVendor?: string;
   /**
    * 浏览器引擎名称
    */
-  engineName: string;
+  engineName?: string;
   /**
    * 浏览器引擎版本
    */
-  engineVersion: string;
+  engineVersion?: string;
   /**
    * 操作系统名称
    */
-  osName: string;
+  osName?: string;
   /**
    * 操作系统版本
    */
-  osVersion: string;
+  osVersion?: string;
 }
 export interface SysLoginLogEntityDto {
   /**
@@ -1467,7 +1407,7 @@ export interface SysLoginLogEntityDto {
   /**
    * 错误信息
    */
-  errorMsg: object;
+  errorMsg?: string | null;
   /**
    * 操作时间
    */
@@ -1503,7 +1443,7 @@ export interface SysConfigEntityDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1511,7 +1451,7 @@ export interface SysConfigEntityDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1539,7 +1479,7 @@ export interface SysConfigEntityDto {
   /**
    * 备注
    */
-  remark?: object;
+  remark?: string | null;
 }
 export interface FindSystemConfigPageResDto {
   /**
@@ -1567,7 +1507,7 @@ export interface SysDeptEntityExcludeRelationDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1575,7 +1515,7 @@ export interface SysDeptEntityExcludeRelationDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1583,7 +1523,7 @@ export interface SysDeptEntityExcludeRelationDto {
   /**
    * 父部门ID
    */
-  parentId: object;
+  parentId?: string | null;
   /**
    * 部门键值
    */
@@ -1599,7 +1539,7 @@ export interface SysDeptEntityExcludeRelationDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface SysDictDataEntityDto {
   /**
@@ -1609,7 +1549,7 @@ export interface SysDictDataEntityDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1617,7 +1557,7 @@ export interface SysDictDataEntityDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1641,7 +1581,7 @@ export interface SysDictDataEntityDto {
   /**
    * 备注
    */
-  remark?: object;
+  remark?: string | null;
 }
 export interface SysDictTypeEntityDto {
   /**
@@ -1651,7 +1591,7 @@ export interface SysDictTypeEntityDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1659,7 +1599,7 @@ export interface SysDictTypeEntityDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1679,7 +1619,7 @@ export interface SysDictTypeEntityDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindSystemDictTypePageResDto {
   /**
@@ -1707,7 +1647,7 @@ export interface SysPostEntityExcludeRelationDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1715,7 +1655,7 @@ export interface SysPostEntityExcludeRelationDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1735,7 +1675,7 @@ export interface SysPostEntityExcludeRelationDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindSystemPostPageResDto {
   /**
@@ -1763,7 +1703,7 @@ export interface SysUserEntityWithPostsDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1771,7 +1711,7 @@ export interface SysUserEntityWithPostsDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1785,25 +1725,21 @@ export interface SysUserEntityWithPostsDto {
    */
   nickName: string;
   /**
-   * 密码
-   */
-  password: string;
-  /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -1815,7 +1751,7 @@ export interface SysUserEntityWithPostsDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
   /**
    * 岗位列表
    */
@@ -1865,7 +1801,7 @@ export interface SysRoleEntityExcludeRelationDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1873,7 +1809,7 @@ export interface SysRoleEntityExcludeRelationDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1893,7 +1829,7 @@ export interface SysRoleEntityExcludeRelationDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindSystemRolePageResDto {
   /**
@@ -1921,7 +1857,7 @@ export interface SysUserEntityWithRolesDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -1929,7 +1865,7 @@ export interface SysUserEntityWithRolesDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -1943,25 +1879,21 @@ export interface SysUserEntityWithRolesDto {
    */
   nickName: string;
   /**
-   * 密码
-   */
-  password: string;
-  /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -1973,7 +1905,7 @@ export interface SysUserEntityWithRolesDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
   /**
    * 角色列表
    */
@@ -2023,7 +1955,7 @@ export interface SysUserEntityNoRelationsNoPasswordDto {
   /**
    * 创建人
    */
-  createBy: object;
+  createBy?: string | null;
   /**
    * 创建时间
    */
@@ -2031,7 +1963,7 @@ export interface SysUserEntityNoRelationsNoPasswordDto {
   /**
    * 更新人
    */
-  updateBy: object;
+  updateBy?: string | null;
   /**
    * 更新时间
    */
@@ -2047,19 +1979,19 @@ export interface SysUserEntityNoRelationsNoPasswordDto {
   /**
    * 邮箱
    */
-  email: object;
+  email?: string | null;
   /**
    * 手机号码
    */
-  phone: object;
+  phone?: string | null;
   /**
    * 性别
    */
-  sex: object;
+  sex?: string | null;
   /**
    * 头像
    */
-  avatar: object;
+  avatar?: string | null;
   /**
    * 是否可用
    */
@@ -2071,7 +2003,7 @@ export interface SysUserEntityNoRelationsNoPasswordDto {
   /**
    * 备注
    */
-  remark: object;
+  remark?: string | null;
 }
 export interface FindSystemUserPageResDto {
   /**
@@ -2223,11 +2155,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 账号
@@ -2235,19 +2167,19 @@ declare global {
        *   // 昵称
        *   nickName: string
        *   // 邮箱
-       *   email: object
+       *   email?: string | null
        *   // 手机号码
-       *   phone: object
+       *   phone?: string | null
        *   // 性别
-       *   sex: object
+       *   sex?: string | null
        *   // 头像
-       *   avatar: object
+       *   avatar?: string | null
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否删除
        *   isDelete: '0' | '1'
        *   // 备注
-       *   remark: object
+       *   remark?: string | null
        *   // 角色列表
        *   // [items] start
        *   // [items] end
@@ -2255,11 +2187,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 角色键值
@@ -2269,7 +2201,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *     // 菜单列表
        *     // [items] start
        *     // [items] end
@@ -2277,15 +2209,15 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: object
+       *       createBy?: string | null
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: object
+       *       updateBy?: string | null
        *       // 更新时间
        *       updatedAt: string
        *       // 父菜单ID
-       *       parentId: object
+       *       parentId?: string | null
        *       // 菜单名称
        *       menuName: string
        *       // 菜单键值
@@ -2295,23 +2227,23 @@ declare global {
        *       // 排序
        *       orderNum: number
        *       // 路径
-       *       path: object
+       *       path?: string | null
        *       // 组件
-       *       component: object
+       *       component?: string | null
        *       // 重定向
-       *       redirect: object
+       *       redirect?: string | null
        *       // 图标
-       *       icon: object
+       *       icon?: string | null
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 是否缓存
-       *       isCache: '0' | '1'
+       *       isCache?: ('0' | '1') | null
        *       // 是否内嵌
-       *       isFrame: '0' | '1'
+       *       isFrame?: ('0' | '1') | null
        *       // 是否显示
-       *       isVisible: '0' | '1'
+       *       isVisible?: ('0' | '1') | null
        *       // 备注
-       *       remark: object
+       *       remark?: string | null
        *     }>
        *   }>
        * }
@@ -2335,11 +2267,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 账号
@@ -2347,19 +2279,19 @@ declare global {
        *   // 昵称
        *   nickName: string
        *   // 邮箱
-       *   email: object
+       *   email?: string | null
        *   // 手机号码
-       *   phone: object
+       *   phone?: string | null
        *   // 性别
-       *   sex: object
+       *   sex?: string | null
        *   // 头像
-       *   avatar: object
+       *   avatar?: string | null
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否删除
        *   isDelete: '0' | '1'
        *   // 备注
-       *   remark: object
+       *   remark?: string | null
        * }
        * ```
        */
@@ -2379,13 +2311,13 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        *   // 手机号码
-       *   phone?: string
+       *   phone?: string | null
        *   // 邮箱
-       *   email?: string
+       *   email?: string | null
        *   // 头像
-       *   avatar?: string
+       *   avatar?: string | null
        * }
        * ```
        *
@@ -2457,7 +2389,7 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 缓存键
-       *   key?: string
+       *   key?: string | null
        * }
        * ```
        *
@@ -2594,9 +2526,9 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        * }
        * ```
        *
@@ -2618,11 +2550,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -2630,19 +2562,19 @@ declare global {
        *     // 昵称
        *     nickName: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -2706,13 +2638,13 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -2744,36 +2676,36 @@ declare global {
        *     // 用户代理解析
        *     userAgentParsed: {
        *       // 浏览器名称
-       *       browserName: string
+       *       browserName?: string
        *       // 浏览器版本
-       *       browserVersion: string
+       *       browserVersion?: string
        *       // 浏览器主版本号
-       *       browserMajor: string
+       *       browserMajor?: string
        *       // 浏览器类型
-       *       browserType: string
+       *       browserType?: string
        *       // CPU 架构
-       *       cpuArchitecture: string
+       *       cpuArchitecture?: string
        *       // 设备类型
-       *       deviceType: string
+       *       deviceType?: string
        *       // 设备型号
-       *       deviceModel: string
+       *       deviceModel?: string
        *       // 设备供应商
-       *       deviceVendor: string
+       *       deviceVendor?: string
        *       // 浏览器引擎名称
-       *       engineName: string
+       *       engineName?: string
        *       // 浏览器引擎版本
-       *       engineVersion: string
+       *       engineVersion?: string
        *       // 操作系统名称
-       *       osName: string
+       *       osName?: string
        *       // 操作系统版本
-       *       osVersion: string
+       *       osVersion?: string
        *     }
        *     // 密钥
        *     token: string
        *     // 请求状态
        *     status: number
        *     // 错误信息
-       *     errorMsg: object
+       *     errorMsg?: string | null
        *     // 操作时间
        *     operateTime: string
        *     // 耗时
@@ -2810,11 +2742,11 @@ declare global {
        *   // 参数键值
        *   configValue: string
        *   // 是否内置参数
-       *   isBuiltin?: '0' | '1'
+       *   isBuiltin?: ('0' | '1') | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -2857,11 +2789,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 配置键值
@@ -2875,7 +2807,7 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark?: object
+       *   remark?: string | null
        * }
        * ```
        */
@@ -2908,17 +2840,17 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 参数名称
-       *   configName: string
+       *   configName?: string | null
        *   // 参数标识
-       *   configKey: string
+       *   configKey?: string | null
        *   // 是否内置参数
-       *   isBuiltin?: '0' | '1'
+       *   isBuiltin?: ('0' | '1') | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -2940,11 +2872,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 配置键值
@@ -2958,7 +2890,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark?: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -3022,11 +2954,11 @@ declare global {
        *   // 参数键值
        *   configValue: string
        *   // 是否内置参数
-       *   isBuiltin?: '0' | '1'
+       *   isBuiltin?: ('0' | '1') | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -3063,17 +2995,17 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 参数名称
-       *   configName: string
+       *   configName?: string | null
        *   // 参数标识
-       *   configKey: string
+       *   configKey?: string | null
        *   // 是否内置参数
-       *   isBuiltin?: '0' | '1'
+       *   isBuiltin?: ('0' | '1') | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -3106,15 +3038,15 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 父部门ID
-       *   parentId?: string
+       *   parentId?: string | null
        *   // 部门名称
-       *   deptName?: string
+       *   deptName: string
        *   // 部门标识
-       *   deptKey?: string
+       *   deptKey: string
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -3145,11 +3077,11 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 部门名称
-       *   deptName?: string
+       *   deptName?: string | null
        *   // 部门标识
-       *   deptKey?: string
+       *   deptKey?: string | null
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -3161,15 +3093,15 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 父部门ID
-       *   parentId: object
+       *   parentId?: string | null
        *   // 部门键值
        *   deptKey: string
        *   // 部门名称
@@ -3177,7 +3109,7 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark: object
+       *   remark?: string | null
        * }>
        * ```
        */
@@ -3234,15 +3166,15 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 父部门ID
-       *   parentId?: string
+       *   parentId?: string | null
        *   // 部门名称
-       *   deptName?: string
+       *   deptName: string
        *   // 部门标识
-       *   deptKey?: string
+       *   deptKey: string
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -3277,13 +3209,13 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 字典名称
-       *   dictName?: string
+       *   dictName: string
        *   // 字典类型
-       *   dictType?: string
+       *   dictType: string
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -3326,11 +3258,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 字典标签
@@ -3342,7 +3274,7 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark?: object
+       *   remark?: string | null
        * }>
        * ```
        */
@@ -3375,15 +3307,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 字典名称
-       *   dictName?: string
+       *   dictName?: string | null
        *   // 字典类型
-       *   dictType?: string
+       *   dictType?: string | null
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -3405,11 +3337,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 字典名称
@@ -3419,7 +3351,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -3477,13 +3409,13 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 字典名称
-       *   dictName?: string
+       *   dictName: string
        *   // 字典类型
-       *   dictType?: string
+       *   dictType: string
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -3520,15 +3452,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 字典名称
-       *   dictName?: string
+       *   dictName?: string | null
        *   // 字典类型
-       *   dictType?: string
+       *   dictType?: string | null
        *   // 可用状态
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -3567,9 +3499,9 @@ declare global {
        *   // 字典类型
        *   dictType: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -3602,9 +3534,9 @@ declare global {
        *   // 字典类型
        *   dictType: string
        *   // 字典标签
-       *   dictLabel?: string
+       *   dictLabel?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -3616,11 +3548,11 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 字典标签
@@ -3632,7 +3564,7 @@ declare global {
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 备注
-       *   remark?: object
+       *   remark?: string | null
        * }>
        * ```
        */
@@ -3652,13 +3584,29 @@ declare global {
        *
        * ---
        *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   // 主键数组
+       *   // [items] start
+       *   // [items] end
+       *   ids: string[]
+       * }
+       * ```
+       *
+       * ---
+       *
        * **Response**
        * ```ts
        * type Response = null
        * ```
        */
-      remove<Config extends Alova2MethodConfig<null>>(
-        config?: Config
+      remove<
+        Config extends Alova2MethodConfig<null> & {
+          data: RemoveReqDto;
+        }
+      >(
+        config: Config
       ): Alova2Method<null, 'SystemDictData.remove', Config>;
       /**
        * ---
@@ -3679,9 +3627,9 @@ declare global {
        *   // 字典类型
        *   dictType: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -3716,9 +3664,9 @@ declare global {
        *   // 字典类型
        *   dictType: string
        *   // 字典标签
-       *   dictLabel?: string
+       *   dictLabel?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -3751,7 +3699,7 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 父菜单ID
-       *   parentId?: string
+       *   parentId?: string | null
        *   // 菜单标识
        *   menuKey: string
        *   // 菜单名称
@@ -3761,23 +3709,23 @@ declare global {
        *   // 菜单排序
        *   orderNum: number
        *   // 路由地址
-       *   path?: string
+       *   path?: string | null
        *   // 组件
-       *   component?: string
+       *   component?: string | null
        *   // 重定向
-       *   redirect?: string
+       *   redirect?: string | null
        *   // 图标
-       *   icon?: string
+       *   icon?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 是否外链
-       *   isFrame?: '0' | '1'
+       *   isFrame?: ('0' | '1') | null
        *   // 是否缓存
-       *   isCache?: '0' | '1'
+       *   isCache?: ('0' | '1') | null
        *   // 是否显示
-       *   isVisible?: '0' | '1'
+       *   isVisible?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -3808,11 +3756,11 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 菜单名称
-       *   menuName?: string
+       *   menuName?: string | null
        *   // 菜单标识
-       *   menuKey?: string
+       *   menuKey?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -3824,15 +3772,15 @@ declare global {
        *   // 主键
        *   id: string
        *   // 创建人
-       *   createBy: object
+       *   createBy?: string | null
        *   // 创建时间
        *   createdAt: string
        *   // 更新人
-       *   updateBy: object
+       *   updateBy?: string | null
        *   // 更新时间
        *   updatedAt: string
        *   // 父菜单ID
-       *   parentId: object
+       *   parentId?: string | null
        *   // 菜单名称
        *   menuName: string
        *   // 菜单键值
@@ -3842,23 +3790,23 @@ declare global {
        *   // 排序
        *   orderNum: number
        *   // 路径
-       *   path: object
+       *   path?: string | null
        *   // 组件
-       *   component: object
+       *   component?: string | null
        *   // 重定向
-       *   redirect: object
+       *   redirect?: string | null
        *   // 图标
-       *   icon: object
+       *   icon?: string | null
        *   // 是否可用
        *   isAvailable: '0' | '1'
        *   // 是否缓存
-       *   isCache: '0' | '1'
+       *   isCache?: ('0' | '1') | null
        *   // 是否内嵌
-       *   isFrame: '0' | '1'
+       *   isFrame?: ('0' | '1') | null
        *   // 是否显示
-       *   isVisible: '0' | '1'
+       *   isVisible?: ('0' | '1') | null
        *   // 备注
-       *   remark: object
+       *   remark?: string | null
        * }>
        * ```
        */
@@ -3915,7 +3863,7 @@ declare global {
        * ```ts
        * type RequestBody = {
        *   // 父菜单ID
-       *   parentId?: string
+       *   parentId?: string | null
        *   // 菜单标识
        *   menuKey: string
        *   // 菜单名称
@@ -3925,23 +3873,23 @@ declare global {
        *   // 菜单排序
        *   orderNum: number
        *   // 路由地址
-       *   path?: string
+       *   path?: string | null
        *   // 组件
-       *   component?: string
+       *   component?: string | null
        *   // 重定向
-       *   redirect?: string
+       *   redirect?: string | null
        *   // 图标
-       *   icon?: string
+       *   icon?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 是否外链
-       *   isFrame?: '0' | '1'
+       *   isFrame?: ('0' | '1') | null
        *   // 是否缓存
-       *   isCache?: '0' | '1'
+       *   isCache?: ('0' | '1') | null
        *   // 是否显示
-       *   isVisible?: '0' | '1'
+       *   isVisible?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -3980,9 +3928,9 @@ declare global {
        *   // 岗位标识
        *   postKey: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -4017,15 +3965,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 岗位标识
-       *   postKey?: string
+       *   postKey?: string | null
        *   // 岗位名称
-       *   postName?: string
+       *   postName?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -4047,11 +3995,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 岗位键值
@@ -4061,7 +4009,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -4123,9 +4071,9 @@ declare global {
        *   // 岗位标识
        *   postKey: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -4162,15 +4110,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 岗位标识
-       *   postKey?: string
+       *   postKey?: string | null
        *   // 岗位名称
-       *   postName?: string
+       *   postName?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -4244,9 +4192,9 @@ declare global {
        *   // 岗位ID
        *   id: string
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        * }
        * ```
        *
@@ -4268,33 +4216,31 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
        *     userName: string
        *     // 昵称
        *     nickName: string
-       *     // 密码
-       *     password: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *     // 岗位列表
        *     // [items] start
        *     // [items] end
@@ -4302,11 +4248,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: object
+       *       createBy?: string | null
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: object
+       *       updateBy?: string | null
        *       // 更新时间
        *       updatedAt: string
        *       // 岗位键值
@@ -4316,7 +4262,7 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: object
+       *       remark?: string | null
        *     }>
        *   }>
        * }
@@ -4348,9 +4294,9 @@ declare global {
        *   // 岗位ID
        *   id: string
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        * }
        * ```
        *
@@ -4372,33 +4318,31 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
        *     userName: string
        *     // 昵称
        *     nickName: string
-       *     // 密码
-       *     password: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *     // 岗位列表
        *     // [items] start
        *     // [items] end
@@ -4406,11 +4350,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: object
+       *       createBy?: string | null
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: object
+       *       updateBy?: string | null
        *       // 更新时间
        *       updatedAt: string
        *       // 岗位键值
@@ -4420,7 +4364,7 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: object
+       *       remark?: string | null
        *     }>
        *   }>
        * }
@@ -4487,9 +4431,9 @@ declare global {
        *   // 角色标识
        *   roleKey: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        * }
        * ```
        *
@@ -4524,15 +4468,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 角色名称
-       *   roleName?: string
+       *   roleName?: string | null
        *   // 角色标识
-       *   roleKey?: string
+       *   roleKey?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -4554,11 +4498,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 角色键值
@@ -4568,7 +4512,7 @@ declare global {
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -4630,9 +4574,9 @@ declare global {
        *   // 角色标识
        *   roleKey: string
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // ID
        *   id: string
        * }
@@ -4669,15 +4613,15 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 角色名称
-       *   roleName?: string
+       *   roleName?: string | null
        *   // 角色标识
-       *   roleKey?: string
+       *   roleKey?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // 开始时间
-       *   beginTime?: string
+       *   beginTime?: string | null
        *   // 结束时间
-       *   endTime?: string
+       *   endTime?: string | null
        * }
        * ```
        *
@@ -4751,9 +4695,9 @@ declare global {
        *   // 角色ID
        *   id: string
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        * }
        * ```
        *
@@ -4775,33 +4719,31 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
        *     userName: string
        *     // 昵称
        *     nickName: string
-       *     // 密码
-       *     password: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *     // 角色列表
        *     // [items] start
        *     // [items] end
@@ -4809,11 +4751,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: object
+       *       createBy?: string | null
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: object
+       *       updateBy?: string | null
        *       // 更新时间
        *       updatedAt: string
        *       // 角色键值
@@ -4823,7 +4765,7 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: object
+       *       remark?: string | null
        *     }>
        *   }>
        * }
@@ -4855,9 +4797,9 @@ declare global {
        *   // 角色ID
        *   id: string
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        * }
        * ```
        *
@@ -4879,33 +4821,31 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
        *     userName: string
        *     // 昵称
        *     nickName: string
-       *     // 密码
-       *     password: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *     // 角色列表
        *     // [items] start
        *     // [items] end
@@ -4913,11 +4853,11 @@ declare global {
        *       // 主键
        *       id: string
        *       // 创建人
-       *       createBy: object
+       *       createBy?: string | null
        *       // 创建时间
        *       createdAt: string
        *       // 更新人
-       *       updateBy: object
+       *       updateBy?: string | null
        *       // 更新时间
        *       updatedAt: string
        *       // 角色键值
@@ -4927,7 +4867,7 @@ declare global {
        *       // 是否可用
        *       isAvailable: '0' | '1'
        *       // 备注
-       *       remark: object
+       *       remark?: string | null
        *     }>
        *   }>
        * }
@@ -5064,15 +5004,15 @@ declare global {
        *   // 密码
        *   password: string
        *   // 性别
-       *   sex?: string
+       *   sex?: string | null
        *   // 手机号码
-       *   phone?: string
+       *   phone?: string | null
        *   // 邮箱
-       *   email?: string
+       *   email?: string | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -5107,17 +5047,17 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        *   // 手机号码
-       *   phone?: string
+       *   phone?: string | null
        *   // 邮箱
-       *   email?: string
+       *   email?: string | null
        *   // 性别
-       *   sex?: string
+       *   sex?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *
@@ -5139,11 +5079,11 @@ declare global {
        *     // 主键
        *     id: string
        *     // 创建人
-       *     createBy: object
+       *     createBy?: string | null
        *     // 创建时间
        *     createdAt: string
        *     // 更新人
-       *     updateBy: object
+       *     updateBy?: string | null
        *     // 更新时间
        *     updatedAt: string
        *     // 账号
@@ -5151,19 +5091,19 @@ declare global {
        *     // 昵称
        *     nickName: string
        *     // 邮箱
-       *     email: object
+       *     email?: string | null
        *     // 手机号码
-       *     phone: object
+       *     phone?: string | null
        *     // 性别
-       *     sex: object
+       *     sex?: string | null
        *     // 头像
-       *     avatar: object
+       *     avatar?: string | null
        *     // 是否可用
        *     isAvailable: '0' | '1'
        *     // 是否删除
        *     isDelete: '0' | '1'
        *     // 备注
-       *     remark: object
+       *     remark?: string | null
        *   }>
        * }
        * ```
@@ -5227,15 +5167,15 @@ declare global {
        *   // 密码
        *   password: string
        *   // 性别
-       *   sex?: string
+       *   sex?: string | null
        *   // 手机号码
-       *   phone?: string
+       *   phone?: string | null
        *   // 邮箱
-       *   email?: string
+       *   email?: string | null
        *   // 备注
-       *   remark?: string
+       *   remark?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        *   // ID
        *   id: string
        * }
@@ -5272,17 +5212,17 @@ declare global {
        *   // 页长
        *   pageSize: number
        *   // 用户名
-       *   userName?: string
+       *   userName?: string | null
        *   // 昵称
-       *   nickName?: string
+       *   nickName?: string | null
        *   // 手机号码
-       *   phone?: string
+       *   phone?: string | null
        *   // 邮箱
-       *   email?: string
+       *   email?: string | null
        *   // 性别
-       *   sex?: string
+       *   sex?: string | null
        *   // 是否可用
-       *   isAvailable?: '0' | '1'
+       *   isAvailable?: ('0' | '1') | null
        * }
        * ```
        *

@@ -1,92 +1,52 @@
-import type { SysLoginLogEntity } from '../entities'
-import { ApiProperty } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { flattenObject, mapValues, toCamelCaseKeys } from 'es-toolkit'
-import { isObject } from 'es-toolkit/compat'
+import { flattenObject, toCamelCaseKeys } from 'es-toolkit'
 import { UAParser } from 'ua-parser-js'
+import { z } from 'zod'
+import { dateTimeField } from '~shared/utils'
 
-export class UserAgentSerDto {
-  @ApiProperty({ description: '浏览器名称' })
-  browserName?: string
+/**
+ * 用户代理解析结果
+ */
+export const userAgentSerSchema = z.object({
+  browserName: z.string().optional().describe('浏览器名称'),
+  browserVersion: z.string().optional().describe('浏览器版本'),
+  browserMajor: z.string().optional().describe('浏览器主版本号'),
+  browserType: z.string().optional().describe('浏览器类型'),
+  cpuArchitecture: z.string().optional().describe('CPU 架构'),
+  deviceType: z.string().optional().describe('设备类型'),
+  deviceModel: z.string().optional().describe('设备型号'),
+  deviceVendor: z.string().optional().describe('设备供应商'),
+  engineName: z.string().optional().describe('浏览器引擎名称'),
+  engineVersion: z.string().optional().describe('浏览器引擎版本'),
+  osName: z.string().optional().describe('操作系统名称'),
+  osVersion: z.string().optional().describe('操作系统版本'),
+}).meta({ id: 'UserAgentSerDto' })
 
-  @ApiProperty({ description: '浏览器版本' })
-  browserVersion?: string
+export type UserAgentSerDto = z.infer<typeof userAgentSerSchema>
 
-  @ApiProperty({ description: '浏览器主版本号' })
-  browserMajor?: string
-
-  @ApiProperty({ description: '浏览器类型' })
-  browserType?: string
-
-  @ApiProperty({ description: 'CPU 架构' })
-  cpuArchitecture?: string
-
-  @ApiProperty({ description: '设备类型' })
-  deviceType?: string
-
-  @ApiProperty({ description: '设备型号' })
-  deviceModel?: string
-
-  @ApiProperty({ description: '设备供应商' })
-  deviceVendor?: string
-
-  @ApiProperty({ description: '浏览器引擎名称' })
-  engineName?: string
-
-  @ApiProperty({ description: '浏览器引擎版本' })
-  engineVersion?: string
-
-  @ApiProperty({ description: '操作系统名称' })
-  osName?: string
-
-  @ApiProperty({ description: '操作系统版本' })
-  osVersion?: string
-
-  constructor(userAgent: string) {
-    const { ua, ...rest } = UAParser(userAgent)
-    // @ts-ignore
-    const obj = toCamelCaseKeys(flattenObject(mapValues(rest, value => isObject(value)
-      ? { ...value }
-      : value)))
-    Object.assign(this, obj)
-  }
+/**
+ * 解析用户代理
+ */
+export function parseUserAgent(userAgent: string): UserAgentSerDto {
+  // ua 是原始字符串，不需要展开
+  const { ua, ...rest } = UAParser(userAgent)
+  return toCamelCaseKeys(flattenObject(rest as Record<string, unknown>)) as UserAgentSerDto
 }
 
-export class SysLoginLogEntityDto implements SysLoginLogEntity {
-  @ApiProperty({ description: '主键', type: String })
-  id: string
+/**
+ * 系统登录日志
+ */
+export const sysLoginLogEntitySchema = z.object({
+  id: z.string().describe('主键'),
+  ip: z.string().describe('IP地址'),
+  location: z.string().describe('位置'),
+  userName: z.string().describe('用户账号'),
+  userAgent: z.string().describe('用户代理'),
+  userAgentParsed: userAgentSerSchema.describe('用户代理解析'),
+  token: z.string().describe('密钥'),
+  status: z.number().describe('请求状态'),
+  errorMsg: z.string().nullish().describe('错误信息'),
+  operateTime: dateTimeField('操作时间'),
+  costTime: z.number().describe('耗时'),
+}).meta({ id: 'SysLoginLogEntityDto' })
 
-  @ApiProperty({ description: 'IP地址' })
-  ip: string
-
-  @ApiProperty({ description: '位置' })
-  location: string
-
-  @ApiProperty({ description: '用户账号' })
-  userName: string
-
-  @ApiProperty({ description: '用户代理' })
-  userAgent: string
-
-  @ApiProperty({
-    description: '用户代理解析',
-    type: () => UserAgentSerDto,
-  })
-  @Transform(({ obj }) => Reflect.construct(UserAgentSerDto, [obj.userAgent]))
-  userAgentParsed: UserAgentSerDto
-
-  @ApiProperty({ description: '密钥' })
-  token: string
-
-  @ApiProperty({ description: '请求状态' })
-  status: number
-
-  @ApiProperty({ description: '错误信息' })
-  errorMsg?: INullable<string>
-
-  @ApiProperty({ description: '操作时间', type: Date })
-  operateTime: Date
-
-  @ApiProperty({ description: '耗时' })
-  costTime: number
-}
+export type SysLoginLogEntityDto = z.infer<typeof sysLoginLogEntitySchema>

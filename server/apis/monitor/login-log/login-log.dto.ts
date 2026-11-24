@@ -1,35 +1,20 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsDateString, IsOptional } from 'class-validator'
-import { SysLoginLogEntityDto } from '~db/dtos'
-import { PageReqDto, PageResDto } from '~server/dtos'
+import { z } from 'zod'
+import { sysLoginLogEntitySchema } from '~db/dtos'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { dateText, optionalText } from '~server/dtos/zod'
 
 /**
  * 分页查询登录日志请求
  */
-export class FindMonitorLoginLogPageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '用户名' })
-  @IsOptional()
-  userName?: string
+export const findMonitorLoginLogPageReqSchema = pageReqSchema.extend({
+  userName: optionalText().describe('用户名'),
+  nickName: optionalText().describe('昵称'),
+  beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
+  endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
+}).meta({ id: 'FindMonitorLoginLogPageReqDto' })
 
-  @ApiPropertyOptional({ description: '昵称' })
-  @IsOptional()
-  nickName?: string
+export type FindMonitorLoginLogPageReqDto = z.infer<typeof findMonitorLoginLogPageReqSchema>
 
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({ }, { message: '开始时间格式不正确' })
-  beginTime?: string
+export const findMonitorLoginLogPageResSchema = pageResSchema('FindMonitorLoginLogPageResDto', sysLoginLogEntitySchema)
 
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({ }, { message: '结束时间格式不正确' })
-  endTime?: string
-}
-
-export class FindMonitorLoginLogPageResDto extends PageResDto<SysLoginLogEntityDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysLoginLogEntityDto],
-  })
-  declare data: SysLoginLogEntityDto[]
-}
+export type FindMonitorLoginLogPageResDto = z.infer<typeof findMonitorLoginLogPageResSchema>

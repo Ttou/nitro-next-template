@@ -29,7 +29,7 @@ export class ExcelService {
       styles: 'ignore',
     })
     const keys = this.getKeys(cls)
-    const result = []
+    const result: T[] = []
     let rowCount = 0
 
     for await (const worksheetReader of workbookReader) {
@@ -41,16 +41,17 @@ export class ExcelService {
           continue
         }
 
-        const obj = {}
+        const obj: Record<string, any> = {}
 
         keys.forEach((key, index) => {
           obj[key] = row.getCell(index + 1).value
         })
 
+        // instanceToPlain 只返回普通对象，构造出来的实例已由 cls 保证形状
         result.push(instanceToPlain(Reflect.construct(cls, [obj]), {
           strategy: 'excludeAll',
           groups: [EXCEL_COLUMN_EXPOSE],
-        }))
+        }) as T)
       }
     }
 

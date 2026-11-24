@@ -1,8 +1,9 @@
+import type { LoginReqDto } from './auth.dto'
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { LoginLogInterceptor } from '~server/interceptors'
-import { AuthPublicKeyResDto, LoginReqDto } from './auth.dto'
+import { authPublicKeyResSchema, loginReqSchema } from './auth.dto'
 import { AuthService } from './auth.service'
 
 @ApiTags('鉴权接口')
@@ -17,12 +18,12 @@ export class AuthController {
   @XltIgnore()
   @UseInterceptors(LoginLogInterceptor)
   @Post('login')
-  async login(@Body() dto: LoginReqDto) {
+  async login(@Body({ schema: loginReqSchema }) dto: LoginReqDto) {
     return await this.authService.login(dto)
   }
 
   @ApiOperation({ summary: '获取登录公钥' })
-  @ApiOkResponse({ description: '请求成功', type: AuthPublicKeyResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: authPublicKeyResSchema })
   @XltIgnore()
   @Get('public-key')
   getPublicKey() {

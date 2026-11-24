@@ -1,8 +1,7 @@
+import type { FindMonitorCacheByKeyReqDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './cache.dto'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { plainToInstance } from 'class-transformer'
 import { CacheRedisExtendService, CacheService } from '~nestjs-modules/cache'
 import { ErrorEnum } from '~server/constants'
-import { FindMonitorCacheByKeyReqDto, FindMonitorCachePageItemResDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './cache.dto'
 
 @Injectable()
 export class MonitorCacheService {
@@ -22,7 +21,11 @@ export class MonitorCacheService {
 
     const { data, ...rest } = await this.cacheRedisExtendService.page(pattern, page, pageSize)
 
-    const items = plainToInstance(FindMonitorCachePageItemResDto, data, { cacheKeyPrefix: this.cacheService.getKey('') })
+    const cacheKeyPrefix = this.cacheService.getKey('')
+    const items = data.map(item => ({
+      key: item.key.replace(cacheKeyPrefix, ''),
+      ttl: Date.now() + Number(item.ttl) * 1000,
+    }))
 
     return {
       data: items,

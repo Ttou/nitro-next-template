@@ -1,91 +1,51 @@
+import type { SysConfigEntityDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysConfigEntityDto } from '~db/dtos'
+import { z } from 'zod'
+import { sysConfigEntitySchema } from '~db/dtos'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { PageReqDto, PageResDto } from '~server/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemConfigByKeyReqDto {
-  @ApiProperty({ description: '参数键名' })
-  @IsNotEmpty({ message: '参数键名不能为空' })
-  configKey: string
-}
+// 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
+export const findSystemConfigByKeyReqSchema = z.object({
+  configKey: requiredText('参数键名不能为空').describe('参数键名'),
+})
 
-export class FindSystemConfigPageReqDto extends PageReqDto {
-  @ApiProperty({ description: '参数名称' })
-  @IsOptional()
-  configName?: string
+export type FindSystemConfigByKeyReqDto = z.infer<typeof findSystemConfigByKeyReqSchema>
 
-  @ApiProperty({ description: '参数标识' })
-  @IsOptional()
-  configKey?: string
+export const findSystemConfigPageReqSchema = pageReqSchema.extend({
+  configName: optionalText().describe('参数名称'),
+  configKey: optionalText().describe('参数标识'),
+  isBuiltin: optionalEnumOf(YesOrNoEnumValues, '内置参数枚举值不正确').describe('是否内置参数'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
+  endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
+}).meta({ id: 'FindSystemConfigPageReqDto' })
 
-  @ApiPropertyOptional({ description: '是否内置参数', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '内置参数枚举值不正确' })
-  isBuiltin?: IYesOrNoEnum
+export type FindSystemConfigPageReqDto = z.infer<typeof findSystemConfigPageReqSchema>
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
+export const findSystemConfigPageResSchema = pageResSchema('FindSystemConfigPageResDto', sysConfigEntitySchema)
 
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '开始时间格式不正确' })
-  beginTime?: string
+export type FindSystemConfigPageResDto = z.infer<typeof findSystemConfigPageResSchema>
 
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '结束时间格式不正确' })
-  endTime?: string
-}
+export const createSystemConfigReqSchema = z.object({
+  configName: requiredText('参数名称不能为空').describe('参数名称'),
+  configKey: requiredText('参数标识不能为空').describe('参数标识'),
+  configValue: requiredText('参数键值不能为空').describe('参数键值'),
+  isBuiltin: optionalEnumOf(YesOrNoEnumValues, '内置参数枚举值不正确').describe('是否内置参数'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemConfigReqDto' })
 
-export class FindSystemConfigPageResDto extends PageResDto<SysConfigEntityDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysConfigEntityDto],
-  })
-  declare data: SysConfigEntityDto[]
-}
+export type CreateSystemConfigReqDto = z.infer<typeof createSystemConfigReqSchema>
 
-export class CreateSystemConfigReqDto {
-  @ApiProperty({ description: '参数名称' })
-  @IsNotEmpty({ message: '参数名称不能为空' })
-  configName: string
+export const updateSystemConfigReqSchema = createSystemConfigReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemConfigReqDto' })
 
-  @ApiProperty({ description: '参数标识' })
-  @IsNotEmpty({ message: '参数标识不能为空' })
-  configKey: string
-
-  @ApiProperty({ description: '参数键值' })
-  @IsNotEmpty({ message: '参数键值不能为空' })
-  configValue: string
-
-  @ApiPropertyOptional({ description: '是否内置参数', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '内置参数枚举值不正确' })
-  isBuiltin?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemConfigReqDto extends CreateSystemConfigReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemConfigReqDto = z.infer<typeof updateSystemConfigReqSchema>
 
 @ExcelFile({
   fileName: '系统配置.xlsx',

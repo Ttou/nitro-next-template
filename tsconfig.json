@@ -1,13 +1,13 @@
 {
-  "files": [],
+  // 供 @poppinss/ts-exec 使用
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "rewriteRelativeImportExtensions": true
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  // 供 @poppinss/ts-exec 使用
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "rewriteRelativeImportExtensions": true
-  }
+  "files": []
 }

@@ -1,5 +1,5 @@
 import type { ExecutionContext } from '@nestjs/common'
-import type { XltTokenConfig } from '@xlt-token/core'
+import type { AuthResult, XltTokenConfig } from '@xlt-token/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { XLT_PERMISSION_KEY, XLT_ROLE_KEY } from '@xlt-token/core'
@@ -47,11 +47,13 @@ export class XltTokenGuard extends XltAbstractLoginGuard {
     return true
   }
 
-  protected override async onAuthSuccess(result, request) {
-    await this.contextService.setCurrentUser(result.loginId)
+  protected override async onAuthSuccess(result: AuthResult, _request: unknown) {
+    // loginId 在 onAuthSuccess 中按约定非空，显式判空以收窄类型
+    if (result.loginId)
+      await this.contextService.setCurrentUser(result.loginId)
   }
 
-  protected override async onAuthFail(result, request) {
+  protected override async onAuthFail(result: AuthResult, _request: unknown) {
     console.error(result)
   }
 }

@@ -1,21 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { ArrayNotEmpty, IsNotEmpty, IsUUID } from 'class-validator'
+import { z } from 'zod'
+import { uuid, uuidArray } from '~server/dtos/zod'
 
-export class AssignMenuForRoleReqDto {
-  @ApiProperty({ description: '角色ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
+export const assignMenuForRoleReqSchema = z.object({
+  id: uuid('ID格式不正确').describe('角色ID'),
+  menuIds: uuidArray('ID格式不正确', 'ID数组不能为空').describe('菜单ID数组'),
+}).meta({ id: 'AssignMenuForRoleReqDto' })
 
-  @ApiProperty({ description: '菜单ID数组' })
-  @ArrayNotEmpty({ message: 'ID数组不能为空' })
-  @IsUUID('7', { each: true, message: 'ID格式不正确' })
-  menuIds: Array<string>
-}
+export type AssignMenuForRoleReqDto = z.infer<typeof assignMenuForRoleReqSchema>
 
-export class FindAssignedMenuForRoleReqDto {
-  @ApiProperty({ description: '角色ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export const findAssignedMenuForRoleReqSchema = z.object({
+  id: uuid('ID格式不正确').describe('角色ID'),
+}).meta({ id: 'FindAssignedMenuForRoleReqDto' })
+
+export type FindAssignedMenuForRoleReqDto = z.infer<typeof findAssignedMenuForRoleReqSchema>

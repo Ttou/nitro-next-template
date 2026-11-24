@@ -1,10 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './role.dto'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { RemoveReqDto } from '~server/dtos'
+import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemRoleReqDto, ExportSystemRoleSerDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './role.dto'
+import { createSystemRoleReqSchema, ExportSystemRoleSerDto, findSystemRolePageReqSchema, findSystemRolePageResSchema, updateSystemRoleReqSchema } from './role.dto'
 import { SystemRoleService } from './role.service'
 
 @ApiTags('系统角色接口')
@@ -20,15 +22,15 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_CREATE)
   @Post('create')
-  async create(@Body() dto: CreateSystemRoleReqDto) {
+  async create(@Body({ schema: createSystemRoleReqSchema }) dto: CreateSystemRoleReqDto) {
     return await this.systemRoleService.create(dto)
   }
 
   @ApiOperation({ summary: '查询系统角色分页列表' })
-  @ApiOkResponse({ description: '请求成功', type: FindSystemRolePageResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemRolePageResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body() dto: FindSystemRolePageReqDto) {
+  async findPage(@Body({ schema: findSystemRolePageReqSchema }) dto: FindSystemRolePageReqDto) {
     return await this.systemRoleService.findPage(dto)
   }
 
@@ -36,7 +38,7 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_REMOVE)
   @Delete('remove')
-  async remove(@Body() dto: RemoveReqDto) {
+  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
     return await this.systemRoleService.remove(dto)
   }
 
@@ -44,7 +46,7 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_UPDATE)
   @Post('update')
-  async update(@Body() dto: UpdateSystemRoleReqDto) {
+  async update(@Body({ schema: updateSystemRoleReqSchema }) dto: UpdateSystemRoleReqDto) {
     return await this.systemRoleService.update(dto)
   }
 
@@ -59,7 +61,7 @@ export class SystemRoleController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_EXPORT)
   @Post('export')
-  async export(@Body() dto: FindSystemRolePageReqDto) {
+  async export(@Body({ schema: findSystemRolePageReqSchema }) dto: FindSystemRolePageReqDto) {
     const { data } = await this.systemRoleService.findPage(dto)
     return this.excelService.exportFile(ExportSystemRoleSerDto, data)
   }

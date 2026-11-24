@@ -5,6 +5,8 @@ import { ElMessage, ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
 import { download } from '~web/utils'
 
+type UploadError = Parameters<UploadRequestOptions['onError']>[0]
+
 interface UseImportParams {
   pageInstance: Ref<PlusPageInstance>
 }
@@ -70,11 +72,9 @@ export function useImport({ pageInstance }: UseImportParams) {
     importTemplateLoading.value = true
 
     try {
-      const formData = new FormData()
-      formData.append('file', file as File)
-
+      // 请求层检测到 Blob 字段会自动转成 FormData，无需手工构造
       const res = await Apis.SystemUser.importTemplate({
-        data: formData,
+        data: { file },
       })
       ElNotification.info({
         title: '导入结果',
@@ -85,7 +85,8 @@ export function useImport({ pageInstance }: UseImportParams) {
       pageInstance.value?.getList()
     }
     catch (error) {
-      onError?.(error)
+      // 上传组件仅用该回调置为失败态，实际错误来自接口请求
+      onError?.(error as UploadError)
     }
     finally {
       importTemplateLoading.value = false

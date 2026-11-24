@@ -1,5 +1,5 @@
-import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
-import type { ComputedRef, Ref } from 'vue'
+import type { PlusColumn, PlusDialogProps, PlusFormProps } from 'plus-pro-components'
+import type { ComputedRef } from 'vue'
 import { ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
 import JsonEditorVue from 'json-editor-vue'
@@ -7,13 +7,12 @@ import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
 
 interface UseDetailParams {
-  pageInstance: Ref<PlusPageInstance>
   columns: ComputedRef<PlusColumn[]>
 }
 
-export function useDetail({ pageInstance, columns }: UseDetailParams) {
+export function useDetail({ columns }: UseDetailParams) {
   const detailVisible = ref(false)
-  const detailValues = ref({})
+  const detailValues = ref<Record<string, any>>({})
 
   const detailDialogProps = computed<PlusDialogProps>(() => ({
     title: '缓存详情',
@@ -39,9 +38,9 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
         if (column.prop === 'ttl') {
           return {
             ...omit(column, ['valueType', 'fieldProps']),
-            renderField(value, onChange, props) {
+            renderField(value) {
               return h(ElText, { type: 'warning' }, {
-                default: () => formatTime(value),
+                default: () => formatTime(value as string | number),
               })
             },
           }
@@ -53,7 +52,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
         {
           label: '缓存键值',
           prop: 'value',
-          renderField(value, onChange, props) {
+          renderField(value) {
             return h(JsonEditorVue, {
               mainMenuBar: false,
               statusbar: false,

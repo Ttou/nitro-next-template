@@ -1,4 +1,5 @@
 import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './menu.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -6,7 +7,6 @@ import { SysMenuEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './menu.dto'
 
 @Injectable()
 export class SystemMenuService {
@@ -40,9 +40,15 @@ export class SystemMenuService {
 
     const result = await this.em.findAll(SysMenuEntity, {
       where: {
-        menuName: menuName ? { $like: `%${menuName}%` } : {},
-        menuKey: menuKey ? { $like: `%${menuKey}%` } : {},
-        isAvailable: isAvailable ? { $eq: isAvailable } : {},
+        menuName: menuName
+          ? { $like: `%${menuName}%` }
+          : {},
+        menuKey: menuKey
+          ? { $like: `%${menuKey}%` }
+          : {},
+        isAvailable: isAvailable
+          ? { $eq: isAvailable }
+          : {},
       },
     })
 
@@ -64,8 +70,12 @@ export class SystemMenuService {
 
     const oldRecord = await this.em.findOne(SysMenuEntity, {
       $and: [
-        { id: { $eq: id } },
-        { menuKey: { $eq: menuKey } },
+        {
+          id: { $eq: id },
+        },
+        {
+          menuKey: { $eq: menuKey },
+        },
       ],
     })
 

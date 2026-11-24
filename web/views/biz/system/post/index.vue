@@ -3,13 +3,15 @@ import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { ElLink } from 'element-plus'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, h, ref, unref, useTemplateRef } from 'vue'
+import { computed, h, ref, unref } from 'vue'
 import { useRouter } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
+import { toPayload } from '~web/utils'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 
 const router = useRouter()
@@ -155,7 +157,9 @@ const pageProps = computed<PlusPageProps>(() => {
 
       Reflect.deleteProperty(_params, 'createdAt')
 
-      return await Apis.SystemPost.findPage({ data: _params })
+      return await Apis.SystemPost.findPage({
+        data: toPayload(_params),
+      })
     },
     searchCardProps: {
       shadow: 'never',
@@ -169,7 +173,7 @@ const pageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
-const { confirmExport } = useExport({ pageInstance, selectedIds })
+const { confirmExport } = useExport({ pageInstance })
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-import type { AlovaModuleOptions } from './alova.interface'
+import type { AlovaGenerics, AlovaOptions } from 'alova'
 import adapterFetch from 'alova/fetch'
 
 export const ALOVA_INSTANCE = Symbol('ALOVA_INSTANCE')
@@ -37,7 +37,8 @@ async function onSuccess(response: Response) {
   return data
 }
 
-export const defaultOptions: AlovaModuleOptions = {
+/** 合并进 createAlova 的默认配置，requestAdapter 必填故这里用完整类型 */
+export const defaultOptions: AlovaOptions<AlovaGenerics> = {
   requestAdapter: adapterFetch(),
   cacheFor: null,
   responded: { onSuccess },

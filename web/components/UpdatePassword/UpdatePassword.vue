@@ -4,13 +4,14 @@ import type { UpdateCurrentUserPasswordReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
 import { useUserStore } from '~web/store'
+import { toPayload } from '~web/utils'
 
 defineOptions({
   name: 'UpdatePassword',
 })
 
 const visible = ref(false)
-const formModel = ref<UpdateCurrentUserPasswordReqDto>()
+const formModel = ref<FieldValues>({})
 const confirmLoading = ref(false)
 const userStore = useUserStore()
 
@@ -83,7 +84,9 @@ async function handleConfirm(values: FieldValues) {
   try {
     confirmLoading.value = true
 
-    await Apis.CurrentUser.updatePassword({ data: values })
+    await Apis.CurrentUser.updatePassword({
+      data: toPayload<UpdateCurrentUserPasswordReqDto>(values),
+    })
 
     formModel.value = Object.create({})
     visible.value = false
@@ -97,7 +100,7 @@ async function handleConfirm(values: FieldValues) {
       },
     })
   }
-  catch (error) {
+  catch {
     confirmLoading.value = false
   }
 }

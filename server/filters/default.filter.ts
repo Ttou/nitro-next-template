@@ -4,6 +4,14 @@ import { HttpAdapterHost } from '@nestjs/core'
 import { ErrorEnum } from '~server/constants'
 
 /**
+ * 非 HttpException 的异常（如 Node 的 SystemError）可能带 status/message
+ */
+interface ErrorLike {
+  status?: number
+  message?: string
+}
+
+/**
  * 默认错误处理
  */
 @Catch()
@@ -42,13 +50,13 @@ export class DefaultFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       return exception.getStatus()
     }
-    return exception?.status || HttpStatus.INTERNAL_SERVER_ERROR
+    return (exception as ErrorLike | undefined)?.status || HttpStatus.INTERNAL_SERVER_ERROR
   }
 
   private getMessage(exception: unknown) {
     if (exception instanceof HttpException) {
       return exception.message
     }
-    return exception?.message || ErrorEnum.label(ErrorEnum.INTERNAL_SERVER_ERROR)
+    return (exception as ErrorLike | undefined)?.message || ErrorEnum.label(ErrorEnum.INTERNAL_SERVER_ERROR)
   }
 }

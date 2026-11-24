@@ -4,7 +4,7 @@ import { YesOrNoEnum } from '../../shared/enums/index.ts'
 import { SysPostEntity } from '../entities/index.ts'
 
 export class SysPostSeeder extends Seeder {
-  run(em: EntityManager, context: Dictionary) {
+  run(em: EntityManager, _context: Dictionary) {
     em.create(SysPostEntity, { postKey: 'ceo', postName: '董事长', isAvailable: YesOrNoEnum.YES })
     em.create(SysPostEntity, { postKey: 'se', postName: '项目经理', isAvailable: YesOrNoEnum.YES })
     em.create(SysPostEntity, { postKey: 'hr', postName: '人力资源', isAvailable: YesOrNoEnum.YES })

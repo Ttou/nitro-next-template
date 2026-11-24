@@ -1,5 +1,5 @@
-import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
-import type { ComputedRef, Ref } from 'vue'
+import type { PlusColumn, PlusDialogProps, PlusFormProps } from 'plus-pro-components'
+import type { ComputedRef } from 'vue'
 import type { SysLoginLogEntityDto } from '~web/apis/globals'
 import { ElTag, ElText } from 'element-plus'
 import { omit } from 'es-toolkit'
@@ -7,11 +7,10 @@ import { computed, h, ref, unref } from 'vue'
 import { formatTime } from '~shared/utils'
 
 interface UseDetailParams {
-  pageInstance: Ref<PlusPageInstance>
   columns: ComputedRef<PlusColumn[]>
 }
 
-export function useDetail({ pageInstance, columns }: UseDetailParams) {
+export function useDetail({ columns }: UseDetailParams) {
   const detailVisible = ref(false)
   const detailValues = ref<Partial<SysLoginLogEntityDto>>({})
 
@@ -41,7 +40,7 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       if (column.prop === 'status') {
         return {
           ...omit(column, ['valueType', 'fieldProps']),
-          renderField(value, onChange, props) {
+          renderField(value) {
             return h(ElTag, {
               type: value === 200
                 ? 'success'
@@ -55,15 +54,15 @@ export function useDetail({ pageInstance, columns }: UseDetailParams) {
       if (column.prop === 'operateTime') {
         return {
           ...omit(column, ['valueType', 'fieldProps']),
-          renderField(value, onChange, props) {
+          renderField(value) {
             return h(ElText, { type: 'primary' }, {
-              default: () => formatTime(value),
+              default: () => formatTime(value as string | number),
             })
           },
         }
       }
       return column
-    }),
+    }) as PlusColumn[],
   }))
 
   function showDetail(params: any) {

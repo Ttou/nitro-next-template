@@ -1,50 +1,39 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Exclude, Transform } from 'class-transformer'
-import { ArrayNotEmpty, IsNotEmpty, IsOptional } from 'class-validator'
-import { PageReqDto, PageResDto } from '~server/dtos'
+import { z } from 'zod'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { optionalText, requiredText } from '~server/dtos/zod'
 
-export class FindMonitorCachePageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '缓存键' })
-  @IsOptional()
-  key?: string
-}
+export const findMonitorCachePageReqSchema = pageReqSchema.extend({
+  key: optionalText().describe('缓存键'),
+}).meta({ id: 'FindMonitorCachePageReqDto' })
 
-export class FindMonitorCachePageItemResDto {
-  @ApiProperty({ description: '缓存键' })
-  @Transform(({ value, options }) => value.replace(options.cacheKeyPrefix, ''))
-  key: string
+export type FindMonitorCachePageReqDto = z.infer<typeof findMonitorCachePageReqSchema>
 
-  @Exclude()
-  value: string
+/**
+ * 缓存分页项响应传输对象
+ */
+export const findMonitorCachePageItemResSchema = z.object({
+  key: z.string().describe('缓存键'),
+  ttl: z.number().describe('缓存过期时间'),
+}).meta({ id: 'FindMonitorCachePageItemResDto' })
 
-  @ApiProperty({ description: '缓存过期时间' })
-  @Transform(({ value }) => Date.now() + Number(value) * 1000)
-  ttl: number
+export type FindMonitorCachePageItemResDto = z.infer<typeof findMonitorCachePageItemResSchema>
 
-  @Exclude()
-  error?: unknown
-}
+export const findMonitorCachePageResSchema = pageResSchema('FindMonitorCachePageResDto', findMonitorCachePageItemResSchema)
 
-export class FindMonitorCachePageResDto extends PageResDto<FindMonitorCachePageItemResDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [FindMonitorCachePageItemResDto],
-  })
-  declare data: FindMonitorCachePageItemResDto[]
-}
+export type FindMonitorCachePageResDto = z.infer<typeof findMonitorCachePageResSchema>
 
-export class FindMonitorCacheByKeyReqDto {
-  @ApiProperty({ description: '缓存键名' })
-  @IsNotEmpty({ message: '缓存键名不能为空' })
-  cacheKey: string
-}
+// 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
+export const findMonitorCacheByKeyReqSchema = z.object({
+  cacheKey: requiredText('缓存键名不能为空').describe('缓存键名'),
+})
 
-export class RemoveMonitorCacheReqDto {
-  @ApiProperty({
-    description: '缓存键数组',
-    type: 'array',
-    items: { type: 'string' },
-  })
-  @ArrayNotEmpty({ message: '缓存键数组不能为空' })
-  keys: string[]
-}
+export type FindMonitorCacheByKeyReqDto = z.infer<typeof findMonitorCacheByKeyReqSchema>
+
+export const removeMonitorCacheReqSchema = z.object({
+  keys: z.array(
+    z.string({ error: '缓存键必须是字符串' }),
+    { error: '缓存键数组不能为空' },
+  ).nonempty({ error: '缓存键数组不能为空' }).describe('缓存键数组'),
+}).meta({ id: 'RemoveMonitorCacheReqDto' })
+
+export type RemoveMonitorCacheReqDto = z.infer<typeof removeMonitorCacheReqSchema>

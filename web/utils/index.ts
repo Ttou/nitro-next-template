@@ -1,5 +1,7 @@
 export * from './crypto'
 export * from './dict'
 export * from './download'
+export * from './form'
 export * from './menu'
+export * from './page'
 export * from './transform'

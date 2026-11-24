@@ -11,7 +11,7 @@ import { SysRoleSeeder } from './sys-role.seeder.ts'
 import { SysUserSeeder } from './sys-user.seeder.ts'
 
 export class DatabaseSeeders extends Seeder {
-  async run(em: EntityManager, context: Dictionary) {
+  async run(em: EntityManager, _context: Dictionary) {
     // 有关联关系的注意顺序，先创建父表数据，再创建子表数据
     await this.call(em, [
       SysConfigSeeder,

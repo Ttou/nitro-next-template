@@ -1,8 +1,9 @@
+import type { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, UnallocateUserForRoleReqDto } from './auth.dto'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { PermissionEnum } from '~shared/enums'
-import { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindAllocatedUserPageForRoleResDto, FindUnallocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleResDto, UnallocateUserForRoleReqDto } from './auth.dto'
+import { allocateUserForRoleReqSchema, findAllocatedUserPageForRoleReqSchema, findAllocatedUserPageForRoleResSchema, findUnallocatedUserPageForRoleReqSchema, findUnallocatedUserPageForRoleResSchema, unallocateUserForRoleReqSchema } from './auth.dto'
 import { SystemRoleAuthService } from './auth.service'
 
 @ApiTags('系统角色权限接口')
@@ -17,23 +18,23 @@ export class SystemRoleAuthController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_AUTH_ALLOCATE_USER)
   @Post('allocateUser')
-  async allocateUser(@Body() dto: AllocateUserForRoleReqDto) {
+  async allocateUser(@Body({ schema: allocateUserForRoleReqSchema }) dto: AllocateUserForRoleReqDto) {
     await this.systemRoleAuthService.allocateUser(dto)
   }
 
   @ApiOperation({ summary: '查询角色已分配用户分页' })
-  @ApiOkResponse({ description: '请求成功', type: FindAllocatedUserPageForRoleResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findAllocatedUserPageForRoleResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_AUTH_FIND_ALLOCATED_USER_PAGE)
   @Post('findAllocatedUserPage')
-  async findAllocatedUserPage(@Body() dto: FindAllocatedUserPageForRoleReqDto) {
+  async findAllocatedUserPage(@Body({ schema: findAllocatedUserPageForRoleReqSchema }) dto: FindAllocatedUserPageForRoleReqDto) {
     return await this.systemRoleAuthService.findAllocatedUserPage(dto)
   }
 
   @ApiOperation({ summary: '查询角色未分配用户分页' })
-  @ApiOkResponse({ description: '请求成功', type: FindUnallocatedUserPageForRoleResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findUnallocatedUserPageForRoleResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_AUTH_FIND_UNALLOCATED_USER_PAGE)
   @Post('findUnallocatedUserPage')
-  async findUnallocatedUserPage(@Body() dto: FindUnallocatedUserPageForRoleReqDto) {
+  async findUnallocatedUserPage(@Body({ schema: findUnallocatedUserPageForRoleReqSchema }) dto: FindUnallocatedUserPageForRoleReqDto) {
     return await this.systemRoleAuthService.findUnallocatedUserPage(dto)
   }
 
@@ -41,7 +42,7 @@ export class SystemRoleAuthController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_AUTH_UNALLOCATE_USER)
   @Post('unallocateUser')
-  async unallocateUser(@Body() dto: UnallocateUserForRoleReqDto) {
+  async unallocateUser(@Body({ schema: unallocateUserForRoleReqSchema }) dto: UnallocateUserForRoleReqDto) {
     await this.systemRoleAuthService.unallocateUser(dto)
   }
 }

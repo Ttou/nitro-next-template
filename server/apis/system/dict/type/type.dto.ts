@@ -1,79 +1,52 @@
+import type { SysDictTypeEntityDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysDictDataEntityDto, SysDictTypeEntityDto } from '~db/dtos'
+import { z } from 'zod'
+import { sysDictDataEntitySchema, sysDictTypeEntitySchema } from '~db/dtos'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { PageReqDto, PageResDto } from '~server/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemDictTypePageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '字典名称' })
-  @IsOptional()
-  dictName?: string
+export const findSystemDictTypePageReqSchema = pageReqSchema.extend({
+  dictName: optionalText().describe('字典名称'),
+  dictType: optionalText().describe('字典类型'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
+  beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
+  endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
+}).meta({ id: 'FindSystemDictTypePageReqDto' })
 
-  @ApiPropertyOptional({ description: '字典类型' })
-  @IsOptional()
-  dictType?: string
+export type FindSystemDictTypePageReqDto = z.infer<typeof findSystemDictTypePageReqSchema>
 
-  @ApiPropertyOptional({ description: '可用状态', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
+export const findSystemDictTypePageResSchema = pageResSchema('FindSystemDictTypePageResDto', sysDictTypeEntitySchema)
 
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '开始时间格式不正确' })
-  beginTime?: string
+export type FindSystemDictTypePageResDto = z.infer<typeof findSystemDictTypePageResSchema>
 
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '结束时间格式不正确' })
-  endTime?: string
-}
+export const createSystemDictTypeReqSchema = z.object({
+  dictName: requiredText('字典名称不能为空').describe('字典名称'),
+  dictType: requiredText('字典类型不能为空').describe('字典类型'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemDictTypeReqDto' })
 
-export class FindSystemDictTypePageResDto extends PageResDto<SysDictTypeEntityDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysDictTypeEntityDto],
-  })
-  declare data: SysDictTypeEntityDto[]
-}
+export type CreateSystemDictTypeReqDto = z.infer<typeof createSystemDictTypeReqSchema>
 
-export class CreateSystemDictTypeReqDto {
-  @ApiPropertyOptional({ description: '字典名称' })
-  @IsNotEmpty({ message: '字典名称不能为空' })
-  dictName: string
+export const updateSystemDictTypeReqSchema = createSystemDictTypeReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemDictTypeReqDto' })
 
-  @ApiPropertyOptional({ description: '字典类型' })
-  @IsNotEmpty({ message: '字典类型不能为空' })
-  dictType: string
+export type UpdateSystemDictTypeReqDto = z.infer<typeof updateSystemDictTypeReqSchema>
 
-  @ApiPropertyOptional({ description: '可用状态', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
+// 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
+export const findSystemDictDetailByKeyReqSchema = z.object({
+  dictType: requiredText('字典类型不能为空').describe('字典类型'),
+})
 
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
+export type FindSystemDictDetailByKeyReqDto = z.infer<typeof findSystemDictDetailByKeyReqSchema>
 
-export class UpdateSystemDictTypeReqDto extends CreateSystemDictTypeReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export const findSystemDictDetailByKeyResSchema = sysDictDataEntitySchema.meta({ id: 'FindSystemDictDetailByKeyResDto' })
 
-export class FindSystemDictDetailByKeyReqDto {
-  @ApiProperty({ description: '字典类型' })
-  @IsNotEmpty({ message: '字典类型不能为空' })
-  dictType: string
-}
-
-export class FindSystemDictDetailByKeyResDto extends SysDictDataEntityDto {}
+export type FindSystemDictDetailByKeyResDto = z.infer<typeof findSystemDictDetailByKeyResSchema>
 
 @ExcelFile({
   fileName: '系统字典类型.xlsx',

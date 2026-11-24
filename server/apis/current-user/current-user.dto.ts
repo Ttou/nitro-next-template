@@ -1,57 +1,52 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
-import { SysMenuEntityExcludeRelationDto, SysRoleEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~db/dtos'
-import { IsEqual } from '~server/validators'
+import { z } from 'zod'
+import { sysMenuEntityExcludeRelationSchema, sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~db/dtos'
+import { emailText, optionalText, phoneText, requiredText } from '~server/dtos/zod'
 
 /**
  * 更新当前用户密码请求体
  */
-export class UpdateCurrentUserPasswordReqDto {
-  @ApiProperty({ description: '旧密码', example: '' })
-  @IsNotEmpty({ message: '旧密码不能为空' })
-  oldPassword: string
+export const updateCurrentUserPasswordReqSchema = z.object({
+  oldPassword: requiredText('旧密码不能为空').describe('旧密码'),
+  newPassword: requiredText('新密码不能为空').describe('新密码'),
+  confirmPassword: requiredText('确认密码不能为空').describe('确认密码'),
+}).refine(dto => dto.confirmPassword === dto.newPassword, {
+  error: '两次密码不一致',
+  path: ['confirmPassword'],
+}).meta({ id: 'UpdateCurrentUserPasswordReqDto' })
 
-  @ApiProperty({ description: '新密码', example: '' })
-  @IsNotEmpty({ message: '新密码不能为空' })
-  newPassword: string
-
-  @ApiProperty({ description: '确认密码', example: '' })
-  @IsNotEmpty({ message: '确认密码不能为空' })
-  @IsEqual('newPassword', { message: '两次密码不一致' })
-  confirmPassword: string
-}
+export type UpdateCurrentUserPasswordReqDto = z.infer<typeof updateCurrentUserPasswordReqSchema>
 
 /**
  * 更新当前用户个人信息请求体
  */
-export class UpdateCurrentUserProfileReqDto {
-  @ApiPropertyOptional({ description: '昵称', example: '' })
-  @IsOptional()
-  nickName?: string
+export const updateCurrentUserProfileReqSchema = z.object({
+  nickName: optionalText().describe('昵称'),
+  phone: phoneText().nullish().transform(value => value ?? undefined).describe('手机号码'),
+  email: emailText().nullish().transform(value => value ?? undefined).describe('邮箱'),
+  avatar: optionalText().describe('头像'),
+}).meta({ id: 'UpdateCurrentUserProfileReqDto' })
 
-  @ApiPropertyOptional({ description: '手机号码', example: '' })
-  @IsOptional()
-  @IsPhoneNumber('CN', { message: '手机号码格式不正确' })
-  phone?: string
+export type UpdateCurrentUserProfileReqDto = z.infer<typeof updateCurrentUserProfileReqSchema>
 
-  @ApiPropertyOptional({ description: '邮箱', example: '' })
-  @IsOptional()
-  @IsEmail({}, { message: '邮箱格式不正确' })
-  email?: string
+/**
+ * 当前用户的角色（含菜单）
+ */
+const sysRoleEntityWithMenusRelationSchema = sysRoleEntityExcludeRelationSchema.extend({
+  menus: z.array(sysMenuEntityExcludeRelationSchema).describe('菜单列表'),
+}).meta({ id: 'SysRoleEntityWithMenusRelation' })
 
-  @ApiPropertyOptional({ description: '头像', example: '' })
-  @IsOptional()
-  avatar?: string
-}
+/**
+ * 当前用户信息响应传输对象
+ */
+export const currentUserGetInfoResSchema = sysUserEntityNoPasswordSchema.extend({
+  roles: z.array(sysRoleEntityWithMenusRelationSchema).describe('角色列表'),
+}).meta({ id: 'CurrentUserGetInfoResDto' })
 
-class SysRoleEntityWithMenusRelation extends SysRoleEntityExcludeRelationDto {
-  @ApiProperty({ description: '菜单列表', type: () => [SysMenuEntityExcludeRelationDto] })
-  menus: SysMenuEntityExcludeRelationDto[]
-}
+export type CurrentUserGetInfoResDto = z.infer<typeof currentUserGetInfoResSchema>
 
-export class CurrentUserGetInfoResDto extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {
-  @ApiProperty({ description: '角色列表', type: () => [SysRoleEntityWithMenusRelation] })
-  roles: SysRoleEntityWithMenusRelation[]
-}
+/**
+ * 当前用户个人信息响应传输对象
+ */
+export const currentUserGetProfileResSchema = sysUserEntityNoPasswordSchema.meta({ id: 'CurrentUserGetProfileResDto' })
 
-export class CurrentUserGetProfileResDto extends OmitType(SysUserEntityExcludeRelationDto, ['password'] as const) {}
+export type CurrentUserGetProfileResDto = z.infer<typeof currentUserGetProfileResSchema>

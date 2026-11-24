@@ -1,11 +1,14 @@
 import type { PlusDialogProps, PlusPageInstance, PlusPageProps } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { FindUnallocatedUserPageForPostReqDto } from '~web/apis/globals'
 import { ElMessage } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { YesOrNoEnum } from '~shared/enums'
+import { toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
-  id: ComputedRef<string | number>
+  id: ComputedRef<string>
 }
 
 export function useCreate({ pageInstance, id }: UseCreateParams) {
@@ -73,10 +76,10 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
     },
     request: async (params) => {
       return await Apis.SystemPostAuth.findUnallocatedUserPage({
-        data: {
+        data: toPayload<FindUnallocatedUserPageForPostReqDto>({
           id: unref(id),
           ...params,
-        },
+        }),
       })
     },
     searchCardProps: {
@@ -111,7 +114,7 @@ export function useCreate({ pageInstance, id }: UseCreateParams) {
       createVisible.value = false
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

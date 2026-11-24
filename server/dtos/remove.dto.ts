@@ -1,16 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { ArrayNotEmpty, IsUUID } from 'class-validator'
+import { z } from 'zod'
+import { uuidArray } from './zod'
 
 /**
  * 删除请求传输对象
  */
-export class RemoveReqDto {
-  @ApiProperty({
-    description: '主键数组',
-    type: 'array',
-    items: { type: 'string' },
-  })
-  @ArrayNotEmpty({ message: '主键数组不能为空' })
-  @IsUUID('7', { each: true, message: '主键格式不正确' })
-  ids: string[]
-}
+export const removeReqSchema = z.object({
+  ids: uuidArray('主键格式不正确', '主键数组不能为空').describe('主键数组'),
+}).meta({ id: 'RemoveReqDto' })
+
+export type RemoveReqDto = z.infer<typeof removeReqSchema>

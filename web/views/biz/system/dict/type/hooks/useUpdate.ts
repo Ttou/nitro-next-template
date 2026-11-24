@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { UpdateSystemDictTypeReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { toPayload } from '~web/utils'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -49,7 +51,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     },
   }))
 
-  function showUpdate(params) {
+  function showUpdate(params: Partial<UpdateSystemDictTypeReqDto>) {
     Object.assign(updateValues.value, params)
     updateVisible.value = true
   }
@@ -58,7 +60,9 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await Apis.SystemDictType.update({ data: values })
+      await Apis.SystemDictType.update({
+        data: toPayload<UpdateSystemDictTypeReqDto>(values),
+      })
 
       updateValues.value = Object.create({})
       updateVisible.value = false
@@ -71,7 +75,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       updateConfirmLoading.value = false
     }
   }

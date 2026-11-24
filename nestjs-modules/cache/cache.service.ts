@@ -25,7 +25,9 @@ export class CacheService {
   async set(key: string, value: number | string, expire?: number | StringValue) {
     try {
       const parsedKey = this.getKey(key)
-      const parsedTTL = typeof expire === 'number' ? expire : parseMs('milliseconds', expire ?? this.options.expire!)
+      const parsedTTL = typeof expire === 'number'
+        ? expire
+        : parseMs('milliseconds', expire ?? this.options.expire!)
       const parsedValue = JSON.stringify(value)
       await this.redisClient.setex(parsedKey, parsedTTL, parsedValue)
     }

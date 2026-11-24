@@ -1,93 +1,36 @@
-import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { IsEnumValues } from '~server/validators'
-import { MenuTypeEnumMap, MenuTypeEnumValues, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { z } from 'zod'
+import { enumOf, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemMenuListReqDto {
-  @ApiPropertyOptional({ description: '菜单名称' })
-  @IsOptional()
-  menuName?: string
+export const findSystemMenuListReqSchema = z.object({
+  menuName: optionalText().describe('菜单名称'),
+  menuKey: optionalText().describe('菜单标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+}).meta({ id: 'FindSystemMenuListReqDto' })
 
-  @ApiPropertyOptional({ description: '菜单标识' })
-  @IsOptional()
-  menuKey?: string
+export type FindSystemMenuListReqDto = z.infer<typeof findSystemMenuListReqSchema>
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-}
+export const createSystemMenuReqSchema = z.object({
+  parentId: uuid('父菜单ID格式不正确').nullish().transform(value => value ?? undefined).describe('父菜单ID'),
+  menuKey: requiredText('菜单标识不能为空').describe('菜单标识'),
+  menuName: requiredText('菜单名称不能为空').describe('菜单名称'),
+  menuType: enumOf(MenuTypeEnumValues, '菜单类型枚举值不正确', '菜单类型不能为空').describe('菜单类型'),
+  orderNum: z.coerce.number({ error: '菜单排序不能为空' }).int({ error: '菜单排序必须是整数' }).describe('菜单排序'),
+  path: optionalText().describe('路由地址'),
+  component: optionalText().describe('组件'),
+  redirect: optionalText().describe('重定向'),
+  icon: optionalText().describe('图标'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '是否可用枚举值不正确').describe('是否可用'),
+  isFrame: optionalEnumOf(YesOrNoEnumValues, '是否外链枚举值不正确').describe('是否外链'),
+  isCache: optionalEnumOf(YesOrNoEnumValues, '是否缓存枚举值不正确').describe('是否缓存'),
+  isVisible: optionalEnumOf(YesOrNoEnumValues, '是否显示枚举值不正确').describe('是否显示'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemMenuReqDto' })
 
-export class CreateSystemMenuReqDto {
-  @ApiPropertyOptional({ description: '父菜单ID' })
-  @IsOptional()
-  @IsUUID('7', { message: '父菜单ID格式不正确' })
-  parentId?: string
+export type CreateSystemMenuReqDto = z.infer<typeof createSystemMenuReqSchema>
 
-  @ApiProperty({ description: '菜单标识' })
-  @IsNotEmpty({ message: '菜单标识不能为空' })
-  menuKey: string
+export const updateSystemMenuReqSchema = createSystemMenuReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemMenuReqDto' })
 
-  @ApiProperty({ description: '菜单名称' })
-  @IsNotEmpty({ message: '菜单名称不能为空' })
-  menuName: string
-
-  @ApiProperty({ description: '菜单类型', enum: MenuTypeEnumMap })
-  @IsNotEmpty({ message: '菜单类型不能为空' })
-  @IsEnumValues(MenuTypeEnumValues, { message: '菜单类型枚举值不正确' })
-  menuType: IMenuTypeEnum
-
-  @ApiProperty({ description: '菜单排序' })
-  @IsNotEmpty({ message: '菜单排序不能为空' })
-  @Transform(({ value }) => Number(value))
-  orderNum: number
-
-  @ApiPropertyOptional({ description: '路由地址' })
-  @IsOptional()
-  path?: string
-
-  @ApiPropertyOptional({ description: '组件' })
-  @IsOptional()
-  component?: string
-
-  @ApiPropertyOptional({ description: '重定向' })
-  @IsOptional()
-  redirect?: string
-
-  @ApiPropertyOptional({ description: '图标' })
-  @IsOptional()
-  icon?: string
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '是否可用枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '是否外链', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '是否外链枚举值不正确' })
-  isFrame?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '是否缓存', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '是否缓存枚举值不正确' })
-  isCache?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '是否显示', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '是否显示枚举值不正确' })
-  isVisible?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemMenuReqDto extends CreateSystemMenuReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemMenuReqDto = z.infer<typeof updateSystemMenuReqSchema>

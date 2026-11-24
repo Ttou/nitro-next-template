@@ -2,11 +2,10 @@ import type { PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { unref } from 'vue'
-import { download } from '~web/utils'
+import { download, getSearchParams } from '~web/utils'
 
 interface UseExportParams {
   pageInstance: Ref<PlusPageInstance>
-  selectedIds: Ref<string[]>
   dictType: ComputedRef<string>
 }
 
@@ -17,7 +16,7 @@ export function useExport({ pageInstance, dictType }: UseExportParams) {
       title: '提示',
     })
       .then(async () => {
-        const searchParams = pageInstance.value.getSearchFieldsValue()
+        const searchParams = getSearchParams(pageInstance.value)
 
         const res = await Apis.SystemDictData.export({
           responseType: 'blob',

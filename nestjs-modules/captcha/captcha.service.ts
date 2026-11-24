@@ -80,7 +80,7 @@ export class CaptchaService {
     // 生成随机的数学表达式
     const num1 = Math.floor(Math.random() * 10)
     const num2 = Math.floor(Math.random() * 10)
-    const operators = ['+', '-', '*']
+    const operators = ['+', '-', '*'] as const
     const operator = operators[Math.floor(Math.random() * operators.length)]
 
     // 计算表达式的结果

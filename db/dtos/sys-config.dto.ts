@@ -1,25 +1,18 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import type { SysConfigEntity } from '../entities'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { YesOrNoEnumMap } from '~shared/enums'
-import { BaseEntityDto } from './base.dto'
+import { z } from 'zod'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { enumField } from '~shared/utils'
+import { baseEntitySchema } from './base.dto'
 
-export class SysConfigEntityDto extends BaseEntityDto implements SysConfigEntity {
-  @ApiProperty({ description: '配置键值' })
-  configKey: string
+/**
+ * 系统配置
+ */
+export const sysConfigEntitySchema = baseEntitySchema.extend({
+  configKey: z.string().describe('配置键值'),
+  configName: z.string().describe('配置名称'),
+  configValue: z.string().describe('配置值'),
+  isBuiltin: enumField(YesOrNoEnumValues).describe('是否内置'),
+  isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
+  remark: z.string().nullish().describe('备注'),
+}).meta({ id: 'SysConfigEntityDto' })
 
-  @ApiProperty({ description: '配置名称' })
-  configName: string
-
-  @ApiProperty({ description: '配置值' })
-  configValue: string
-
-  @ApiProperty({ description: '是否内置', enum: YesOrNoEnumMap })
-  isBuiltin: IYesOrNoEnum
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  isAvailable: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  remark?: INullable<string>
-}
+export type SysConfigEntityDto = z.infer<typeof sysConfigEntitySchema>

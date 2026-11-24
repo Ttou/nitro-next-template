@@ -2,12 +2,14 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { PermissionEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
+import { toPayload } from '~web/utils'
 import { useDetail, useRemove } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
@@ -61,7 +63,7 @@ const pageProps = computed<PlusPageProps>(() => {
             text: '详情',
             code: 'info',
             show: hasPermission(PermissionEnum.MONITOR_CACHE_FIND_BY_KEY),
-            props: (row, index, button) => ({
+            props: () => ({
               type: 'primary',
             }),
             onClick({ row }) {
@@ -72,7 +74,7 @@ const pageProps = computed<PlusPageProps>(() => {
             text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.MONITOR_CACHE_REMOVE),
-            props: (row, index, button) => ({
+            props: () => ({
               type: 'warning',
             }),
             confirm: {
@@ -94,7 +96,9 @@ const pageProps = computed<PlusPageProps>(() => {
     request: async (params) => {
       const _params = cloneDeep(params)
 
-      return await Apis.MonitorCache.findPage({ data: _params })
+      return await Apis.MonitorCache.findPage({
+        data: toPayload(_params),
+      })
     },
     searchCardProps: {
       shadow: 'never',
@@ -105,7 +109,7 @@ const pageProps = computed<PlusPageProps>(() => {
   }
 })
 
-const { detailVisible, detailValues, detailDialogProps, detailFormProps, showDetail, closeDetail } = useDetail({ pageInstance, columns })
+const { detailVisible, detailValues, detailDialogProps, detailFormProps, showDetail, closeDetail } = useDetail({ columns })
 const { confirmRemove, confirmClear } = useRemove({ pageInstance, selectedIds })
 </script>
 

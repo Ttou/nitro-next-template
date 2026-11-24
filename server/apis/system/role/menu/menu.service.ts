@@ -1,7 +1,7 @@
+import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { SysMenuEntity, SysRoleEntity } from '~db/entities'
-import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
 
 @Injectable()
 export class SystemRoleMenuService {
@@ -32,7 +32,9 @@ export class SystemRoleMenuService {
   async assigned(dto: FindAssignedMenuForRoleReqDto) {
     const role = await this.em.findOne(SysRoleEntity, {
       id: { $eq: dto.id },
-    }, { populate: ['menus'] })
+    }, {
+      populate: ['menus'],
+    })
 
     return role!.menus.map(v => String(v.id))
   }

@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config'
 export class MikroOrmModuleOptions implements MikroOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
 
-  createMikroOrmOptions(contextName?: string) {
+  createMikroOrmOptions(_contextName?: string) {
     return this.configService.getOrThrow<IConfig['mikro-orm']>('mikro-orm')
   }
 }

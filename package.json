@@ -1,7 +1,7 @@
 {
   "name": "nitro-next-template",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "jiti scripts/dev",
     "build:web": "cross-env APP_ENV=prod vite build",
@@ -41,7 +41,6 @@
     "alova": "3.5.5",
     "bullmq": "6.7.8",
     "class-transformer": "0.5.1",
-    "class-validator": "0.15.1",
     "dayjs": "1.11.23",
     "destr": "2.0.5",
     "element-plus": "2.14.8",
@@ -51,6 +50,7 @@
     "ioredis": "6.0.0",
     "json-editor-vue": "0.19.2",
     "jsonwebtoken": "9.0.3",
+    "libphonenumber-js": "1.13.17",
     "ms": "2.1.3",
     "multer": "2.5.0",
     "mysql2": "3.24.6",
@@ -69,7 +69,9 @@
     "uuid": "14.0.3",
     "vue": "3.5.45",
     "vue-router": "5.5.1",
-    "vue-types": "7.1.0"
+    "vue-types": "7.1.0",
+    "zod": "4.6.7",
+    "zod-openapi": "6.0.2"
   },
   "devDependencies": {
     "@alova/wormhole": "^1.5.2",

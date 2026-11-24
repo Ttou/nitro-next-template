@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { CreateSystemDeptReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -58,7 +60,7 @@ export function useCreate({ pageInstance, columns, getDeptTree }: UseCreateParam
       await getDeptTree()
       createConfirmLoading.value = false
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }
@@ -67,7 +69,9 @@ export function useCreate({ pageInstance, columns, getDeptTree }: UseCreateParam
     try {
       createConfirmLoading.value = true
 
-      await Apis.SystemDept.create({ data: values })
+      await Apis.SystemDept.create({
+        data: toPayload<CreateSystemDeptReqDto>(values),
+      })
 
       createValues.value = Object.create({})
       createVisible.value = false
@@ -80,7 +84,7 @@ export function useCreate({ pageInstance, columns, getDeptTree }: UseCreateParam
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

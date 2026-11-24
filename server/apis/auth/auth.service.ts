@@ -1,5 +1,5 @@
 import type { IConfig } from '~server/configs'
-import type { AuthPublicKeyResDto } from './auth.dto'
+import type { AuthPublicKeyResDto, LoginReqDto } from './auth.dto'
 import { Buffer } from 'node:buffer'
 import { constants, createPublicKey, privateDecrypt } from 'node:crypto'
 import { EntityManager } from '@mikro-orm/mysql'
@@ -12,7 +12,6 @@ import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
-import { LoginReqDto } from './auth.dto'
 
 @Injectable()
 export class AuthService {

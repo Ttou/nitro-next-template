@@ -1,39 +1,17 @@
-import type { Collection } from '@mikro-orm/core'
-import type { IYesOrNoEnum } from '~shared/enums'
-import type { SysDeptEntity, SysRoleEntity, SysUserEntity } from '../entities'
-import { ApiProperty, OmitType } from '@nestjs/swagger'
-import { YesOrNoEnumMap } from '~shared/enums'
-import { BaseEntityDto } from './base.dto'
-import { SysRoleEntityDto } from './sys-role.dto'
-import { SysUserEntityDto } from './sys-user.dto'
+import { z } from 'zod'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { enumField } from '~shared/utils'
+import { baseEntitySchema } from './base.dto'
 
-export class SysDeptEntityDto extends BaseEntityDto implements SysDeptEntity {
-  @ApiProperty({ description: '父部门ID' })
-  parentId?: INullable<string>
+/**
+ * 系统部门（不含关联）
+ */
+export const sysDeptEntityExcludeRelationSchema = baseEntitySchema.extend({
+  parentId: z.string().nullish().describe('父部门ID'),
+  deptKey: z.string().describe('部门键值'),
+  deptName: z.string().describe('部门名称'),
+  isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
+  remark: z.string().nullish().describe('备注'),
+}).meta({ id: 'SysDeptEntityExcludeRelationDto' })
 
-  @ApiProperty({ description: '部门键值' })
-  deptKey: string
-
-  @ApiProperty({ description: '部门名称' })
-  deptName: string
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '备注' })
-  remark?: INullable<string>
-
-  @ApiProperty({
-    description: '角色',
-    type: () => [SysRoleEntityDto],
-  })
-  roles: Collection<SysRoleEntity, SysDeptEntity>
-
-  @ApiProperty({
-    description: '用户',
-    type: () => [SysUserEntityDto],
-  })
-  users: Collection<SysUserEntity, SysDeptEntity>
-}
-
-export class SysDeptEntityExcludeRelationDto extends OmitType(SysDeptEntityDto, ['roles', 'users'] as const) {}
+export type SysDeptEntityExcludeRelationDto = z.infer<typeof sysDeptEntityExcludeRelationSchema>

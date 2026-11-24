@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { emptyPayload, toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -11,7 +12,7 @@ interface UseCreateParams {
 
 export function useCreate({ pageInstance, columns }: UseCreateParams) {
   const createVisible = ref(false)
-  const createValues = ref<CreateSystemUserReqDto>({})
+  const createValues = ref<CreateSystemUserReqDto>(emptyPayload())
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
@@ -82,7 +83,9 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await Apis.SystemUser.create({ data: values })
+      await Apis.SystemUser.create({
+        data: toPayload<CreateSystemUserReqDto>(values),
+      })
 
       createValues.value = Object.create({})
       createVisible.value = false
@@ -95,7 +98,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

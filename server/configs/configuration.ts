@@ -169,6 +169,9 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
               // 仅 NativeLogger 的异常打印堆栈；pino-http customErrorMessage 不打印堆栈
               const errorStack = (log.error as { stack?: string } | undefined)?.stack
 
+              // pino-http 的 req.id 由 serializer 注入，未声明在日志对象类型上
+              const requestId = (log.req as { id?: string } | undefined)?.id
+
               const message = [
                 responseTime
                   ? colors.gray(`[HttpLogging]`)
@@ -176,8 +179,8 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
                 log.context
                   ? colors.gray(`[${log.context}]`)
                   : undefined,
-                log.req?.id
-                  ? colors.gray(`[${log.req.id}]`)
+                requestId
+                  ? colors.gray(`[${requestId}]`)
                   : undefined,
                 log.namespace
                   ? colors.gray(`[${log.namespace}]`)
@@ -198,10 +201,10 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
               return message
             },
           }),
-          customSuccessMessage(req, res, responseTime) {
+          customSuccessMessage(req, res, _responseTime) {
             return `${req.method} - ${req.url} - ${res.statusCode}`
           },
-          customErrorMessage(req, res, err) {
+          customErrorMessage(req, res, _err) {
             return `${req.method} - ${req.url} - ${res.statusCode}`
           },
         },

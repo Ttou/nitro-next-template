@@ -1,10 +1,11 @@
 import type { TreeInstance } from 'element-plus'
 import type { FieldValues, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
+import type { AssignMenuForRoleReqDto, SysMenuEntityExcludeRelationDto } from '~web/apis/globals'
 import { ElNotification, ElScrollbar, ElTree } from 'element-plus'
 import { computed, h, ref, shallowRef, unref } from 'vue'
 import { MenuTypeEnum } from '~shared/enums'
-import { listToTree } from '~web/utils'
+import { listToTree, toPayload } from '~web/utils'
 
 interface UseAssignMenuParams {
   pageInstance: Ref<PlusPageInstance>
@@ -12,11 +13,11 @@ interface UseAssignMenuParams {
 
 export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
   const assignMenuVisible = ref(false)
-  const assignMenuValues = ref({})
+  const assignMenuValues = ref<Record<string, any>>({})
   const assignMenuConfirmLoading = ref(false)
   const menuTreeRef = shallowRef<TreeInstance>()
-  const menuTree = ref([])
-  const checkedKeys = ref(new Set())
+  const menuTree = ref<SysMenuEntityExcludeRelationDto[]>([])
+  const checkedKeys = ref(new Set<string>())
 
   const assignMenuDialogProps = computed<PlusDialogProps>(() => ({
     title: '分配菜单',
@@ -39,7 +40,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
       {
         label: '角色菜单',
         prop: 'menuIds',
-        renderField(value, onChange, props) {
+        renderField() {
           return h('div', {
             style: {
               width: '100%',
@@ -57,7 +58,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
                 'checkStrictly': true,
                 'props': { label: 'menuName', children: 'children' },
                 'style': { width: '100%' },
-                'onCheck-change': (node, checked, indeterminate) => {
+                'onCheck-change': (node, checked) => {
                   if (checked) {
                     checkedKeys.value.add(node.id)
                   }
@@ -66,7 +67,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
                   }
                 },
               }, {
-                default: ({ node, data }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}`,
+                default: ({ data }: { data: SysMenuEntityExcludeRelationDto }) => `[${MenuTypeEnum.label(data.menuType)}] ${data.menuName}`,
               }),
             ]),
           ])
@@ -88,7 +89,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
       ])
       assignMenuConfirmLoading.value = false
     }
-    catch (error) {
+    catch {
       assignMenuConfirmLoading.value = false
     }
   }
@@ -98,10 +99,10 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
       assignMenuConfirmLoading.value = true
 
       await Apis.SystemRoleMenu.assign({
-        data: {
-          id: values.id,
+        data: toPayload<AssignMenuForRoleReqDto>({
+          ...values,
           menuIds: [...checkedKeys.value],
-        },
+        }),
       })
 
       assignMenuValues.value = Object.create({})
@@ -115,7 +116,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       assignMenuConfirmLoading.value = false
     }
   }
@@ -128,7 +129,7 @@ export function useAssignMenu({ pageInstance }: UseAssignMenuParams) {
     menuIds.forEach((id) => {
       checkedKeys.value.add(id)
     })
-    menuTreeRef.value.setCheckedKeys(menuIds)
+    menuTreeRef.value?.setCheckedKeys(menuIds)
   }
 
   async function getMenuTree() {

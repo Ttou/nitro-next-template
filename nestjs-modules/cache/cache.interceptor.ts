@@ -23,7 +23,9 @@ export class CacheInterceptor implements NestInterceptor {
       return next.handle()
     }
 
-    const parsedKey = typeof cacheKey === 'string' ? cacheKey : cacheKey(context)
+    const parsedKey = typeof cacheKey === 'string'
+      ? cacheKey
+      : cacheKey(context)
     const parsedTTL = this.reflector.get(CacheTTL, context.getHandler())
 
     const cachedValue = await this.cacheService.get(parsedKey)

@@ -1,56 +1,34 @@
+import type { SysDictDataEntityDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
+import { z } from 'zod'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { SysDictDataEntityDto } from '~db/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemDictDataListReqDto {
-  @ApiProperty({ description: '字典类型' })
-  @IsNotEmpty({ message: '字典类型不能为空' })
-  dictType: string
+export const findSystemDictDataListReqSchema = z.object({
+  dictType: requiredText('字典类型不能为空').describe('字典类型'),
+  dictLabel: optionalText().describe('字典标签'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+}).meta({ id: 'FindSystemDictDataListReqDto' })
 
-  @ApiPropertyOptional({ description: '字典标签' })
-  @IsOptional()
-  dictLabel?: string
+export type FindSystemDictDataListReqDto = z.infer<typeof findSystemDictDataListReqSchema>
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-}
+export const createSystemDictDataReqSchema = z.object({
+  dictLabel: requiredText('字典标签不能为空').describe('字典标签'),
+  dictValue: requiredText('字典值不能为空').describe('字典值'),
+  dictType: requiredText('字典类型不能为空').describe('字典类型'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemDictDataReqDto' })
 
-export class CreateSystemDictDataReqDto {
-  @ApiProperty({ description: '字典标签' })
-  @IsNotEmpty({ message: '字典标签不能为空' })
-  dictLabel: string
+export type CreateSystemDictDataReqDto = z.infer<typeof createSystemDictDataReqSchema>
 
-  @ApiProperty({ description: '字典值' })
-  @IsNotEmpty({ message: '字典值不能为空' })
-  dictValue: string
+export const updateSystemDictDataReqSchema = createSystemDictDataReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemDictDataReqDto' })
 
-  @ApiProperty({ description: '字典类型' })
-  @IsNotEmpty({ message: '字典类型不能为空' })
-  dictType: string
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemDictDataReqDto extends CreateSystemDictDataReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemDictDataReqDto = z.infer<typeof updateSystemDictDataReqSchema>
 
 @ExcelFile({
   fileName: '系统字典数据.xlsx',

@@ -34,7 +34,7 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   const userStore = useUserStore()
 
   const { token, clear, infoRequested } = userStore
@@ -70,7 +70,7 @@ router.beforeEach(async (to, from) => {
   }
 })
 
-router.afterEach((to, from) => {
+router.afterEach(() => {
   // TODO
 })
 

@@ -1,51 +1,27 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { z } from 'zod'
+import { optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemDeptListReqDto {
-  @ApiPropertyOptional({ description: '部门名称' })
-  @IsOptional()
-  deptName?: string
+export const findSystemDeptListReqSchema = z.object({
+  deptName: optionalText().describe('部门名称'),
+  deptKey: optionalText().describe('部门标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
+}).meta({ id: 'FindSystemDeptListReqDto' })
 
-  @ApiPropertyOptional({ description: '部门标识' })
-  @IsOptional()
-  deptKey?: string
+export type FindSystemDeptListReqDto = z.infer<typeof findSystemDeptListReqSchema>
 
-  @ApiPropertyOptional({ description: '可用状态', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-}
+export const createSystemDeptReqSchema = z.object({
+  parentId: uuid('父部门ID格式不正确').nullish().transform(value => value ?? undefined).describe('父部门ID'),
+  deptName: requiredText('部门名称不能为空').describe('部门名称'),
+  deptKey: requiredText('部门标识不能为空').describe('部门标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemDeptReqDto' })
 
-export class CreateSystemDeptReqDto {
-  @ApiPropertyOptional({ description: '父部门ID' })
-  @IsOptional()
-  @IsUUID('7', { message: '父部门ID格式不正确' })
-  parentId?: string
+export type CreateSystemDeptReqDto = z.infer<typeof createSystemDeptReqSchema>
 
-  @ApiPropertyOptional({ description: '部门名称' })
-  @IsNotEmpty({ message: '部门名称不能为空' })
-  deptName: string
+export const updateSystemDeptReqSchema = createSystemDeptReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemDeptReqDto' })
 
-  @ApiPropertyOptional({ description: '部门标识' })
-  @IsNotEmpty({ message: '部门标识不能为空' })
-  deptKey: string
-
-  @ApiPropertyOptional({ description: '可用状态', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemDeptReqDto extends CreateSystemDeptReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemDeptReqDto = z.infer<typeof updateSystemDeptReqSchema>

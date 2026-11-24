@@ -1,9 +1,8 @@
 import type { ClsStore, Terminal } from 'nestjs-cls'
-import { PickType } from '@nestjs/swagger'
-import { SysUserEntityExcludeRelationDto } from '~db/dtos'
+import type { SysUserEntityExcludeRelationDto } from '~db/dtos'
 import { ClsKeyEnum } from '~server/constants'
 
-export class ContextCurrentUser extends PickType(SysUserEntityExcludeRelationDto, ['id', 'userName'] as const) {
+export type ContextCurrentUser = Pick<SysUserEntityExcludeRelationDto, 'id' | 'userName'> & {
   roles: string[]
   permissions: string[]
 }

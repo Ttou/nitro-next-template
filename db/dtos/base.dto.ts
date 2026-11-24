@@ -1,19 +1,15 @@
-import type { BaseEntity } from '../entities'
-import { ApiProperty } from '@nestjs/swagger'
+import { z } from 'zod'
+import { dateTimeField } from '~shared/utils'
 
-export class BaseEntityDto implements BaseEntity {
-  @ApiProperty({ description: '主键', type: String })
-  id: string
+/**
+ * 实体公共字段
+ */
+export const baseEntitySchema = z.object({
+  id: z.string().describe('主键'),
+  createBy: z.string().nullish().describe('创建人'),
+  createdAt: dateTimeField('创建时间'),
+  updateBy: z.string().nullish().describe('更新人'),
+  updatedAt: dateTimeField('更新时间'),
+})
 
-  @ApiProperty({ description: '创建人' })
-  createBy?: INullable<string>
-
-  @ApiProperty({ description: '创建时间', type: Date })
-  createdAt: Date
-
-  @ApiProperty({ description: '更新人' })
-  updateBy?: INullable<string>
-
-  @ApiProperty({ description: '更新时间', type: Date })
-  updatedAt: Date
-}
+export type BaseEntityDto = z.infer<typeof baseEntitySchema>

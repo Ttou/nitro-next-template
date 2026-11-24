@@ -1,53 +1,44 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { ArrayNotEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysPostEntityExcludeRelationDto, SysUserEntityExcludeRelationDto } from '~db/dtos'
-import { PageReqDto, PageResDto } from '~server/dtos'
+import { z } from 'zod'
+import { sysPostEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~db/dtos'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { optionalText, uuid, uuidArray } from '~server/dtos/zod'
 
-export class FindAllocatedUserPageForPostReqDto extends PageReqDto {
-  @ApiProperty({ description: '岗位ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
+export const findAllocatedUserPageForPostReqSchema = pageReqSchema.extend({
+  id: uuid('ID格式不正确').describe('岗位ID'),
+  userName: optionalText().describe('用户名'),
+  nickName: optionalText().describe('昵称'),
+}).meta({ id: 'FindAllocatedUserPageForPostReqDto' })
 
-  @ApiPropertyOptional({ description: '用户名' })
-  @IsOptional()
-  userName?: string
+export type FindAllocatedUserPageForPostReqDto = z.infer<typeof findAllocatedUserPageForPostReqSchema>
 
-  @ApiPropertyOptional({ description: '昵称' })
-  @IsOptional()
-  nickName?: string
-}
+export const findUnallocatedUserPageForPostReqSchema = findAllocatedUserPageForPostReqSchema.meta({ id: 'FindUnallocatedUserPageForPostReqDto' })
 
-export class FindUnallocatedUserPageForPostReqDto extends FindAllocatedUserPageForPostReqDto {}
+export type FindUnallocatedUserPageForPostReqDto = z.infer<typeof findUnallocatedUserPageForPostReqSchema>
 
-export class AllocateUserForPostReqDto {
-  @ApiProperty({ description: '岗位ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
+export const allocateUserForPostReqSchema = z.object({
+  id: uuid('ID格式不正确').describe('岗位ID'),
+  ids: uuidArray('ID格式不正确', 'ID数组不能为空').describe('用户ID数组'),
+}).meta({ id: 'AllocateUserForPostReqDto' })
 
-  @ApiProperty({ description: '用户ID数组' })
-  @ArrayNotEmpty({ message: 'ID数组不能为空' })
-  @IsUUID('7', { each: true, message: 'ID格式不正确' })
-  ids: Array<string>
-}
+export type AllocateUserForPostReqDto = z.infer<typeof allocateUserForPostReqSchema>
 
-export class UnallocateUserForPostReqDto extends AllocateUserForPostReqDto {}
+export const unallocateUserForPostReqSchema = allocateUserForPostReqSchema.meta({ id: 'UnallocateUserForPostReqDto' })
 
-export class SysUserEntityWithPostsDto extends SysUserEntityExcludeRelationDto {
-  @ApiProperty({
-    description: '岗位列表',
-    type: () => [SysPostEntityExcludeRelationDto],
-  })
-  posts: SysPostEntityExcludeRelationDto[]
-}
+export type UnallocateUserForPostReqDto = z.infer<typeof unallocateUserForPostReqSchema>
 
-export class FindAllocatedUserPageForPostResDto extends PageResDto<SysUserEntityWithPostsDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysUserEntityWithPostsDto],
-  })
-  declare data: SysUserEntityWithPostsDto[]
-}
+/**
+ * 带岗位的用户分页项
+ */
+export const sysUserEntityWithPostsResSchema = sysUserEntityNoPasswordSchema.extend({
+  posts: z.array(sysPostEntityExcludeRelationSchema).describe('岗位列表'),
+}).meta({ id: 'SysUserEntityWithPostsDto' })
 
-export class FindUnallocatedUserPageForPostResDto extends FindAllocatedUserPageForPostResDto {}
+export type SysUserEntityWithPostsDto = z.infer<typeof sysUserEntityWithPostsResSchema>
+
+export const findAllocatedUserPageForPostResSchema = pageResSchema('FindAllocatedUserPageForPostResDto', sysUserEntityWithPostsResSchema)
+
+export type FindAllocatedUserPageForPostResDto = z.infer<typeof findAllocatedUserPageForPostResSchema>
+
+export const findUnallocatedUserPageForPostResSchema = pageResSchema('FindUnallocatedUserPageForPostResDto', sysUserEntityWithPostsResSchema)
+
+export type FindUnallocatedUserPageForPostResDto = z.infer<typeof findUnallocatedUserPageForPostResSchema>

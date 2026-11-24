@@ -1,17 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './config.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysConfigEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
-import { RemoveReqDto } from '~server/dtos'
 import { YesOrNoEnum } from '~shared/enums'
-import {
-  CreateSystemConfigReqDto,
-  FindSystemConfigByKeyReqDto,
-  FindSystemConfigPageReqDto,
-  UpdateSystemConfigReqDto,
-} from './config.dto'
 
 @Injectable()
 export class SystemConfigService {
@@ -60,10 +55,26 @@ export class SystemConfigService {
 
     const [data, total] = await this.em.findAndCount(SysConfigEntity, {
       $and: [
-        { configName: rest.configName ? { $like: `%${rest.configName}%` } : {} },
-        { configKey: rest.configKey ? { $like: `%${rest.configKey}%` } : {} },
-        { isBuiltin: rest.isBuiltin ? { $eq: rest.isBuiltin } : {} },
-        { createdAt: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {} },
+        {
+          configName: rest.configName
+            ? { $like: `%${rest.configName}%` }
+            : {},
+        },
+        {
+          configKey: rest.configKey
+            ? { $like: `%${rest.configKey}%` }
+            : {},
+        },
+        {
+          isBuiltin: rest.isBuiltin
+            ? { $eq: rest.isBuiltin }
+            : {},
+        },
+        {
+          createdAt: rest.beginTime
+            ? { $gte: rest.beginTime, $lte: rest.endTime }
+            : {},
+        },
       ],
     }, { limit: pageSize, offset: page - 1 })
 
@@ -86,8 +97,12 @@ export class SystemConfigService {
 
     const oldRecord = await this.em.findOne(SysConfigEntity, {
       $and: [
-        { id: { $eq: id } },
-        { configKey: { $eq: configKey } },
+        {
+          id: { $eq: id },
+        },
+        {
+          configKey: { $eq: configKey },
+        },
       ],
     })
 

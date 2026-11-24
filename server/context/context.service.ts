@@ -1,5 +1,4 @@
 import type { HttpContext } from '@xlt-token/core'
-import type { SysUserEntityDto } from '~db/dtos'
 import type { ICtxClsStore, IRequest, IResponse } from '../interfaces'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
@@ -42,7 +41,7 @@ export class ContextService {
       throw new UnauthorizedException(ErrorEnum.label(ErrorEnum.USER_NOT_FOUND_ERROR))
     }
 
-    const { roles, posts, depts, ...rest } = user as unknown as SysUserEntityDto
+    const { roles, posts, depts, ...rest } = user
     const roleList = [...roles]
     const permissions = uniqBy(roleList.map(role => [...role.menus]).flat(1), menu => menu.id).map(menu => menu.menuKey) || []
     const _roles = roleList.map(role => role.roleKey) || []
@@ -91,17 +90,20 @@ export class ContextService {
    */
   createHttpContext(): HttpContext {
     const { request, response } = this
-    const state = request.xltState ??= {}
+    const state = request._xltState ??= {}
 
     return {
       headers: {
         get(name) {
-          return request.headers[name.toLowerCase()] ?? null
+          const value = request.headers[name.toLowerCase()]
+          return Array.isArray(value)
+            ? value.join(', ')
+            : (value ?? null)
         },
       },
       // 没有用到 cookie，所以返回 null
       cookies: {
-        get(name) {
+        get(_name) {
           return null
         },
       },
@@ -115,9 +117,9 @@ export class ContextService {
         response.header(name, value)
       },
       // 没有用到 cookie，所以不设置
-      setCookie(name, value, options) {},
-      raw() {
-        return request
+      setCookie(_name, _value, _options) {},
+      raw<T = unknown>() {
+        return request as T
       },
     }
   }

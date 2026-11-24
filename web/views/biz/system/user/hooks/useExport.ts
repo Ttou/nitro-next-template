@@ -1,11 +1,10 @@
 import type { PlusPageInstance } from 'plus-pro-components'
 import type { Ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
-import { download } from '~web/utils'
+import { download, getPageParams, getSearchParams } from '~web/utils'
 
 interface UseExportParams {
   pageInstance: Ref<PlusPageInstance>
-  selectedIds: Ref<string[]>
 }
 
 export function useExport({ pageInstance }: UseExportParams) {
@@ -15,8 +14,8 @@ export function useExport({ pageInstance }: UseExportParams) {
       title: '提示',
     })
       .then(async () => {
-        const searchParams = pageInstance.value.getSearchFieldsValue()
-        const pageParams = pageInstance.value.plusTableInstance?.$props.pagination?.modelValue
+        const searchParams = getSearchParams(pageInstance.value)
+        const pageParams = getPageParams(pageInstance.value)
 
         const res = await Apis.SystemUser.export({
           responseType: 'blob',

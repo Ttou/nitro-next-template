@@ -14,7 +14,7 @@ const isDark = useDark({
 
 const toggleDark = useToggle(isDark)
 
-function handleToggle(e: MouseEvent) {
+function handleToggle() {
   toggleDark()
 }
 </script>

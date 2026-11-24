@@ -3,7 +3,7 @@ import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { getRedisConnectionToken, RedisModule } from '@nestjs-modules/ioredis'
 import { BullModule } from '@nestjs/bullmq'
-import { BadRequestException, Module, ValidationPipe } from '@nestjs/common'
+import { BadRequestException, Module, StandardSchemaValidationPipe } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { StorageModule } from '@nestjs/storage'
@@ -118,14 +118,9 @@ import { RemoteModule } from './remote'
     },
     {
       provide: APP_PIPE,
-      useFactory: () => new ValidationPipe({
-        whitelist: true,
-        stopAtFirstError: true,
-        transform: true,
-        exceptionFactory(errors) {
-          const firstErrorMessage = Object.values(errors[0]!.constraints!)[0]
-          return new BadRequestException(firstErrorMessage)
-        },
+      // 只校验带 `schema` 选项的参数，其余参数原样透传
+      useFactory: () => new StandardSchemaValidationPipe({
+        exceptionFactory: issues => new BadRequestException(issues[0]?.message),
       }),
     },
     {

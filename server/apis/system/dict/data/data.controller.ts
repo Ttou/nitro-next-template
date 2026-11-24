@@ -1,11 +1,13 @@
 import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './data.dto'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { SysDictDataEntityDto } from '~db/dtos'
+import { sysDictDataEntitySchema } from '~db/dtos'
 import { ExcelService } from '~nestjs-modules/excel'
+import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemDictDataReqDto, ExportSystemDictDataSerDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './data.dto'
+import { createSystemDictDataReqSchema, ExportSystemDictDataSerDto, findSystemDictDataListReqSchema, updateSystemDictDataReqSchema } from './data.dto'
 import { SystemDictDataService } from './data.service'
 
 @ApiTags('字典数据接口')
@@ -21,18 +23,19 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_CREATE)
   @Post('create')
-  async create(@Body() dto: CreateSystemDictDataReqDto) {
+  async create(@Body({ schema: createSystemDictDataReqSchema }) dto: CreateSystemDictDataReqDto) {
     await this.systemDictDataService.create(dto)
   }
 
   @ApiOperation({ summary: '查询字典数据列表' })
   @ApiOkResponse({
     description: '请求成功',
-    type: [SysDictDataEntityDto],
+    standardSchema: sysDictDataEntitySchema,
+    isArray: true,
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_FIND_LIST)
   @Post('findList')
-  async findList(@Body() dto: FindSystemDictDataListReqDto) {
+  async findList(@Body({ schema: findSystemDictDataListReqSchema }) dto: FindSystemDictDataListReqDto) {
     return await this.systemDictDataService.findList(dto)
   }
 
@@ -40,7 +43,7 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_REMOVE)
   @Delete('remove')
-  async remove(@Body() dto: RemoveReqDto) {
+  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
     return await this.systemDictDataService.remove(dto)
   }
 
@@ -48,7 +51,7 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_UPDATE)
   @Post('update')
-  async update(@Body() dto: UpdateSystemDictDataReqDto) {
+  async update(@Body({ schema: updateSystemDictDataReqSchema }) dto: UpdateSystemDictDataReqDto) {
     return await this.systemDictDataService.update(dto)
   }
 
@@ -63,7 +66,7 @@ export class SystemDictDataController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_EXPORT)
   @Post('export')
-  async export(@Body() dto: FindSystemDictDataListReqDto) {
+  async export(@Body({ schema: findSystemDictDataListReqSchema }) dto: FindSystemDictDataListReqDto) {
     const data = await this.systemDictDataService.findList(dto)
     return this.excelService.exportFile(ExportSystemDictDataSerDto, data)
   }

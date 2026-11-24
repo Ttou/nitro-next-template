@@ -1,12 +1,7 @@
+import type { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, UnallocateUserForRoleReqDto } from './auth.dto'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { SysRoleEntity, SysUserEntity } from '~db/entities'
-import {
-  AllocateUserForRoleReqDto,
-  FindAllocatedUserPageForRoleReqDto,
-  FindUnallocatedUserPageForRoleReqDto,
-  UnallocateUserForRoleReqDto,
-} from './auth.dto'
 
 @Injectable()
 export class SystemRoleAuthService {
@@ -22,7 +17,9 @@ export class SystemRoleAuthService {
     })
     const users = await this.em.find(SysUserEntity, {
       id: { $in: ids },
-    }, { populate: ['roles'] })
+    }, {
+      populate: ['roles'],
+    })
 
     for (const user of users) {
       user.roles.add(role!)
@@ -36,11 +33,28 @@ export class SystemRoleAuthService {
 
     const [data, total] = await this.em.findAndCount(SysUserEntity, {
       $and: [
-        { userName: rest.userName ? { $like: `%${rest.userName}%` } : {} },
-        { nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {} },
-        { roles: { id: { $eq: rest.id } } },
+        {
+          userName: rest.userName
+            ? { $like: `%${rest.userName}%` }
+            : {},
+        },
+        {
+          nickName: rest.nickName
+            ? { $like: `%${rest.nickName}%` }
+            : {},
+        },
+        {
+          roles: {
+            id: { $eq: rest.id },
+          },
+        },
       ],
-    }, { limit: pageSize, offset: page - 1, populate: ['roles'] })
+    }, {
+      limit: pageSize,
+      offset: page - 1,
+      populate: ['roles'],
+      exclude: ['password'],
+    })
 
     return { page, pageSize, data, total }
   }
@@ -49,16 +63,35 @@ export class SystemRoleAuthService {
     const { page, pageSize, ...rest } = dto
 
     const allocatedUsers = await this.em.find(SysUserEntity, {
-      roles: { id: { $eq: rest.id } },
+      roles: {
+        id: { $eq: rest.id },
+      },
     })
 
     const [data, total] = await this.em.findAndCount(SysUserEntity, {
       $and: [
-        { id: { $nin: allocatedUsers.map(item => item.id) } },
-        { userName: rest.userName ? { $like: `%${rest.userName}%` } : {} },
-        { nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {} },
+        {
+          id: {
+            $nin: allocatedUsers.map(item => item.id),
+          },
+        },
+        {
+          userName: rest.userName
+            ? { $like: `%${rest.userName}%` }
+            : {},
+        },
+        {
+          nickName: rest.nickName
+            ? { $like: `%${rest.nickName}%` }
+            : {},
+        },
       ],
-    }, { limit: pageSize, offset: page - 1, populate: ['roles'] })
+    }, {
+      limit: pageSize,
+      offset: page - 1,
+      populate: ['roles'],
+      exclude: ['password'],
+    })
 
     return { page, pageSize, data, total }
   }
@@ -68,7 +101,9 @@ export class SystemRoleAuthService {
 
     const users = await this.em.find(SysUserEntity, {
       id: { $in: ids },
-    }, { populate: ['roles'] })
+    }, {
+      populate: ['roles'],
+    })
 
     for (const user of users) {
       user.roles.remove(item => item.id === id)

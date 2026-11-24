@@ -38,11 +38,11 @@ refresh()
   <div class="image-captcha">
     <el-input
       :model-value="captchaValue"
-      :placeholder="'请输入验证码'"
+      placeholder="请输入验证码"
       @input="handleInput"
       @keyup.enter="handleEnter"
     />
-    <img :src="imgSrc" :alt="'验证码'" style="cursor: pointer;" @click="refresh">
+    <img :src="imgSrc" alt="验证码" style="cursor: pointer;" @click="refresh">
   </div>
 </template>
 

@@ -1,7 +1,9 @@
-import type { PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
+import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { UpdateSystemPostReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { toPayload } from '~web/utils'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -54,11 +56,13 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     updateVisible.value = true
   }
 
-  async function confirmUpdate(values: any) {
+  async function confirmUpdate(values: FieldValues) {
     try {
       updateConfirmLoading.value = true
 
-      await Apis.SystemPost.update({ data: values })
+      await Apis.SystemPost.update({
+        data: toPayload<UpdateSystemPostReqDto>(values),
+      })
 
       updateValues.value = Object.create({})
       updateVisible.value = false
@@ -71,7 +75,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       updateConfirmLoading.value = false
     }
   }

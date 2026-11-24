@@ -1,3 +1,4 @@
+import type { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './current-user.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -5,7 +6,6 @@ import { SysUserEntity } from '~db/entities'
 import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
-import { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './current-user.dto'
 
 @Injectable()
 export class CurrentUserService {
@@ -60,8 +60,12 @@ export class CurrentUserService {
 
     const oldRecord = await this.em.findOne(SysUserEntity, {
       $and: [
-        { id: { $eq: currentUser.id } },
-        { userName: { $eq: currentUser.userName } },
+        {
+          id: { $eq: currentUser.id },
+        },
+        {
+          userName: { $eq: currentUser.userName },
+        },
       ],
     })
 

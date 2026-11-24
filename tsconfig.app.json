@@ -2,6 +2,12 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    "baseUrl": ".",
+    "paths": {
+      "~web/*": ["web/*"],
+      "~shared/*": ["shared/*"]
+    },
     "types": [
       "element-plus/global",
       "plus-pro-components/global",
@@ -10,23 +16,17 @@
 
     /* Linting */
     "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    "baseUrl": ".",
-    "paths": {
-      "~web/*": ["web/*"],
-      "~shared/*": ["shared/*"],
-    }
+    "noUncheckedSideEffectImports": true
   },
   "include": [
     "web/**/*.ts",
     "web/**/*.tsx",
     "web/**/*.vue",
     "shared/**/*.ts",
-    "types/**/*.d.ts",
+    "types/**/*.d.ts"
   ]
 }

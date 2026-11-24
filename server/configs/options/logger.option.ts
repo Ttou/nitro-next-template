@@ -1,5 +1,5 @@
-import type { IConfig } from '../config.interface'
 import type { LoggerModuleAsyncParams } from 'nestjs-pino'
+import type { IConfig } from '../config.interface'
 import { ConfigService } from '@nestjs/config'
 
 export const loggerModuleAsyncOptions: LoggerModuleAsyncParams = {

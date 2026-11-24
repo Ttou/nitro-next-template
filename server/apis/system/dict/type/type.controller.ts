@@ -1,12 +1,14 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './type.dto'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { SysDictDataEntityDto } from '~db/dtos'
+import { sysDictDataEntitySchema } from '~db/dtos'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { RemoveReqDto } from '~server/dtos'
+import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemDictTypeReqDto, ExportSystemDictTypeSerDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, FindSystemDictTypePageResDto, UpdateSystemDictTypeReqDto } from './type.dto'
+import { createSystemDictTypeReqSchema, ExportSystemDictTypeSerDto, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, updateSystemDictTypeReqSchema } from './type.dto'
 import { SystemDictTypeService } from './type.service'
 
 @ApiTags('字典类型接口')
@@ -22,28 +24,29 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_CREATE)
   @Post('create')
-  async create(@Body() dto: CreateSystemDictTypeReqDto) {
+  async create(@Body({ schema: createSystemDictTypeReqSchema }) dto: CreateSystemDictTypeReqDto) {
     await this.systemDictTypeService.create(dto)
   }
 
   @ApiOperation({ summary: '根据字典类型查询字典数据' })
   @ApiOkResponse({
     description: '请求成功',
-    type: [SysDictDataEntityDto],
+    standardSchema: sysDictDataEntitySchema,
+    isArray: true,
   })
   @CacheKey(ctx => `sys_dict:${ctx.switchToHttp().getRequest().query.dictType}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)
   @Get('findByKey')
-  async findByKey(@Query() dto: FindSystemDictDetailByKeyReqDto) {
+  async findByKey(@Query({ schema: findSystemDictDetailByKeyReqSchema }) dto: FindSystemDictDetailByKeyReqDto) {
     return await this.systemDictTypeService.findByKey(dto)
   }
 
   @ApiOperation({ summary: '查询字典类型分页列表' })
-  @ApiOkResponse({ description: '请求成功', type: FindSystemDictTypePageResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemDictTypePageResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body() dto: FindSystemDictTypePageReqDto) {
+  async findPage(@Body({ schema: findSystemDictTypePageReqSchema }) dto: FindSystemDictTypePageReqDto) {
     return await this.systemDictTypeService.findPage(dto)
   }
 
@@ -51,7 +54,7 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_REMOVE)
   @Delete('remove')
-  async remove(@Body() dto: RemoveReqDto) {
+  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
     return await this.systemDictTypeService.remove(dto)
   }
 
@@ -59,7 +62,7 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_UPDATE)
   @Post('update')
-  async update(@Body() dto: UpdateSystemDictTypeReqDto) {
+  async update(@Body({ schema: updateSystemDictTypeReqSchema }) dto: UpdateSystemDictTypeReqDto) {
     return await this.systemDictTypeService.update(dto)
   }
 
@@ -74,7 +77,7 @@ export class SystemDictTypeController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_EXPORT)
   @Post('export')
-  async export(@Body() dto: FindSystemDictTypePageReqDto) {
+  async export(@Body({ schema: findSystemDictTypePageReqSchema }) dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)
     return this.excelService.exportFile(ExportSystemDictTypeSerDto, data)
   }

@@ -1,59 +1,26 @@
-import type { Collection } from '@mikro-orm/core'
-import type { IMenuTypeEnum, IYesOrNoEnum } from '~shared/enums'
-import type { SysMenuEntity, SysRoleEntity } from '../entities'
-import { ApiProperty, OmitType } from '@nestjs/swagger'
-import { MenuTypeEnumMap, YesOrNoEnumMap } from '~shared/enums'
-import { BaseEntityDto } from './base.dto'
-import { SysRoleEntityDto } from './sys-role.dto'
+import { z } from 'zod'
+import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'
+import { enumField } from '~shared/utils'
+import { baseEntitySchema } from './base.dto'
 
-export class SysMenuEntityDto extends BaseEntityDto implements SysMenuEntity {
-  @ApiProperty({ description: '父菜单ID' })
-  parentId?: INullable<string>
+/**
+ * 系统菜单（不含关联）
+ */
+export const sysMenuEntityExcludeRelationSchema = baseEntitySchema.extend({
+  parentId: z.string().nullish().describe('父菜单ID'),
+  menuName: z.string().describe('菜单名称'),
+  menuKey: z.string().describe('菜单键值'),
+  menuType: enumField(MenuTypeEnumValues).describe('菜单类型'),
+  orderNum: z.number().describe('排序'),
+  path: z.string().nullish().describe('路径'),
+  component: z.string().nullish().describe('组件'),
+  redirect: z.string().nullish().describe('重定向'),
+  icon: z.string().nullish().describe('图标'),
+  isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
+  isCache: enumField(YesOrNoEnumValues).nullish().describe('是否缓存'),
+  isFrame: enumField(YesOrNoEnumValues).nullish().describe('是否内嵌'),
+  isVisible: enumField(YesOrNoEnumValues).nullish().describe('是否显示'),
+  remark: z.string().nullish().describe('备注'),
+}).meta({ id: 'SysMenuEntityExcludeRelationDto' })
 
-  @ApiProperty({ description: '菜单名称' })
-  menuName: string
-
-  @ApiProperty({ description: '菜单键值' })
-  menuKey: string
-
-  @ApiProperty({ description: '菜单类型', enum: MenuTypeEnumMap })
-  menuType: IMenuTypeEnum
-
-  @ApiProperty({ description: '排序' })
-  orderNum: number
-
-  @ApiProperty({ description: '路径' })
-  path?: INullable<string>
-
-  @ApiProperty({ description: '组件' })
-  component?: INullable<string>
-
-  @ApiProperty({ description: '重定向' })
-  redirect?: INullable<string>
-
-  @ApiProperty({ description: '图标' })
-  icon?: INullable<string>
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  isAvailable: IYesOrNoEnum
-
-  @ApiProperty({ description: '是否缓存', enum: YesOrNoEnumMap })
-  isCache?: INullable<IYesOrNoEnum>
-
-  @ApiProperty({ description: '是否内嵌', enum: YesOrNoEnumMap })
-  isFrame?: INullable<IYesOrNoEnum>
-
-  @ApiProperty({ description: '是否显示', enum: YesOrNoEnumMap })
-  isVisible?: INullable<IYesOrNoEnum>
-
-  @ApiProperty({ description: '备注' })
-  remark?: INullable<string>
-
-  @ApiProperty({
-    description: '角色列表',
-    type: () => [SysRoleEntityDto],
-  })
-  roles: Collection<SysRoleEntity, SysMenuEntity>
-}
-
-export class SysMenuEntityExcludeRelationDto extends OmitType(SysMenuEntityDto, ['roles'] as const) {}
+export type SysMenuEntityExcludeRelationDto = z.infer<typeof sysMenuEntityExcludeRelationSchema>

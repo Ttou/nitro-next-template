@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { PlusPageProps } from 'plus-pro-components'
+import type { FindAllocatedUserPageForRoleReqDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
+import { toPayload } from '~web/utils'
 import { useCreate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 
 const route = useRoute()
@@ -122,10 +125,10 @@ const pageProps = computed<PlusPageProps>(() => {
     },
     request: async (params) => {
       return await Apis.SystemRoleAuth.findAllocatedUserPage({
-        data: {
+        data: toPayload<FindAllocatedUserPageForRoleReqDto>({
           id: unref(id),
           ...params,
-        },
+        }),
       })
     },
     searchCardProps: {

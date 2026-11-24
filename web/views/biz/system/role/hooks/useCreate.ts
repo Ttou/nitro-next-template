@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { CreateSystemRoleReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -57,7 +59,9 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await Apis.SystemRole.create({ data: values })
+      await Apis.SystemRole.create({
+        data: toPayload<CreateSystemRoleReqDto>(values),
+      })
 
       createValues.value = Object.create({})
       createVisible.value = false
@@ -70,7 +74,7 @@ export function useCreate({ pageInstance, columns }: UseCreateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

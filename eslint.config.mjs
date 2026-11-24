@@ -9,6 +9,13 @@ export default antfu(
     },
   },
   {
+    // alova 生成的文件自带 `/* eslint-disable */`，不去约束其注释写法
+    files: ['web/apis/**'],
+    rules: {
+      'eslint-comments/no-unlimited-disable': 'off',
+    },
+  },
+  {
     files: ['server/**/*.ts'],
     rules: {
       'antfu/no-top-level-await': 'off',

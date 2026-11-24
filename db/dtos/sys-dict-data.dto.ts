@@ -1,22 +1,17 @@
-import type { IYesOrNoEnum } from '~shared/enums'
-import type { SysDictDataEntity } from '../entities'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { YesOrNoEnumMap } from '~shared/enums'
-import { BaseEntityDto } from './base.dto'
+import { z } from 'zod'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { enumField } from '~shared/utils'
+import { baseEntitySchema } from './base.dto'
 
-export class SysDictDataEntityDto extends BaseEntityDto implements SysDictDataEntity {
-  @ApiProperty({ description: '字典标签' })
-  dictLabel: string
+/**
+ * 系统字典数据
+ */
+export const sysDictDataEntitySchema = baseEntitySchema.extend({
+  dictLabel: z.string().describe('字典标签'),
+  dictValue: z.string().describe('字典值'),
+  dictType: z.string().describe('字典类型'),
+  isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
+  remark: z.string().nullish().describe('备注'),
+}).meta({ id: 'SysDictDataEntityDto' })
 
-  @ApiProperty({ description: '字典值' })
-  dictValue: string
-
-  @ApiProperty({ description: '字典类型' })
-  dictType: string
-
-  @ApiProperty({ description: '是否可用', enum: YesOrNoEnumMap })
-  isAvailable: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  remark?: INullable<string>
-}
+export type SysDictDataEntityDto = z.infer<typeof sysDictDataEntitySchema>

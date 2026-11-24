@@ -1,9 +1,9 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { FindMonitorOnlinePageReqDto } from './online.dto'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'
 import { SysUserEntity } from '~db/entities'
-import { RemoveReqDto } from '~server/dtos'
-import { FindMonitorOnlinePageReqDto } from './online.dto'
 
 @Injectable()
 export class MonitorOnlineService {
@@ -19,13 +19,22 @@ export class MonitorOnlineService {
     const result = await this.em.findAll(SysUserEntity, {
       where: {
         id: { $in: ids },
-        userName: rest.userName ? { $like: `%${rest.userName}%` } : {},
-        nickName: rest.nickName ? { $like: `%${rest.nickName}%` } : {},
+        userName: rest.userName
+          ? { $like: `%${rest.userName}%` }
+          : {},
+        nickName: rest.nickName
+          ? { $like: `%${rest.nickName}%` }
+          : {},
       },
       exclude: ['password'],
     })
 
-    return { page, pageSize, data: result, total: result.length }
+    return {
+      page,
+      pageSize,
+      data: result,
+      total: result.length,
+    }
   }
 
   async remove(dto: RemoveReqDto) {

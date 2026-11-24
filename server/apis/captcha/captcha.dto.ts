@@ -1,9 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { z } from 'zod'
 
-export class CaptchaImageResDto {
-  @ApiProperty({ description: '验证码ID', example: '' })
-  captchaId: string
+/**
+ * 图形验证码响应传输对象
+ */
+export const captchaImageResSchema = z.object({
+  captchaId: z.string().describe('验证码ID').meta({ example: '' }),
+  captchaImage: z.string().describe('验证码图片').meta({ example: '' }),
+}).meta({ id: 'CaptchaImageResDto' })
 
-  @ApiProperty({ description: '验证码图片', example: '' })
-  captchaImage: string
-}
+export type CaptchaImageResDto = z.infer<typeof captchaImageResSchema>

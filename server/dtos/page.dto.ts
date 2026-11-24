@@ -1,30 +1,38 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsPositive, Min } from 'class-validator'
+import { z } from 'zod'
 
 /**
  * 分页请求传输对象
  */
-export class PageReqDto {
-  @ApiProperty({ description: '页码', default: 1 })
-  @IsPositive({ message: '页码必须是正整数' })
-  @Min(1, { message: '页码最小值为 1' })
-  page: number
+export const pageReqSchema = z.object({
+  page: z.coerce
+    .number({ error: '页码必须是正整数' })
+    .int({ error: '页码必须是正整数' })
+    .min(1, { error: '页码必须是正整数' })
+    .describe('页码')
+    .meta({ default: 1 }),
+  pageSize: z.coerce
+    .number({ error: '页长必须是正整数' })
+    .int({ error: '页长必须是正整数' })
+    .min(1, { error: '页长必须是正整数' })
+    .describe('页长')
+    .meta({ default: 20 }),
+})
 
-  @ApiProperty({ description: '页长', default: 20 })
-  @IsPositive({ message: '页长必须是正整数' })
-  @Min(1, { message: '页长最小值为 1' })
-  pageSize: number
-}
+export type PageReqDto = z.infer<typeof pageReqSchema>
 
-export class PageResDto<T = any> {
-  @ApiProperty({ description: '页码' })
-  page: number
-
-  @ApiProperty({ description: '页长' })
-  pageSize: number
-
-  @ApiProperty({ description: '总数' })
-  total: number
-
-  data: T[]
+/**
+ * 分页响应 schema
+ *
+ * 每个分页接口单独占一个组件，组件名即接口名，所以 id 由调用方传入
+ *
+ * @param id 组件名，与接口响应类型名保持一致
+ * @param item 分页数据项 schema
+ */
+export function pageResSchema<Item extends z.ZodType>(id: string, item: Item) {
+  return z.object({
+    page: z.number().describe('页码'),
+    pageSize: z.number().describe('页长'),
+    total: z.number().describe('总数'),
+    data: z.array(item).describe('分页数据'),
+  }).meta({ id })
 }

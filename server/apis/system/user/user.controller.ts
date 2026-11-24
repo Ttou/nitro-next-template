@@ -1,4 +1,6 @@
 import type { StoredUpload } from '@nestjs/storage'
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, UpdateSystemUserReqDto } from './user.dto'
 import { extname } from 'node:path'
 import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-node'
@@ -7,19 +9,11 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTa
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { localDisk } from '~server/configs'
-import { RemoveReqDto } from '~server/dtos'
+import { removeReqSchema } from '~server/dtos'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
 import { PermissionEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
-import {
-  CreateSystemUserReqDto,
-  ExportSystemUserSerDto,
-  FindSystemUserPageReqDto,
-  FindSystemUserPageResDto,
-  ImportSystemUserResDto,
-  ImportSystemUserSerDto,
-  UpdateSystemUserReqDto,
-} from './user.dto'
+import { createSystemUserReqSchema, ExportSystemUserSerDto, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserResSchema, ImportSystemUserSerDto, updateSystemUserReqSchema } from './user.dto'
 import { SystemUserService } from './user.service'
 
 @ApiTags('系统用户接口')
@@ -36,15 +30,15 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_CREATE)
   @Post('create')
-  async create(@Body() dto: CreateSystemUserReqDto) {
+  async create(@Body({ schema: createSystemUserReqSchema }) dto: CreateSystemUserReqDto) {
     return await this.systemUserService.create(dto)
   }
 
   @ApiOperation({ summary: '查询系统用户分页列表' })
-  @ApiOkResponse({ description: '请求成功', type: FindSystemUserPageResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemUserPageResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body() dto: FindSystemUserPageReqDto) {
+  async findPage(@Body({ schema: findSystemUserPageReqSchema }) dto: FindSystemUserPageReqDto) {
     return await this.systemUserService.findPage(dto)
   }
 
@@ -52,7 +46,7 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_REMOVE)
   @Delete('remove')
-  async remove(@Body() dto: RemoveReqDto) {
+  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
     return await this.systemUserService.remove(dto)
   }
 
@@ -60,7 +54,7 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_UPDATE)
   @Post('update')
-  async update(@Body() dto: UpdateSystemUserReqDto) {
+  async update(@Body({ schema: updateSystemUserReqSchema }) dto: UpdateSystemUserReqDto) {
     return await this.systemUserService.update(dto)
   }
 
@@ -75,7 +69,7 @@ export class SystemUserController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_EXPORT)
   @Post('export')
-  async export(@Body() dto: FindSystemUserPageReqDto) {
+  async export(@Body({ schema: findSystemUserPageReqSchema }) dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)
     return this.excelService.exportFile(ExportSystemUserSerDto, data)
   }
@@ -107,7 +101,7 @@ export class SystemUserController {
       },
     },
   })
-  @ApiOkResponse({ description: '请求成功', type: ImportSystemUserResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: importSystemUserResSchema })
   @UseInterceptors(FileInterceptor('file', {
     // busboy 默认按 latin1 解析文件名，会导致中文乱码
     defParamCharset: 'utf8',

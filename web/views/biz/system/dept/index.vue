@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
 import { listToTree } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const deptTree = ref<any[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
@@ -139,7 +140,7 @@ const pageProps = computed<PlusPageProps>(() => {
       const list = await Apis.SystemDept.findList({ data: rest })
       const data = listToTree(list)
 
-      return { data }
+      return { data, total: data.length }
     },
     pagination: false,
     searchCardProps: {

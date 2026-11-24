@@ -2,18 +2,18 @@
   "extends": "nitro/tsconfig",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    
-    "strictPropertyInitialization": false,
-    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "~db/*": ["db/*"],
       "~server/*": ["server/*"],
       "~shared/*": ["shared/*"],
       "~nestjs-modules/*": ["nestjs-modules/*"]
-    }
+    },
+
+    "strictPropertyInitialization": false
   },
   "include": [
     "db/**/*.ts",

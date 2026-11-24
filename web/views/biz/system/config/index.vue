@@ -2,12 +2,14 @@
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
 import { cloneDeep } from 'es-toolkit/compat'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
+import { toPayload } from '~web/utils'
 import { useCreate, useExport, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 
 const columns = computed<PlusColumn[]>(() => [
@@ -108,7 +110,7 @@ const pageProps = computed<PlusPageProps>(() => {
         label: '序号',
       },
       selectionTableColumnProps: {
-        selectable(row, index) {
+        selectable(row) {
           return row.isBuiltin !== YesOrNoEnum.YES
         },
       },
@@ -130,7 +132,7 @@ const pageProps = computed<PlusPageProps>(() => {
             text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_CONFIG_REMOVE),
-            props: (row, index, button) => ({
+            props: row => ({
               type: 'warning',
               disabled: row.isBuiltin === YesOrNoEnum.YES,
             }),
@@ -160,7 +162,9 @@ const pageProps = computed<PlusPageProps>(() => {
 
       Reflect.deleteProperty(_params, 'createdAt')
 
-      return await Apis.SystemConfig.findPage({ data: _params })
+      return await Apis.SystemConfig.findPage({
+        data: toPayload(_params),
+      })
     },
     searchCardProps: {
       shadow: 'never',

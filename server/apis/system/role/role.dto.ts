@@ -1,71 +1,41 @@
+import type { SysRoleEntityExcludeRelationDto } from '~db/dtos'
 import type { IYesOrNoEnum } from '~shared/enums'
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { SysRoleEntityExcludeRelationDto } from '~db/dtos'
+import { z } from 'zod'
+import { sysRoleEntityExcludeRelationSchema } from '~db/dtos'
 import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
-import { PageReqDto, PageResDto } from '~server/dtos'
-import { IsEnumValues } from '~server/validators'
-import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
+import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 
-export class FindSystemRolePageReqDto extends PageReqDto {
-  @ApiPropertyOptional({ description: '角色名称' })
-  @IsOptional()
-  roleName?: string
+export const findSystemRolePageReqSchema = pageReqSchema.extend({
+  roleName: optionalText().describe('角色名称'),
+  roleKey: optionalText().describe('角色标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
+  endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
+}).meta({ id: 'FindSystemRolePageReqDto' })
 
-  @ApiPropertyOptional({ description: '角色标识' })
-  @IsOptional()
-  roleKey?: string
+export type FindSystemRolePageReqDto = z.infer<typeof findSystemRolePageReqSchema>
 
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
+export const findSystemRolePageResSchema = pageResSchema('FindSystemRolePageResDto', sysRoleEntityExcludeRelationSchema)
 
-  @ApiPropertyOptional({ description: '开始时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '开始时间格式不正确' })
-  beginTime?: string
+export type FindSystemRolePageResDto = z.infer<typeof findSystemRolePageResSchema>
 
-  @ApiPropertyOptional({ description: '结束时间' })
-  @IsOptional()
-  @IsDateString({}, { message: '结束时间格式不正确' })
-  endTime?: string
-}
+export const createSystemRoleReqSchema = z.object({
+  roleName: requiredText('角色名称不能为空').describe('角色名称'),
+  roleKey: requiredText('角色标识不能为空').describe('角色标识'),
+  isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
+  remark: optionalText().describe('备注'),
+}).meta({ id: 'CreateSystemRoleReqDto' })
 
-export class FindSystemRolePageResDto extends PageResDto<SysRoleEntityExcludeRelationDto> {
-  @ApiProperty({
-    description: '分页数据',
-    type: () => [SysRoleEntityExcludeRelationDto],
-  })
-  declare data: SysRoleEntityExcludeRelationDto[]
-}
+export type CreateSystemRoleReqDto = z.infer<typeof createSystemRoleReqSchema>
 
-export class CreateSystemRoleReqDto {
-  @ApiProperty({ description: '角色名称' })
-  @IsNotEmpty({ message: '角色名称不能为空' })
-  roleName: string
+export const updateSystemRoleReqSchema = createSystemRoleReqSchema.extend({
+  id: uuid('ID格式不正确').describe('ID'),
+}).meta({ id: 'UpdateSystemRoleReqDto' })
 
-  @ApiProperty({ description: '角色标识' })
-  @IsNotEmpty({ message: '角色标识不能为空' })
-  roleKey: string
-
-  @ApiPropertyOptional({ description: '是否可用', enum: YesOrNoEnumMap })
-  @IsOptional()
-  @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
-  isAvailable?: IYesOrNoEnum
-
-  @ApiPropertyOptional({ description: '备注' })
-  @IsOptional()
-  remark?: string
-}
-
-export class UpdateSystemRoleReqDto extends CreateSystemRoleReqDto {
-  @ApiProperty({ description: 'ID' })
-  @IsNotEmpty({ message: 'ID不能为空' })
-  @IsUUID('7', { message: 'ID格式不正确' })
-  id: string
-}
+export type UpdateSystemRoleReqDto = z.infer<typeof updateSystemRoleReqSchema>
 
 @ExcelFile({
   fileName: '系统角色.xlsx',

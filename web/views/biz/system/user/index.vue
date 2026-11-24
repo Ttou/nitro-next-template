@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-import { computed, ref, unref, useTemplateRef } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
+import { usePageInstance } from '~web/hooks'
 import { useDict } from '~web/hooks/useDict'
-import { dictToOptions } from '~web/utils'
+import { dictToOptions, toPayload } from '~web/utils'
 import { useCreate, useExport, useImport, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
 const dict = useDict(['sys.user.sex'])
 
@@ -76,7 +77,7 @@ const columns = computed<PlusColumn[]>(() => [
   {
     label: '头像',
     prop: 'avatar',
-    valueType: 'image',
+    valueType: 'img',
     hideInSearch: true,
     tableColumnProps: {
       align: 'center',
@@ -155,9 +156,9 @@ const plusPageProps = computed<PlusPageProps>(() => {
             text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_USER_REMOVE),
-            props: (row, index, button) => ({
+            props: row => ({
               type: 'warning',
-              disabled: row.roles.some(item => item.roleKey.includes('sys.')),
+              disabled: row.roles.some((item: { roleKey: string }) => item.roleKey.includes('sys.')),
             }),
             confirm: {
               message: ({ row }) => `确定删除【${row.nickName}】吗？`,
@@ -176,7 +177,9 @@ const plusPageProps = computed<PlusPageProps>(() => {
       },
     },
     request: async (params) => {
-      return await Apis.SystemUser.findPage({ data: params })
+      return await Apis.SystemUser.findPage({
+        data: toPayload(params),
+      })
     },
     searchCardProps: {
       shadow: 'never',
@@ -190,7 +193,7 @@ const plusPageProps = computed<PlusPageProps>(() => {
 const { createVisible, createValues, createDialogProps, createFormProps, showCreate, confirmCreate } = useCreate({ pageInstance, columns })
 const { updateVisible, updateValues, updateDialogProps, updateFormProps, showUpdate, confirmUpdate } = useUpdate({ pageInstance, columns })
 const { confirmRemove } = useRemove({ pageInstance, selectedIds })
-const { confirmExport } = useExport({ pageInstance, selectedIds })
+const { confirmExport } = useExport({ pageInstance })
 const { importVisible, importValues, importDialogProps, importFormProps, importTemplateLoading, exportTemplateLoading, showImport, exportTemplate, httpRequest, beforeUpload } = useImport({ pageInstance })
 </script>
 
@@ -260,7 +263,7 @@ const { importVisible, importValues, importDialogProps, importFormProps, importT
       <template #plus-field-file>
         <el-upload
           v-loading="importTemplateLoading"
-          :element-loading-text="'上传中...'"
+          element-loading-text="上传中..."
           class="upload-wrap"
           drag
           :http-request="httpRequest"

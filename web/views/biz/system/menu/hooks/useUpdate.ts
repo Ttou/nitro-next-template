@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemMenuReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { emptyPayload, toPayload } from '~web/utils'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -12,7 +13,7 @@ interface UseUpdateParams {
 
 export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
   const updateVisible = ref(false)
-  const updateValues = ref<UpdateSystemMenuReqDto>({})
+  const updateValues = ref<UpdateSystemMenuReqDto>(emptyPayload())
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
@@ -89,7 +90,7 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
     },
   }))
 
-  async function showUpdate(params) {
+  async function showUpdate(params: Partial<UpdateSystemMenuReqDto>) {
     Object.assign(updateValues.value, params)
     updateVisible.value = true
 
@@ -97,7 +98,7 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
       await getTree()
       updateConfirmLoading.value = false
     }
-    catch (error) {
+    catch {
       updateConfirmLoading.value = false
     }
   }
@@ -106,7 +107,9 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await Apis.SystemMenu.update({ data: values })
+      await Apis.SystemMenu.update({
+        data: toPayload<UpdateSystemMenuReqDto>(values),
+      })
 
       updateValues.value = Object.create({})
       updateVisible.value = false
@@ -119,7 +122,7 @@ export function useUpdate({ pageInstance, columns, getTree }: UseUpdateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       updateConfirmLoading.value = false
     }
   }

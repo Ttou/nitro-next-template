@@ -6,7 +6,7 @@ import { h, ref, render, shallowRef } from 'vue'
 
 type IProps = ActionBarButtonsRow
 interface IParams {
-  text?: string | VNode
+  text?: IProps['text']
   message?: string | VNode
   cancelText?: string | VNode
   confirmText?: string | VNode
@@ -43,10 +43,10 @@ export function usePopconfirmAction(params?: IParams): IProps {
         onVnodeMounted(vnode: VNode) {
           render(h(ElPopover, {
             trigger: 'click',
-            virtualRef: vnode.el,
+            virtualRef: vnode.el as Element,
             virtualTriggering: true,
             onVnodeBeforeMount(_vnode) {
-              exposedRef.value = _vnode.component.exposed
+              exposedRef.value = _vnode.component?.exposed
             },
           }, {
             default: () => h('div', {

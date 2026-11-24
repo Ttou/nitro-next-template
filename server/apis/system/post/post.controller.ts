@@ -1,10 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './post.dto'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { RemoveReqDto } from '~server/dtos'
+import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemPostReqDto, ExportSystemPostSerDto, FindSystemPostPageReqDto, FindSystemPostPageResDto, UpdateSystemPostReqDto } from './post.dto'
+import { createSystemPostReqSchema, ExportSystemPostSerDto, findSystemPostPageReqSchema, findSystemPostPageResSchema, updateSystemPostReqSchema } from './post.dto'
 import { SystemPostService } from './post.service'
 
 @ApiTags('系统岗位接口')
@@ -20,15 +22,15 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_CREATE)
   @Post('create')
-  async create(@Body() dto: CreateSystemPostReqDto) {
+  async create(@Body({ schema: createSystemPostReqSchema }) dto: CreateSystemPostReqDto) {
     return await this.systemPostService.create(dto)
   }
 
   @ApiOperation({ summary: '查询岗位分页列表' })
-  @ApiOkResponse({ description: '请求成功', type: FindSystemPostPageResDto })
+  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemPostPageResSchema })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body() dto: FindSystemPostPageReqDto) {
+  async findPage(@Body({ schema: findSystemPostPageReqSchema }) dto: FindSystemPostPageReqDto) {
     return await this.systemPostService.findPage(dto)
   }
 
@@ -36,7 +38,7 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_REMOVE)
   @Delete('remove')
-  async remove(@Body() dto: RemoveReqDto) {
+  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
     return await this.systemPostService.remove(dto)
   }
 
@@ -44,7 +46,7 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_UPDATE)
   @Post('update')
-  async update(@Body() dto: UpdateSystemPostReqDto) {
+  async update(@Body({ schema: updateSystemPostReqSchema }) dto: UpdateSystemPostReqDto) {
     return await this.systemPostService.update(dto)
   }
 
@@ -59,7 +61,7 @@ export class SystemPostController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_EXPORT)
   @Post('export')
-  async export(@Body() dto: FindSystemPostPageReqDto) {
+  async export(@Body({ schema: findSystemPostPageReqSchema }) dto: FindSystemPostPageReqDto) {
     const { data } = await this.systemPostService.findPage(dto)
     return this.excelService.exportFile(ExportSystemPostSerDto, data)
   }

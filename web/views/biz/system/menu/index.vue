@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
+import type { IMenuTypeEnum } from '~shared/enums'
+import type { SysMenuEntityExcludeRelationDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
-import { computed, h, ref, unref, useTemplateRef } from 'vue'
+import { computed, h, ref, unref } from 'vue'
 import { MenuTypeEnum, PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
-import { listToTree } from '~web/utils'
+import { usePageInstance } from '~web/hooks'
+import { listToTree, toPayload } from '~web/utils'
 import { useCreate, useRemove, useUpdate } from './hooks'
 
-const pageInstance = useTemplateRef('pageInstance')
+const pageInstance = usePageInstance()
 const selectedIds = ref<string[]>([])
-const tree = ref([])
+const tree = ref<SysMenuEntityExcludeRelationDto[]>([])
+
+/** 目录与按钮不需要配置缓存、外链 */
+const folderOrButtonTypes: IMenuTypeEnum[] = [MenuTypeEnum.FOLDER, MenuTypeEnum.BUTTON]
 
 const columns = computed<PlusColumn[]>(() => [
   {
@@ -107,7 +113,7 @@ const columns = computed<PlusColumn[]>(() => [
     hideInForm: unref(updateVisible)
       ? updateValues.value.menuType === MenuTypeEnum.BUTTON
       : createValues.value.menuType === MenuTypeEnum.BUTTON,
-    render(value, data) {
+    render(value) {
       return value
         ? h(Icon, { icon: value })
         : null
@@ -134,8 +140,8 @@ const columns = computed<PlusColumn[]>(() => [
     options: YesOrNoEnum.items,
     hideInSearch: true,
     hideInForm: unref(updateVisible)
-      ? [MenuTypeEnum.FOLDER, MenuTypeEnum.BUTTON].includes(updateValues.value.menuType)
-      : [MenuTypeEnum.FOLDER, MenuTypeEnum.BUTTON].includes(createValues.value.menuType),
+      ? folderOrButtonTypes.includes(updateValues.value.menuType)
+      : folderOrButtonTypes.includes(createValues.value.menuType),
     tableColumnProps: {
       align: 'center',
     },
@@ -148,8 +154,8 @@ const columns = computed<PlusColumn[]>(() => [
     options: YesOrNoEnum.items,
     hideInSearch: true,
     hideInForm: unref(updateVisible)
-      ? [MenuTypeEnum.FOLDER, MenuTypeEnum.BUTTON].includes(updateValues.value.menuType)
-      : [MenuTypeEnum.FOLDER, MenuTypeEnum.BUTTON].includes(createValues.value.menuType),
+      ? folderOrButtonTypes.includes(updateValues.value.menuType)
+      : folderOrButtonTypes.includes(createValues.value.menuType),
     tableColumnProps: {
       align: 'center',
     },
@@ -230,7 +236,7 @@ const pageProps = computed<PlusPageProps>(() => {
             text: '删除',
             code: 'delete',
             show: hasPermission(PermissionEnum.SYSTEM_MENU_REMOVE),
-            props: (row, index, button) => {
+            props: (row) => {
               return {
                 type: 'warning',
                 disabled: row.menuKey.includes('sys.'),
@@ -253,10 +259,12 @@ const pageProps = computed<PlusPageProps>(() => {
       },
     },
     request: async ({ ...rest }) => {
-      const list = await Apis.SystemMenu.findList({ data: rest })
+      const list = await Apis.SystemMenu.findList({
+        data: toPayload(rest),
+      })
       const data = listToTree(list)
 
-      return { data }
+      return { data, total: data.length }
     },
     pagination: false,
     searchCardProps: {

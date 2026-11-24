@@ -25,6 +25,8 @@ export const EXCEL_COLUMN_EXPOSE = 'excel:column:expose'
 export function ExcelColumn(options?: IExcelColumnOptions) {
   return applyDecorators(
     Reflect.metadata(EXCEL_COLUMN_METADATA, options),
-    Expose({ groups: [EXCEL_COLUMN_EXPOSE] }),
+    Expose({
+      groups: [EXCEL_COLUMN_EXPOSE],
+    }),
   )
 }

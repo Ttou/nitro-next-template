@@ -77,7 +77,11 @@ export class CacheRedisExtendService {
     return keys.map((key, index) => {
       const [, value] = results![index * 2]!
       const [, ttl] = results![index * 2 + 1]!
-      return { key, value: destr(value), ttl }
+      return {
+        key,
+        value: destr(value),
+        ttl,
+      }
     })
   }
 }

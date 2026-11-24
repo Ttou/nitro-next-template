@@ -1,7 +1,9 @@
 import type { FieldValues, PlusColumn, PlusDialogProps, PlusFormProps, PlusPageInstance } from 'plus-pro-components'
 import type { ComputedRef, Ref } from 'vue'
+import type { CreateSystemDictDataReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -59,10 +61,10 @@ export function useCreate({ pageInstance, dictType, columns }: UseCreateParams) 
       createConfirmLoading.value = true
 
       await Apis.SystemDictData.create({
-        data: {
+        data: toPayload<CreateSystemDictDataReqDto>({
           ...values,
           dictType: unref(dictType),
-        },
+        }),
       })
 
       createValues.value = Object.create({})
@@ -76,7 +78,7 @@ export function useCreate({ pageInstance, dictType, columns }: UseCreateParams) 
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

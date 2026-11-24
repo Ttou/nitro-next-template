@@ -1,17 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './type.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity, SysDictTypeEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
-import { RemoveReqDto } from '~server/dtos'
 import { YesOrNoEnum } from '~shared/enums'
-import {
-  CreateSystemDictTypeReqDto,
-  FindSystemDictDetailByKeyReqDto,
-  FindSystemDictTypePageReqDto,
-  UpdateSystemDictTypeReqDto,
-} from './type.dto'
 
 @Injectable()
 export class SystemDictTypeService {
@@ -56,10 +51,26 @@ export class SystemDictTypeService {
 
     const [data, total] = await this.em.findAndCount(SysDictTypeEntity, {
       $and: [
-        { dictName: rest.dictName ? { $like: `%${rest.dictName}%` } : {} },
-        { dictType: rest.dictType ? { $like: `%${rest.dictType}%` } : {} },
-        { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
-        { createdAt: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {} },
+        {
+          dictName: rest.dictName
+            ? { $like: `%${rest.dictName}%` }
+            : {},
+        },
+        {
+          dictType: rest.dictType
+            ? { $like: `%${rest.dictType}%` }
+            : {},
+        },
+        {
+          isAvailable: rest.isAvailable
+            ? { $eq: rest.isAvailable }
+            : {},
+        },
+        {
+          createdAt: rest.beginTime
+            ? { $gte: rest.beginTime, $lte: rest.endTime }
+            : {},
+        },
       ],
     }, { limit: pageSize, offset: page - 1 })
 
@@ -74,10 +85,13 @@ export class SystemDictTypeService {
     })
 
     const oldDictDataRecords = await this.em.find(SysDictDataEntity, {
-      dictType: { $in: oldDictTypeRecords.map(item => item.dictType) },
+      dictType: {
+        $in: oldDictTypeRecords.map(item => item.dictType),
+      },
     })
 
-    await this.em.remove([].concat(oldDictTypeRecords, oldDictDataRecords)).flush()
+    // 字典类型与其字典数据需在同一事务内删除，故链式 remove 后统一 flush
+    await this.em.remove(oldDictTypeRecords).remove(oldDictDataRecords).flush()
   }
 
   async update(dto: UpdateSystemDictTypeReqDto) {
@@ -85,8 +99,12 @@ export class SystemDictTypeService {
 
     const oldRecord = await this.em.findOne(SysDictTypeEntity, {
       $and: [
-        { id: { $eq: id } },
-        { dictType: { $eq: dictType } },
+        {
+          id: { $eq: id },
+        },
+        {
+          dictType: { $eq: dictType },
+        },
       ],
     })
 

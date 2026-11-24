@@ -34,7 +34,9 @@ export class RemoteIpService {
       return [data.COUNTRY_CN, data.PROVINCE_CN, data.CITY_CN].join('/')
     }
     catch (error) {
-      this.logger.error(error instanceof Error ? error.message : String(error))
+      this.logger.error(error instanceof Error
+        ? error.message
+        : String(error))
       throw error
     }
   }

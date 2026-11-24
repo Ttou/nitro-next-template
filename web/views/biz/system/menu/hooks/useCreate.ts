@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { CreateSystemMenuReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { emptyPayload, toPayload } from '~web/utils'
 
 interface UseCreateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -12,7 +13,7 @@ interface UseCreateParams {
 
 export function useCreate({ pageInstance, columns, getTree }: UseCreateParams) {
   const createVisible = ref(false)
-  const createValues = ref<CreateSystemMenuReqDto>({})
+  const createValues = ref<CreateSystemMenuReqDto>(emptyPayload())
   const createConfirmLoading = ref(false)
 
   const createDialogProps = computed<PlusDialogProps>(() => ({
@@ -97,7 +98,7 @@ export function useCreate({ pageInstance, columns, getTree }: UseCreateParams) {
       await getTree()
       createConfirmLoading.value = false
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }
@@ -106,7 +107,9 @@ export function useCreate({ pageInstance, columns, getTree }: UseCreateParams) {
     try {
       createConfirmLoading.value = true
 
-      await Apis.SystemMenu.create({ data: values })
+      await Apis.SystemMenu.create({
+        data: toPayload<CreateSystemMenuReqDto>(values),
+      })
 
       createValues.value = Object.create({})
       createVisible.value = false
@@ -119,7 +122,7 @@ export function useCreate({ pageInstance, columns, getTree }: UseCreateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       createConfirmLoading.value = false
     }
   }

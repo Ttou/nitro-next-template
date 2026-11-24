@@ -1,8 +1,9 @@
+import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { PermissionEnum } from '~shared/enums'
-import { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
+import { assignMenuForRoleReqSchema, findAssignedMenuForRoleReqSchema } from './menu.dto'
 import { SystemRoleMenuService } from './menu.service'
 
 @ApiTags('系统角色菜单接口')
@@ -17,7 +18,7 @@ export class SystemRoleMenuController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGN)
   @Post('assign')
-  async assign(@Body() dto: AssignMenuForRoleReqDto) {
+  async assign(@Body({ schema: assignMenuForRoleReqSchema }) dto: AssignMenuForRoleReqDto) {
     await this.systemRoleMenuService.assign(dto)
   }
 
@@ -28,7 +29,7 @@ export class SystemRoleMenuController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGNED)
   @Post('assigned')
-  async assigned(@Body() dto: FindAssignedMenuForRoleReqDto) {
+  async assigned(@Body({ schema: findAssignedMenuForRoleReqSchema }) dto: FindAssignedMenuForRoleReqDto) {
     return await this.systemRoleMenuService.assigned(dto)
   }
 }

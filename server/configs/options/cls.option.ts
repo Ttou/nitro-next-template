@@ -1,5 +1,5 @@
-import type { IConfig } from '../config.interface'
 import type { ClsModuleAsyncOptions } from 'nestjs-cls'
+import type { IConfig } from '../config.interface'
 import { ConfigService } from '@nestjs/config'
 
 export const clsModuleAsyncOptions: ClsModuleAsyncOptions = {

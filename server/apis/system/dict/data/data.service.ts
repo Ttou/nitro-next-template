@@ -1,4 +1,5 @@
 import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './data.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -6,7 +7,6 @@ import { SysDictDataEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './data.dto'
 
 @Injectable()
 export class SystemDictDataService {
@@ -20,8 +20,12 @@ export class SystemDictDataService {
 
     const oldRecord = await this.em.findOne(SysDictDataEntity, {
       $and: [
-        { dictType: { $eq: dictType } },
-        { dictValue: { $eq: dictValue } },
+        {
+          dictType: { $eq: dictType },
+        },
+        {
+          dictValue: { $eq: dictValue },
+        },
       ],
     })
 
@@ -44,8 +48,12 @@ export class SystemDictDataService {
     const result = await this.em.findAll(SysDictDataEntity, {
       where: {
         dictType: { $eq: dictType },
-        dictLabel: dictLabel ? { $like: `%${dictLabel}%` } : {},
-        isAvailable: isAvailable ? { $eq: isAvailable } : {},
+        dictLabel: dictLabel
+          ? { $like: `%${dictLabel}%` }
+          : {},
+        isAvailable: isAvailable
+          ? { $eq: isAvailable }
+          : {},
       },
     })
 
@@ -67,8 +75,12 @@ export class SystemDictDataService {
 
     const oldRecord = await this.em.findOne(SysDictDataEntity, {
       $and: [
-        { id: { $eq: id } },
-        { dictValue: { $eq: dictValue } },
+        {
+          id: { $eq: id },
+        },
+        {
+          dictValue: { $eq: dictValue },
+        },
       ],
     })
 

@@ -8,12 +8,12 @@ export class CustomXltStp implements StpInterface {
     @Inject(forwardRef(() => ContextService)) private contextService: ContextService,
   ) {}
 
-  async getPermissionList(loginId: string) {
+  async getPermissionList(_loginId: string) {
     const user = this.contextService.getCurrentUser()
     return user.permissions
   }
 
-  async getRoleList(loginId: string) {
+  async getRoleList(_loginId: string) {
     const user = this.contextService.getCurrentUser()
     return user.roles
   }

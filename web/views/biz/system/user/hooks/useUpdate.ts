@@ -3,6 +3,7 @@ import type { ComputedRef, Ref } from 'vue'
 import type { UpdateSystemUserReqDto } from '~web/apis/globals'
 import { ElNotification } from 'element-plus'
 import { computed, ref, unref } from 'vue'
+import { emptyPayload, toPayload } from '~web/utils'
 
 interface UseUpdateParams {
   pageInstance: Ref<PlusPageInstance>
@@ -11,7 +12,7 @@ interface UseUpdateParams {
 
 export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
   const updateVisible = ref(false)
-  const updateValues = ref<UpdateSystemUserReqDto>({})
+  const updateValues = ref<UpdateSystemUserReqDto>(emptyPayload())
   const updateConfirmLoading = ref(false)
 
   const updateDialogProps = computed<PlusDialogProps>(() => ({
@@ -53,7 +54,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     },
   }))
 
-  function showUpdate(params) {
+  function showUpdate(params: Partial<UpdateSystemUserReqDto>) {
     Object.assign(updateValues.value, params)
     updateVisible.value = true
   }
@@ -62,7 +63,9 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
     try {
       updateConfirmLoading.value = true
 
-      await Apis.SystemUser.update({ data: values })
+      await Apis.SystemUser.update({
+        data: toPayload<UpdateSystemUserReqDto>(values),
+      })
 
       updateValues.value = Object.create({})
       updateVisible.value = false
@@ -75,7 +78,7 @@ export function useUpdate({ pageInstance, columns }: UseUpdateParams) {
 
       pageInstance.value.getList()
     }
-    catch (error) {
+    catch {
       updateConfirmLoading.value = false
     }
   }

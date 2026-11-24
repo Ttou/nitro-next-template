@@ -80,6 +80,11 @@ const headerProps = computed<PlusHeaderProps>(() => {
   }
 })
 
+/** 侧边栏内部的 `ElMenu` 实例暴露了 `updateActiveIndex`，但 plus-pro-components 未在实例类型上声明 */
+interface SidebarMenuInstance {
+  updateActiveIndex: (index: string) => void
+}
+
 const sidebarProps = computed<PlusSidebarProps>(() => {
   return {
     routes: unref(filteredRoutes),
@@ -87,7 +92,8 @@ const sidebarProps = computed<PlusSidebarProps>(() => {
     onToggleCollapse: (collapse: boolean) => {
       if (!collapse) {
         // 展开时需要更新打开的路由
-        plusLayoutRef.value?.plusSidebarInstance?.plusSidebarInstance?.updateActiveIndex(route.path)
+        const sidebarMenu = plusLayoutRef.value?.plusSidebarInstance?.plusSidebarInstance as SidebarMenuInstance | undefined
+        sidebarMenu?.updateActiveIndex(route.path)
       }
     },
   }

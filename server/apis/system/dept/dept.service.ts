@@ -1,12 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dept.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDeptEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
-import { RemoveReqDto } from '~server/dtos'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dept.dto'
 
 @Injectable()
 export class SystemDeptService {
@@ -40,9 +40,15 @@ export class SystemDeptService {
 
     const result = await this.em.findAll(SysDeptEntity, {
       where: {
-        deptName: deptName ? { $like: `%${deptName}%` } : {},
-        deptKey: deptKey ? { $like: `%${deptKey}%` } : {},
-        isAvailable: isAvailable ? { $eq: isAvailable } : {},
+        deptName: deptName
+          ? { $like: `%${deptName}%` }
+          : {},
+        deptKey: deptKey
+          ? { $like: `%${deptKey}%` }
+          : {},
+        isAvailable: isAvailable
+          ? { $eq: isAvailable }
+          : {},
       },
     })
 
@@ -64,8 +70,12 @@ export class SystemDeptService {
 
     const oldRecord = await this.em.findOne(SysDeptEntity, {
       $and: [
-        { id: { $eq: id } },
-        { deptKey: { $eq: deptKey } },
+        {
+          id: { $eq: id },
+        },
+        {
+          deptKey: { $eq: deptKey },
+        },
       ],
     })
 

@@ -1,12 +1,12 @@
+import type { RemoveReqDto } from '~server/dtos'
+import type { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './role.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysRoleEntity } from '~db/entities'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
-import { RemoveReqDto } from '~server/dtos'
 import { YesOrNoEnum } from '~shared/enums'
-import { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './role.dto'
 
 @Injectable()
 export class SystemRoleService {
@@ -40,10 +40,26 @@ export class SystemRoleService {
 
     const [data, total] = await this.em.findAndCount(SysRoleEntity, {
       $and: [
-        { roleName: rest.roleName ? { $like: `%${rest.roleName}%` } : {} },
-        { roleKey: rest.roleKey ? { $like: `%${rest.roleKey}%` } : {} },
-        { isAvailable: rest.isAvailable ? { $eq: rest.isAvailable } : {} },
-        { createdAt: rest.beginTime ? { $gte: rest.beginTime, $lte: rest.endTime } : {} },
+        {
+          roleName: rest.roleName
+            ? { $like: `%${rest.roleName}%` }
+            : {},
+        },
+        {
+          roleKey: rest.roleKey
+            ? { $like: `%${rest.roleKey}%` }
+            : {},
+        },
+        {
+          isAvailable: rest.isAvailable
+            ? { $eq: rest.isAvailable }
+            : {},
+        },
+        {
+          createdAt: rest.beginTime
+            ? { $gte: rest.beginTime, $lte: rest.endTime }
+            : {},
+        },
       ],
     }, { limit: pageSize, offset: page - 1 })
 
@@ -65,8 +81,12 @@ export class SystemRoleService {
 
     const oldRecord = await this.em.findOne(SysRoleEntity, {
       $and: [
-        { id: { $eq: id } },
-        { roleKey: { $eq: roleKey } },
+        {
+          id: { $eq: id },
+        },
+        {
+          roleKey: { $eq: roleKey },
+        },
       ],
     })
 
