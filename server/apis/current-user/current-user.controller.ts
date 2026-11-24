@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
-import { ApiDoc } from '~server/decorators'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { CurrentUserGetInfoResDto, CurrentUserGetProfileResDto, UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './current-user.dto'
 import { CurrentUserService } from './current-user.service'
 
@@ -12,25 +11,29 @@ export class CurrentUserController {
     private currentUserService: CurrentUserService,
   ) {}
 
-  @ApiDoc({ endpointSummary: '获取当前用户信息', responseDto: CurrentUserGetInfoResDto })
+  @ApiOperation({ summary: '获取当前用户信息' })
+  @ApiOkResponse({ description: '请求成功', type: CurrentUserGetInfoResDto })
   @Get('info')
   async getInfo() {
     return await this.currentUserService.getInfo()
   }
 
-  @ApiDoc({ endpointSummary: '获取当前用户个人信息', responseDto: CurrentUserGetProfileResDto })
+  @ApiOperation({ summary: '获取当前用户个人信息' })
+  @ApiOkResponse({ description: '请求成功', type: CurrentUserGetProfileResDto })
   @Get('profile')
   async getProfile() {
     return await this.currentUserService.getProfile()
   }
 
-  @ApiDoc({ endpointSummary: '更新当前用户个人信息' })
+  @ApiOperation({ summary: '更新当前用户个人信息' })
+  @ApiOkResponse({ description: '请求成功' })
   @Post('update-profile')
   async updateProfile(@Body() data: UpdateCurrentUserProfileReqDto) {
     return await this.currentUserService.updateProfile(data)
   }
 
-  @ApiDoc({ endpointSummary: '更新当前用户密码' })
+  @ApiOperation({ summary: '更新当前用户密码' })
+  @ApiOkResponse({ description: '请求成功' })
   @Post('update-password')
   async updatePassword(@Body() data: UpdateCurrentUserPasswordReqDto) {
     return await this.currentUserService.updatePassword(data)

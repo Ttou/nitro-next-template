@@ -1,13 +1,12 @@
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { SysConfigEntityDto } from '~db/dtos'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { ApiDoc } from '~server/decorators'
-import { SysConfigEntityDto } from '~db/dtos'
 import { RemoveReqDto } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemConfigReqDto, ExportSystemConfigSerDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './config.dto'
+import { CreateSystemConfigReqDto, ExportSystemConfigSerDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, FindSystemConfigPageResDto, UpdateSystemConfigReqDto } from './config.dto'
 import { SystemConfigService } from './config.service'
 
 @ApiTags('系统配置接口')
@@ -19,14 +18,16 @@ export class SystemConfigController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiDoc({ endpointSummary: '创建系统配置' })
+  @ApiOperation({ summary: '创建系统配置' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_CREATE)
   @Post('create')
   async create(@Body() dto: CreateSystemConfigReqDto) {
     return await this.systemConfigService.create(dto)
   }
 
-  @ApiDoc({ endpointSummary: '根据键名查询系统配置', responseDto: SysConfigEntityDto })
+  @ApiOperation({ summary: '根据键名查询系统配置' })
+  @ApiOkResponse({ description: '请求成功', type: SysConfigEntityDto })
   @CacheKey(ctx => `sys_config:${ctx.switchToHttp().getRequest().query.configKey}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)
@@ -35,28 +36,39 @@ export class SystemConfigController {
     return await this.systemConfigService.findByKey(dto)
   }
 
-  @ApiDoc({ endpointSummary: '查询系统配置分页列表', responseDto: SysConfigEntityDto, isPage: true })
+  @ApiOperation({ summary: '查询系统配置分页列表' })
+  @ApiOkResponse({ description: '请求成功', type: FindSystemConfigPageResDto })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindSystemConfigPageReqDto) {
     return await this.systemConfigService.findPage(dto)
   }
 
-  @ApiDoc({ endpointSummary: '删除系统配置' })
+  @ApiOperation({ summary: '删除系统配置' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_REMOVE)
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemConfigService.remove(dto)
   }
 
-  @ApiDoc({ endpointSummary: '更新系统配置' })
+  @ApiOperation({ summary: '更新系统配置' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_UPDATE)
   @Post('update')
   async update(@Body() dto: UpdateSystemConfigReqDto) {
     return await this.systemConfigService.update(dto)
   }
 
-  @ApiDoc({ endpointSummary: '导出系统配置', isExcel: true })
+  @ApiOperation({ summary: '导出系统配置' })
+  @ApiOkResponse({
+    description: '请求成功',
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_EXPORT)
   @Post('export')
   async export(@Body() dto: FindSystemConfigPageReqDto) {

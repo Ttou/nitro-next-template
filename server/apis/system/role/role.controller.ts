@@ -1,12 +1,10 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { ApiDoc } from '~server/decorators'
-import { SysRoleEntityExcludeRelationDto } from '~db/dtos'
 import { RemoveReqDto } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { CreateSystemRoleReqDto, ExportSystemRoleSerDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './role.dto'
+import { CreateSystemRoleReqDto, ExportSystemRoleSerDto, FindSystemRolePageReqDto, FindSystemRolePageResDto, UpdateSystemRoleReqDto } from './role.dto'
 import { SystemRoleService } from './role.service'
 
 @ApiTags('系统角色接口')
@@ -18,35 +16,47 @@ export class SystemRoleController {
     private excelService: ExcelService,
   ) {}
 
-  @ApiDoc({ endpointSummary: '创建系统角色' })
+  @ApiOperation({ summary: '创建系统角色' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_CREATE)
   @Post('create')
   async create(@Body() dto: CreateSystemRoleReqDto) {
     return await this.systemRoleService.create(dto)
   }
 
-  @ApiDoc({ endpointSummary: '查询系统角色分页列表', responseDto: SysRoleEntityExcludeRelationDto, isPage: true })
+  @ApiOperation({ summary: '查询系统角色分页列表' })
+  @ApiOkResponse({ description: '请求成功', type: FindSystemRolePageResDto })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindSystemRolePageReqDto) {
     return await this.systemRoleService.findPage(dto)
   }
 
-  @ApiDoc({ endpointSummary: '删除系统角色' })
+  @ApiOperation({ summary: '删除系统角色' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_REMOVE)
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemRoleService.remove(dto)
   }
 
-  @ApiDoc({ endpointSummary: '更新系统角色' })
+  @ApiOperation({ summary: '更新系统角色' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_UPDATE)
   @Post('update')
   async update(@Body() dto: UpdateSystemRoleReqDto) {
     return await this.systemRoleService.update(dto)
   }
 
-  @ApiDoc({ endpointSummary: '导出系统角色', isExcel: true })
+  @ApiOperation({ summary: '导出系统角色' })
+  @ApiOkResponse({
+    description: '请求成功',
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_EXPORT)
   @Post('export')
   async export(@Body() dto: FindSystemRolePageReqDto) {

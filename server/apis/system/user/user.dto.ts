@@ -2,9 +2,9 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsUUID, MinLength } from 'class-validator'
-import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
 import { SysUserEntityExcludeRelationDto } from '~db/dtos'
-import { PageReqDto } from '~server/dtos'
+import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
+import { PageReqDto, PageResDto } from '~server/dtos'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -35,6 +35,14 @@ export class FindSystemUserPageReqDto extends PageReqDto {
   @IsOptional()
   @IsEnumValues(YesOrNoEnumValues, { message: '可用状态枚举值不正确' })
   isAvailable?: IYesOrNoEnum
+}
+
+export class FindSystemUserPageResDto extends PageResDto<SysUserEntityNoRelationsNoPasswordDto> {
+  @ApiProperty({
+    description: '分页数据',
+    type: () => [SysUserEntityNoRelationsNoPasswordDto],
+  })
+  declare data: SysUserEntityNoRelationsNoPasswordDto[]
 }
 
 export class CreateSystemUserReqDto {

@@ -2,9 +2,9 @@ import type { IYesOrNoEnum } from '~shared/enums'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator'
-import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
 import { SysRoleEntityExcludeRelationDto } from '~db/dtos'
-import { PageReqDto } from '~server/dtos'
+import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
+import { PageReqDto, PageResDto } from '~server/dtos'
 import { IsEnumValues } from '~server/validators'
 import { YesOrNoEnum, YesOrNoEnumMap, YesOrNoEnumValues } from '~shared/enums'
 
@@ -31,6 +31,14 @@ export class FindSystemRolePageReqDto extends PageReqDto {
   @IsOptional()
   @IsDateString({}, { message: '结束时间格式不正确' })
   endTime?: string
+}
+
+export class FindSystemRolePageResDto extends PageResDto<SysRoleEntityExcludeRelationDto> {
+  @ApiProperty({
+    description: '分页数据',
+    type: () => [SysRoleEntityExcludeRelationDto],
+  })
+  declare data: SysRoleEntityExcludeRelationDto[]
 }
 
 export class CreateSystemRoleReqDto {

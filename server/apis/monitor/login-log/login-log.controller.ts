@@ -1,10 +1,8 @@
 import { Body, ClassSerializerInterceptor, Controller, Post, UseInterceptors } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { ApiDoc } from '~server/decorators'
-import { SysLoginLogEntityDto } from '~db/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { FindMonitorLoginLogPageReqDto } from './login-log.dto'
+import { FindMonitorLoginLogPageReqDto, FindMonitorLoginLogPageResDto } from './login-log.dto'
 import { MonitorLoginLogService } from './login-log.service'
 
 @ApiTags('操作日志接口')
@@ -15,7 +13,8 @@ export class MonitorLoginLogController {
     private monitorLoginLogService: MonitorLoginLogService,
   ) {}
 
-  @ApiDoc({ endpointSummary: '分页查询登录日志', responseDto: SysLoginLogEntityDto, isPage: true })
+  @ApiOperation({ summary: '分页查询登录日志' })
+  @ApiOkResponse({ description: '请求成功', type: FindMonitorLoginLogPageResDto })
   @UseInterceptors(ClassSerializerInterceptor)
   @XltCheckPermission(PermissionEnum.MONITOR_LOGIN_LOG_FIND_PAGE)
   @Post('findPage')

@@ -1,8 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { CaptchaService } from '~nestjs-modules/captcha'
-import { ApiDoc } from '~server/decorators'
 import { CaptchaImageResDto } from './captcha.dto'
 
 @ApiTags('验证码接口')
@@ -12,7 +11,8 @@ export class CaptchaController {
     private captchaService: CaptchaService,
   ) {}
 
-  @ApiDoc({ endpointSummary: '图形验证码', responseDto: CaptchaImageResDto })
+  @ApiOperation({ summary: '图形验证码' })
+  @ApiOkResponse({ description: '请求成功', type: CaptchaImageResDto })
   @XltIgnore()
   @Get('image')
   async image() {

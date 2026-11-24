@@ -132,7 +132,9 @@ const columns = computed<PlusColumn[]>(() => [
       rows: 4,
       readonly: true,
       placeholder: '无',
-      value: JSON.stringify(value),
+      value: typeof value === 'string'
+        ? value
+        : JSON.stringify(value),
     }),
     hideInSearch: true,
     hideInTable: true,

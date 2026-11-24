@@ -3,11 +3,10 @@ import { extname } from 'node:path'
 import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-node'
 import { StorageDisk, uploadToDisk } from '@nestjs/storage'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { localDisk } from '~server/configs'
-import { ApiDoc } from '~server/decorators'
 import { RemoveReqDto } from '~server/dtos'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
 import { PermissionEnum } from '~shared/enums'
@@ -16,9 +15,9 @@ import {
   CreateSystemUserReqDto,
   ExportSystemUserSerDto,
   FindSystemUserPageReqDto,
+  FindSystemUserPageResDto,
   ImportSystemUserResDto,
   ImportSystemUserSerDto,
-  SysUserEntityNoRelationsNoPasswordDto,
   UpdateSystemUserReqDto,
 } from './user.dto'
 import { SystemUserService } from './user.service'
@@ -33,35 +32,47 @@ export class SystemUserController {
     private disk: StorageDisk,
   ) {}
 
-  @ApiDoc({ endpointSummary: '创建系统用户' })
+  @ApiOperation({ summary: '创建系统用户' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_CREATE)
   @Post('create')
   async create(@Body() dto: CreateSystemUserReqDto) {
     return await this.systemUserService.create(dto)
   }
 
-  @ApiDoc({ endpointSummary: '查询系统用户分页列表', responseDto: SysUserEntityNoRelationsNoPasswordDto, isPage: true })
+  @ApiOperation({ summary: '查询系统用户分页列表' })
+  @ApiOkResponse({ description: '请求成功', type: FindSystemUserPageResDto })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_FIND_PAGE)
   @Post('findPage')
   async findPage(@Body() dto: FindSystemUserPageReqDto) {
     return await this.systemUserService.findPage(dto)
   }
 
-  @ApiDoc({ endpointSummary: '删除系统用户' })
+  @ApiOperation({ summary: '删除系统用户' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_REMOVE)
   @Delete('remove')
   async remove(@Body() dto: RemoveReqDto) {
     return await this.systemUserService.remove(dto)
   }
 
-  @ApiDoc({ endpointSummary: '更新系统用户' })
+  @ApiOperation({ summary: '更新系统用户' })
+  @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_UPDATE)
   @Post('update')
   async update(@Body() dto: UpdateSystemUserReqDto) {
     return await this.systemUserService.update(dto)
   }
 
-  @ApiDoc({ endpointSummary: '导出系统用户', isExcel: true })
+  @ApiOperation({ summary: '导出系统用户' })
+  @ApiOkResponse({
+    description: '请求成功',
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_EXPORT)
   @Post('export')
   async export(@Body() dto: FindSystemUserPageReqDto) {
@@ -69,13 +80,34 @@ export class SystemUserController {
     return this.excelService.exportFile(ExportSystemUserSerDto, data)
   }
 
-  @ApiDoc({ endpointSummary: '导出系统用户导入模板', isExcel: true })
+  @ApiOperation({ summary: '导出系统用户导入模板' })
+  @ApiOkResponse({
+    description: '请求成功',
+    content: {
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
+        schema: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @Post('exportTemplate')
   async exportTemplate() {
     return this.excelService.exportFile(ImportSystemUserSerDto, [])
   }
 
-  @ApiDoc({ endpointSummary: '导入系统用户', responseDto: ImportSystemUserResDto, isUpload: true })
+  @ApiOperation({ summary: '导入系统用户' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({ description: '请求成功', type: ImportSystemUserResDto })
   @UseInterceptors(FileInterceptor('file', {
     // busboy 默认按 latin1 解析文件名，会导致中文乱码
     defParamCharset: 'utf8',

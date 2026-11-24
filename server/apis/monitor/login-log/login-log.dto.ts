@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { IsDateString, IsOptional } from 'class-validator'
-import { SysLoginLogEntityDto, UserAgentSerDto } from '~db/dtos'
-import { PageReqDto } from '~server/dtos'
+import { SysLoginLogEntityDto } from '~db/dtos'
+import { PageReqDto, PageResDto } from '~server/dtos'
 
 /**
  * 分页查询登录日志请求
@@ -26,7 +26,10 @@ export class FindMonitorLoginLogPageReqDto extends PageReqDto {
   endTime?: string
 }
 
-export class SysLoginLogEntityWithUserDto extends OmitType(SysLoginLogEntityDto, ['userAgent'] as const) {
-  @ApiProperty({ description: '用户代理', type: () => UserAgentSerDto })
-  userAgent: UserAgentSerDto
+export class FindMonitorLoginLogPageResDto extends PageResDto<SysLoginLogEntityDto> {
+  @ApiProperty({
+    description: '分页数据',
+    type: () => [SysLoginLogEntityDto],
+  })
+  declare data: SysLoginLogEntityDto[]
 }
