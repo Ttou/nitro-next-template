@@ -1,12 +1,10 @@
-import type { SysUserEntityNoRelationsNoPasswordDto } from '~db/dtos'
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Transform } from 'class-transformer'
 import { z } from 'zod'
 import { sysUserEntityNoRelationsNoPasswordSchema } from '~db/dtos'
-import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
+import { defineExcel } from '~nestjs-modules/excel'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { emailText, optionalEnumOf, optionalText, phoneText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
+import { enumLabelField } from '~shared/utils'
 
 export const findSystemUserPageReqSchema = pageReqSchema.extend({
   userName: optionalText().describe('用户名'),
@@ -42,102 +40,47 @@ export const updateSystemUserReqSchema = createSystemUserReqSchema.extend({
 
 export type UpdateSystemUserReqDto = z.infer<typeof updateSystemUserReqSchema>
 
-@ExcelFile({
+export const exportSystemUserExcel = defineExcel({
   fileName: '系统用户.xlsx',
+  schema: z.object({
+    id: z.string().describe('ID'),
+    userName: z.string().describe('账号'),
+    nickName: z.string().describe('昵称'),
+    phone: z.string().describe('手机号码'),
+    email: z.string().describe('邮箱'),
+    sex: z.string().describe('性别'),
+    isAvailable: enumLabelField(YesOrNoEnum).describe('是否可用'),
+    remark: z.string().describe('备注'),
+    isDelete: enumLabelField(YesOrNoEnum).describe('是否删除'),
+    avatar: z.string().describe('头像'),
+    createBy: z.string().describe('创建人'),
+    createdAt: z.date().describe('创建时间'),
+    updateBy: z.string().describe('更新人'),
+    updatedAt: z.date().describe('更新时间'),
+  }),
 })
-export class ExportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswordDto {
-  @ExcelColumn({ header: 'ID' })
-  id: string
 
-  @ExcelColumn({ header: '账号' })
-  userName: string
+/**
+ * 系统用户导入列
+ *
+ * 只声明模板里出现的列，导入时按这份 schema 的顺序逐列取值
+ */
+export const importSystemUserSchema = z.object({
+  userName: z.string().describe('账号'),
+  nickName: z.string().describe('昵称'),
+  phone: z.string().describe('手机号码'),
+  email: z.string().describe('邮箱'),
+  sex: z.string().describe('性别'),
+  remark: z.string().describe('备注'),
+})
 
-  @ExcelColumn({ header: '昵称' })
-  nickName: string
+export type ImportSystemUserSerDto = z.infer<typeof importSystemUserSchema>
 
-  @ExcelColumn({ header: '手机号码' })
-  phone?: INullable<string>
-
-  @ExcelColumn({ header: '邮箱' })
-  email?: INullable<string>
-
-  @ExcelColumn({ header: '性别' })
-  sex?: INullable<string>
-
-  @ExcelColumn({ header: '是否可用' })
-  @Transform(({ value }) => YesOrNoEnum.label(value))
-  isAvailable: IYesOrNoEnum
-
-  @ExcelColumn({ header: '备注' })
-  remark?: INullable<string>
-
-  @ExcelColumn({ header: '是否删除' })
-  @Transform(({ value }) => YesOrNoEnum.label(value))
-  isDelete: IYesOrNoEnum
-
-  @ExcelColumn({ header: '头像' })
-  avatar?: INullable<string>
-
-  @ExcelColumn({ header: '创建人' })
-  createBy?: INullable<string>
-
-  @ExcelColumn({ header: '创建时间' })
-  createdAt: Date
-
-  @ExcelColumn({ header: '更新人' })
-  updateBy?: INullable<string>
-
-  @ExcelColumn({ header: '更新时间' })
-  updatedAt: Date
-
-  constructor(partial: any) {
-    Object.assign(this, partial)
-  }
-}
-
-@ExcelFile({
+export const importSystemUserExcel = defineExcel({
   fileName: '系统用户导入模板.xlsx',
   sheetName: '系统用户',
+  schema: importSystemUserSchema,
 })
-export class ImportSystemUserSerDto implements SysUserEntityNoRelationsNoPasswordDto {
-  id: string
-
-  @ExcelColumn({ header: '账号' })
-  userName: string
-
-  @ExcelColumn({ header: '昵称' })
-  nickName: string
-
-  @ExcelColumn({ header: '手机号码' })
-  phone?: INullable<string>
-
-  @ExcelColumn({ header: '邮箱' })
-  email?: INullable<string>
-
-  @ExcelColumn({ header: '性别' })
-  sex?: INullable<string>
-
-  isAvailable: IYesOrNoEnum
-
-  @ExcelColumn({ header: '备注' })
-  remark?: INullable<string>
-
-  isDelete: IYesOrNoEnum
-
-  avatar?: INullable<string>
-
-  createBy?: INullable<string>
-
-  createdAt: Date
-
-  updateBy?: INullable<string>
-
-  updatedAt: Date
-
-  constructor(partial: any) {
-    Object.assign(this, partial)
-  }
-}
 
 /**
  * 导入系统用户响应传输对象

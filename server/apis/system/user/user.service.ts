@@ -1,5 +1,5 @@
 import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, UpdateSystemUserReqDto } from './user.dto'
+import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerDto, UpdateSystemUserReqDto } from './user.dto'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -8,7 +8,6 @@ import { HashService } from '~nestjs-modules/hash'
 import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
 import { YesOrNoEnum } from '~shared/enums'
-import { ImportSystemUserSerDto } from './user.dto'
 
 @Injectable()
 export class SystemUserService {

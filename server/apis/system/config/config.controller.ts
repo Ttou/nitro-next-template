@@ -8,7 +8,7 @@ import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
 import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemConfigReqSchema, ExportSystemConfigSerDto, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, updateSystemConfigReqSchema } from './config.dto'
+import { createSystemConfigReqSchema, exportSystemConfigExcel, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, updateSystemConfigReqSchema } from './config.dto'
 import { SystemConfigService } from './config.service'
 
 @ApiTags('系统配置接口')
@@ -75,6 +75,6 @@ export class SystemConfigController {
   @Post('export')
   async export(@Body({ schema: findSystemConfigPageReqSchema }) dto: FindSystemConfigPageReqDto) {
     const { data } = await this.systemConfigService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemConfigSerDto, data)
+    return this.excelService.exportFile(exportSystemConfigExcel, data)
   }
 }

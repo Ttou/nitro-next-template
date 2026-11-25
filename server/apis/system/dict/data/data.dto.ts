@@ -1,10 +1,8 @@
-import type { SysDictDataEntityDto } from '~db/dtos'
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Transform } from 'class-transformer'
 import { z } from 'zod'
-import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
+import { defineExcel } from '~nestjs-modules/excel'
 import { optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
+import { enumLabelField } from '~shared/utils'
 
 export const findSystemDictDataListReqSchema = z.object({
   dictType: requiredText('字典类型不能为空').describe('字典类型'),
@@ -30,42 +28,18 @@ export const updateSystemDictDataReqSchema = createSystemDictDataReqSchema.exten
 
 export type UpdateSystemDictDataReqDto = z.infer<typeof updateSystemDictDataReqSchema>
 
-@ExcelFile({
+export const exportSystemDictDataExcel = defineExcel({
   fileName: '系统字典数据.xlsx',
+  schema: z.object({
+    id: z.string().describe('ID'),
+    dictLabel: z.string().describe('字典标签'),
+    dictValue: z.string().describe('字典值'),
+    dictType: z.string().describe('字典类型'),
+    isAvailable: enumLabelField(YesOrNoEnum).describe('是否可用'),
+    remark: z.string().describe('备注'),
+    createBy: z.string().describe('创建人'),
+    createdAt: z.date().describe('创建时间'),
+    updateBy: z.string().describe('更新人'),
+    updatedAt: z.date().describe('更新时间'),
+  }),
 })
-export class ExportSystemDictDataSerDto implements SysDictDataEntityDto {
-  @ExcelColumn({ header: 'ID' })
-  id: string
-
-  @ExcelColumn({ header: '字典标签' })
-  dictLabel: string
-
-  @ExcelColumn({ header: '字典值' })
-  dictValue: string
-
-  @ExcelColumn({ header: '字典类型' })
-  dictType: string
-
-  @ExcelColumn({ header: '是否可用' })
-  @Transform(({ value }) => YesOrNoEnum.label(value))
-  isAvailable: IYesOrNoEnum
-
-  @ExcelColumn({ header: '备注' })
-  remark: string
-
-  @ExcelColumn({ header: '创建人' })
-  createBy: string
-
-  @ExcelColumn({ header: '创建时间' })
-  createdAt: Date
-
-  @ExcelColumn({ header: '更新人' })
-  updateBy: string
-
-  @ExcelColumn({ header: '更新时间' })
-  updatedAt: Date
-
-  constructor(partial: any) {
-    Object.assign(this, partial)
-  }
-}

@@ -8,7 +8,7 @@ import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
 import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemDictTypeReqSchema, ExportSystemDictTypeSerDto, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, updateSystemDictTypeReqSchema } from './type.dto'
+import { createSystemDictTypeReqSchema, exportSystemDictTypeExcel, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, updateSystemDictTypeReqSchema } from './type.dto'
 import { SystemDictTypeService } from './type.service'
 
 @ApiTags('字典类型接口')
@@ -79,6 +79,6 @@ export class SystemDictTypeController {
   @Post('export')
   async export(@Body({ schema: findSystemDictTypePageReqSchema }) dto: FindSystemDictTypePageReqDto) {
     const { data } = await this.systemDictTypeService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemDictTypeSerDto, data)
+    return this.excelService.exportFile(exportSystemDictTypeExcel, data)
   }
 }

@@ -1,12 +1,10 @@
-import type { SysConfigEntityDto } from '~db/dtos'
-import type { IYesOrNoEnum } from '~shared/enums'
-import { Transform } from 'class-transformer'
 import { z } from 'zod'
 import { sysConfigEntitySchema } from '~db/dtos'
-import { ExcelColumn, ExcelFile } from '~nestjs-modules/excel'
+import { defineExcel } from '~nestjs-modules/excel'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
+import { enumLabelField } from '~shared/utils'
 
 // 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
 export const findSystemConfigByKeyReqSchema = z.object({
@@ -47,46 +45,19 @@ export const updateSystemConfigReqSchema = createSystemConfigReqSchema.extend({
 
 export type UpdateSystemConfigReqDto = z.infer<typeof updateSystemConfigReqSchema>
 
-@ExcelFile({
+export const exportSystemConfigExcel = defineExcel({
   fileName: '系统配置.xlsx',
+  schema: z.object({
+    id: z.string().describe('ID'),
+    configName: z.string().describe('参数名称'),
+    configKey: z.string().describe('参数标识'),
+    configValue: z.string().describe('参数键值'),
+    isBuiltin: enumLabelField(YesOrNoEnum).describe('是否内置参数'),
+    isAvailable: enumLabelField(YesOrNoEnum).describe('是否可用'),
+    remark: z.string().describe('备注'),
+    createBy: z.string().describe('创建人'),
+    createdAt: z.date().describe('创建时间'),
+    updateBy: z.string().describe('更新人'),
+    updatedAt: z.date().describe('更新时间'),
+  }),
 })
-export class ExportSystemConfigSerDto implements SysConfigEntityDto {
-  @ExcelColumn({ header: 'ID' })
-  id: string
-
-  @ExcelColumn({ header: '参数名称' })
-  configName: string
-
-  @ExcelColumn({ header: '参数键值' })
-  configKey: string
-
-  @ExcelColumn({ header: '参数键值' })
-  configValue: string
-
-  @ExcelColumn({ header: '是否内置参数' })
-  @Transform(({ value }) => YesOrNoEnum.label(value))
-  isBuiltin: IYesOrNoEnum
-
-  @ExcelColumn({ header: '是否可用' })
-  @Transform(({ value }) => YesOrNoEnum.label(value))
-  isAvailable: IYesOrNoEnum
-
-  @ExcelColumn({ header: '备注' })
-  remark: string
-
-  @ExcelColumn({ header: '创建人' })
-  createBy: string
-
-  @ExcelColumn({ header: '创建时间' })
-  createdAt: Date
-
-  @ExcelColumn({ header: '更新人' })
-  updateBy: string
-
-  @ExcelColumn({ header: '更新时间' })
-  updatedAt: Date
-
-  constructor(partial: any) {
-    Object.assign(this, partial)
-  }
-}

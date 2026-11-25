@@ -13,7 +13,7 @@ import { removeReqSchema } from '~server/dtos'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
 import { PermissionEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
-import { createSystemUserReqSchema, ExportSystemUserSerDto, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserResSchema, ImportSystemUserSerDto, updateSystemUserReqSchema } from './user.dto'
+import { createSystemUserReqSchema, exportSystemUserExcel, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserExcel, importSystemUserResSchema, updateSystemUserReqSchema } from './user.dto'
 import { SystemUserService } from './user.service'
 
 @ApiTags('系统用户接口')
@@ -71,7 +71,7 @@ export class SystemUserController {
   @Post('export')
   async export(@Body({ schema: findSystemUserPageReqSchema }) dto: FindSystemUserPageReqDto) {
     const { data } = await this.systemUserService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemUserSerDto, data)
+    return this.excelService.exportFile(exportSystemUserExcel, data)
   }
 
   @ApiOperation({ summary: '导出系统用户导入模板' })
@@ -85,7 +85,7 @@ export class SystemUserController {
   })
   @Post('exportTemplate')
   async exportTemplate() {
-    return this.excelService.exportFile(ImportSystemUserSerDto, [])
+    return this.excelService.exportFile(importSystemUserExcel, [])
   }
 
   @ApiOperation({ summary: '导入系统用户' })
@@ -123,7 +123,7 @@ export class SystemUserController {
     const { body } = await this.disk.get(file.key)
 
     try {
-      const data = await this.excelService.importFile(ImportSystemUserSerDto, body)
+      const data = await this.excelService.importFile(importSystemUserExcel, body)
       return await this.systemUserService.importTemplate(data)
     }
     finally {

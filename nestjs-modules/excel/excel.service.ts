@@ -1,14 +1,12 @@
 import type { StreamableFileOptions } from '@nestjs/common/file-stream/interfaces/index.js'
-import type { ClassConstructor } from 'class-transformer'
 import type { Readable } from 'node:stream'
-import type { ExcelModuleOptions, IExcelFileOptions } from './excel.interface'
+import type { z } from 'zod'
+import type { ExcelModuleOptions, IExcelDefinition } from './excel.interface'
 import { PassThrough } from 'node:stream'
 import { WorkbookReader, WorkbookWriter } from '@cj-tech-master/excelts'
 import { Inject, Injectable, Logger, StreamableFile } from '@nestjs/common'
-import { instanceToPlain } from 'class-transformer'
 import { isFunction } from 'es-toolkit'
 import { defaultOptions } from './excel.constant'
-import { EXCEL_COLUMN_EXPOSE, EXCEL_COLUMN_METADATA, EXCEL_FILE_METADATA } from './excel.decorator'
 import { MODULE_OPTIONS_TOKEN } from './excel.module-define'
 
 @Injectable()
@@ -22,14 +20,20 @@ export class ExcelService {
     this.options = Object.assign({}, defaultOptions, this.moduleOptions)
   }
 
-  async importFile<T>(cls: ClassConstructor<T>, fileStream: Readable): Promise<T[]> {
+  /**
+   * 导入表格
+   *
+   * 按 schema 的字段顺序读取列，只取原始单元格值，不做校验与转换：
+   * 空单元格同样要能落到对象上，缺失值与业务规则交由调用方判断
+   */
+  async importFile<S extends z.ZodObject>(definition: IExcelDefinition<S>, fileStream: Readable): Promise<z.infer<S>[]> {
     const workbookReader = new WorkbookReader(fileStream, {
       sharedStrings: 'cache',
       hyperlinks: 'ignore',
       styles: 'ignore',
     })
-    const keys = this.getKeys(cls)
-    const result: T[] = []
+    const keys = this.getKeys(definition)
+    const result: z.infer<S>[] = []
     let rowCount = 0
 
     for await (const worksheetReader of workbookReader) {
@@ -47,22 +51,18 @@ export class ExcelService {
           obj[key] = row.getCell(index + 1).value
         })
 
-        // instanceToPlain 只返回普通对象，构造出来的实例已由 cls 保证形状
-        result.push(instanceToPlain(Reflect.construct(cls, [obj]), {
-          strategy: 'excludeAll',
-          groups: [EXCEL_COLUMN_EXPOSE],
-        }) as T)
+        result.push(obj as z.infer<S>)
       }
     }
 
     return result
   }
 
-  exportFile(cls: ClassConstructor<any>, data: any[]) {
+  exportFile(definition: IExcelDefinition, data: any[]) {
     const stream = new PassThrough()
-    const streamableFileOptions = this.getStreamableFileOptions(cls)
+    const streamableFileOptions = this.getStreamableFileOptions(definition)
 
-    this.createWorkbook(stream, cls, data).catch((err) => {
+    this.createWorkbook(stream, definition, data).catch((err) => {
       this.logger.error('导出大文件失败', err)
       stream.destroy(err)
     })
@@ -70,16 +70,16 @@ export class ExcelService {
     return new StreamableFile(stream, streamableFileOptions)
   }
 
-  private async createWorkbook(stream: PassThrough, cls: ClassConstructor<any>, data: any[]) {
+  private async createWorkbook(stream: PassThrough, definition: IExcelDefinition, data: any[]) {
     const wb = new WorkbookWriter({
       stream,
       useSharedStrings: true,
       useStyles: false,
     })
-    const { fileName, sheetName, sheetOptions } = this.getFileOptions(cls)
+    const { fileName, sheetName, sheetOptions } = definition
     const ws = wb.addWorksheet(sheetName || this.defaultSheetName!, sheetOptions)
-    const columns = this.getColumns(cls)
-    const rows = this.getRows(cls, data)
+    const columns = this.getColumns(definition)
+    const rows = this.getRows(definition, data)
 
     ws.columns = columns
 
@@ -102,48 +102,56 @@ export class ExcelService {
     await wb.commit()
   }
 
-  private getFileOptions(cls: ClassConstructor<any>): IExcelFileOptions {
-    return Reflect.getMetadata(EXCEL_FILE_METADATA, cls)
-  }
+  /**
+   * 列配置：表头取字段说明，其余列属性取附加配置
+   */
+  private getColumns(definition: IExcelDefinition) {
+    const shape = definition.schema.shape
+    const columns: Record<string, any>[] = []
 
-  private getColumns(cls: ClassConstructor<any>) {
-    const columns = []
-    const keys = this.getKeys(cls)
-
-    for (const key of keys) {
-      const item = Reflect.getMetadata(
-        EXCEL_COLUMN_METADATA,
-        cls.prototype,
+    for (const key of this.getKeys(definition)) {
+      columns.push({
         key,
-      )
-
-      if (item) {
-        columns.push({ key, ...item })
-      }
+        header: shape[key]?.description ?? key,
+        ...definition.columns?.[key],
+      })
     }
 
     return columns
   }
 
-  private getRows(cls: ClassConstructor<any>, data: any[]) {
-    return data.map(v =>
-      instanceToPlain(Reflect.construct(cls, [v]), {
-        strategy: 'excludeAll',
-        groups: [EXCEL_COLUMN_EXPOSE],
-      }),
-    )
+  /**
+   * 行数据：字段顺序与 schema 一致，每格都过一遍字段 schema
+   */
+  private getRows(definition: IExcelDefinition, data: any[]) {
+    const shape = definition.schema.shape
+    const keys = this.getKeys(definition)
+
+    return data.map(row => Object.fromEntries(
+      keys.map(key => [
+        key,
+        this.getCellValue(shape[key], row?.[key]),
+      ]),
+    ))
   }
 
-  private getKeys(cls: ClassConstructor<any>) {
-    const instance = instanceToPlain(Reflect.construct(cls, []), {
-      strategy: 'excludeAll',
-      groups: [EXCEL_COLUMN_EXPOSE],
-    })
-    return Object.keys(instance)
+  /**
+   * 单元格取值
+   *
+   * 走字段 schema 的解析以应用 `transform`（如枚举值转标签）；
+   * 解析失败时回落成原始值，避免个别空值/脏数据让整张表导出失败
+   */
+  private getCellValue(field: z.ZodType, value: unknown): unknown {
+    const result = field.safeParse(value)
+    return result.success ? result.data : value
   }
 
-  private getStreamableFileOptions(cls: ClassConstructor<any>): StreamableFileOptions {
-    const { fileName } = this.getFileOptions(cls)
+  private getKeys(definition: IExcelDefinition) {
+    return Object.keys(definition.schema.shape)
+  }
+
+  private getStreamableFileOptions(definition: IExcelDefinition): StreamableFileOptions {
+    const { fileName } = definition
     return {
       disposition: `attachment; filename=${encodeURIComponent(fileName || this.defaultFileName!)}`,
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

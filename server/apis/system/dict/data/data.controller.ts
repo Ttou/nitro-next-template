@@ -7,7 +7,7 @@ import { sysDictDataEntitySchema } from '~db/dtos'
 import { ExcelService } from '~nestjs-modules/excel'
 import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemDictDataReqSchema, ExportSystemDictDataSerDto, findSystemDictDataListReqSchema, updateSystemDictDataReqSchema } from './data.dto'
+import { createSystemDictDataReqSchema, exportSystemDictDataExcel, findSystemDictDataListReqSchema, updateSystemDictDataReqSchema } from './data.dto'
 import { SystemDictDataService } from './data.service'
 
 @ApiTags('字典数据接口')
@@ -68,6 +68,6 @@ export class SystemDictDataController {
   @Post('export')
   async export(@Body({ schema: findSystemDictDataListReqSchema }) dto: FindSystemDictDataListReqDto) {
     const data = await this.systemDictDataService.findList(dto)
-    return this.excelService.exportFile(ExportSystemDictDataSerDto, data)
+    return this.excelService.exportFile(exportSystemDictDataExcel, data)
   }
 }

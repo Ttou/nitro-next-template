@@ -6,7 +6,7 @@ import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemPostReqSchema, ExportSystemPostSerDto, findSystemPostPageReqSchema, findSystemPostPageResSchema, updateSystemPostReqSchema } from './post.dto'
+import { createSystemPostReqSchema, exportSystemPostExcel, findSystemPostPageReqSchema, findSystemPostPageResSchema, updateSystemPostReqSchema } from './post.dto'
 import { SystemPostService } from './post.service'
 
 @ApiTags('系统岗位接口')
@@ -63,6 +63,6 @@ export class SystemPostController {
   @Post('export')
   async export(@Body({ schema: findSystemPostPageReqSchema }) dto: FindSystemPostPageReqDto) {
     const { data } = await this.systemPostService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemPostSerDto, data)
+    return this.excelService.exportFile(exportSystemPostExcel, data)
   }
 }

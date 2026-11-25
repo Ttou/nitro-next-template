@@ -6,7 +6,7 @@ import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { removeReqSchema } from '~server/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemRoleReqSchema, ExportSystemRoleSerDto, findSystemRolePageReqSchema, findSystemRolePageResSchema, updateSystemRoleReqSchema } from './role.dto'
+import { createSystemRoleReqSchema, exportSystemRoleExcel, findSystemRolePageReqSchema, findSystemRolePageResSchema, updateSystemRoleReqSchema } from './role.dto'
 import { SystemRoleService } from './role.service'
 
 @ApiTags('系统角色接口')
@@ -63,6 +63,6 @@ export class SystemRoleController {
   @Post('export')
   async export(@Body({ schema: findSystemRolePageReqSchema }) dto: FindSystemRolePageReqDto) {
     const { data } = await this.systemRoleService.findPage(dto)
-    return this.excelService.exportFile(ExportSystemRoleSerDto, data)
+    return this.excelService.exportFile(exportSystemRoleExcel, data)
   }
 }
