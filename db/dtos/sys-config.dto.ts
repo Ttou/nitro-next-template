@@ -1,3 +1,5 @@
+import type { SysConfigEntity } from '../entities/sys-config.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -13,6 +15,6 @@ export const sysConfigEntitySchema = baseEntitySchema.extend({
   isBuiltin: enumField(YesOrNoEnumValues).describe('是否内置'),
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   remark: z.string().nullish().describe('备注'),
-}).meta({ id: 'SysConfigEntityDto' })
+}).meta({ id: 'SysConfigEntityDto' }) satisfies EntityDtoSchema<SysConfigEntity>
 
 export type SysConfigEntityDto = z.infer<typeof sysConfigEntitySchema>

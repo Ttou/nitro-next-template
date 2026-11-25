@@ -1,3 +1,5 @@
+import type { SysLoginLogEntity } from '../entities/sys-login-log.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { flattenObject, toCamelCaseKeys } from 'es-toolkit'
 import { UAParser } from 'ua-parser-js'
 import { z } from 'zod'
@@ -47,6 +49,6 @@ export const sysLoginLogEntitySchema = z.object({
   errorMsg: z.string().nullish().describe('错误信息'),
   operateTime: dateTimeField('操作时间'),
   costTime: z.number().describe('耗时'),
-}).meta({ id: 'SysLoginLogEntityDto' })
+}).meta({ id: 'SysLoginLogEntityDto' }) satisfies EntityDtoSchema<SysLoginLogEntity>
 
 export type SysLoginLogEntityDto = z.infer<typeof sysLoginLogEntitySchema>

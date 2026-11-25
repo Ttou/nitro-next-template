@@ -1,28 +1,25 @@
-import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
-import { Entity, Enum, Index, Property } from '@mikro-orm/decorators/legacy'
+import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
 import { BaseEntity } from './base.entity.ts'
 
-@Entity({ tableName: 'sys_dict_data' })
-@Index({
-  properties: ['dictType', 'dictValue'],
+const SysDictDataEntitySchema = defineEntity({
+  name: 'SysDictDataEntity',
+  tableName: 'sys_dict_data',
+  extends: BaseEntity,
+  indexes: [
+    {
+      properties: ['dictType', 'dictValue'],
+    },
+  ],
+  properties: {
+    dictLabel: p.string(),
+    dictValue: p.string(),
+    dictType: p.string(),
+    isAvailable: p.enum(YesOrNoEnumValues),
+    remark: p.string().nullable(),
+  },
 })
-export class SysDictDataEntity extends BaseEntity {
-  @Property({ type: 'string' })
-  dictLabel: string
 
-  @Property({ type: 'string' })
-  dictValue: string
+export class SysDictDataEntity extends SysDictDataEntitySchema.class {}
 
-  @Property({ type: 'string' })
-  dictType: string
-
-  @Enum({
-    items: () => YesOrNoEnumValues,
-    type: 'string',
-  })
-  isAvailable: IYesOrNoEnum
-
-  @Property({ type: 'string', nullable: true })
-  remark?: INullable<string>
-}
+SysDictDataEntitySchema.setClass(SysDictDataEntity)

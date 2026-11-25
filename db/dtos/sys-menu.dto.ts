@@ -1,3 +1,5 @@
+import type { SysMenuEntity } from '../entities/sys-menu.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -21,6 +23,6 @@ export const sysMenuEntityExcludeRelationSchema = baseEntitySchema.extend({
   isFrame: enumField(YesOrNoEnumValues).nullish().describe('是否内嵌'),
   isVisible: enumField(YesOrNoEnumValues).nullish().describe('是否显示'),
   remark: z.string().nullish().describe('备注'),
-}).meta({ id: 'SysMenuEntityExcludeRelationDto' })
+}).meta({ id: 'SysMenuEntityExcludeRelationDto' }) satisfies EntityDtoSchema<SysMenuEntity>
 
 export type SysMenuEntityExcludeRelationDto = z.infer<typeof sysMenuEntityExcludeRelationSchema>

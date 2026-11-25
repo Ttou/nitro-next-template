@@ -1,3 +1,5 @@
+import type { SysRoleEntity } from '../entities/sys-role.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -11,6 +13,6 @@ export const sysRoleEntityExcludeRelationSchema = baseEntitySchema.extend({
   roleName: z.string().describe('角色名称'),
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   remark: z.string().nullish().describe('备注'),
-}).meta({ id: 'SysRoleEntityExcludeRelationDto' })
+}).meta({ id: 'SysRoleEntityExcludeRelationDto' }) satisfies EntityDtoSchema<SysRoleEntity>
 
 export type SysRoleEntityExcludeRelationDto = z.infer<typeof sysRoleEntityExcludeRelationSchema>

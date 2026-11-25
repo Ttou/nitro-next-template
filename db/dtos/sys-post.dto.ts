@@ -1,3 +1,5 @@
+import type { SysPostEntity } from '../entities/sys-post.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -11,6 +13,6 @@ export const sysPostEntityExcludeRelationSchema = baseEntitySchema.extend({
   postName: z.string().describe('岗位名称'),
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   remark: z.string().nullish().describe('备注'),
-}).meta({ id: 'SysPostEntityExcludeRelationDto' })
+}).meta({ id: 'SysPostEntityExcludeRelationDto' }) satisfies EntityDtoSchema<SysPostEntity>
 
 export type SysPostEntityExcludeRelationDto = z.infer<typeof sysPostEntityExcludeRelationSchema>

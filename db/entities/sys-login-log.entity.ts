@@ -1,38 +1,24 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
+import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '../../shared/utils/index.ts'
 
-@Entity({ tableName: 'sys_login_log' })
-export class SysLoginLogEntity {
-  @PrimaryKey({
-    type: 'uuid',
-    onCreate: () => generateId(),
-  })
-  id: string
+const SysLoginLogEntitySchema = defineEntity({
+  name: 'SysLoginLogEntity',
+  tableName: 'sys_login_log',
+  properties: {
+    // 与原来 `type: 'uuid'` 一致：MySQL 里是 varchar(36)
+    id: p.string().primary().length(36).onCreate(() => generateId()),
+    ip: p.string(),
+    location: p.string(),
+    userName: p.string(),
+    userAgent: p.text(),
+    token: p.string().nullable(),
+    status: p.integer(),
+    errorMsg: p.text().nullable(),
+    operateTime: p.datetime(),
+    costTime: p.integer(),
+  },
+})
 
-  @Property({ type: 'string' })
-  ip: string
+export class SysLoginLogEntity extends SysLoginLogEntitySchema.class {}
 
-  @Property({ type: 'string' })
-  location: string
-
-  @Property({ type: 'string' })
-  userName: string
-
-  @Property({ type: 'text' })
-  userAgent: string
-
-  @Property({ type: 'string', nullable: true })
-  token?: INullable<string>
-
-  @Property({ type: 'integer' })
-  status: number
-
-  @Property({ type: 'text', nullable: true })
-  errorMsg?: INullable<string>
-
-  @Property({ type: 'datetime' })
-  operateTime: Date
-
-  @Property({ type: 'integer' })
-  costTime: number
-}
+SysLoginLogEntitySchema.setClass(SysLoginLogEntity)

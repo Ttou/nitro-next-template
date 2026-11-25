@@ -1,33 +1,19 @@
-import { OptionalProps } from '@mikro-orm/core'
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy'
+import { defineEntity, p } from '@mikro-orm/core'
 import { generateId } from '../../shared/utils/index.ts'
 
-@Entity({ abstract: true })
-export abstract class BaseEntity {
-  [OptionalProps]?: 'createdAt' | 'updatedAt'
+const BaseEntitySchema = defineEntity({
+  name: 'BaseEntity',
+  abstract: true,
+  properties: {
+    // 与原来 `type: 'uuid'` 一致：MySQL 里是 varchar(36)
+    id: p.string().primary().length(36).onCreate(() => generateId()),
+    createBy: p.string().nullable(),
+    createdAt: p.datetime().onCreate(() => new Date()),
+    updateBy: p.string().nullable(),
+    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
+  },
+})
 
-  @PrimaryKey({
-    type: 'uuid',
-    onCreate: () => generateId(),
-  })
-  id: string
+export class BaseEntity extends BaseEntitySchema.class {}
 
-  @Property({ type: 'string', nullable: true })
-  createBy?: INullable<string>
-
-  @Property({
-    type: 'datetime',
-    onCreate: () => new Date(),
-  })
-  createdAt: Date
-
-  @Property({ type: 'string', nullable: true })
-  updateBy?: INullable<string>
-
-  @Property({
-    type: 'datetime',
-    onCreate: () => new Date(),
-    onUpdate: () => new Date(),
-  })
-  updatedAt: Date
-}
+BaseEntitySchema.setClass(BaseEntity)

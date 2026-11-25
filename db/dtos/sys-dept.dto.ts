@@ -1,3 +1,5 @@
+import type { SysDeptEntity } from '../entities/sys-dept.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -12,6 +14,6 @@ export const sysDeptEntityExcludeRelationSchema = baseEntitySchema.extend({
   deptName: z.string().describe('部门名称'),
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   remark: z.string().nullish().describe('备注'),
-}).meta({ id: 'SysDeptEntityExcludeRelationDto' })
+}).meta({ id: 'SysDeptEntityExcludeRelationDto' }) satisfies EntityDtoSchema<SysDeptEntity>
 
 export type SysDeptEntityExcludeRelationDto = z.infer<typeof sysDeptEntityExcludeRelationSchema>

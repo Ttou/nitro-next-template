@@ -1,31 +1,21 @@
-import type { IYesOrNoEnum } from '../../shared/enums/index.ts'
-import { Entity, Enum, Property } from '@mikro-orm/decorators/legacy'
+import { defineEntity, p } from '@mikro-orm/core'
 import { YesOrNoEnumValues } from '../../shared/enums/index.ts'
 import { BaseEntity } from './base.entity.ts'
 
-@Entity({ tableName: 'sys_config' })
-export class SysConfigEntity extends BaseEntity {
-  @Property({ type: 'string', unique: true })
-  configKey: string
+const SysConfigEntitySchema = defineEntity({
+  name: 'SysConfigEntity',
+  tableName: 'sys_config',
+  extends: BaseEntity,
+  properties: {
+    configKey: p.string().unique(),
+    configName: p.string(),
+    configValue: p.string(),
+    isBuiltin: p.enum(YesOrNoEnumValues),
+    isAvailable: p.enum(YesOrNoEnumValues),
+    remark: p.string().nullable(),
+  },
+})
 
-  @Property({ type: 'string' })
-  configName: string
+export class SysConfigEntity extends SysConfigEntitySchema.class {}
 
-  @Property({ type: 'string' })
-  configValue: string
-
-  @Enum({
-    items: () => YesOrNoEnumValues,
-    type: 'string',
-  })
-  isBuiltin: IYesOrNoEnum
-
-  @Enum({
-    items: () => YesOrNoEnumValues,
-    type: 'string',
-  })
-  isAvailable: IYesOrNoEnum
-
-  @Property({ type: 'string', nullable: true })
-  remark?: INullable<string>
-}
+SysConfigEntitySchema.setClass(SysConfigEntity)

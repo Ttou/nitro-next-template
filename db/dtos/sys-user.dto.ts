@@ -1,3 +1,5 @@
+import type { SysUserEntity } from '../entities/sys-user.entity'
+import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { enumField } from '~shared/utils'
@@ -17,7 +19,7 @@ export const sysUserEntityExcludeRelationSchema = baseEntitySchema.extend({
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   isDelete: enumField(YesOrNoEnumValues).describe('是否删除'),
   remark: z.string().nullish().describe('备注'),
-})
+}) satisfies EntityDtoSchema<SysUserEntity>
 
 export type SysUserEntityExcludeRelationDto = z.infer<typeof sysUserEntityExcludeRelationSchema>
 
