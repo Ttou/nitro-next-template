@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common'
-import { RemoteIpService } from './ip.service'
+import { RemoteIpService } from './remote.service'
 
 @Global()
 @Module({
