@@ -4,7 +4,7 @@ import { defineExcel } from '~nestjs-modules/excel'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { enumLabelField } from '~shared/utils'
+import { defineSchema, enumLabelField } from '~shared/utils'
 
 // 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
 export const findSystemConfigByKeyReqSchema = z.object({
@@ -13,14 +13,14 @@ export const findSystemConfigByKeyReqSchema = z.object({
 
 export type FindSystemConfigByKeyReqDto = z.infer<typeof findSystemConfigByKeyReqSchema>
 
-export const findSystemConfigPageReqSchema = pageReqSchema.extend({
+export const findSystemConfigPageReqSchema = defineSchema(pageReqSchema.extend({
   configName: optionalText().describe('参数名称'),
   configKey: optionalText().describe('参数标识'),
   isBuiltin: optionalEnumOf(YesOrNoEnumValues, '内置参数枚举值不正确').describe('是否内置参数'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
   beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
   endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
-}).meta({ id: 'FindSystemConfigPageReqDto' })
+}), { id: 'FindSystemConfigPageReqDto' })
 
 export type FindSystemConfigPageReqDto = z.infer<typeof findSystemConfigPageReqSchema>
 
@@ -28,20 +28,20 @@ export const findSystemConfigPageResSchema = pageResSchema('FindSystemConfigPage
 
 export type FindSystemConfigPageResDto = z.infer<typeof findSystemConfigPageResSchema>
 
-export const createSystemConfigReqSchema = z.object({
+export const createSystemConfigReqSchema = defineSchema(z.object({
   configName: requiredText('参数名称不能为空').describe('参数名称'),
   configKey: requiredText('参数标识不能为空').describe('参数标识'),
   configValue: requiredText('参数键值不能为空').describe('参数键值'),
   isBuiltin: optionalEnumOf(YesOrNoEnumValues, '内置参数枚举值不正确').describe('是否内置参数'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
   remark: optionalText().describe('备注'),
-}).meta({ id: 'CreateSystemConfigReqDto' })
+}), { id: 'CreateSystemConfigReqDto' })
 
 export type CreateSystemConfigReqDto = z.infer<typeof createSystemConfigReqSchema>
 
-export const updateSystemConfigReqSchema = createSystemConfigReqSchema.extend({
+export const updateSystemConfigReqSchema = defineSchema(createSystemConfigReqSchema.extend({
   id: uuid('ID格式不正确').describe('ID'),
-}).meta({ id: 'UpdateSystemConfigReqDto' })
+}), { id: 'UpdateSystemConfigReqDto' })
 
 export type UpdateSystemConfigReqDto = z.infer<typeof updateSystemConfigReqSchema>
 

@@ -3,12 +3,12 @@ import type { EntityDtoSchema } from './entity-constraint'
 import { flattenObject, toCamelCaseKeys } from 'es-toolkit'
 import { UAParser } from 'ua-parser-js'
 import { z } from 'zod'
-import { dateTimeField } from '~shared/utils'
+import { dateTimeField, defineSchema } from '~shared/utils'
 
 /**
  * 用户代理解析结果
  */
-export const userAgentSerSchema = z.object({
+export const userAgentSerSchema = defineSchema(z.object({
   browserName: z.string().optional().describe('浏览器名称'),
   browserVersion: z.string().optional().describe('浏览器版本'),
   browserMajor: z.string().optional().describe('浏览器主版本号'),
@@ -21,7 +21,7 @@ export const userAgentSerSchema = z.object({
   engineVersion: z.string().optional().describe('浏览器引擎版本'),
   osName: z.string().optional().describe('操作系统名称'),
   osVersion: z.string().optional().describe('操作系统版本'),
-}).meta({ id: 'UserAgentSerDto' })
+}), { id: 'UserAgentSerDto' })
 
 export type UserAgentSerDto = z.infer<typeof userAgentSerSchema>
 
@@ -37,7 +37,7 @@ export function parseUserAgent(userAgent: string): UserAgentSerDto {
 /**
  * 系统登录日志
  */
-export const sysLoginLogEntitySchema = z.object({
+export const sysLoginLogEntitySchema = defineSchema(z.object({
   id: z.string().describe('主键'),
   ip: z.string().describe('IP地址'),
   location: z.string().describe('位置'),
@@ -49,6 +49,6 @@ export const sysLoginLogEntitySchema = z.object({
   errorMsg: z.string().nullish().describe('错误信息'),
   operateTime: dateTimeField('操作时间'),
   costTime: z.number().describe('耗时'),
-}).meta({ id: 'SysLoginLogEntityDto' }) satisfies EntityDtoSchema<SysLoginLogEntity>
+}), { id: 'SysLoginLogEntityDto' }) satisfies EntityDtoSchema<SysLoginLogEntity>
 
 export type SysLoginLogEntityDto = z.infer<typeof sysLoginLogEntitySchema>

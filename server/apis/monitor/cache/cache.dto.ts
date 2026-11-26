@@ -1,20 +1,21 @@
 import { z } from 'zod'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { optionalText, requiredText } from '~server/dtos/zod'
+import { defineSchema } from '~shared/utils'
 
-export const findMonitorCachePageReqSchema = pageReqSchema.extend({
+export const findMonitorCachePageReqSchema = defineSchema(pageReqSchema.extend({
   key: optionalText().describe('缓存键'),
-}).meta({ id: 'FindMonitorCachePageReqDto' })
+}), { id: 'FindMonitorCachePageReqDto' })
 
 export type FindMonitorCachePageReqDto = z.infer<typeof findMonitorCachePageReqSchema>
 
 /**
  * 缓存分页项响应传输对象
  */
-export const findMonitorCachePageItemResSchema = z.object({
+export const findMonitorCachePageItemResSchema = defineSchema(z.object({
   key: z.string().describe('缓存键'),
   ttl: z.number().describe('缓存过期时间'),
-}).meta({ id: 'FindMonitorCachePageItemResDto' })
+}), { id: 'FindMonitorCachePageItemResDto' })
 
 export type FindMonitorCachePageItemResDto = z.infer<typeof findMonitorCachePageItemResSchema>
 
@@ -29,11 +30,11 @@ export const findMonitorCacheByKeyReqSchema = z.object({
 
 export type FindMonitorCacheByKeyReqDto = z.infer<typeof findMonitorCacheByKeyReqSchema>
 
-export const removeMonitorCacheReqSchema = z.object({
+export const removeMonitorCacheReqSchema = defineSchema(z.object({
   keys: z.array(
     z.string({ error: '缓存键必须是字符串' }),
     { error: '缓存键数组不能为空' },
   ).nonempty({ error: '缓存键数组不能为空' }).describe('缓存键数组'),
-}).meta({ id: 'RemoveMonitorCacheReqDto' })
+}), { id: 'RemoveMonitorCacheReqDto' })
 
 export type RemoveMonitorCacheReqDto = z.infer<typeof removeMonitorCacheReqSchema>

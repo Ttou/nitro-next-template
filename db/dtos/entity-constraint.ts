@@ -21,7 +21,7 @@ export type EntityScalarKeys<E> = Exclude<Extract<keyof E, string>, RelationKeys
 /**
  * 实体 DTO 的 schema 约束
  *
- * 用法：`export const sysXxxEntitySchema = z.object({...}).meta({...}) satisfies EntityDtoSchema<SysXxxEntity>`
+ * 用法：`export const sysXxxEntitySchema = defineSchema(z.object({...}), { id: 'SysXxxEntityDto' }) satisfies EntityDtoSchema<SysXxxEntity>`
  * 实体新增/改名字段而 DTO 没跟上时，编译期直接报错。
  * 允许 DTO 比实体多字段（例如 `userAgentParsed` 这种派生字段）
  */

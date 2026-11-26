@@ -2,7 +2,7 @@ import type { SysUserEntity } from '../entities/sys-user.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
-import { enumField } from '~shared/utils'
+import { defineSchema, enumField } from '~shared/utils'
 import { baseEntitySchema } from './base.dto'
 
 /**
@@ -33,6 +33,6 @@ export type SysUserEntityNoPasswordDto = z.infer<typeof sysUserEntityNoPasswordS
 /**
  * 系统用户分页项
  */
-export const sysUserEntityNoRelationsNoPasswordSchema = sysUserEntityNoPasswordSchema.meta({ id: 'SysUserEntityNoRelationsNoPasswordDto' })
+export const sysUserEntityNoRelationsNoPasswordSchema = defineSchema(sysUserEntityNoPasswordSchema, { id: 'SysUserEntityNoRelationsNoPasswordDto' })
 
 export type SysUserEntityNoRelationsNoPasswordDto = z.infer<typeof sysUserEntityNoRelationsNoPasswordSchema>

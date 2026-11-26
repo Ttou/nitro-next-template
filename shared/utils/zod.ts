@@ -1,6 +1,102 @@
 import { z } from 'zod'
 
 /**
+ * schema 元数据
+ *
+ * `id` 为 OpenAPI 组件名，必填且全局唯一；其余字段原样透传给 zod 的 `.meta()`
+ */
+export interface SchemaMeta {
+  /** 组件名，同时作为注册表的键 */
+  id: string
+  /** 标题 */
+  title?: string
+  /** 说明，对应 OpenAPI 的 description */
+  description?: string
+  /** 单值示例 */
+  example?: unknown
+  /** 多值示例 */
+  examples?: unknown[]
+  /** 是否已废弃 */
+  deprecated?: boolean
+  /** 透传 zod-openapi 的扩展字段，如 `override`、`default` */
+  [key: string]: unknown
+}
+
+/**
+ * schema 注册表：组件名 -> schema
+ */
+const registry = new Map<string, z.ZodType>()
+
+/**
+ * OpenAPI 组件名格式：字母开头，仅含字母、数字、下划线、点、短横线
+ */
+const COMPONENT_ID_PATTERN = /^[A-Za-z][\w.-]*$/
+
+/**
+ * 定义并注册 schema
+ *
+ * 统一收口三件事：
+ * 1. 写入 `id` 等元数据，供 OpenAPI 生成组件
+ * 2. 注册到本地注册表，可按 id 反查
+ * 3. 类型不变，`z.infer<typeof schema>` 的推断结果不受影响
+ *
+ * 注意 zod 的 `.meta()` 会克隆出新实例，因此注册并返回的是克隆后的 schema
+ *
+ * @param schema zod schema
+ * @param meta 元数据，`id` 必填
+ * @returns 写入了元数据的 schema（类型与入参一致）
+ *
+ * @example
+ * ```ts
+ * export const loginReqSchema = defineSchema(
+ *   z.object({ userName: z.string() }),
+ *   { id: 'LoginReqDto', description: '登录请求' },
+ * )
+ * export type LoginReqDto = z.infer<typeof loginReqSchema>
+ * ```
+ */
+export function defineSchema<T extends z.ZodType>(schema: T, meta: SchemaMeta): T {
+  const { id, ...rest } = meta
+
+  if (!COMPONENT_ID_PATTERN.test(id)) {
+    throw new Error(
+      `[defineSchema] 非法的组件名 "${id}"，需以字母开头，且只含字母、数字、下划线、点或短横线`,
+    )
+  }
+
+  const registered = registry.get(id)
+  if (registered && registered !== schema) {
+    throw new Error(`[defineSchema] 组件名 "${id}" 已被注册，请保证全局唯一`)
+  }
+
+  const defined = schema.meta({ ...rest, id })
+  registry.set(id, defined)
+
+  return defined
+}
+
+/**
+ * 按组件名取 schema
+ */
+export function getSchema(id: string): z.ZodType | undefined {
+  return registry.get(id)
+}
+
+/**
+ * 组件名是否已注册
+ */
+export function hasSchema(id: string): boolean {
+  return registry.has(id)
+}
+
+/**
+ * 全部已注册的 schema（只读视图）
+ */
+export function getSchemaRegistry(): ReadonlyMap<string, z.ZodType> {
+  return registry
+}
+
+/**
  * 枚举对象的最小形状：能取到全部取值，能把取值转成标签
  */
 interface IEnumLabelSource<T extends string> {
