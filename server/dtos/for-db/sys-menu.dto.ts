@@ -1,4 +1,4 @@
-import type { SysMenuEntity } from '../entities/sys-menu.entity'
+import type { SysMenuEntity } from '~db/entities/sys-menu.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'

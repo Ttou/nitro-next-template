@@ -1,4 +1,4 @@
-import type { SysLoginLogEntity } from '../entities/sys-login-log.entity'
+import type { SysLoginLogEntity } from '~db/entities/sys-login-log.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { flattenObject, toCamelCaseKeys } from 'es-toolkit'
 import { UAParser } from 'ua-parser-js'

@@ -1,4 +1,4 @@
-import type { BaseEntity } from '../entities/base.entity'
+import type { BaseEntity } from '~db/entities/base.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { dateTimeField } from '~shared/utils'

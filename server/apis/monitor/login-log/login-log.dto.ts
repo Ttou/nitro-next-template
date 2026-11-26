@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { sysLoginLogEntitySchema } from '~db/dtos'
-import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { pageReqSchema, pageResSchema, sysLoginLogEntitySchema } from '~server/dtos'
 import { dateText, optionalText } from '~server/dtos/zod'
 import { defineSchema } from '~shared/utils'
 

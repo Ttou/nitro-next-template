@@ -1,4 +1,4 @@
-import type { SysConfigEntity } from '../entities/sys-config.entity'
+import type { SysConfigEntity } from '~db/entities/sys-config.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
