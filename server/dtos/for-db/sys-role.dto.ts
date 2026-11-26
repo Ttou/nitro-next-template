@@ -1,4 +1,4 @@
-import type { SysRoleEntity } from '../entities/sys-role.entity'
+import type { SysRoleEntity } from '~db/entities/sys-role.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'

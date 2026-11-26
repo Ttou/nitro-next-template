@@ -2,8 +2,8 @@ import type { FindMonitorLoginLogPageReqDto } from './login-log.dto'
 import { serialize } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
-import { parseUserAgent } from '~db/dtos'
 import { SysLoginLogEntity } from '~db/entities'
+import { parseUserAgent } from '~server/dtos'
 
 @Injectable()
 export class MonitorLoginLogService {

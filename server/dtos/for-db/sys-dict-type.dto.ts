@@ -1,4 +1,4 @@
-import type { SysDictTypeEntity } from '../entities/sys-dict-type.entity'
+import type { SysDictTypeEntity } from '~db/entities/sys-dict-type.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'

@@ -1,7 +1,6 @@
 import { z } from 'zod'
-import { sysConfigEntitySchema } from '~db/dtos'
 import { defineExcel } from '~nestjs-modules/excel'
-import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { pageReqSchema, pageResSchema, sysConfigEntitySchema } from '~server/dtos'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 import { defineSchema, enumLabelField } from '~shared/utils'

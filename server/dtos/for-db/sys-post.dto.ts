@@ -1,4 +1,4 @@
-import type { SysPostEntity } from '../entities/sys-post.entity'
+import type { SysPostEntity } from '~db/entities/sys-post.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'

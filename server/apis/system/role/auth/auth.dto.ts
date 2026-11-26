@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~db/dtos'
-import { pageReqSchema, pageResSchema } from '~server/dtos'
+import { pageReqSchema, pageResSchema, sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~server/dtos'
 import { optionalText, uuid, uuidArray } from '~server/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
