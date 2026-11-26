@@ -2,16 +2,17 @@ import { z } from 'zod'
 import { sysLoginLogEntitySchema } from '~db/dtos'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { dateText, optionalText } from '~server/dtos/zod'
+import { defineSchema } from '~shared/utils'
 
 /**
  * 分页查询登录日志请求
  */
-export const findMonitorLoginLogPageReqSchema = pageReqSchema.extend({
+export const findMonitorLoginLogPageReqSchema = defineSchema(pageReqSchema.extend({
   userName: optionalText().describe('用户名'),
   nickName: optionalText().describe('昵称'),
   beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
   endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
-}).meta({ id: 'FindMonitorLoginLogPageReqDto' })
+}), { id: 'FindMonitorLoginLogPageReqDto' })
 
 export type FindMonitorLoginLogPageReqDto = z.infer<typeof findMonitorLoginLogPageReqSchema>
 

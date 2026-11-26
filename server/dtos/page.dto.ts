@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { defineSchema } from '~shared/utils'
 
 /**
  * 分页请求传输对象
@@ -29,10 +30,10 @@ export type PageReqDto = z.infer<typeof pageReqSchema>
  * @param item 分页数据项 schema
  */
 export function pageResSchema<Item extends z.ZodType>(id: string, item: Item) {
-  return z.object({
+  return defineSchema(z.object({
     page: z.number().describe('页码'),
     pageSize: z.number().describe('页长'),
     total: z.number().describe('总数'),
     data: z.array(item).describe('分页数据'),
-  }).meta({ id })
+  }), { id })
 }

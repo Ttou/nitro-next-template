@@ -4,15 +4,15 @@ import { defineExcel } from '~nestjs-modules/excel'
 import { pageReqSchema, pageResSchema } from '~server/dtos'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { enumLabelField } from '~shared/utils'
+import { defineSchema, enumLabelField } from '~shared/utils'
 
-export const findSystemRolePageReqSchema = pageReqSchema.extend({
+export const findSystemRolePageReqSchema = defineSchema(pageReqSchema.extend({
   roleName: optionalText().describe('角色名称'),
   roleKey: optionalText().describe('角色标识'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
   beginTime: dateText('开始时间格式不正确').nullish().transform(value => value ?? undefined).describe('开始时间'),
   endTime: dateText('结束时间格式不正确').nullish().transform(value => value ?? undefined).describe('结束时间'),
-}).meta({ id: 'FindSystemRolePageReqDto' })
+}), { id: 'FindSystemRolePageReqDto' })
 
 export type FindSystemRolePageReqDto = z.infer<typeof findSystemRolePageReqSchema>
 
@@ -20,18 +20,18 @@ export const findSystemRolePageResSchema = pageResSchema('FindSystemRolePageResD
 
 export type FindSystemRolePageResDto = z.infer<typeof findSystemRolePageResSchema>
 
-export const createSystemRoleReqSchema = z.object({
+export const createSystemRoleReqSchema = defineSchema(z.object({
   roleName: requiredText('角色名称不能为空').describe('角色名称'),
   roleKey: requiredText('角色标识不能为空').describe('角色标识'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
   remark: optionalText().describe('备注'),
-}).meta({ id: 'CreateSystemRoleReqDto' })
+}), { id: 'CreateSystemRoleReqDto' })
 
 export type CreateSystemRoleReqDto = z.infer<typeof createSystemRoleReqSchema>
 
-export const updateSystemRoleReqSchema = createSystemRoleReqSchema.extend({
+export const updateSystemRoleReqSchema = defineSchema(createSystemRoleReqSchema.extend({
   id: uuid('ID格式不正确').describe('ID'),
-}).meta({ id: 'UpdateSystemRoleReqDto' })
+}), { id: 'UpdateSystemRoleReqDto' })
 
 export type UpdateSystemRoleReqDto = z.infer<typeof updateSystemRoleReqSchema>
 
