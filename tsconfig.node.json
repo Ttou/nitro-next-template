@@ -5,12 +5,11 @@
     "emitDecoratorMetadata": true,
 
     "experimentalDecorators": true,
-    "baseUrl": ".",
     "paths": {
-      "~db/*": ["db/*"],
-      "~server/*": ["server/*"],
-      "~shared/*": ["shared/*"],
-      "~nestjs-modules/*": ["nestjs-modules/*"]
+      "~db/*": ["./db/*"],
+      "~server/*": ["./server/*"],
+      "~shared/*": ["./shared/*"],
+      "~nestjs-modules/*": ["./nestjs-modules/*"]
     },
 
     "strictPropertyInitialization": false

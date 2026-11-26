@@ -3,10 +3,9 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    "baseUrl": ".",
     "paths": {
-      "~web/*": ["web/*"],
-      "~shared/*": ["shared/*"]
+      "~web/*": ["./web/*"],
+      "~shared/*": ["./shared/*"]
     },
     "types": [
       "element-plus/global",
