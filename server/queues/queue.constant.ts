@@ -9,6 +9,13 @@ export const QueueNameEnum = Enum({
 
 export const QueueForRegister: RegisterQueueOptions[] = QueueNameEnum.toList().map(item => ({
   name: item.value,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: {
+      type: 'exponential',
+      delay: 1000,
+    },
+  },
 }))
 
 export const QueueForFeature: BullBoardQueueOptions[] = QueueNameEnum.toList().map(item => ({

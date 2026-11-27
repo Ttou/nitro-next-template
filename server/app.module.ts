@@ -35,7 +35,7 @@ import {
 import { ContextModule } from './context'
 import { DefaultFilter } from './filters'
 import { XltTokenGuard } from './guards'
-import { LoginLogQueue, QueueForFeature, QueueForRegister } from './queues'
+import { LoginLogProcessor, QueueForFeature, QueueForRegister } from './queues'
 import { RemoteModule } from './remote'
 
 @Module({
@@ -102,7 +102,7 @@ import { RemoteModule } from './remote'
         BullBoardModule.forFeature(...QueueForFeature),
       ],
       providers: [
-        LoginLogQueue,
+        LoginLogProcessor,
       ],
       exports: [BullModule],
       module: class QueuesModule {},
