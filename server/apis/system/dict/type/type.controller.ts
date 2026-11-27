@@ -1,13 +1,11 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, UpdateSystemDictTypeReqDto } from './type.dto'
+import type { CreateSystemDictTypeReqDto, FindSystemDictDetailByKeyReqDto, FindSystemDictTypePageReqDto, RemoveReqDto, UpdateSystemDictTypeReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { removeReqSchema, sysDictDataEntitySchema } from '~server/dtos'
+import { createSystemDictTypeReqSchema, exportSystemDictTypeExcel, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, removeReqSchema, sysDictDataEntitySchema, updateSystemDictTypeReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemDictTypeReqSchema, exportSystemDictTypeExcel, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, updateSystemDictTypeReqSchema } from './type.dto'
 import { SystemDictTypeService } from './type.service'
 
 @ApiTags('字典类型接口')

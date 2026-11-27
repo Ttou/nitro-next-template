@@ -1,12 +1,10 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, UpdateSystemDictDataReqDto } from './data.dto'
+import type { CreateSystemDictDataReqDto, FindSystemDictDataListReqDto, RemoveReqDto, UpdateSystemDictDataReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { removeReqSchema, sysDictDataEntitySchema } from '~server/dtos'
+import { createSystemDictDataReqSchema, exportSystemDictDataExcel, findSystemDictDataListReqSchema, removeReqSchema, sysDictDataEntitySchema, updateSystemDictDataReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemDictDataReqSchema, exportSystemDictDataExcel, findSystemDictDataListReqSchema, updateSystemDictDataReqSchema } from './data.dto'
 import { SystemDictDataService } from './data.service'
 
 @ApiTags('字典数据接口')

@@ -1,13 +1,11 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, UpdateSystemConfigReqDto } from './config.dto'
+import type { CreateSystemConfigReqDto, FindSystemConfigByKeyReqDto, FindSystemConfigPageReqDto, RemoveReqDto, UpdateSystemConfigReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Get, Post, Query, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { removeReqSchema, sysConfigEntitySchema } from '~server/dtos'
+import { createSystemConfigReqSchema, exportSystemConfigExcel, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, removeReqSchema, sysConfigEntitySchema, updateSystemConfigReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemConfigReqSchema, exportSystemConfigExcel, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, updateSystemConfigReqSchema } from './config.dto'
 import { SystemConfigService } from './config.service'
 
 @ApiTags('系统配置接口')

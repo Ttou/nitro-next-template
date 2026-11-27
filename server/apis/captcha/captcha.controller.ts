@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { CaptchaService } from '~nestjs-modules/captcha'
-import { captchaImageResSchema } from './captcha.dto'
+import { captchaImageResSchema } from '~shared/dtos'
 
 @ApiTags('验证码接口')
 @Controller()

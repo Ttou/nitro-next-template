@@ -1,4 +1,4 @@
-import type { FindMonitorCacheByKeyReqDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './cache.dto'
+import type { FindMonitorCacheByKeyReqDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from '~shared/dtos'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { CacheRedisExtendService, CacheService } from '~nestjs-modules/cache'
 import { ErrorEnum } from '~server/constants'

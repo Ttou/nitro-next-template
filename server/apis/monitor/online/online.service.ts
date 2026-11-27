@@ -1,5 +1,4 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { FindMonitorOnlinePageReqDto } from './online.dto'
+import type { FindMonitorOnlinePageReqDto, RemoveReqDto } from '~shared/dtos'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { StpLogic } from '@xlt-token/core'

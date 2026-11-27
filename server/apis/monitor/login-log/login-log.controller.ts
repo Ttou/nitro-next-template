@@ -1,9 +1,9 @@
-import type { FindMonitorLoginLogPageReqDto } from './login-log.dto'
+import type { FindMonitorLoginLogPageReqDto } from '~shared/dtos'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { findMonitorLoginLogPageReqSchema, findMonitorLoginLogPageResSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { findMonitorLoginLogPageReqSchema, findMonitorLoginLogPageResSchema } from './login-log.dto'
 import { MonitorLoginLogService } from './login-log.service'
 
 @ApiTags('操作日志接口')

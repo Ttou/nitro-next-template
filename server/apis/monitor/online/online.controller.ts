@@ -1,11 +1,9 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { FindMonitorOnlinePageReqDto } from './online.dto'
+import type { FindMonitorOnlinePageReqDto, RemoveReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { removeReqSchema } from '~server/dtos'
+import { findMonitorOnlinePageReqSchema, findMonitorOnlinePageResSchema, removeReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { findMonitorOnlinePageReqSchema, findMonitorOnlinePageResSchema } from './online.dto'
 import { MonitorOnlineService } from './online.service'
 
 @ApiTags('在线用户接口')

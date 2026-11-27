@@ -1,9 +1,9 @@
-import type { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, UnallocateUserForRoleReqDto } from './auth.dto'
+import type { AllocateUserForRoleReqDto, FindAllocatedUserPageForRoleReqDto, FindUnallocatedUserPageForRoleReqDto, UnallocateUserForRoleReqDto } from '~shared/dtos'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { allocateUserForRoleReqSchema, findAllocatedUserPageForRoleReqSchema, findAllocatedUserPageForRoleResSchema, findUnallocatedUserPageForRoleReqSchema, findUnallocatedUserPageForRoleResSchema, unallocateUserForRoleReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { allocateUserForRoleReqSchema, findAllocatedUserPageForRoleReqSchema, findAllocatedUserPageForRoleResSchema, findUnallocatedUserPageForRoleReqSchema, findUnallocatedUserPageForRoleResSchema, unallocateUserForRoleReqSchema } from './auth.dto'
 import { SystemRoleAuthService } from './auth.service'
 
 @ApiTags('系统角色权限接口')

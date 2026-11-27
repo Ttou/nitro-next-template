@@ -1,5 +1,4 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './post.dto'
+import type { CreateSystemPostReqDto, FindSystemPostPageReqDto, RemoveReqDto, UpdateSystemPostReqDto } from '~shared/dtos'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'

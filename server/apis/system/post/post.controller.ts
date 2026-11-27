@@ -1,12 +1,10 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemPostReqDto, FindSystemPostPageReqDto, UpdateSystemPostReqDto } from './post.dto'
+import type { CreateSystemPostReqDto, FindSystemPostPageReqDto, RemoveReqDto, UpdateSystemPostReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { removeReqSchema } from '~server/dtos'
+import { createSystemPostReqSchema, exportSystemPostExcel, findSystemPostPageReqSchema, findSystemPostPageResSchema, removeReqSchema, updateSystemPostReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemPostReqSchema, exportSystemPostExcel, findSystemPostPageReqSchema, findSystemPostPageResSchema, updateSystemPostReqSchema } from './post.dto'
 import { SystemPostService } from './post.service'
 
 @ApiTags('系统岗位接口')

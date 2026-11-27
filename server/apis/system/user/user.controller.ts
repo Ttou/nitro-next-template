@@ -1,6 +1,5 @@
 import type { StoredUpload } from '@nestjs/storage'
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, UpdateSystemUserReqDto } from './user.dto'
+import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, RemoveReqDto, UpdateSystemUserReqDto } from '~shared/dtos'
 import { extname } from 'node:path'
 import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-node'
@@ -9,11 +8,10 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTa
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { localDisk } from '~server/configs'
-import { removeReqSchema } from '~server/dtos'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
+import { createSystemUserReqSchema, exportSystemUserExcel, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserExcel, importSystemUserResSchema, removeReqSchema, updateSystemUserReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
-import { createSystemUserReqSchema, exportSystemUserExcel, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserExcel, importSystemUserResSchema, updateSystemUserReqSchema } from './user.dto'
 import { SystemUserService } from './user.service'
 
 @ApiTags('系统用户接口')

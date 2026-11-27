@@ -1,12 +1,10 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemRoleReqDto, FindSystemRolePageReqDto, UpdateSystemRoleReqDto } from './role.dto'
+import type { CreateSystemRoleReqDto, FindSystemRolePageReqDto, RemoveReqDto, UpdateSystemRoleReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { removeReqSchema } from '~server/dtos'
+import { createSystemRoleReqSchema, exportSystemRoleExcel, findSystemRolePageReqSchema, findSystemRolePageResSchema, removeReqSchema, updateSystemRoleReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemRoleReqSchema, exportSystemRoleExcel, findSystemRolePageReqSchema, findSystemRolePageResSchema, updateSystemRoleReqSchema } from './role.dto'
 import { SystemRoleService } from './role.service'
 
 @ApiTags('系统角色接口')

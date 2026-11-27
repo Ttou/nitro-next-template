@@ -1,9 +1,9 @@
-import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
+import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from '~shared/dtos'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { assignMenuForRoleReqSchema, findAssignedMenuForRoleReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { assignMenuForRoleReqSchema, findAssignedMenuForRoleReqSchema } from './menu.dto'
 import { SystemRoleMenuService } from './menu.service'
 
 @ApiTags('系统角色菜单接口')

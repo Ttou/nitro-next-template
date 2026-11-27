@@ -1,4 +1,4 @@
-import type { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './current-user.dto'
+import type { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from '~shared/dtos'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'

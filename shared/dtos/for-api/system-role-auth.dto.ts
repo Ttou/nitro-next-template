@@ -1,6 +1,7 @@
 import { z } from 'zod'
-import { pageReqSchema, pageResSchema, sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~server/dtos'
-import { optionalText, uuid, uuidArray } from '~server/dtos/zod'
+import { sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~shared/dtos/for-db'
+import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
+import { optionalText, uuid, uuidArray } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 export const findAllocatedUserPageForRoleReqSchema = defineSchema(pageReqSchema.extend({

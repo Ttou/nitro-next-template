@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { requiredText } from '~server/dtos/zod'
+import { requiredText } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 /**

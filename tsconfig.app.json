@@ -27,5 +27,10 @@
     "web/**/*.vue",
     "shared/**/*.ts",
     "types/**/*.d.ts"
+  ],
+  // shared/dtos 依赖 ~db 与 MikroORM，仅服务端使用
+  "exclude": [
+    "node_modules",
+    "shared/dtos"
   ]
 }

@@ -1,9 +1,9 @@
-import type { LoginReqDto } from './auth.dto'
+import type { LoginReqDto } from '~shared/dtos'
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltIgnore } from '@xlt-token/nestjs'
 import { LoginLogInterceptor } from '~server/interceptors'
-import { authPublicKeyResSchema, loginReqSchema } from './auth.dto'
+import { authPublicKeyResSchema, loginReqSchema } from '~shared/dtos'
 import { AuthService } from './auth.service'
 
 @ApiTags('鉴权接口')

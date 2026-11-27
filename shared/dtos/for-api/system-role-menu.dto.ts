@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { uuid, uuidArray } from '~server/dtos/zod'
+import { uuid, uuidArray } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 export const assignMenuForRoleReqSchema = defineSchema(z.object({

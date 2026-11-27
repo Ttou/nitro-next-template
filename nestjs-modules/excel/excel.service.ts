@@ -88,7 +88,7 @@ export class ExcelService {
 
     this.logger.debug(`${fileName} 开始写入大文件流`)
 
-    for (let i = 0; i <= TOTAL_ROWS; i++) {
+    for (let i = 0; i < TOTAL_ROWS; i++) {
       ws.addRow(rows[i]).commit() // 立即提交该行
 
       // 每批数据处理后让出事件循环

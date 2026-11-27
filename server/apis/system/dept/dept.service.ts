@@ -1,5 +1,4 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dept.dto'
+import type { CreateSystemDeptReqDto, FindSystemDeptListReqDto, RemoveReqDto, UpdateSystemDeptReqDto } from '~shared/dtos'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'

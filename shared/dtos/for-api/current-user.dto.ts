@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { sysMenuEntityExcludeRelationSchema, sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~server/dtos'
-import { emailText, optionalText, phoneText, requiredText } from '~server/dtos/zod'
+import { sysMenuEntityExcludeRelationSchema, sysRoleEntityExcludeRelationSchema, sysUserEntityNoPasswordSchema } from '~shared/dtos/for-db'
+import { emailText, optionalText, phoneText, requiredText } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 /**

@@ -1,5 +1,5 @@
 import type { IConfig } from '~server/configs'
-import type { AuthPublicKeyResDto, LoginReqDto } from './auth.dto'
+import type { AuthPublicKeyResDto, LoginReqDto } from '~shared/dtos'
 import { Buffer } from 'node:buffer'
 import { constants, createPublicKey, privateDecrypt } from 'node:crypto'
 import { EntityManager } from '@mikro-orm/mysql'

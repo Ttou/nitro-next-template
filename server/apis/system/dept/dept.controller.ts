@@ -1,11 +1,9 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemDeptReqDto, FindSystemDeptListReqDto, UpdateSystemDeptReqDto } from './dept.dto'
+import type { CreateSystemDeptReqDto, FindSystemDeptListReqDto, RemoveReqDto, UpdateSystemDeptReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { removeReqSchema, sysDeptEntityExcludeRelationSchema } from '~server/dtos'
+import { createSystemDeptReqSchema, findSystemDeptListReqSchema, removeReqSchema, sysDeptEntityExcludeRelationSchema, updateSystemDeptReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemDeptReqSchema, findSystemDeptListReqSchema, updateSystemDeptReqSchema } from './dept.dto'
 import { SystemDeptService } from './dept.service'
 
 @ApiTags('系统部门接口')

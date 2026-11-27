@@ -1,4 +1,4 @@
-import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from './menu.dto'
+import type { AssignMenuForRoleReqDto, FindAssignedMenuForRoleReqDto } from '~shared/dtos'
 import { EntityManager } from '@mikro-orm/mysql'
 import { Injectable } from '@nestjs/common'
 import { SysMenuEntity, SysRoleEntity } from '~db/entities'

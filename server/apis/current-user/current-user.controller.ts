@@ -1,7 +1,7 @@
-import type { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from './current-user.dto'
+import type { UpdateCurrentUserPasswordReqDto, UpdateCurrentUserProfileReqDto } from '~shared/dtos'
 import { Body, Controller, Get, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { currentUserGetInfoResSchema, currentUserGetProfileResSchema, updateCurrentUserPasswordReqSchema, updateCurrentUserProfileReqSchema } from './current-user.dto'
+import { currentUserGetInfoResSchema, currentUserGetProfileResSchema, updateCurrentUserPasswordReqSchema, updateCurrentUserProfileReqSchema } from '~shared/dtos'
 import { CurrentUserService } from './current-user.service'
 
 @ApiTags('当前用户接口')

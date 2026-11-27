@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
 import { YesOrNoEnumValues } from '~shared/enums'
 import { defineSchema } from '~shared/utils'
 

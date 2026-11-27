@@ -1,9 +1,9 @@
-import type { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostReqDto, UnallocateUserForPostReqDto } from './auth.dto'
+import type { AllocateUserForPostReqDto, FindAllocatedUserPageForPostReqDto, FindUnallocatedUserPageForPostReqDto, UnallocateUserForPostReqDto } from '~shared/dtos'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { allocateUserForPostReqSchema, findAllocatedUserPageForPostReqSchema, findAllocatedUserPageForPostResSchema, findUnallocatedUserPageForPostReqSchema, findUnallocatedUserPageForPostResSchema, unallocateUserForPostReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { allocateUserForPostReqSchema, findAllocatedUserPageForPostReqSchema, findAllocatedUserPageForPostResSchema, findUnallocatedUserPageForPostReqSchema, findUnallocatedUserPageForPostResSchema, unallocateUserForPostReqSchema } from './auth.dto'
 import { SystemPostAuthService } from './auth.service'
 
 @ApiTags('系统岗位权限接口')

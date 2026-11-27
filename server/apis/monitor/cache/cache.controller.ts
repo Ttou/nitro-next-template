@@ -1,9 +1,9 @@
-import type { FindMonitorCacheByKeyReqDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from './cache.dto'
+import type { FindMonitorCacheByKeyReqDto, FindMonitorCachePageReqDto, RemoveMonitorCacheReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
+import { findMonitorCacheByKeyReqSchema, findMonitorCachePageReqSchema, findMonitorCachePageResSchema, removeMonitorCacheReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { findMonitorCacheByKeyReqSchema, findMonitorCachePageReqSchema, findMonitorCachePageResSchema, removeMonitorCacheReqSchema } from './cache.dto'
 import { MonitorCacheService } from './cache.service'
 
 @ApiTags('缓存监控接口')

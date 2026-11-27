@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { pageReqSchema, pageResSchema } from '~server/dtos'
-import { optionalText, requiredText } from '~server/dtos/zod'
+import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
+import { optionalText, requiredText } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 export const findMonitorCachePageReqSchema = defineSchema(pageReqSchema.extend({

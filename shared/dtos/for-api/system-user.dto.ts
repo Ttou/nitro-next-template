@@ -1,7 +1,8 @@
 import { z } from 'zod'
 import { defineExcel } from '~nestjs-modules/excel'
-import { pageReqSchema, pageResSchema, sysUserEntityNoRelationsNoPasswordSchema } from '~server/dtos'
-import { emailText, optionalEnumOf, optionalText, phoneText, requiredText, uuid } from '~server/dtos/zod'
+import { sysUserEntityNoRelationsNoPasswordSchema } from '~shared/dtos/for-db'
+import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
+import { emailText, optionalEnumOf, optionalText, phoneText, requiredText, uuid } from '~shared/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 import { defineSchema, enumLabelField } from '~shared/utils'
 

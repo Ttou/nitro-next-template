@@ -1,5 +1,5 @@
 import type { ClsStore, Terminal } from 'nestjs-cls'
-import type { SysUserEntityExcludeRelationDto } from '~server/dtos'
+import type { SysUserEntityExcludeRelationDto } from '~shared/dtos'
 import { ClsKeyEnum } from '~server/constants'
 
 export type ContextCurrentUser = Pick<SysUserEntityExcludeRelationDto, 'id' | 'userName'> & {

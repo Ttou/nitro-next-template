@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { defineExcel } from '~nestjs-modules/excel'
-import { optionalEnumOf, optionalText, requiredText, uuid } from '~server/dtos/zod'
+import { optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
 import { defineSchema, enumLabelField } from '~shared/utils'
 

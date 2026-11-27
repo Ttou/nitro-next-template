@@ -1,6 +1,7 @@
-import { z } from 'zod'
-import { pageReqSchema, pageResSchema, sysUserEntityNoPasswordSchema } from '~server/dtos'
-import { optionalText } from '~server/dtos/zod'
+import type { z } from 'zod'
+import { sysUserEntityNoPasswordSchema } from '~shared/dtos/for-db'
+import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
+import { optionalText } from '~shared/dtos/zod'
 import { defineSchema } from '~shared/utils'
 
 /**

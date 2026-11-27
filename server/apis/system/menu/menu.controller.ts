@@ -1,11 +1,9 @@
-import type { RemoveReqDto } from '~server/dtos'
-import type { CreateSystemMenuReqDto, FindSystemMenuListReqDto, UpdateSystemMenuReqDto } from './menu.dto'
+import type { CreateSystemMenuReqDto, FindSystemMenuListReqDto, RemoveReqDto, UpdateSystemMenuReqDto } from '~shared/dtos'
 import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
-import { removeReqSchema, sysMenuEntityExcludeRelationSchema } from '~server/dtos'
+import { createSystemMenuReqSchema, findSystemMenuListReqSchema, removeReqSchema, sysMenuEntityExcludeRelationSchema, updateSystemMenuReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
-import { createSystemMenuReqSchema, findSystemMenuListReqSchema, updateSystemMenuReqSchema } from './menu.dto'
 import { SystemMenuService } from './menu.service'
 
 @ApiTags('系统菜单接口')
