@@ -32,6 +32,7 @@ export default {
   'MonitorOnline.findPage': ['POST', '/api/monitor/online/findPage'],
   'MonitorOnline.remove': ['DELETE', '/api/monitor/online/remove'],
   'MonitorLoginLog.findPage': ['POST', '/api/monitor/login-log/findPage'],
+  'Storage.upload': ['POST', '/api/storage/upload'],
   'SystemConfig.create': ['POST', '/api/system/config/create'],
   'SystemConfig.findByKey': ['GET', '/api/system/config/findByKey'],
   'SystemConfig.findPage': ['POST', '/api/system/config/findPage'],

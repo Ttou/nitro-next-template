@@ -1435,6 +1435,16 @@ export interface FindMonitorLoginLogPageResDto {
    */
   data: SysLoginLogEntityDto[];
 }
+export interface StorageUploadResDto {
+  /**
+   * 文件在存储中的路径
+   */
+  key: string;
+  /**
+   * 文件访问地址
+   */
+  url: string;
+}
 export interface SysConfigEntityDto {
   /**
    * 主键
@@ -2721,6 +2731,45 @@ declare global {
       >(
         config: Config
       ): Alova2Method<FindMonitorLoginLogPageResDto, 'MonitorLoginLog.findPage', Config>;
+    };
+    Storage: {
+      /**
+       * ---
+       *
+       * [POST] 上传图片
+       *
+       * **path:** /api/storage/upload
+       *
+       * ---
+       *
+       * **RequestBody**
+       * ```ts
+       * type RequestBody = {
+       *   file?: Blob
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 文件在存储中的路径
+       *   key: string
+       *   // 文件访问地址
+       *   url: string
+       * }
+       * ```
+       */
+      upload<
+        Config extends Alova2MethodConfig<StorageUploadResDto> & {
+          data: {
+            file?: Blob;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<StorageUploadResDto, 'Storage.upload', Config>;
     };
     SystemConfig: {
       /**

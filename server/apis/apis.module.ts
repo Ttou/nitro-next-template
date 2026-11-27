@@ -5,6 +5,7 @@ import { CaptchaModule } from './captcha'
 import { CurrentUserModule } from './current-user'
 import { HealthModule } from './health'
 import { MonitorCacheModule, MonitorLoginLogModule, MonitorOnlineModule } from './monitor'
+import { StorageModule } from './storage'
 import {
   SystemConfigModule,
   SystemDeptModule,
@@ -28,6 +29,7 @@ import {
     MonitorCacheModule,
     MonitorOnlineModule,
     MonitorLoginLogModule,
+    StorageModule,
     SystemConfigModule,
     SystemDeptModule,
     SystemDictTypeModule,
@@ -71,6 +73,10 @@ import {
                 module: MonitorCacheModule,
               },
             ],
+          },
+          {
+            path: 'storage',
+            module: StorageModule,
           },
           {
             path: 'system',

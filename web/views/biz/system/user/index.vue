@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PlusColumn, PlusPageProps } from 'plus-pro-components'
 import { Icon } from '@iconify/vue'
-import { computed, ref, unref } from 'vue'
+import { ElImage } from 'element-plus'
+import { computed, h, ref, unref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PermissionEnum, YesOrNoEnum } from '~shared/enums'
 import { hasPermission } from '~web/directives'
@@ -82,6 +83,15 @@ const columns = computed<PlusColumn[]>(() => [
     tableColumnProps: {
       align: 'center',
     },
+    render: value => typeof value === 'string' && value
+      ? h(ElImage, {
+          class: 'plus-display-item__image',
+          src: value,
+          fit: 'cover',
+          previewTeleported: true,
+          previewSrcList: [value],
+        })
+      : h('span'),
   },
   {
     label: '是否可用',

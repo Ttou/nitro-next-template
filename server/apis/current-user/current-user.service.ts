@@ -52,6 +52,8 @@ export class CurrentUserService {
     }
 
     wrap(oldRecord).assign({ ...data })
+
+    await this.em.flush()
   }
 
   async updatePassword(data: UpdateCurrentUserPasswordReqDto) {

@@ -7,7 +7,7 @@ import { StorageDisk, uploadToDisk } from '@nestjs/storage'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { localDisk } from '~server/configs'
+import { s3Disk } from '~server/configs'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
 import { createSystemUserReqSchema, exportSystemUserExcel, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserExcel, importSystemUserResSchema, removeReqSchema, updateSystemUserReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
@@ -128,7 +128,7 @@ export class SystemUserController {
     limits: { fileSize: 10 * 1024 * 1024, files: 1 },
     storage: uploadToDisk({
       // nitro 托管请求无法命中按 server 实例建立的磁盘注册表，直接传入磁盘实例
-      disk: localDisk,
+      disk: s3Disk,
       // 仅允许上传 xlsx，检测逻辑见 validators/upload-content-type
       contentTypes: [XLSX_CONTENT_TYPE],
       contentTypeSampleBytes: 64 * 1024,

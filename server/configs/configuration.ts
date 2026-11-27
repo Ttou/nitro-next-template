@@ -1,14 +1,13 @@
 import type { IAuthConfig, IConfig, ISharedConfig } from './config.interface'
 import { generateKeyPairSync } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { cwd, env } from 'node:process'
 import { ExpressAdapter } from '@bull-board/express'
 import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { registerAs } from '@nestjs/config'
-import { LocalDisk } from '@nestjs/storage'
+import { S3Disk } from '@nestjs/storage'
 import { createJwtStrategyConfig, JwtStrategy } from '@xlt-token/jwt'
 import { nativeLoggerOptions } from 'nestjs-pino'
 import pinoPretty from 'pino-pretty'
@@ -118,16 +117,22 @@ function createAuthKeys(): IAuthConfig {
 }
 
 /**
- * 默认 local 磁盘实例。uploadToDisk 按磁盘名解析时依赖按 HTTP server 实例建立的注册表，
- * 而 dev 环境应用只 app.init() 不 listen、请求由 nitro 服务器处理，注册表无法命中，
- * 因此上传处需直接传入该实例
+ * 默认 S3 磁盘实例（RustFS 等 S3 兼容存储）。uploadToDisk 按磁盘名解析时依赖按 HTTP server
+ * 实例建立的注册表，而 dev 环境应用只 app.init() 不 listen、请求由 nitro 服务器处理，
+ * 注册表无法命中，因此上传处需直接传入该实例
  */
-export const localDisk = new LocalDisk({
-  root: match(APP_ENV)
-    .returnType<string>()
-    .with(AppEnvEnum.DEV, () => './uploads')
-    .with(AppEnvEnum.PROD, () => join(tmpdir(), 'nestjs-tmp-storage'))
-    .run(),
+export const s3Disk = new S3Disk({
+  bucket: env.S3_BUCKET || 'nitro-template',
+  region: env.S3_REGION || 'us-east-1',
+  endpoint: env.S3_ENDPOINT || 'http://127.0.0.1:9000',
+  // 公开读地址，只有 public/ 前缀的对象匿名可读；生产应指向 CDN 或反向代理
+  publicUrl: env.S3_PUBLIC_URL || 'http://127.0.0.1:9000/nitro-template',
+  // RustFS/MinIO 等自建服务需要 path-style 访问
+  forcePathStyle: true,
+  credentials: {
+    accessKeyId: env.S3_ACCESS_KEY || 'rustfsadmin',
+    secretAccessKey: env.S3_SECRET_KEY || 'rustfsadmin',
+  },
 })
 
 export const configuration = registerAs<IConfig>('', (): IConfig => {
@@ -249,9 +254,9 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
       .with(AppEnvEnum.PROD, () => ({}))
       .run(),
     'storage': {
-      default: 'local',
+      default: 's3',
       disks: {
-        local: localDisk,
+        s3: s3Disk,
       },
     },
     'alova': match(APP_ENV)
