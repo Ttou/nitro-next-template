@@ -1435,15 +1435,15 @@ export interface FindMonitorLoginLogPageResDto {
    */
   data: SysLoginLogEntityDto[];
 }
-export interface StorageUploadResDto {
-  /**
-   * 文件在存储中的路径
-   */
-  key: string;
+export interface StorageFileUrlResDto {
   /**
    * 文件访问地址
    */
   url: string;
+  /**
+   * 地址有效期（秒），公开文件为 null
+   */
+  expiresIn: number | null;
 }
 export interface SysConfigEntityDto {
   /**
@@ -2046,6 +2046,24 @@ export interface ImportSystemUserResDto {
    * 导入失败的用户名列表
    */
   items: string[];
+}
+export interface StorageUploadResDto {
+  /**
+   * 文件记录 ID
+   */
+  id: string;
+  /**
+   * 文件在存储中的路径
+   */
+  key: string;
+  /**
+   * 可见性
+   */
+  visibility: 'public' | 'private';
+  /**
+   * 公开文件的直连地址，私密文件为 null
+   */
+  url: string | null;
 }
 declare global {
   interface Apis {
@@ -2736,9 +2754,21 @@ declare global {
       /**
        * ---
        *
-       * [POST] 上传图片
+       * [POST] 上传文件
        *
        * **path:** /api/storage/upload
+       *
+       * ---
+       *
+       * **Query Parameters**
+       * ```ts
+       * type QueryParameters = {
+       *   // 可见性，默认 private
+       *   visibility?: 'public' | 'private'
+       *   // 业务类型，默认 avatars
+       *   biz?: 'avatars'
+       * }
+       * ```
        *
        * ---
        *
@@ -2754,15 +2784,29 @@ declare global {
        * **Response**
        * ```ts
        * type Response = {
+       *   // 文件记录 ID
+       *   id: string
        *   // 文件在存储中的路径
        *   key: string
-       *   // 文件访问地址
-       *   url: string
+       *   // 可见性
+       *   visibility: 'public' | 'private'
+       *   // 公开文件的直连地址，私密文件为 null
+       *   url: string | null
        * }
        * ```
        */
       upload<
         Config extends Alova2MethodConfig<StorageUploadResDto> & {
+          params: {
+            /**
+             * 可见性，默认 private
+             */
+            visibility?: 'public' | 'private';
+            /**
+             * 业务类型，默认 avatars
+             */
+            biz?: 'avatars';
+          };
           data: {
             file?: Blob;
           };
@@ -2770,6 +2814,47 @@ declare global {
       >(
         config: Config
       ): Alova2Method<StorageUploadResDto, 'Storage.upload', Config>;
+      /**
+       * ---
+       *
+       * [GET] 获取文件访问地址
+       *
+       * **path:** /api/storage/files/{id}/url
+       *
+       * ---
+       *
+       * **Path Parameters**
+       * ```ts
+       * type PathParameters = {
+       *   // 文件记录 ID
+       *   id: string
+       * }
+       * ```
+       *
+       * ---
+       *
+       * **Response**
+       * ```ts
+       * type Response = {
+       *   // 文件访问地址
+       *   url: string
+       *   // 地址有效期（秒），公开文件为 null
+       *   expiresIn: number | null
+       * }
+       * ```
+       */
+      getFileUrl<
+        Config extends Alova2MethodConfig<StorageFileUrlResDto> & {
+          pathParams: {
+            /**
+             * 文件记录 ID
+             */
+            id: string;
+          };
+        }
+      >(
+        config: Config
+      ): Alova2Method<StorageFileUrlResDto, 'Storage.getFileUrl', Config>;
     };
     SystemConfig: {
       /**

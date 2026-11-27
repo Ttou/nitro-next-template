@@ -33,6 +33,7 @@ export default {
   'MonitorOnline.remove': ['DELETE', '/api/monitor/online/remove'],
   'MonitorLoginLog.findPage': ['POST', '/api/monitor/login-log/findPage'],
   'Storage.upload': ['POST', '/api/storage/upload'],
+  'Storage.getFileUrl': ['GET', '/api/storage/files/{id}/url'],
   'SystemConfig.create': ['POST', '/api/system/config/create'],
   'SystemConfig.findByKey': ['GET', '/api/system/config/findByKey'],
   'SystemConfig.findPage': ['POST', '/api/system/config/findPage'],

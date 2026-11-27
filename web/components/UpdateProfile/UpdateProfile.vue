@@ -5,6 +5,7 @@ import { Icon } from '@iconify/vue'
 import { ElAvatar, ElMessage, ElNotification, ElUpload } from 'element-plus'
 import { pick } from 'es-toolkit/compat'
 import { computed, h, ref, unref } from 'vue'
+import { StorageVisibilityEnum } from '~shared/enums'
 import { useDict } from '~web/hooks'
 import { dictToOptions } from '~web/utils'
 
@@ -33,8 +34,13 @@ function handleAvatarChange(file: UploadRawFile, onChange: (value: unknown) => v
 
   Apis.Storage.upload({
     data: { file },
+    params: { visibility: StorageVisibilityEnum.PUBLIC, biz: 'avatars' },
   })
     .then((res) => {
+      if (!res.url) {
+        return
+      }
+
       onChange(res.url)
     })
     .finally(() => {
@@ -167,15 +173,18 @@ defineExpose({
 }
 
 .avatar-uploader .el-upload {
+  cursor: pointer;
+
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+
   width: 80px;
   height: 80px;
-  overflow: hidden;
-  cursor: pointer;
   border: 1px dashed var(--el-border-color);
   border-radius: 50%;
+
   transition: var(--el-transition-duration-fast);
 }
 
