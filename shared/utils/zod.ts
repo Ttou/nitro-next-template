@@ -24,13 +24,19 @@ export interface SchemaMeta {
 
 /**
  * schema 注册表：组件名 -> schema
+ *
+ * 懒加载：首次写入或读取时才创建，纯类型导入场景不产生额外分配
  */
-const registry = new Map<string, z.ZodType>()
+let registry: Map<string, z.ZodType> | undefined
+
+function getRegistry() {
+  return (registry ??= new Map())
+}
 
 /**
  * OpenAPI 组件名格式：字母开头，仅含字母、数字、下划线、点、短横线
  */
-const COMPONENT_ID_PATTERN = /^[A-Za-z][\w.-]*$/
+const COMPONENT_ID_PATTERN = /^[A-Z][\w.-]*$/i
 
 /**
  * 定义并注册 schema
@@ -64,36 +70,49 @@ export function defineSchema<T extends z.ZodType>(schema: T, meta: SchemaMeta): 
     )
   }
 
-  const registered = registry.get(id)
+  const map = getRegistry()
+  const registered = map.get(id)
   if (registered && registered !== schema) {
     throw new Error(`[defineSchema] 组件名 "${id}" 已被注册，请保证全局唯一`)
   }
 
   const defined = schema.meta({ ...rest, id })
-  registry.set(id, defined)
+  map.set(id, defined)
 
   return defined
+}
+
+/**
+ * 懒加载 schema 工厂
+ *
+ * 模块顶层只创建闭包，schema 在首次调用时才构建（并注册）；
+ * 未被引用的 DTO 模块因此没有任何顶层求值，打包时可被完整摇除
+ */
+/* @__NO_SIDE_EFFECTS__ */
+export function lazySchema<T>(build: () => T): () => T {
+  let cached: T | undefined
+  return () => (cached ??= build())
 }
 
 /**
  * 按组件名取 schema
  */
 export function getSchema(id: string): z.ZodType | undefined {
-  return registry.get(id)
+  return registry?.get(id)
 }
 
 /**
  * 组件名是否已注册
  */
 export function hasSchema(id: string): boolean {
-  return registry.has(id)
+  return registry?.has(id) ?? false
 }
 
 /**
  * 全部已注册的 schema（只读视图）
  */
 export function getSchemaRegistry(): ReadonlyMap<string, z.ZodType> {
-  return registry
+  return getRegistry()
 }
 
 /**

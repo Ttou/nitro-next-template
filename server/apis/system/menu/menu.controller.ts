@@ -18,19 +18,25 @@ export class SystemMenuController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_MENU_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemMenuReqSchema }) dto: CreateSystemMenuReqDto) {
+  async create(@Body({
+    schema: createSystemMenuReqSchema(),
+  }) dto: CreateSystemMenuReqDto,
+  ) {
     return await this.systemMenuService.create(dto)
   }
 
   @ApiOperation({ summary: '查询菜单列表' })
   @ApiOkResponse({
     description: '请求成功',
-    standardSchema: sysMenuEntityExcludeRelationSchema,
+    standardSchema: sysMenuEntityExcludeRelationSchema(),
     isArray: true,
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_MENU_FIND_LIST)
   @Post('findList')
-  async findList(@Body({ schema: findSystemMenuListReqSchema }) dto: FindSystemMenuListReqDto) {
+  async findList(@Body({
+    schema: findSystemMenuListReqSchema(),
+  }) dto: FindSystemMenuListReqDto,
+  ) {
     return await this.systemMenuService.findList(dto)
   }
 
@@ -38,7 +44,10 @@ export class SystemMenuController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_MENU_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemMenuService.remove(dto)
   }
 
@@ -46,7 +55,10 @@ export class SystemMenuController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_MENU_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemMenuReqSchema }) dto: UpdateSystemMenuReqDto) {
+  async update(@Body({
+    schema: updateSystemMenuReqSchema(),
+  }) dto: UpdateSystemMenuReqDto,
+  ) {
     return await this.systemMenuService.update(dto)
   }
 }

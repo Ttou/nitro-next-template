@@ -1,34 +1,34 @@
 import { z } from 'zod'
-import { defineExcel } from '~nestjs-modules/excel'
+import { defineExcel } from '~nestjs-modules/excel/excel.schema'
 import { optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
 import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema, enumLabelField } from '~shared/utils'
+import { defineSchema, enumLabelField, lazySchema } from '~shared/utils'
 
-export const findSystemDictDataListReqSchema = defineSchema(z.object({
+export const findSystemDictDataListReqSchema = lazySchema(() => defineSchema(z.object({
   dictType: requiredText('字典类型不能为空').describe('字典类型'),
   dictLabel: optionalText().describe('字典标签'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
-}), { id: 'FindSystemDictDataListReqDto' })
+}), { id: 'FindSystemDictDataListReqDto' }))
 
-export type FindSystemDictDataListReqDto = z.infer<typeof findSystemDictDataListReqSchema>
+export type FindSystemDictDataListReqDto = z.infer<ReturnType<typeof findSystemDictDataListReqSchema>>
 
-export const createSystemDictDataReqSchema = defineSchema(z.object({
+export const createSystemDictDataReqSchema = lazySchema(() => defineSchema(z.object({
   dictLabel: requiredText('字典标签不能为空').describe('字典标签'),
   dictValue: requiredText('字典值不能为空').describe('字典值'),
   dictType: requiredText('字典类型不能为空').describe('字典类型'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
   remark: optionalText().describe('备注'),
-}), { id: 'CreateSystemDictDataReqDto' })
+}), { id: 'CreateSystemDictDataReqDto' }))
 
-export type CreateSystemDictDataReqDto = z.infer<typeof createSystemDictDataReqSchema>
+export type CreateSystemDictDataReqDto = z.infer<ReturnType<typeof createSystemDictDataReqSchema>>
 
-export const updateSystemDictDataReqSchema = defineSchema(createSystemDictDataReqSchema.extend({
+export const updateSystemDictDataReqSchema = lazySchema(() => defineSchema(createSystemDictDataReqSchema().extend({
   id: uuid('ID格式不正确').describe('ID'),
-}), { id: 'UpdateSystemDictDataReqDto' })
+}), { id: 'UpdateSystemDictDataReqDto' }))
 
-export type UpdateSystemDictDataReqDto = z.infer<typeof updateSystemDictDataReqSchema>
+export type UpdateSystemDictDataReqDto = z.infer<ReturnType<typeof updateSystemDictDataReqSchema>>
 
-export const exportSystemDictDataExcel = defineExcel({
+export const exportSystemDictDataExcel = lazySchema(() => defineExcel({
   fileName: '系统字典数据.xlsx',
   schema: z.object({
     id: z.string().describe('ID'),
@@ -42,4 +42,4 @@ export const exportSystemDictDataExcel = defineExcel({
     updateBy: z.string().describe('更新人'),
     updatedAt: z.date().describe('更新时间'),
   }),
-})
+}))

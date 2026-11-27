@@ -20,15 +20,24 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemPostReqSchema }) dto: CreateSystemPostReqDto) {
+  async create(@Body({
+    schema: createSystemPostReqSchema(),
+  }) dto: CreateSystemPostReqDto,
+  ) {
     return await this.systemPostService.create(dto)
   }
 
   @ApiOperation({ summary: '查询岗位分页列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemPostPageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findSystemPostPageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findSystemPostPageReqSchema }) dto: FindSystemPostPageReqDto) {
+  async findPage(@Body({
+    schema: findSystemPostPageReqSchema(),
+  }) dto: FindSystemPostPageReqDto,
+  ) {
     return await this.systemPostService.findPage(dto)
   }
 
@@ -36,7 +45,10 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemPostService.remove(dto)
   }
 
@@ -44,7 +56,10 @@ export class SystemPostController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemPostReqSchema }) dto: UpdateSystemPostReqDto) {
+  async update(@Body({
+    schema: updateSystemPostReqSchema(),
+  }) dto: UpdateSystemPostReqDto,
+  ) {
     return await this.systemPostService.update(dto)
   }
 
@@ -59,8 +74,11 @@ export class SystemPostController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_POST_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemPostPageReqSchema }) dto: FindSystemPostPageReqDto) {
+  async export(@Body({
+    schema: findSystemPostPageReqSchema(),
+  }) dto: FindSystemPostPageReqDto,
+  ) {
     const { data } = await this.systemPostService.findPage(dto)
-    return this.excelService.exportFile(exportSystemPostExcel, data)
+    return this.excelService.exportFile(exportSystemPostExcel(), data)
   }
 }

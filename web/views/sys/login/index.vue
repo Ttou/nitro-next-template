@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import type { FormRules } from 'element-plus'
 import type { PlusColumn } from 'plus-pro-components'
 
 import type { LoginReqDto } from '~web/apis/globals'
 import { Icon } from '@iconify/vue'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
+import { loginReqSchema } from '~shared/dtos'
 import { ImageCaptcha } from '~web/components'
 import { useUserStore } from '~web/store'
+import { zodFormRules } from '~web/utils'
 
 defineOptions({
   name: 'LoginView',
@@ -25,29 +26,12 @@ const formModel = ref<LoginReqDto>({
   captchaValue: '',
 })
 
-const formRules = ref<FormRules<LoginReqDto>>({
-  userName: [
-    {
-      required: true,
-      message: '请输入账号',
-      trigger: 'blur',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: '请输入密码',
-      trigger: 'blur',
-    },
-  ],
-  captchaValue: [
-    {
-      required: true,
-      message: '请输入验证码',
-      trigger: 'blur',
-    },
-  ],
-})
+/**
+ * 登录表单校验
+ *
+ * 直接复用服务端 `loginReqSchema`（已含 trim），保证两端规则一致
+ */
+const formRules = zodFormRules(loginReqSchema())
 
 const formColumns = computed<PlusColumn[]>(() => [
   {

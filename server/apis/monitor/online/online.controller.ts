@@ -13,10 +13,16 @@ export class MonitorOnlineController {
   constructor(private monitorOnlineService: MonitorOnlineService) {}
 
   @ApiOperation({ summary: '分页查询在线用户' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findMonitorOnlinePageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findMonitorOnlinePageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.MONITOR_ONLINE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findMonitorOnlinePageReqSchema }) dto: FindMonitorOnlinePageReqDto) {
+  async findPage(@Body({
+    schema: findMonitorOnlinePageReqSchema(),
+  }) dto: FindMonitorOnlinePageReqDto,
+  ) {
     return await this.monitorOnlineService.findPage(dto)
   }
 
@@ -24,7 +30,10 @@ export class MonitorOnlineController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.MONITOR_ONLINE_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.monitorOnlineService.remove(dto)
   }
 }

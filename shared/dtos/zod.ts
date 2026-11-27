@@ -4,10 +4,10 @@ import { z } from 'zod'
 /**
  * 非空文本
  *
- * 缺省、null、空串都返回同一条提示，与 class-validator 的 `@IsNotEmpty()` 行为一致
+ * 缺省、null、空串都返回同一条提示；先 trim 再判空，纯空格同样视为空
  */
 export function requiredText(message: string) {
-  return z.string({ error: message }).min(1, { error: message })
+  return z.string({ error: message }).trim().min(1, { error: message })
 }
 
 /**

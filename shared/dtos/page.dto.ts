@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { defineSchema } from '~shared/utils'
+import { defineSchema, lazySchema } from '~shared/utils'
 
 /**
  * 分页请求传输对象
  */
-export const pageReqSchema = z.object({
+export const pageReqSchema = lazySchema(() => z.object({
   page: z.coerce
     .number({ error: '页码必须是正整数' })
     .int({ error: '页码必须是正整数' })
@@ -17,9 +17,9 @@ export const pageReqSchema = z.object({
     .min(1, { error: '页长必须是正整数' })
     .describe('页长')
     .meta({ default: 20 }),
-})
+}))
 
-export type PageReqDto = z.infer<typeof pageReqSchema>
+export type PageReqDto = z.infer<ReturnType<typeof pageReqSchema>>
 
 /**
  * 分页响应 schema

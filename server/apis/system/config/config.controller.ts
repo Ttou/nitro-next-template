@@ -21,25 +21,40 @@ export class SystemConfigController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemConfigReqSchema }) dto: CreateSystemConfigReqDto) {
+  async create(@Body({
+    schema: createSystemConfigReqSchema(),
+  }) dto: CreateSystemConfigReqDto,
+  ) {
     return await this.systemConfigService.create(dto)
   }
 
   @ApiOperation({ summary: '根据键名查询系统配置' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: sysConfigEntitySchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: sysConfigEntitySchema(),
+  })
   @CacheKey(ctx => `sys_config:${ctx.switchToHttp().getRequest().query.configKey}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)
   @Get('findByKey')
-  async findByKey(@Query({ schema: findSystemConfigByKeyReqSchema }) dto: FindSystemConfigByKeyReqDto) {
+  async findByKey(@Query({
+    schema: findSystemConfigByKeyReqSchema(),
+  }) dto: FindSystemConfigByKeyReqDto,
+  ) {
     return await this.systemConfigService.findByKey(dto)
   }
 
   @ApiOperation({ summary: '查询系统配置分页列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemConfigPageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findSystemConfigPageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findSystemConfigPageReqSchema }) dto: FindSystemConfigPageReqDto) {
+  async findPage(@Body({
+    schema: findSystemConfigPageReqSchema(),
+  }) dto: FindSystemConfigPageReqDto,
+  ) {
     return await this.systemConfigService.findPage(dto)
   }
 
@@ -47,7 +62,10 @@ export class SystemConfigController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemConfigService.remove(dto)
   }
 
@@ -55,7 +73,10 @@ export class SystemConfigController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemConfigReqSchema }) dto: UpdateSystemConfigReqDto) {
+  async update(@Body({
+    schema: updateSystemConfigReqSchema(),
+  }) dto: UpdateSystemConfigReqDto,
+  ) {
     return await this.systemConfigService.update(dto)
   }
 
@@ -70,8 +91,11 @@ export class SystemConfigController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_CONFIG_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemConfigPageReqSchema }) dto: FindSystemConfigPageReqDto) {
+  async export(@Body({
+    schema: findSystemConfigPageReqSchema(),
+  }) dto: FindSystemConfigPageReqDto,
+  ) {
     const { data } = await this.systemConfigService.findPage(dto)
-    return this.excelService.exportFile(exportSystemConfigExcel, data)
+    return this.excelService.exportFile(exportSystemConfigExcel(), data)
   }
 }

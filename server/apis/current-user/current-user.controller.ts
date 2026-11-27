@@ -13,14 +13,20 @@ export class CurrentUserController {
   ) {}
 
   @ApiOperation({ summary: '获取当前用户信息' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: currentUserGetInfoResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: currentUserGetInfoResSchema(),
+  })
   @Get('info')
   async getInfo() {
     return await this.currentUserService.getInfo()
   }
 
   @ApiOperation({ summary: '获取当前用户个人信息' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: currentUserGetProfileResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: currentUserGetProfileResSchema(),
+  })
   @Get('profile')
   async getProfile() {
     return await this.currentUserService.getProfile()
@@ -29,14 +35,20 @@ export class CurrentUserController {
   @ApiOperation({ summary: '更新当前用户个人信息' })
   @ApiOkResponse({ description: '请求成功' })
   @Post('update-profile')
-  async updateProfile(@Body({ schema: updateCurrentUserProfileReqSchema }) data: UpdateCurrentUserProfileReqDto) {
+  async updateProfile(@Body({
+    schema: updateCurrentUserProfileReqSchema(),
+  }) data: UpdateCurrentUserProfileReqDto,
+  ) {
     return await this.currentUserService.updateProfile(data)
   }
 
   @ApiOperation({ summary: '更新当前用户密码' })
   @ApiOkResponse({ description: '请求成功' })
   @Post('update-password')
-  async updatePassword(@Body({ schema: updateCurrentUserPasswordReqSchema }) data: UpdateCurrentUserPasswordReqDto) {
+  async updatePassword(@Body({
+    schema: updateCurrentUserPasswordReqSchema(),
+  }) data: UpdateCurrentUserPasswordReqDto,
+  ) {
     return await this.currentUserService.updatePassword(data)
   }
 }

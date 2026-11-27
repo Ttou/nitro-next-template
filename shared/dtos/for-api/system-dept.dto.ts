@@ -1,28 +1,28 @@
 import { z } from 'zod'
 import { optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
 import { YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema } from '~shared/utils'
+import { defineSchema, lazySchema } from '~shared/utils'
 
-export const findSystemDeptListReqSchema = defineSchema(z.object({
+export const findSystemDeptListReqSchema = lazySchema(() => defineSchema(z.object({
   deptName: optionalText().describe('部门名称'),
   deptKey: optionalText().describe('部门标识'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
-}), { id: 'FindSystemDeptListReqDto' })
+}), { id: 'FindSystemDeptListReqDto' }))
 
-export type FindSystemDeptListReqDto = z.infer<typeof findSystemDeptListReqSchema>
+export type FindSystemDeptListReqDto = z.infer<ReturnType<typeof findSystemDeptListReqSchema>>
 
-export const createSystemDeptReqSchema = defineSchema(z.object({
+export const createSystemDeptReqSchema = lazySchema(() => defineSchema(z.object({
   parentId: uuid('父部门ID格式不正确').nullish().transform(value => value ?? undefined).describe('父部门ID'),
   deptName: requiredText('部门名称不能为空').describe('部门名称'),
   deptKey: requiredText('部门标识不能为空').describe('部门标识'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('可用状态'),
   remark: optionalText().describe('备注'),
-}), { id: 'CreateSystemDeptReqDto' })
+}), { id: 'CreateSystemDeptReqDto' }))
 
-export type CreateSystemDeptReqDto = z.infer<typeof createSystemDeptReqSchema>
+export type CreateSystemDeptReqDto = z.infer<ReturnType<typeof createSystemDeptReqSchema>>
 
-export const updateSystemDeptReqSchema = defineSchema(createSystemDeptReqSchema.extend({
+export const updateSystemDeptReqSchema = lazySchema(() => defineSchema(createSystemDeptReqSchema().extend({
   id: uuid('ID格式不正确').describe('ID'),
-}), { id: 'UpdateSystemDeptReqDto' })
+}), { id: 'UpdateSystemDeptReqDto' }))
 
-export type UpdateSystemDeptReqDto = z.infer<typeof updateSystemDeptReqSchema>
+export type UpdateSystemDeptReqDto = z.infer<ReturnType<typeof updateSystemDeptReqSchema>>

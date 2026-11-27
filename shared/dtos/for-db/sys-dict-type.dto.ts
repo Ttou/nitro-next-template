@@ -2,17 +2,17 @@ import type { SysDictTypeEntity } from '~db/entities/sys-dict-type.entity'
 import type { EntityDtoSchema } from './entity-constraint'
 import { z } from 'zod'
 import { YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema, enumField } from '~shared/utils'
+import { defineSchema, enumField, lazySchema } from '~shared/utils'
 import { baseEntitySchema } from './base.dto'
 
 /**
  * 系统字典类型
  */
-export const sysDictTypeEntitySchema = defineSchema(baseEntitySchema.extend({
+export const sysDictTypeEntitySchema = lazySchema(() => ((defineSchema(baseEntitySchema().extend({
   dictName: z.string().describe('字典名称'),
   dictType: z.string().describe('字典类型'),
   isAvailable: enumField(YesOrNoEnumValues).describe('是否可用'),
   remark: z.string().nullish().describe('备注'),
-}), { id: 'SysDictTypeEntityDto' }) satisfies EntityDtoSchema<SysDictTypeEntity>
+}), { id: 'SysDictTypeEntityDto' })) satisfies EntityDtoSchema<SysDictTypeEntity>))
 
-export type SysDictTypeEntityDto = z.infer<typeof sysDictTypeEntitySchema>
+export type SysDictTypeEntityDto = z.infer<ReturnType<typeof sysDictTypeEntitySchema>>

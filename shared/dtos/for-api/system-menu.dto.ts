@@ -1,17 +1,17 @@
 import { z } from 'zod'
 import { enumOf, optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
 import { MenuTypeEnumValues, YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema } from '~shared/utils'
+import { defineSchema, lazySchema } from '~shared/utils'
 
-export const findSystemMenuListReqSchema = defineSchema(z.object({
+export const findSystemMenuListReqSchema = lazySchema(() => defineSchema(z.object({
   menuName: optionalText().describe('菜单名称'),
   menuKey: optionalText().describe('菜单标识'),
   isAvailable: optionalEnumOf(YesOrNoEnumValues, '可用状态枚举值不正确').describe('是否可用'),
-}), { id: 'FindSystemMenuListReqDto' })
+}), { id: 'FindSystemMenuListReqDto' }))
 
-export type FindSystemMenuListReqDto = z.infer<typeof findSystemMenuListReqSchema>
+export type FindSystemMenuListReqDto = z.infer<ReturnType<typeof findSystemMenuListReqSchema>>
 
-export const createSystemMenuReqSchema = defineSchema(z.object({
+export const createSystemMenuReqSchema = lazySchema(() => defineSchema(z.object({
   parentId: uuid('父菜单ID格式不正确').nullish().transform(value => value ?? undefined).describe('父菜单ID'),
   menuKey: requiredText('菜单标识不能为空').describe('菜单标识'),
   menuName: requiredText('菜单名称不能为空').describe('菜单名称'),
@@ -26,12 +26,12 @@ export const createSystemMenuReqSchema = defineSchema(z.object({
   isCache: optionalEnumOf(YesOrNoEnumValues, '是否缓存枚举值不正确').describe('是否缓存'),
   isVisible: optionalEnumOf(YesOrNoEnumValues, '是否显示枚举值不正确').describe('是否显示'),
   remark: optionalText().describe('备注'),
-}), { id: 'CreateSystemMenuReqDto' })
+}), { id: 'CreateSystemMenuReqDto' }))
 
-export type CreateSystemMenuReqDto = z.infer<typeof createSystemMenuReqSchema>
+export type CreateSystemMenuReqDto = z.infer<ReturnType<typeof createSystemMenuReqSchema>>
 
-export const updateSystemMenuReqSchema = defineSchema(createSystemMenuReqSchema.extend({
+export const updateSystemMenuReqSchema = lazySchema(() => defineSchema(createSystemMenuReqSchema().extend({
   id: uuid('ID格式不正确').describe('ID'),
-}), { id: 'UpdateSystemMenuReqDto' })
+}), { id: 'UpdateSystemMenuReqDto' }))
 
-export type UpdateSystemMenuReqDto = z.infer<typeof updateSystemMenuReqSchema>
+export type UpdateSystemMenuReqDto = z.infer<ReturnType<typeof updateSystemMenuReqSchema>>

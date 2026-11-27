@@ -28,15 +28,24 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemUserReqSchema }) dto: CreateSystemUserReqDto) {
+  async create(@Body({
+    schema: createSystemUserReqSchema(),
+  }) dto: CreateSystemUserReqDto,
+  ) {
     return await this.systemUserService.create(dto)
   }
 
   @ApiOperation({ summary: '查询系统用户分页列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemUserPageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findSystemUserPageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findSystemUserPageReqSchema }) dto: FindSystemUserPageReqDto) {
+  async findPage(@Body({
+    schema: findSystemUserPageReqSchema(),
+  }) dto: FindSystemUserPageReqDto,
+  ) {
     return await this.systemUserService.findPage(dto)
   }
 
@@ -44,7 +53,10 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemUserService.remove(dto)
   }
 
@@ -52,7 +64,10 @@ export class SystemUserController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemUserReqSchema }) dto: UpdateSystemUserReqDto) {
+  async update(@Body({
+    schema: updateSystemUserReqSchema(),
+  }) dto: UpdateSystemUserReqDto,
+  ) {
     return await this.systemUserService.update(dto)
   }
 
@@ -67,9 +82,12 @@ export class SystemUserController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_USER_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemUserPageReqSchema }) dto: FindSystemUserPageReqDto) {
+  async export(@Body({
+    schema: findSystemUserPageReqSchema(),
+  }) dto: FindSystemUserPageReqDto,
+  ) {
     const { data } = await this.systemUserService.findPage(dto)
-    return this.excelService.exportFile(exportSystemUserExcel, data)
+    return this.excelService.exportFile(exportSystemUserExcel(), data)
   }
 
   @ApiOperation({ summary: '导出系统用户导入模板' })
@@ -83,7 +101,7 @@ export class SystemUserController {
   })
   @Post('exportTemplate')
   async exportTemplate() {
-    return this.excelService.exportFile(importSystemUserExcel, [])
+    return this.excelService.exportFile(importSystemUserExcel(), [])
   }
 
   @ApiOperation({ summary: '导入系统用户' })
@@ -99,7 +117,10 @@ export class SystemUserController {
       },
     },
   })
-  @ApiOkResponse({ description: '请求成功', standardSchema: importSystemUserResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: importSystemUserResSchema(),
+  })
   @UseInterceptors(FileInterceptor('file', {
     // busboy 默认按 latin1 解析文件名，会导致中文乱码
     defParamCharset: 'utf8',
@@ -121,7 +142,7 @@ export class SystemUserController {
     const { body } = await this.disk.get(file.key)
 
     try {
-      const data = await this.excelService.importFile(importSystemUserExcel, body)
+      const data = await this.excelService.importFile(importSystemUserExcel(), body)
       return await this.systemUserService.importTemplate(data)
     }
     finally {

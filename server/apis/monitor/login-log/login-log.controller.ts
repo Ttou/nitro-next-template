@@ -15,10 +15,16 @@ export class MonitorLoginLogController {
   ) {}
 
   @ApiOperation({ summary: '分页查询登录日志' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findMonitorLoginLogPageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findMonitorLoginLogPageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.MONITOR_LOGIN_LOG_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findMonitorLoginLogPageReqSchema }) dto: FindMonitorLoginLogPageReqDto) {
+  async findPage(@Body({
+    schema: findMonitorLoginLogPageReqSchema(),
+  }) dto: FindMonitorLoginLogPageReqDto,
+  ) {
     return this.monitorLoginLogService.findPage(dto)
   }
 }

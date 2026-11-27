@@ -3,12 +3,12 @@ import type { EntityDtoSchema } from './entity-constraint'
 import { flattenObject, toCamelCaseKeys } from 'es-toolkit'
 import { UAParser } from 'ua-parser-js'
 import { z } from 'zod'
-import { dateTimeField, defineSchema } from '~shared/utils'
+import { dateTimeField, defineSchema, lazySchema } from '~shared/utils'
 
 /**
  * 用户代理解析结果
  */
-export const userAgentSerSchema = defineSchema(z.object({
+export const userAgentSerSchema = lazySchema(() => defineSchema(z.object({
   browserName: z.string().optional().describe('浏览器名称'),
   browserVersion: z.string().optional().describe('浏览器版本'),
   browserMajor: z.string().optional().describe('浏览器主版本号'),
@@ -21,9 +21,9 @@ export const userAgentSerSchema = defineSchema(z.object({
   engineVersion: z.string().optional().describe('浏览器引擎版本'),
   osName: z.string().optional().describe('操作系统名称'),
   osVersion: z.string().optional().describe('操作系统版本'),
-}), { id: 'UserAgentSerDto' })
+}), { id: 'UserAgentSerDto' }))
 
-export type UserAgentSerDto = z.infer<typeof userAgentSerSchema>
+export type UserAgentSerDto = z.infer<ReturnType<typeof userAgentSerSchema>>
 
 /**
  * 解析用户代理
@@ -37,18 +37,18 @@ export function parseUserAgent(userAgent: string): UserAgentSerDto {
 /**
  * 系统登录日志
  */
-export const sysLoginLogEntitySchema = defineSchema(z.object({
+export const sysLoginLogEntitySchema = lazySchema(() => ((defineSchema(z.object({
   id: z.string().describe('主键'),
   ip: z.string().describe('IP地址'),
   location: z.string().describe('位置'),
   userName: z.string().describe('用户账号'),
   userAgent: z.string().describe('用户代理'),
-  userAgentParsed: userAgentSerSchema.describe('用户代理解析'),
+  userAgentParsed: userAgentSerSchema().describe('用户代理解析'),
   token: z.string().describe('密钥'),
   status: z.number().describe('请求状态'),
   errorMsg: z.string().nullish().describe('错误信息'),
   operateTime: dateTimeField('操作时间'),
   costTime: z.number().describe('耗时'),
-}), { id: 'SysLoginLogEntityDto' }) satisfies EntityDtoSchema<SysLoginLogEntity>
+}), { id: 'SysLoginLogEntityDto' })) satisfies EntityDtoSchema<SysLoginLogEntity>))
 
-export type SysLoginLogEntityDto = z.infer<typeof sysLoginLogEntitySchema>
+export type SysLoginLogEntityDto = z.infer<ReturnType<typeof sysLoginLogEntitySchema>>

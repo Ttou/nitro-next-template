@@ -12,7 +12,10 @@ export class CaptchaController {
   ) {}
 
   @ApiOperation({ summary: '图形验证码' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: captchaImageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: captchaImageResSchema(),
+  })
   @XltIgnore()
   @Get('image')
   async image() {

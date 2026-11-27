@@ -21,29 +21,41 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemDictTypeReqSchema }) dto: CreateSystemDictTypeReqDto) {
+  async create(@Body({
+    schema: createSystemDictTypeReqSchema(),
+  }) dto: CreateSystemDictTypeReqDto,
+  ) {
     await this.systemDictTypeService.create(dto)
   }
 
   @ApiOperation({ summary: '根据字典类型查询字典数据' })
   @ApiOkResponse({
     description: '请求成功',
-    standardSchema: sysDictDataEntitySchema,
+    standardSchema: sysDictDataEntitySchema(),
     isArray: true,
   })
   @CacheKey(ctx => `sys_dict:${ctx.switchToHttp().getRequest().query.dictType}`)
   @CacheTTL('1d')
   @UseInterceptors(CacheInterceptor)
   @Get('findByKey')
-  async findByKey(@Query({ schema: findSystemDictDetailByKeyReqSchema }) dto: FindSystemDictDetailByKeyReqDto) {
+  async findByKey(@Query({
+    schema: findSystemDictDetailByKeyReqSchema(),
+  }) dto: FindSystemDictDetailByKeyReqDto,
+  ) {
     return await this.systemDictTypeService.findByKey(dto)
   }
 
   @ApiOperation({ summary: '查询字典类型分页列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemDictTypePageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findSystemDictTypePageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findSystemDictTypePageReqSchema }) dto: FindSystemDictTypePageReqDto) {
+  async findPage(@Body({
+    schema: findSystemDictTypePageReqSchema(),
+  }) dto: FindSystemDictTypePageReqDto,
+  ) {
     return await this.systemDictTypeService.findPage(dto)
   }
 
@@ -51,7 +63,10 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemDictTypeService.remove(dto)
   }
 
@@ -59,7 +74,10 @@ export class SystemDictTypeController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemDictTypeReqSchema }) dto: UpdateSystemDictTypeReqDto) {
+  async update(@Body({
+    schema: updateSystemDictTypeReqSchema(),
+  }) dto: UpdateSystemDictTypeReqDto,
+  ) {
     return await this.systemDictTypeService.update(dto)
   }
 
@@ -74,8 +92,11 @@ export class SystemDictTypeController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_TYPE_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemDictTypePageReqSchema }) dto: FindSystemDictTypePageReqDto) {
+  async export(@Body({
+    schema: findSystemDictTypePageReqSchema(),
+  }) dto: FindSystemDictTypePageReqDto,
+  ) {
     const { data } = await this.systemDictTypeService.findPage(dto)
-    return this.excelService.exportFile(exportSystemDictTypeExcel, data)
+    return this.excelService.exportFile(exportSystemDictTypeExcel(), data)
   }
 }

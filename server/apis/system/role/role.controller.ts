@@ -20,15 +20,24 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemRoleReqSchema }) dto: CreateSystemRoleReqDto) {
+  async create(@Body({
+    schema: createSystemRoleReqSchema(),
+  }) dto: CreateSystemRoleReqDto,
+  ) {
     return await this.systemRoleService.create(dto)
   }
 
   @ApiOperation({ summary: '查询系统角色分页列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findSystemRolePageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findSystemRolePageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findSystemRolePageReqSchema }) dto: FindSystemRolePageReqDto) {
+  async findPage(@Body({
+    schema: findSystemRolePageReqSchema(),
+  }) dto: FindSystemRolePageReqDto,
+  ) {
     return await this.systemRoleService.findPage(dto)
   }
 
@@ -36,7 +45,10 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemRoleService.remove(dto)
   }
 
@@ -44,7 +56,10 @@ export class SystemRoleController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemRoleReqSchema }) dto: UpdateSystemRoleReqDto) {
+  async update(@Body({
+    schema: updateSystemRoleReqSchema(),
+  }) dto: UpdateSystemRoleReqDto,
+  ) {
     return await this.systemRoleService.update(dto)
   }
 
@@ -59,8 +74,11 @@ export class SystemRoleController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemRolePageReqSchema }) dto: FindSystemRolePageReqDto) {
+  async export(@Body({
+    schema: findSystemRolePageReqSchema(),
+  }) dto: FindSystemRolePageReqDto,
+  ) {
     const { data } = await this.systemRoleService.findPage(dto)
-    return this.excelService.exportFile(exportSystemRoleExcel, data)
+    return this.excelService.exportFile(exportSystemRoleExcel(), data)
   }
 }

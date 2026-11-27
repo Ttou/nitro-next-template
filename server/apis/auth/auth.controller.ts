@@ -18,12 +18,18 @@ export class AuthController {
   @XltIgnore()
   @UseInterceptors(LoginLogInterceptor)
   @Post('login')
-  async login(@Body({ schema: loginReqSchema }) dto: LoginReqDto) {
+  async login(@Body({
+    schema: loginReqSchema(),
+  }) dto: LoginReqDto,
+  ) {
     return await this.authService.login(dto)
   }
 
   @ApiOperation({ summary: '获取登录公钥' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: authPublicKeyResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: authPublicKeyResSchema(),
+  })
   @XltIgnore()
   @Get('public-key')
   getPublicKey() {

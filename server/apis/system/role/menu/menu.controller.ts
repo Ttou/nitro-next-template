@@ -18,7 +18,10 @@ export class SystemRoleMenuController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGN)
   @Post('assign')
-  async assign(@Body({ schema: assignMenuForRoleReqSchema }) dto: AssignMenuForRoleReqDto) {
+  async assign(@Body({
+    schema: assignMenuForRoleReqSchema(),
+  }) dto: AssignMenuForRoleReqDto,
+  ) {
     await this.systemRoleMenuService.assign(dto)
   }
 
@@ -29,7 +32,10 @@ export class SystemRoleMenuController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_ROLE_MENU_ASSIGNED)
   @Post('assigned')
-  async assigned(@Body({ schema: findAssignedMenuForRoleReqSchema }) dto: FindAssignedMenuForRoleReqDto) {
+  async assigned(@Body({
+    schema: findAssignedMenuForRoleReqSchema(),
+  }) dto: FindAssignedMenuForRoleReqDto,
+  ) {
     return await this.systemRoleMenuService.assigned(dto)
   }
 }

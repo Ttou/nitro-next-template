@@ -20,19 +20,25 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemDictDataReqSchema }) dto: CreateSystemDictDataReqDto) {
+  async create(@Body({
+    schema: createSystemDictDataReqSchema(),
+  }) dto: CreateSystemDictDataReqDto,
+  ) {
     await this.systemDictDataService.create(dto)
   }
 
   @ApiOperation({ summary: '查询字典数据列表' })
   @ApiOkResponse({
     description: '请求成功',
-    standardSchema: sysDictDataEntitySchema,
+    standardSchema: sysDictDataEntitySchema(),
     isArray: true,
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_FIND_LIST)
   @Post('findList')
-  async findList(@Body({ schema: findSystemDictDataListReqSchema }) dto: FindSystemDictDataListReqDto) {
+  async findList(@Body({
+    schema: findSystemDictDataListReqSchema(),
+  }) dto: FindSystemDictDataListReqDto,
+  ) {
     return await this.systemDictDataService.findList(dto)
   }
 
@@ -40,7 +46,10 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemDictDataService.remove(dto)
   }
 
@@ -48,7 +57,10 @@ export class SystemDictDataController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemDictDataReqSchema }) dto: UpdateSystemDictDataReqDto) {
+  async update(@Body({
+    schema: updateSystemDictDataReqSchema(),
+  }) dto: UpdateSystemDictDataReqDto,
+  ) {
     return await this.systemDictDataService.update(dto)
   }
 
@@ -63,8 +75,11 @@ export class SystemDictDataController {
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DICT_DATA_EXPORT)
   @Post('export')
-  async export(@Body({ schema: findSystemDictDataListReqSchema }) dto: FindSystemDictDataListReqDto) {
+  async export(@Body({
+    schema: findSystemDictDataListReqSchema(),
+  }) dto: FindSystemDictDataListReqDto,
+  ) {
     const data = await this.systemDictDataService.findList(dto)
-    return this.excelService.exportFile(exportSystemDictDataExcel, data)
+    return this.excelService.exportFile(exportSystemDictDataExcel(), data)
   }
 }

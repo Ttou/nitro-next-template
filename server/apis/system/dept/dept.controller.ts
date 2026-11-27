@@ -18,19 +18,25 @@ export class SystemDeptController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DEPT_CREATE)
   @Post('create')
-  async create(@Body({ schema: createSystemDeptReqSchema }) dto: CreateSystemDeptReqDto) {
+  async create(@Body({
+    schema: createSystemDeptReqSchema(),
+  }) dto: CreateSystemDeptReqDto,
+  ) {
     return await this.systemDeptService.create(dto)
   }
 
   @ApiOperation({ summary: '查询部门列表' })
   @ApiOkResponse({
     description: '请求成功',
-    standardSchema: sysDeptEntityExcludeRelationSchema,
+    standardSchema: sysDeptEntityExcludeRelationSchema(),
     isArray: true,
   })
   @XltCheckPermission(PermissionEnum.SYSTEM_DEPT_FIND_LIST)
   @Post('findList')
-  async findList(@Body({ schema: findSystemDeptListReqSchema }) dto: FindSystemDeptListReqDto) {
+  async findList(@Body({
+    schema: findSystemDeptListReqSchema(),
+  }) dto: FindSystemDeptListReqDto,
+  ) {
     return await this.systemDeptService.findList(dto)
   }
 
@@ -38,7 +44,10 @@ export class SystemDeptController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DEPT_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeReqSchema }) dto: RemoveReqDto) {
+  async remove(@Body({
+    schema: removeReqSchema(),
+  }) dto: RemoveReqDto,
+  ) {
     return await this.systemDeptService.remove(dto)
   }
 
@@ -46,7 +55,10 @@ export class SystemDeptController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.SYSTEM_DEPT_UPDATE)
   @Post('update')
-  async update(@Body({ schema: updateSystemDeptReqSchema }) dto: UpdateSystemDeptReqDto) {
+  async update(@Body({
+    schema: updateSystemDeptReqSchema(),
+  }) dto: UpdateSystemDeptReqDto,
+  ) {
     return await this.systemDeptService.update(dto)
   }
 }

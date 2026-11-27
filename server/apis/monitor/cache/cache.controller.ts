@@ -15,10 +15,16 @@ export class MonitorCacheController {
   ) {}
 
   @ApiOperation({ summary: '查询缓存列表' })
-  @ApiOkResponse({ description: '请求成功', standardSchema: findMonitorCachePageResSchema })
+  @ApiOkResponse({
+    description: '请求成功',
+    standardSchema: findMonitorCachePageResSchema(),
+  })
   @XltCheckPermission(PermissionEnum.MONITOR_CACHE_FIND_PAGE)
   @Post('findPage')
-  async findPage(@Body({ schema: findMonitorCachePageReqSchema }) dto: FindMonitorCachePageReqDto) {
+  async findPage(@Body({
+    schema: findMonitorCachePageReqSchema(),
+  }) dto: FindMonitorCachePageReqDto,
+  ) {
     return await this.monitorCacheService.findPage(dto)
   }
 
@@ -26,7 +32,10 @@ export class MonitorCacheController {
   @ApiOkResponse({ description: '请求成功', type: Object })
   @XltCheckPermission(PermissionEnum.MONITOR_CACHE_FIND_BY_KEY)
   @Get('findByKey')
-  async findByKey(@Query({ schema: findMonitorCacheByKeyReqSchema }) dto: FindMonitorCacheByKeyReqDto) {
+  async findByKey(@Query({
+    schema: findMonitorCacheByKeyReqSchema(),
+  }) dto: FindMonitorCacheByKeyReqDto,
+  ) {
     return await this.monitorCacheService.findByKey(dto)
   }
 
@@ -34,7 +43,10 @@ export class MonitorCacheController {
   @ApiOkResponse({ description: '请求成功' })
   @XltCheckPermission(PermissionEnum.MONITOR_CACHE_REMOVE)
   @Delete('remove')
-  async remove(@Body({ schema: removeMonitorCacheReqSchema }) dto: RemoveMonitorCacheReqDto) {
+  async remove(@Body({
+    schema: removeMonitorCacheReqSchema(),
+  }) dto: RemoveMonitorCacheReqDto,
+  ) {
     return await this.monitorCacheService.remove(dto)
   }
 
