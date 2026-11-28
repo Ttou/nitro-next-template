@@ -4,8 +4,9 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swa
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { createSystemDictTypeReqSchema, exportSystemDictTypeExcel, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, removeReqSchema, sysDictDataEntitySchema, updateSystemDictTypeReqSchema } from '~shared/dtos'
+import { createSystemDictTypeReqSchema, findSystemDictDetailByKeyReqSchema, findSystemDictTypePageReqSchema, findSystemDictTypePageResSchema, removeReqSchema, sysDictDataEntitySchema, updateSystemDictTypeReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
+import { exportSystemDictTypeExcel } from './type.excel'
 import { SystemDictTypeService } from './type.service'
 
 @ApiTags('字典类型接口')

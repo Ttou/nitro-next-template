@@ -4,8 +4,9 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swa
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { CacheInterceptor, CacheKey, CacheTTL } from '~nestjs-modules/cache'
 import { ExcelService } from '~nestjs-modules/excel'
-import { createSystemConfigReqSchema, exportSystemConfigExcel, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, removeReqSchema, sysConfigEntitySchema, updateSystemConfigReqSchema } from '~shared/dtos'
+import { createSystemConfigReqSchema, findSystemConfigByKeyReqSchema, findSystemConfigPageReqSchema, findSystemConfigPageResSchema, removeReqSchema, sysConfigEntitySchema, updateSystemConfigReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
+import { exportSystemConfigExcel } from './config.excel'
 import { SystemConfigService } from './config.service'
 
 @ApiTags('系统配置接口')

@@ -1,10 +1,9 @@
 import { z } from 'zod'
-import { defineExcel } from '~nestjs-modules/excel/excel.schema'
 import { sysDictDataEntitySchema, sysDictTypeEntitySchema } from '~shared/dtos/for-db'
 import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
-import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema, enumLabelField, lazySchema } from '~shared/utils'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { defineSchema, lazySchema } from '~shared/utils'
 
 export const findSystemDictTypePageReqSchema = lazySchema(() => defineSchema(pageReqSchema().extend({
   dictName: optionalText().describe('字典名称'),
@@ -45,18 +44,3 @@ export type FindSystemDictDetailByKeyReqDto = z.infer<ReturnType<typeof findSyst
 export const findSystemDictDetailByKeyResSchema = lazySchema(() => defineSchema(sysDictDataEntitySchema(), { id: 'FindSystemDictDetailByKeyResDto' }))
 
 export type FindSystemDictDetailByKeyResDto = z.infer<ReturnType<typeof findSystemDictDetailByKeyResSchema>>
-
-export const exportSystemDictTypeExcel = lazySchema(() => defineExcel({
-  fileName: '系统字典类型.xlsx',
-  schema: z.object({
-    id: z.string().describe('ID'),
-    dictName: z.string().describe('字典名称'),
-    dictType: z.string().describe('字典类型'),
-    isAvailable: enumLabelField(YesOrNoEnum).describe('可用状态'),
-    remark: z.string().describe('备注'),
-    createBy: z.string().describe('创建人'),
-    createdAt: z.date().describe('创建时间'),
-    updateBy: z.string().describe('更新人'),
-    updatedAt: z.date().describe('更新时间'),
-  }),
-}))

@@ -1,10 +1,9 @@
 import { z } from 'zod'
-import { defineExcel } from '~nestjs-modules/excel/excel.schema'
 import { sysPostEntityExcludeRelationSchema } from '~shared/dtos/for-db'
 import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
-import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema, enumLabelField, lazySchema } from '~shared/utils'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { defineSchema, lazySchema } from '~shared/utils'
 
 export const findSystemPostPageReqSchema = lazySchema(() => defineSchema(pageReqSchema().extend({
   postKey: optionalText().describe('岗位标识'),
@@ -34,18 +33,3 @@ export const updateSystemPostReqSchema = lazySchema(() => defineSchema(createSys
 }), { id: 'UpdateSystemPostReqDto' }))
 
 export type UpdateSystemPostReqDto = z.infer<ReturnType<typeof updateSystemPostReqSchema>>
-
-export const exportSystemPostExcel = lazySchema(() => defineExcel({
-  fileName: '系统岗位.xlsx',
-  schema: z.object({
-    id: z.string().describe('ID'),
-    postKey: z.string().describe('岗位标识'),
-    postName: z.string().describe('岗位名称'),
-    isAvailable: enumLabelField(YesOrNoEnum).describe('是否可用'),
-    remark: z.string().describe('备注'),
-    createBy: z.string().describe('创建人'),
-    createdAt: z.date().describe('创建时间'),
-    updateBy: z.string().describe('更新人'),
-    updatedAt: z.date().describe('更新时间'),
-  }),
-}))

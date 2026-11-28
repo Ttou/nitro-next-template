@@ -1,10 +1,9 @@
 import { z } from 'zod'
-import { defineExcel } from '~nestjs-modules/excel/excel.schema'
 import { sysConfigEntitySchema } from '~shared/dtos/for-db'
 import { pageReqSchema, pageResSchema } from '~shared/dtos/page.dto'
 import { dateText, optionalEnumOf, optionalText, requiredText, uuid } from '~shared/dtos/zod'
-import { YesOrNoEnum, YesOrNoEnumValues } from '~shared/enums'
-import { defineSchema, enumLabelField, lazySchema } from '~shared/utils'
+import { YesOrNoEnumValues } from '~shared/enums'
+import { defineSchema, lazySchema } from '~shared/utils'
 
 // 查询参数需要内联的 object schema 才能被展开成逐个 query 参数，因此不设 id
 export const findSystemConfigByKeyReqSchema = lazySchema(() => z.object({
@@ -44,20 +43,3 @@ export const updateSystemConfigReqSchema = lazySchema(() => defineSchema(createS
 }), { id: 'UpdateSystemConfigReqDto' }))
 
 export type UpdateSystemConfigReqDto = z.infer<ReturnType<typeof updateSystemConfigReqSchema>>
-
-export const exportSystemConfigExcel = lazySchema(() => defineExcel({
-  fileName: '系统配置.xlsx',
-  schema: z.object({
-    id: z.string().describe('ID'),
-    configName: z.string().describe('参数名称'),
-    configKey: z.string().describe('参数标识'),
-    configValue: z.string().describe('参数键值'),
-    isBuiltin: enumLabelField(YesOrNoEnum).describe('是否内置参数'),
-    isAvailable: enumLabelField(YesOrNoEnum).describe('是否可用'),
-    remark: z.string().describe('备注'),
-    createBy: z.string().describe('创建人'),
-    createdAt: z.date().describe('创建时间'),
-    updateBy: z.string().describe('更新人'),
-    updatedAt: z.date().describe('更新时间'),
-  }),
-}))

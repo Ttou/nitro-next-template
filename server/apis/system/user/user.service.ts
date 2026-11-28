@@ -1,4 +1,5 @@
-import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, ImportSystemUserSerDto, RemoveReqDto, UpdateSystemUserReqDto } from '~shared/dtos'
+import type { CreateSystemUserReqDto, FindSystemUserPageReqDto, RemoveReqDto, UpdateSystemUserReqDto } from '~shared/dtos'
+import type { ImportSystemUserSerDto } from './user.excel'
 import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'

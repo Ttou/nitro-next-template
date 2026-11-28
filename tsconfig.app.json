@@ -28,7 +28,9 @@
     "shared/**/*.ts",
     "types/**/*.d.ts"
   ],
-  // shared/dtos 依赖 ~db 与 MikroORM，仅服务端使用
+  // shared/dtos 经 `~db`、`~nestjs-modules` 引用实体与 excel 模块，这两个别名只在 tsconfig.node.json 中声明，
+  // 该目录的类型检查也由它（include 已含 shared/**/*.ts）负责。
+  // 注意：exclude 只过滤 include 的匹配结果，不能阻止显式 import 把文件拉进 program。
   "exclude": [
     "node_modules",
     "shared/dtos"

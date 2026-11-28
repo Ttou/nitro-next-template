@@ -9,9 +9,10 @@ import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
 import { s3Disk } from '~server/configs'
 import { composeContentTypeDetectors, detectXlsxContentType, XLSX_CONTENT_TYPE } from '~server/validators'
-import { createSystemUserReqSchema, exportSystemUserExcel, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserExcel, importSystemUserResSchema, removeReqSchema, updateSystemUserReqSchema } from '~shared/dtos'
+import { createSystemUserReqSchema, findSystemUserPageReqSchema, findSystemUserPageResSchema, importSystemUserResSchema, removeReqSchema, updateSystemUserReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
 import { generateId } from '~shared/utils'
+import { exportSystemUserExcel, importSystemUserExcel } from './user.excel'
 import { SystemUserService } from './user.service'
 
 @ApiTags('系统用户接口')

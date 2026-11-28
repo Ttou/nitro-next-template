@@ -3,8 +3,9 @@ import { Body, Controller, Delete, Post } from '@nestjs/common'
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { XltCheckPermission } from '@xlt-token/nestjs'
 import { ExcelService } from '~nestjs-modules/excel'
-import { createSystemPostReqSchema, exportSystemPostExcel, findSystemPostPageReqSchema, findSystemPostPageResSchema, removeReqSchema, updateSystemPostReqSchema } from '~shared/dtos'
+import { createSystemPostReqSchema, findSystemPostPageReqSchema, findSystemPostPageResSchema, removeReqSchema, updateSystemPostReqSchema } from '~shared/dtos'
 import { PermissionEnum } from '~shared/enums'
+import { exportSystemPostExcel } from './post.excel'
 import { SystemPostService } from './post.service'
 
 @ApiTags('系统岗位接口')
