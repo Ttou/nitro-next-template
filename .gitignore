@@ -35,3 +35,6 @@ package-lock.json
 
 # AI agent workspace data
 .workbuddy
+
+# 本地 Docker 镜像覆盖（各机器镜像版本不同，不入库）
+docker-compose.override.yml

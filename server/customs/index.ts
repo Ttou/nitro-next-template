@@ -1,4 +1,6 @@
 export * from './http-health.indicator'
 export * from './orm-logger'
+export * from './queue-health.indicator'
+export * from './s3-health.indicator'
 export * from './xlt-redis'
 export * from './xlt-stp'

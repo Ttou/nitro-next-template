@@ -192,12 +192,14 @@ POST /api/auth/login        → { userName, password(密文), captchaId, captcha
 - `LoginLogProcessor` 消费任务：解析 IP 归属地（内网 IP 直接标记），写入 `sys_login_log`；失败重试 3 次、指数退避。
 - `StorageOrphanProcessor` 定时对账存储与 `sys_storage_file`：删除「有对象无记录」的孤儿对象和「有记录无对象」的悬挂记录。需显式开启（`STORAGE_CLEANUP_ENABLED`），默认只统计不删除；只处理 `{visibility}/{biz}/` 前缀下、且早于保留期的数据。
 - Bull Board 面板挂载在 `/bull-ui`，开发环境用 Basic Auth 保护（默认 `admin / 123456`）。
-- 健康检查 `/health` 覆盖 MySQL、磁盘水位、堆内存、外部 IP 解析服务。
+- 健康检查 `/health` 覆盖 MySQL、S3 存储（服务可达 / 凭据 / 目标桶）、BullMQ 队列、堆内存、外部 IP 解析服务；本地磁盘水位不再纳入，避免与对象存储的实际容量混淆。
+- 队列检查对注入的 `login_log` 队列执行一次只读 `getJobCounts`，调用成功即视为队列与 Redis 可用；不设积压 / 失败数阈值。
 
 ### 6. 文件存储
 
 上传走 S3 兼容磁盘（本地 RustFS）：
 
+- 目标桶（默认 `nitro-template`）需预先存在；`/health` 的 S3 检查以 `ListObjectsV2(max-keys=1)` 验证服务、凭据与桶，桶缺失或不可列举时报 down。
 - 单文件上限 20 MB，按**文件头**识别类型（图片 / PDF / ZIP 容器），不信任客户端声明。
 - 对象键为 `{visibility}/{biz}/{uuid}{ext}`，可见性决定是否匿名可读。
 - 公开文件直接返回公开地址；私有文件校验归属后签发 300 秒临时地址。
