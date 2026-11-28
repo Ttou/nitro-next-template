@@ -29,6 +29,7 @@
     "@nestjs/common": "12.6.3",
     "@nestjs/config": "12.1.1",
     "@nestjs/core": "12.6.3",
+    "@nestjs/mail": "^0.0.2",
     "@nestjs/platform-node": "12.6.3",
     "@nestjs/storage": "0.0.5",
     "@nestjs/swagger": "12.1.3",

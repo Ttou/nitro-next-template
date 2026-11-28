@@ -4,8 +4,8 @@ import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysUserEntity } from '~db/entities'
 import { HashService } from '~nestjs-modules/hash'
-import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
+import { ErrorEnum } from '~server/enums'
 
 @Injectable()
 export class CurrentUserService {

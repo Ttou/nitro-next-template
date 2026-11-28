@@ -2,7 +2,7 @@ import type { AlovaInstance } from '~nestjs-modules/alova'
 import { isIPv4, isIPv6 } from 'node:net'
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectAlova } from '~nestjs-modules/alova'
-import { UrlEnum } from '~server/constants'
+import { UrlEnum } from '~server/enums'
 
 interface IIpLocationResponse {
   data: {

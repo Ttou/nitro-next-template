@@ -1,6 +1,6 @@
 import type { ClsStore, Terminal } from 'nestjs-cls'
 import type { SysUserEntityExcludeRelationDto } from '~shared/dtos'
-import { ClsKeyEnum } from '~server/constants'
+import { ClsKeyEnum } from '~server/enums'
 
 export type ContextCurrentUser = Pick<SysUserEntityExcludeRelationDto, 'id' | 'userName'> & {
   roles: string[]

@@ -5,6 +5,7 @@ import { Enum } from 'enum-plus'
 
 export const QueueNameEnum = Enum({
   LOGIN_LOG: 'login_log',
+  STORAGE_ORPHAN: 'storage_orphan',
 } as const)
 
 export const QueueForRegister: RegisterQueueOptions[] = QueueNameEnum.toList().map(item => ({

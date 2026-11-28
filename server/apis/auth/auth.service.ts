@@ -9,8 +9,8 @@ import { StpLogic } from '@xlt-token/core'
 import { SysUserEntity } from '~db/entities'
 import { CaptchaService } from '~nestjs-modules/captcha'
 import { HashService } from '~nestjs-modules/hash'
-import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
+import { ErrorEnum } from '~server/enums'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()

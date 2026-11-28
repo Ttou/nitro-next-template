@@ -6,7 +6,7 @@ import { NativeLogger } from 'nestjs-pino'
 import { createSchema } from 'zod-openapi'
 import { AppModule } from './app.module'
 import { sharedConfig } from './configs'
-import { APP_ENV, AppEnvEnum } from './constants'
+import { APP_ENV, AppEnvEnum } from './enums'
 import { basicAuth } from './middlewares'
 
 /**

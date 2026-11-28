@@ -7,7 +7,7 @@ import { CLS_REQ, CLS_RES, ClsService } from 'nestjs-cls'
 import { match } from 'ts-pattern'
 import { BaseEntity, SysConfigEntity, SysUserEntity } from '~db/entities'
 
-import { ClsKeyEnum, ErrorEnum } from '~server/constants'
+import { ClsKeyEnum, ErrorEnum } from '~server/enums'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()

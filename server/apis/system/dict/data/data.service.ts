@@ -3,8 +3,8 @@ import { wrap } from '@mikro-orm/core'
 import { EntityManager } from '@mikro-orm/mysql'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { SysDictDataEntity } from '~db/entities'
-import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
+import { ErrorEnum } from '~server/enums'
 import { YesOrNoEnum } from '~shared/enums'
 
 @Injectable()

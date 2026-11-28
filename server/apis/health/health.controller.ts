@@ -10,8 +10,8 @@ import {
   MikroOrmHealthIndicator,
 } from '@nestjs/terminus'
 import { XltIgnore } from '@xlt-token/nestjs'
-import { UrlEnum } from '~server/constants'
 import { HttpHealthIndicator } from '~server/customs'
+import { UrlEnum } from '~server/enums'
 
 @Controller()
 export class HealthController {

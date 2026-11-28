@@ -4,7 +4,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { HttpStatus, Logger } from '@nestjs/common'
 import { SysLoginLogEntity } from '~db/entities'
 import { RemoteIpService } from '~server/remote'
-import { QueueNameEnum } from './queue.constant'
+import { QueueNameEnum } from './queues.constant'
 
 export interface LoginLogQueueData {
   ip: string

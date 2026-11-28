@@ -114,7 +114,8 @@ flowchart LR
 ├── server/                     # NestJS 服务端
 │   ├── apis/                   # 业务接口（Controller + Service + Module）
 │   ├── configs/                # 配置聚合 + 各模块 options
-│   ├── constants/enums/        # 错误码、缓存键、CLS 键、URL
+│   ├── constants/              # 对象键规则（storage.constant）
+│   ├── enums/                  # 错误码、缓存键、CLS 键、URL、运行环境
 │   ├── context/                # 基于 CLS 的请求上下文服务
 │   ├── customs/                # ORM 日志、健康检查指标、Redis/Token 定制
 │   ├── filters/                # 全局异常过滤器
@@ -189,6 +190,7 @@ POST /api/auth/login        → { userName, password(密文), captchaId, captcha
 
 - 登录成功/失败由 `LoginLogInterceptor` 投入 `login_log` 队列，不阻塞登录响应。
 - `LoginLogProcessor` 消费任务：解析 IP 归属地（内网 IP 直接标记），写入 `sys_login_log`；失败重试 3 次、指数退避。
+- `StorageOrphanProcessor` 定时对账存储与 `sys_storage_file`：删除「有对象无记录」的孤儿对象和「有记录无对象」的悬挂记录。需显式开启（`STORAGE_CLEANUP_ENABLED`），默认只统计不删除；只处理 `{visibility}/{biz}/` 前缀下、且早于保留期的数据。
 - Bull Board 面板挂载在 `/bull-ui`，开发环境用 Basic Auth 保护（默认 `admin / 123456`）。
 - 健康检查 `/health` 覆盖 MySQL、磁盘水位、堆内存、外部 IP 解析服务。
 
@@ -199,7 +201,7 @@ POST /api/auth/login        → { userName, password(密文), captchaId, captcha
 - 单文件上限 20 MB，按**文件头**识别类型（图片 / PDF / ZIP 容器），不信任客户端声明。
 - 对象键为 `{visibility}/{biz}/{uuid}{ext}`，可见性决定是否匿名可读。
 - 公开文件直接返回公开地址；私有文件校验归属后签发 300 秒临时地址。
-- 数据库写入失败会回收已落盘对象，避免孤儿文件。
+- 数据库写入失败会回收已落盘对象；进程崩溃等场景残留的孤儿由清理任务兜底（见「异步任务与监控」）。
 
 ### 7. 表格与导出
 
@@ -224,6 +226,7 @@ POST /api/auth/login        → { userName, password(密文), captchaId, captcha
 | 登录日志 | 登录记录分页（IP、归属地、UA、耗时、状态） |
 | 缓存监控 | 键列表分页、按 key 查看详情、删除、清空 |
 | 文件存储 | 上传、公开/私有访问、私有文件签名地址 |
+| 存储运维 | 孤儿文件清理（BullMQ 定时对账，默认 dryRun） |
 | 系统运维 | 健康检查、队列面板 |
 
 ---
@@ -262,12 +265,12 @@ pnpm dev
 
 | 地址 | 说明 |
 | --- | --- |
-| `http://localhost:5173` | 前端页面 |
-| `http://localhost:5173/api/*` | 业务接口 |
-| `http://localhost:5173/openapi` | Swagger UI（仅 dev） |
-| `http://localhost:5173/openapi-json` | OpenAPI JSON（接口生成源） |
-| `http://localhost:5173/bull-ui` | 队列面板（Basic Auth） |
-| `http://localhost:5173/health` | 健康检查 |
+| `http://localhost:3000` | 前端页面 |
+| `http://localhost:3000/api/*` | 业务接口 |
+| `http://localhost:3000/openapi` | Swagger UI（仅 dev） |
+| `http://localhost:3000/openapi-json` | OpenAPI JSON（接口生成源） |
+| `http://localhost:3000/bull-ui` | 队列面板（Basic Auth） |
+| `http://localhost:3000/health` | 健康检查 |
 | `http://localhost:9001` | RustFS 控制台 |
 
 ### 常用脚本
@@ -282,7 +285,7 @@ pnpm dev
 | `pnpm db:init` | 重建数据库结构（`dropDb`，会清数据） |
 | `pnpm db:seed` | 写入种子数据 |
 
-> `gen:apis` 读取 `alova.config.ts` 中的 `http://localhost:3000/openapi-json`。若本地端口不同，先改这个地址或按实际端口启动服务。
+> 开发服务默认监听 `3000`（`NITRO_PORT`），与 `alova.config.ts` 里的地址一致；改过端口时需同步修改该配置。
 
 ---
 
@@ -329,6 +332,10 @@ cd .server && node --env-file .env.deploy index.mjs
 | `S3_ENDPOINT` / `S3_BUCKET` / `S3_REGION` | S3 兼容存储地址与桶 |
 | `S3_ACCESS_KEY` / `S3_SECRET_KEY` | 存储凭证 |
 | `S3_PUBLIC_URL` | 公开读地址（建议指向 CDN 或反向代理） |
+| `STORAGE_CLEANUP_ENABLED` | 是否注册孤儿文件清理定时任务，默认 `false` |
+| `STORAGE_CLEANUP_EVERY` | 执行间隔，`vercel/ms` 格式，默认 `1d` |
+| `STORAGE_CLEANUP_RETENTION_DAYS` | 只处理早于该天数的孤儿，默认 `7` |
+| `STORAGE_CLEANUP_DRY_RUN` | 默认 `true`（只统计不删除）；确认日志无误后设为 `false` |
 | `VITE_APP_TITLE` | 前端页面标题（`.env`，构建期注入） |
 
 ---

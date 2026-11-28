@@ -1,3 +1,4 @@
+import type { StringValue } from 'ms'
 import type { IAuthConfig, IConfig, ISharedConfig } from './config.interface'
 import { generateKeyPairSync } from 'node:crypto'
 import { existsSync, readFileSync } from 'node:fs'
@@ -14,8 +15,8 @@ import pinoPretty from 'pino-pretty'
 import { match, P } from 'ts-pattern'
 import * as entities from '~db/entities'
 import { genSalt } from '~nestjs-modules/hash'
-import { APP_ENV, AppEnvEnum } from '~server/constants'
 import { CustomOrmLogger } from '~server/customs'
+import { APP_ENV, AppEnvEnum } from '~server/enums'
 import { generateId } from '~shared/utils'
 
 /** 各环境共用配置 */
@@ -134,6 +135,20 @@ export const s3Disk = new S3Disk({
     secretAccessKey: env.S3_SECRET_KEY || 'rustfsadmin',
   },
 })
+
+/**
+ * 孤儿文件清理任务配置
+ *
+ * 默认关闭；开启后默认 dryRun（只统计不删除），确认日志无误再把 STORAGE_CLEANUP_DRY_RUN 设为 false。
+ */
+function createStorageCleanupConfig(): IConfig['storage-cleanup'] {
+  return {
+    enabled: env.STORAGE_CLEANUP_ENABLED === 'true',
+    every: (env.STORAGE_CLEANUP_EVERY || '1d') as StringValue,
+    retentionDays: Number(env.STORAGE_CLEANUP_RETENTION_DAYS ?? 7),
+    dryRun: env.STORAGE_CLEANUP_DRY_RUN !== 'false',
+  }
+}
 
 export const configuration = registerAs<IConfig>('', (): IConfig => {
   const { appName, redis } = sharedConfig
@@ -259,6 +274,7 @@ export const configuration = registerAs<IConfig>('', (): IConfig => {
         s3: s3Disk,
       },
     },
+    'storage-cleanup': createStorageCleanupConfig(),
     'alova': match(APP_ENV)
       .returnType<IConfig['alova']>()
       .with(AppEnvEnum.DEV, () => ({}))

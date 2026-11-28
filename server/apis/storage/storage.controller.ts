@@ -5,6 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-node'
 import { uploadToDisk } from '@nestjs/storage'
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { s3Disk } from '~server/configs'
+import { buildStorageKey } from '~server/constants'
 import { storageFileUrlReqSchema, storageFileUrlResSchema, storageUploadQuerySchema, storageUploadResSchema } from '~shared/dtos'
 import { StorageBizEnumValues, StorageVisibilityEnumValues } from '~shared/enums'
 import { generateId } from '~shared/utils'
@@ -93,7 +94,7 @@ export class StorageController {
       key: ({ extension }, req: { query: unknown }) => {
         const { visibility, biz } = parseUploadQuery(req.query)
 
-        return `${visibility}/${biz}/${generateId()}${extension}`
+        return buildStorageKey(visibility, biz, generateId(), extension)
       },
     }),
   }))

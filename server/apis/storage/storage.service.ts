@@ -4,8 +4,8 @@ import { EntityManager } from '@mikro-orm/mysql'
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { SysStorageFileEntity } from '~db/entities'
 import { s3Disk } from '~server/configs'
-import { ErrorEnum } from '~server/constants'
 import { ContextService } from '~server/context'
+import { ErrorEnum } from '~server/enums'
 import { StorageVisibilityEnum } from '~shared/enums'
 
 /** 私密文件签名地址有效期（秒） */
